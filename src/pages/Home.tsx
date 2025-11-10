@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 export default function Homepage() {
-  const [_activeCalculator, _setActiveCalculator] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   return (
     <>
@@ -75,48 +76,48 @@ export default function Homepage() {
           <p className="text-center text-gray-600 mb-12">Choose your calculator and start working smarter</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition cursor-pointer" onClick={() => navigate('/cable-calculator')}>
               <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white mb-4">
                 <Zap className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Cable Sizing Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">BS 7671 compliant electrical cable sizing with all derating factors</p>
-              <a href="/cable-calculator.html" className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
+              <button className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                 Use Calculator <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
 
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition cursor-pointer" onClick={() => navigate('/voltage-drop')}>
               <div className="w-12 h-12 bg-cyan-500 rounded-lg flex items-center justify-center text-white mb-4">
                 <Zap className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Voltage Drop Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">Calculate voltage drop for any circuit length and load</p>
-              <a href="/voltage-drop.html" className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
+              <button className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                 Use Calculator <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
 
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition cursor-pointer" onClick={() => navigate('/bsp-thread')}>
               <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center text-white mb-4">
                 <Lightbulb className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">BSP Thread Identifier</h3>
               <p className="text-gray-600 text-sm mb-4">Identify British Standard Pipe threads by diameter or TPI</p>
-              <a href="/bsp-thread.html" className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
+              <button className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                 Use Calculator <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
 
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition cursor-pointer" onClick={() => navigate('/roofing')}>
               <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4">
                 <DollarSign className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Roofing Insurance Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">Calculate fair market value and fight for proper compensation</p>
-              <a href="/roofing.html" className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
+              <button className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                 Use Calculator <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
           </div>
 
@@ -226,7 +227,7 @@ export default function Homepage() {
             <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
               Whether you need a specialized calculator for your trade, automation to streamline operations, or want to white-label our tools - we've got you covered. Our team specializes in building solutions that save tradespeople time and money.
             </p>
-            <a href="https://app.smartsuite.com/YOUR-FORM-URL" target="_blank" rel="noopener noreferrer" className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-bold inline-flex items-center gap-2">
+            <a href="https://app.smartsuite.com/apps/d1da94c3d6524e5186bacc3dfdc9c4e1/sheets/f2c92f55-a68d-40c9-9c0a-18e68eb30199?view=Grid" target="_blank" rel="noopener noreferrer" className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-bold inline-flex items-center gap-2">
               Tell Us What You Need <ArrowRight className="w-5 h-5" />
             </a>
           </div>
@@ -235,6 +236,7 @@ export default function Homepage() {
     </>
   )
 }
+
 
 
 
