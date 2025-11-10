@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, X } from 'lucide-react'
+import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react'
 
 export default function Homepage() {
-  const [activeCalculator, setActiveCalculator] = useState<string | null>(null)
+  const [_activeCalculator, _setActiveCalculator] = useState<string | null>(null)
 
   return (
     <>
@@ -75,50 +75,46 @@ export default function Homepage() {
           <p className="text-center text-gray-600 mb-12">Choose your calculator and start working smarter</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Cable Sizing */}
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
               <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white mb-4">
                 <Zap className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Cable Sizing Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">BS 7671 compliant electrical cable sizing with all derating factors</p>
-              <button onClick={() => setActiveCalculator('cable')} className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
+              <button className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
                 Use Calculator <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Voltage Drop */}
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
               <div className="w-12 h-12 bg-cyan-500 rounded-lg flex items-center justify-center text-white mb-4">
                 <Zap className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Voltage Drop Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">Calculate voltage drop for any circuit length and load</p>
-              <button onClick={() => setActiveCalculator('voltage')} className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
+              <button className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
                 Use Calculator <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
-            {/* BSP Thread */}
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
               <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center text-white mb-4">
                 <Lightbulb className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">BSP Thread Identifier</h3>
               <p className="text-gray-600 text-sm mb-4">Identify British Standard Pipe threads by diameter or TPI</p>
-              <button onClick={() => setActiveCalculator('bsp')} className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
+              <button className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
                 Use Calculator <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Roofing */}
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
               <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4">
                 <DollarSign className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Roofing Insurance Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">Calculate fair market value and fight for proper compensation</p>
-              <button onClick={() => setActiveCalculator('roofing')} className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
+              <button className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
                 Use Calculator <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -170,7 +166,6 @@ export default function Homepage() {
               </div>
             </div>
 
-            {/* CTA BOX */}
             <div className="bg-gradient-to-br from-purple-600 to-blue-600 text-white rounded-lg p-8">
               <h3 className="text-2xl font-bold mb-3">Ready to Work Smarter?</h3>
               <p className="mb-6 opacity-95">Join professional tradespeople who are already saving time and reducing errors with TradeCalcs.</p>
@@ -240,6 +235,7 @@ export default function Homepage() {
     </>
   )
 }
+
 
 
 
