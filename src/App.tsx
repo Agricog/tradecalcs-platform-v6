@@ -1,19 +1,9 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Sparkles, Menu, X } from 'lucide-react'
-import { useState } from 'react'
-
-// Pages
+import { Sparkles } from 'lucide-react'
 import Homepage from './pages/Home'
-import CableSizingCalculator from './components/CableSizingCalculator'
-import VoltageDropCalculator from './components/VoltageDropCalculator'
-import BSPThreadIdentifier from './components/BSPThreadIdentifier'
-import RoofingPage from './pages/RoofingPage'
 
 export default function App() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
   return (
-    <BrowserRouter>
+    <div className="flex flex-col min-h-screen">
       {/* ANIMATED STRAP LINE - CLICKABLE */}
       <a 
         href="https://app.smartsuite.com/YOUR-FORM-URL" 
@@ -30,47 +20,9 @@ export default function App() {
         </div>
       </a>
 
-      {/* NAVIGATION */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-              TC
-            </div>
-            <span className="font-bold text-lg text-gray-900">TradeCalcs</span>
-          </div>
-          <div className="hidden md:flex items-center gap-6">
-            <a href="/" className="text-gray-700 hover:text-gray-900 font-medium">Home</a>
-            <a href="/#tools" className="text-gray-700 hover:text-gray-900 font-medium">Calculators</a>
-            <a href="https://app.smartsuite.com/YOUR-FORM-URL" target="_blank" rel="noopener noreferrer" className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-semibold">
-              Contact Us
-            </a>
-          </div>
-          <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 py-4 px-4">
-            <a href="/" className="block text-gray-700 hover:text-gray-900 font-medium py-2">Home</a>
-            <a href="/#tools" className="block text-gray-700 hover:text-gray-900 font-medium py-2">Calculators</a>
-            <a href="https://app.smartsuite.com/YOUR-FORM-URL" target="_blank" rel="noopener noreferrer" className="block bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-semibold mt-2 text-center">
-              Contact Us
-            </a>
-          </div>
-        )}
-      </nav>
-
       {/* MAIN CONTENT */}
-      <main className="min-h-screen">
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/tools" element={<Homepage />} />
-          <Route path="/tools/cable-calculator" element={<CableSizingCalculator />} />
-          <Route path="/tools/voltage-drop" element={<VoltageDropCalculator />} />
-          <Route path="/tools/bsp-thread" element={<BSPThreadIdentifier />} />
-          <Route path="/tools/roofing" element={<RoofingPage />} />
-        </Routes>
+      <main className="flex-grow">
+        <Homepage />
       </main>
 
       {/* FOOTER */}
@@ -120,9 +72,10 @@ export default function App() {
           <p className="mt-2">Built by Tradespeople, for Tradespeople</p>
         </div>
       </footer>
-    </BrowserRouter>
+    </div>
   )
 }
+
 
 
 
