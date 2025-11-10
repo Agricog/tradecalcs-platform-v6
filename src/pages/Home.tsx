@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
@@ -236,6 +235,7 @@ export default function Homepage() {
     </>
   )
 }
+
 
 
 
