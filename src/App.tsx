@@ -9,7 +9,7 @@ import RoofingPage from './pages/RoofingPage'
 export default function App() {
   return (
     <Router>
-      {/* ANIMATED STRAP LINE - CLICKABLE */}
+      {/* ANIMATED STRAP LINE */}
       <a 
         href="https://app.smartsuite.com/apps/d1da94c3d6524e5186bacc3dfdc9c4e1/sheets/f2c92f55-a68d-40c9-9c0a-18e68eb30199?view=Grid" 
         target="_blank" 
@@ -33,7 +33,7 @@ export default function App() {
         <Route path="/roofing" element={<RoofingPage />} />
       </Routes>
 
-      {/* FOOTER - Always shown */}
+      {/* FOOTER */}
       <footer className="bg-gray-900 text-gray-300 py-12 px-4">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
@@ -83,6 +83,7 @@ export default function App() {
     </Router>
   )
 }
+
 
 
 
