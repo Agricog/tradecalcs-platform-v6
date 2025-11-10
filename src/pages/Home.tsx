@@ -1,7 +1,7 @@
 import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
-export default function Homepage() {
+export default function Home() {
   const navigate = useNavigate()
 
   return (
