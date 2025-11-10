@@ -1,9 +1,14 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Sparkles } from 'lucide-react'
 import Homepage from './pages/Home'
+import CableSizingCalculator from './components/CableSizingCalculator'
+import VoltageDropCalculator from './components/VoltageDropCalculator'
+import BSPThreadIdentifier from './components/BSPThreadIdentifier'
+import RoofingPage from './pages/RoofingPage'
 
 export default function App() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <BrowserRouter>
       {/* ANIMATED STRAP LINE - CLICKABLE */}
       <a 
         href="https://app.smartsuite.com/YOUR-FORM-URL" 
@@ -20,12 +25,16 @@ export default function App() {
         </div>
       </a>
 
-      {/* MAIN CONTENT */}
-      <main className="flex-grow">
-        <Homepage />
-      </main>
+      {/* ROUTES */}
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/tools/cable-calculator" element={<CableSizingCalculator />} />
+        <Route path="/tools/voltage-drop" element={<VoltageDropCalculator />} />
+        <Route path="/tools/bsp-thread" element={<BSPThreadIdentifier />} />
+        <Route path="/tools/roofing" element={<RoofingPage />} />
+      </Routes>
 
-      {/* FOOTER */}
+      {/* FOOTER - Always shown */}
       <footer className="bg-gray-900 text-gray-300 py-12 px-4">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
@@ -43,7 +52,7 @@ export default function App() {
             <h4 className="font-bold text-white mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               <li><a href="/" className="hover:text-white">Home</a></li>
-              <li><a href="/#tools" className="hover:text-white">Tools</a></li>
+              <li><a href="/#custom" className="hover:text-white">Custom Tools</a></li>
               <li><a href="https://app.smartsuite.com/YOUR-FORM-URL" target="_blank" rel="noopener noreferrer" className="hover:text-white">Contact Us</a></li>
             </ul>
           </div>
@@ -72,9 +81,10 @@ export default function App() {
           <p className="mt-2">Built by Tradespeople, for Tradespeople</p>
         </div>
       </footer>
-    </div>
+    </BrowserRouter>
   )
 }
+
 
 
 
