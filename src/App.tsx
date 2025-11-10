@@ -1,6 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Sparkles } from 'lucide-react'
 import Homepage from './pages/Home'
+import CableSizingCalculator from './components/CableSizingCalculator'
+import VoltageDropPage from './components/VoltageDropPage'
+import BSPThreadIdentifier from './components/BSPThreadIdentifier'
+import RoofingPage from './pages/RoofingPage'
 
 export default function App() {
   return (
@@ -22,7 +26,11 @@ export default function App() {
       </a>
 
       <Routes>
-        <Route path="/*" element={<Homepage />} />
+        <Route path="/" element={<Homepage />} />
+        <Route path="/cable-calculator" element={<CableSizingCalculator />} />
+        <Route path="/voltage-drop" element={<VoltageDropPage />} />
+        <Route path="/bsp-thread" element={<BSPThreadIdentifier />} />
+        <Route path="/roofing" element={<RoofingPage />} />
       </Routes>
 
       {/* FOOTER - Always shown */}
@@ -75,6 +83,7 @@ export default function App() {
     </Router>
   )
 }
+
 
 
 
