@@ -3,7 +3,7 @@ import { Wrench } from 'lucide-react'
 export default function BSPThreadFinder() {
   const [diameter, setDiameter] = useState('')
   const [result, setResult] = useState('')
-  const bspThreads = {'6':'1/8" BSP','8':'1/4" BSP','10':'3/8" BSP','13':'1/2" BSP','19':'3/4" BSP','25':'1" BSP','32':'1 1/4" BSP','38':'1 1/2" BSP','50':'2" BSP'}
+  const bspThreads: Record<string, string> = {'6':'1/8" BSP','8':'1/4" BSP','10':'3/8" BSP','13':'1/2" BSP','19':'3/4" BSP','25':'1" BSP','32':'1 1/4" BSP','38':'1 1/2" BSP','50':'2" BSP'}
   const find = () => {
     if (!diameter) { alert('Please enter a diameter'); return }
     const thread = bspThreads[diameter] || 'Thread size not found in common sizes'
