@@ -3,10 +3,10 @@ import { Sparkles, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 
 // Pages
-import Home from './pages/Home'
-import CableCalculator from './pages/CableCalculator'
-import VoltageDropCalculator from './pages/VoltageDropCalculator'
-import BSPThreadPage from './pages/BSPThreadPage'
+import Homepage from './pages/Home'
+import CableSizingCalculator from './components/CableSizingCalculator'
+import VoltageDropCalculator from './components/VoltageDropCalculator'
+import BSPThreadIdentifier from './components/BSPThreadIdentifier'
 import RoofingPage from './pages/RoofingPage'
 
 export default function App() {
@@ -41,7 +41,7 @@ export default function App() {
           </div>
           <div className="hidden md:flex items-center gap-6">
             <a href="/" className="text-gray-700 hover:text-gray-900 font-medium">Home</a>
-            <a href="/tools" className="text-gray-700 hover:text-gray-900 font-medium">Calculators</a>
+            <a href="/#tools" className="text-gray-700 hover:text-gray-900 font-medium">Calculators</a>
             <a href="https://app.smartsuite.com/YOUR-FORM-URL" target="_blank" rel="noopener noreferrer" className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-semibold">
               Contact Us
             </a>
@@ -53,7 +53,7 @@ export default function App() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-gray-200 py-4 px-4">
             <a href="/" className="block text-gray-700 hover:text-gray-900 font-medium py-2">Home</a>
-            <a href="/tools" className="block text-gray-700 hover:text-gray-900 font-medium py-2">Calculators</a>
+            <a href="/#tools" className="block text-gray-700 hover:text-gray-900 font-medium py-2">Calculators</a>
             <a href="https://app.smartsuite.com/YOUR-FORM-URL" target="_blank" rel="noopener noreferrer" className="block bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-semibold mt-2 text-center">
               Contact Us
             </a>
@@ -64,11 +64,11 @@ export default function App() {
       {/* MAIN CONTENT */}
       <main className="min-h-screen">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/tools" element={<Home />} />
-          <Route path="/tools/cable-calculator" element={<CableCalculator />} />
+          <Route path="/" element={<Homepage />} />
+          <Route path="/tools" element={<Homepage />} />
+          <Route path="/tools/cable-calculator" element={<CableSizingCalculator />} />
           <Route path="/tools/voltage-drop" element={<VoltageDropCalculator />} />
-          <Route path="/tools/bsp-thread" element={<BSPThreadPage />} />
+          <Route path="/tools/bsp-thread" element={<BSPThreadIdentifier />} />
           <Route path="/tools/roofing" element={<RoofingPage />} />
         </Routes>
       </main>
@@ -91,7 +91,7 @@ export default function App() {
             <h4 className="font-bold text-white mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               <li><a href="/" className="hover:text-white">Home</a></li>
-              <li><a href="/tools" className="hover:text-white">Tools</a></li>
+              <li><a href="/#tools" className="hover:text-white">Tools</a></li>
               <li><a href="https://app.smartsuite.com/YOUR-FORM-URL" target="_blank" rel="noopener noreferrer" className="hover:text-white">Contact Us</a></li>
             </ul>
           </div>
@@ -99,9 +99,9 @@ export default function App() {
           <div>
             <h4 className="font-bold text-white mb-4">Services</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#custom" className="hover:text-white">Custom Development</a></li>
-              <li><a href="#custom" className="hover:text-white">White-Label</a></li>
-              <li><a href="#custom" className="hover:text-white">API Access</a></li>
+              <li><a href="/#custom" className="hover:text-white">Custom Development</a></li>
+              <li><a href="/#custom" className="hover:text-white">White-Label</a></li>
+              <li><a href="/#custom" className="hover:text-white">API Access</a></li>
             </ul>
           </div>
 
@@ -123,5 +123,6 @@ export default function App() {
     </BrowserRouter>
   )
 }
+
 
 
