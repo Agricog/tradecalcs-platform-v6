@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Sparkles } from 'lucide-react'
 import Home from './pages/Home'
+import CableSizingCalculatorPage from './pages/CableSizingCalculatorPage'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/cable-calculator" element={<CableSizingCalculatorPage />} />
         </Routes>
 
         <footer className="bg-gray-900 text-gray-300 py-12 px-4 mt-auto">
@@ -75,6 +77,7 @@ export default function App() {
     </Router>
   )
 }
+
 
 
 
