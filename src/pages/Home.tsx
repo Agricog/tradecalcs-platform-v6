@@ -1,4 +1,4 @@
-import { Calculator, Zap, Shield, Smartphone, ArrowRight, CheckCircle } from 'lucide-react'
+import { Calculator, Zap, Shield, Smartphone, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 export default function Home() {
   const formUrl = 'https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE'
