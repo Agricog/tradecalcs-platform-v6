@@ -1,9 +1,10 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Sparkles } from 'lucide-react'
 import Homepage from './pages/Home'
 
 export default function App() {
   return (
-    <>
+    <Router>
       {/* ANIMATED STRAP LINE - CLICKABLE */}
       <a 
         href="https://app.smartsuite.com/apps/d1da94c3d6524e5186bacc3dfdc9c4e1/sheets/f2c92f55-a68d-40c9-9c0a-18e68eb30199?view=Grid" 
@@ -20,8 +21,9 @@ export default function App() {
         </div>
       </a>
 
-      {/* HOMEPAGE */}
-      <Homepage />
+      <Routes>
+        <Route path="/*" element={<Homepage />} />
+      </Routes>
 
       {/* FOOTER - Always shown */}
       <footer className="bg-gray-900 text-gray-300 py-12 px-4">
@@ -70,9 +72,10 @@ export default function App() {
           <p className="mt-2">Built by Tradespeople, for Tradespeople</p>
         </div>
       </footer>
-    </>
+    </Router>
   )
 }
+
 
 
 
