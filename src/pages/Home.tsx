@@ -223,7 +223,7 @@ export default function Home() {
             <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
               Whether you need a specialized calculator for your trade, automation to streamline operations, or want to white-label our tools - we've got you covered. Our team specializes in building solutions that save tradespeople time and money.
             </p>
-            <a href="https://app.smartsuite.com/apps/d1da94c3d6524e5186bacc3dfdc9c4e1/sheets/f2c92f55-a68d-40c9-9c0a-18e68eb30199?view=Grid" target="_blank" rel="noopener noreferrer" className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-bold inline-flex items-center gap-2">
+            <a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-bold inline-flex items-center gap-2">
               Tell Us What You Need <ArrowRight className="w-5 h-5" />
             </a>
           </div>
@@ -232,6 +232,7 @@ export default function Home() {
     </>
   )
 }
+
 
 
 
