@@ -3,7 +3,6 @@ import { Wrench } from 'lucide-react'
 
 export default function BSPThreadFinder() {
   const [diameter, setDiameter] = useState('')
-  const [tpi, setTpi] = useState('')
   const [result, setResult] = useState('')
 
   const bspThreads: Record<string, {size: string, tpi: number, pitch: number}> = {
