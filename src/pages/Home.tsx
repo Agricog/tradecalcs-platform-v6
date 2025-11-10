@@ -1,4 +1,4 @@
-import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react'
+import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react'
 
 export default function Homepage() {
   return (
@@ -244,6 +244,7 @@ export default function Homepage() {
     </>
   )
 }
+
 
 
 
