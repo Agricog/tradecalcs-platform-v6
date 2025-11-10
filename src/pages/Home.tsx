@@ -72,16 +72,16 @@ export default function Home() {
           <p className="text-center text-gray-600 mb-12">Choose your calculator and start working smarter</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+            <a href="/cable-calculator" className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
               <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white mb-4">
                 <Zap className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Cable Sizing Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">BS 7671 compliant electrical cable sizing with all derating factors</p>
-              <button disabled className="text-gray-400 font-semibold flex items-center gap-2">
-                Coming Soon <ArrowRight className="w-4 h-4" />
+              <button className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
+                Use Calculator <ArrowRight className="w-4 h-4" />
               </button>
-            </div>
+            </a>
 
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
               <div className="w-12 h-12 bg-cyan-500 rounded-lg flex items-center justify-center text-white mb-4">
@@ -232,6 +232,7 @@ export default function Home() {
     </>
   )
 }
+
 
 
 
