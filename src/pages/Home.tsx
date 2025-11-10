@@ -1,56 +1,8 @@
 import { useState } from 'react'
 import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, X } from 'lucide-react'
-import CableSizingCalculator from '../components/CableSizingCalculator'
-import VoltageDropPage from '../components/VoltageDropPage'
-import BSPThreadIdentifier from '../components/BSPThreadIdentifier'
-import RoofingPage from '../pages/RoofingPage'
 
 export default function Homepage() {
-  const [activeCalculator, setActiveCalculator] = useState(null)
-
-  if (activeCalculator === 'cable') {
-    return (
-      <div>
-        <button onClick={() => setActiveCalculator(null)} className="fixed top-20 right-4 z-50 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg">
-          <X className="w-6 h-6" />
-        </button>
-        <CableSizingCalculator />
-      </div>
-    )
-  }
-
-  if (activeCalculator === 'voltage') {
-    return (
-      <div>
-        <button onClick={() => setActiveCalculator(null)} className="fixed top-20 right-4 z-50 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg">
-          <X className="w-6 h-6" />
-        </button>
-        <VoltageDropPage />
-      </div>
-    )
-  }
-
-  if (activeCalculator === 'bsp') {
-    return (
-      <div>
-        <button onClick={() => setActiveCalculator(null)} className="fixed top-20 right-4 z-50 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg">
-          <X className="w-6 h-6" />
-        </button>
-        <BSPThreadIdentifier />
-      </div>
-    )
-  }
-
-  if (activeCalculator === 'roofing') {
-    return (
-      <div>
-        <button onClick={() => setActiveCalculator(null)} className="fixed top-20 right-4 z-50 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg">
-          <X className="w-6 h-6" />
-        </button>
-        <RoofingPage />
-      </div>
-    )
-  }
+  const [activeCalculator, setActiveCalculator] = useState<string | null>(null)
 
   return (
     <>
@@ -64,7 +16,7 @@ export default function Homepage() {
             reduce errors, and work with confidence.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <button onClick={() => document.getElementById('calculators').scrollIntoView({ behavior: 'smooth' })} className="bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 flex items-center gap-2">
+            <button onClick={() => document.getElementById('calculators')?.scrollIntoView({ behavior: 'smooth' })} className="bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 flex items-center gap-2">
               View Free Tools <ArrowRight className="w-5 h-5" />
             </button>
             <a href="#custom" className="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-purple-600">
@@ -222,7 +174,7 @@ export default function Homepage() {
             <div className="bg-gradient-to-br from-purple-600 to-blue-600 text-white rounded-lg p-8">
               <h3 className="text-2xl font-bold mb-3">Ready to Work Smarter?</h3>
               <p className="mb-6 opacity-95">Join professional tradespeople who are already saving time and reducing errors with TradeCalcs.</p>
-              <button onClick={() => document.getElementById('calculators').scrollIntoView({ behavior: 'smooth' })} className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 inline-flex items-center gap-2">
+              <button onClick={() => document.getElementById('calculators')?.scrollIntoView({ behavior: 'smooth' })} className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 inline-flex items-center gap-2">
                 Start Using Tools <ArrowRight className="w-5 h-5" />
               </button>
               <p className="text-sm opacity-75 mt-4">No signup required • Instant access • Always free</p>
@@ -288,6 +240,7 @@ export default function Homepage() {
     </>
   )
 }
+
 
 
 
