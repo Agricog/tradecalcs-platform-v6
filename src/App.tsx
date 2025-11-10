@@ -1,9 +1,14 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Sparkles } from 'lucide-react'
 import Homepage from './pages/Home'
+import CableSizingCalculator from './components/CableSizingCalculator'
+import VoltageDropPage from './components/VoltageDropPage'
+import BSPThreadIdentifier from './components/BSPThreadIdentifier'
+import RoofingPage from './pages/RoofingPage'
 
 export default function App() {
   return (
-    <>
+    <Router>
       {/* ANIMATED STRAP LINE - CLICKABLE */}
       <a 
         href="https://app.smartsuite.com/YOUR-FORM-URL" 
@@ -20,10 +25,16 @@ export default function App() {
         </div>
       </a>
 
-      {/* HOMEPAGE CONTENT */}
-      <Homepage />
+      {/* ROUTES */}
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/cable-calculator" element={<CableSizingCalculator />} />
+        <Route path="/voltage-drop" element={<VoltageDropPage />} />
+        <Route path="/bsp-thread" element={<BSPThreadIdentifier />} />
+        <Route path="/roofing" element={<RoofingPage />} />
+      </Routes>
 
-      {/* FOOTER */}
+      {/* FOOTER - Always shown */}
       <footer className="bg-gray-900 text-gray-300 py-12 px-4">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
@@ -70,7 +81,7 @@ export default function App() {
           <p className="mt-2">Built by Tradespeople, for Tradespeople</p>
         </div>
       </footer>
-    </>
+    </Router>
   )
 }
 
