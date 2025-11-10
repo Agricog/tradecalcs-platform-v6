@@ -1,17 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Sparkles } from 'lucide-react'
 import Homepage from './pages/Home'
-import CableSizingCalculator from './components/CableSizingCalculator'
-import VoltageDropPage from './components/VoltageDropPage'
-import BSPThreadIdentifier from './components/BSPThreadIdentifier'
-import RoofingPage from './pages/RoofingPage'
 
 export default function App() {
   return (
-    <Router>
+    <>
       {/* ANIMATED STRAP LINE - CLICKABLE */}
       <a 
-        href="https://app.smartsuite.com/YOUR-FORM-URL" 
+        href="https://app.smartsuite.com/apps/d1da94c3d6524e5186bacc3dfdc9c4e1/sheets/f2c92f55-a68d-40c9-9c0a-18e68eb30199?view=Grid" 
         target="_blank" 
         rel="noopener noreferrer"
         className="block bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 text-white py-3 px-4 hover:from-purple-700 hover:via-purple-600 hover:to-blue-700 transition-all duration-300"
@@ -25,14 +20,8 @@ export default function App() {
         </div>
       </a>
 
-      {/* ROUTES */}
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/cable-calculator" element={<CableSizingCalculator />} />
-        <Route path="/voltage-drop" element={<VoltageDropPage />} />
-        <Route path="/bsp-thread" element={<BSPThreadIdentifier />} />
-        <Route path="/roofing" element={<RoofingPage />} />
-      </Routes>
+      {/* HOMEPAGE */}
+      <Homepage />
 
       {/* FOOTER - Always shown */}
       <footer className="bg-gray-900 text-gray-300 py-12 px-4">
@@ -53,7 +42,7 @@ export default function App() {
             <ul className="space-y-2 text-sm">
               <li><a href="/" className="hover:text-white">Home</a></li>
               <li><a href="/#custom" className="hover:text-white">Custom Tools</a></li>
-              <li><a href="https://app.smartsuite.com/YOUR-FORM-URL" target="_blank" rel="noopener noreferrer" className="hover:text-white">Contact Us</a></li>
+              <li><a href="https://app.smartsuite.com/apps/d1da94c3d6524e5186bacc3dfdc9c4e1/sheets/f2c92f55-a68d-40c9-9c0a-18e68eb30199?view=Grid" target="_blank" rel="noopener noreferrer" className="hover:text-white">Contact Us</a></li>
             </ul>
           </div>
 
@@ -81,7 +70,7 @@ export default function App() {
           <p className="mt-2">Built by Tradespeople, for Tradespeople</p>
         </div>
       </footer>
-    </Router>
+    </>
   )
 }
 
