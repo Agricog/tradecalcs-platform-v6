@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react'
 
 export default function Homepage() {
@@ -324,4 +323,5 @@ export default function Homepage() {
     </div>
   )
 }
+
 
