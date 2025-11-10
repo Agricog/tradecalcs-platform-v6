@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Sparkles } from 'lucide-react'
-import Home from './pages/Home'
+import Home from './pages/Homepage'
 import CableSizingCalculator from './components/CableSizingCalculator'
 import VoltageDropPage from './components/VoltageDropPage'
 import BSPThreadPage from './components/BSPThreadPage'
@@ -81,6 +81,7 @@ export default function App() {
     </Router>
   )
 }
+
 
 
 
