@@ -105,16 +105,16 @@ export default function Home() {
               </button>
             </a>
 
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+            <a href="/roofing-insurance" className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
               <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4">
                 <DollarSign className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Roofing Insurance Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">Calculate fair market value and fight for proper compensation</p>
-              <button disabled className="text-gray-400 font-semibold flex items-center gap-2">
-                Coming Soon <ArrowRight className="w-4 h-4" />
+              <button className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
+                Use Calculator <ArrowRight className="w-4 h-4" />
               </button>
-            </div>
+            </a>
           </div>
 
           <p className="text-center text-gray-600 mt-8">More calculators coming soon for carpenters, plasterers, bricklayers, and more trades</p>
