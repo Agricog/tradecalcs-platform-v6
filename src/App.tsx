@@ -7,10 +7,10 @@ import Tools from './pages/Tools';
 import Pricing from './pages/Pricing';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
-import CableCalculator from './components/CableCalculator';
-import VoltageDropCalculator from './components/VoltageDropCalculator';
-import BSPThreadFinder from './components/BSPThreadFinder';
-import RoofingCalculator from './components/RoofingCalculator';
+import CableSizingCalculator from "./components/CableSizingCalculator"
+import VoltageDropCalculator from "./components/VoltageDropCalculator"
+import BSPThreadFinder from "./components/BSPThreadFinder"
+import RoofingCalculator from "./components/RoofingCalculator"
 
 function App() {
   return (
