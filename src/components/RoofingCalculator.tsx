@@ -48,7 +48,7 @@ export default function RoofingCalculator() {
 
     const tiles = Math.ceil(totalArea / 0.06)
     const materialCost = tiles * tileCost
-    const labourCost = Math.ceil(totalArea * 115) // £115/m² labour
+    const labourCost = Math.ceil(totalArea * 115)
 
     setResult({
       roofType: roofName,
@@ -71,8 +71,8 @@ export default function RoofingCalculator() {
       <title>Roofing Insurance Calculator UK | Fair Market Value Estimator</title>
       <meta name="description" content="UK Roofing Insurance Calculator - Calculate fair market value for roof replacement claims. Professional pricing with waste factors." />
 
-      {/* GREEN HEADER BANNER */}
-      <div className="bg-gradient-to-r from-green-600 to-green-500 text-white py-12 px-4">
+      {/* DARK GREEN HEADER BANNER */}
+      <div className="bg-gradient-to-r from-green-700 to-green-600 text-white py-12 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <Home className="w-12 h-12 mx-auto mb-3" />
           <h1 className="text-4xl font-bold mb-2">Roofing Insurance Calculator UK</h1>
@@ -83,7 +83,7 @@ export default function RoofingCalculator() {
       <div className="max-w-5xl mx-auto px-4 py-8">
         {/* MAIN CALCULATOR FORM */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <div className="bg-green-600 text-white rounded-lg p-4 mb-6">
+          <div className="bg-green-700 text-white rounded-lg p-4 mb-6">
             <div className="flex items-center gap-2 mb-1">
               <Home className="w-5 h-5" />
               <h2 className="text-lg font-bold">UK Roofing Insurance Calculator</h2>
@@ -99,8 +99,8 @@ export default function RoofingCalculator() {
                 onClick={() => setRoofType('gable')}
                 className={`p-4 rounded-lg border-2 font-semibold text-sm transition ${
                   roofType === 'gable'
-                    ? 'bg-green-50 border-green-500 text-green-700'
-                    : 'border-gray-300 text-gray-700 hover:border-green-300'
+                    ? 'bg-green-100 border-green-700 text-green-900'
+                    : 'border-gray-300 text-gray-700 hover:border-green-600'
                 }`}
               >
                 <p>Gable Roof</p>
@@ -110,8 +110,8 @@ export default function RoofingCalculator() {
                 onClick={() => setRoofType('hip')}
                 className={`p-4 rounded-lg border-2 font-semibold text-sm transition ${
                   roofType === 'hip'
-                    ? 'bg-green-50 border-green-500 text-green-700'
-                    : 'border-gray-300 text-gray-700 hover:border-green-300'
+                    ? 'bg-green-100 border-green-700 text-green-900'
+                    : 'border-gray-300 text-gray-700 hover:border-green-600'
                 }`}
               >
                 <p>Hip Roof</p>
@@ -121,8 +121,8 @@ export default function RoofingCalculator() {
                 onClick={() => setRoofType('complex')}
                 className={`p-4 rounded-lg border-2 font-semibold text-sm transition ${
                   roofType === 'complex'
-                    ? 'bg-green-50 border-green-500 text-green-700'
-                    : 'border-gray-300 text-gray-700 hover:border-green-300'
+                    ? 'bg-green-100 border-green-700 text-green-900'
+                    : 'border-gray-300 text-gray-700 hover:border-green-600'
                 }`}
               >
                 <p>Complex Roof</p>
@@ -140,7 +140,7 @@ export default function RoofingCalculator() {
                 value={length}
                 onChange={e => setLength(e.target.value)}
                 placeholder="e.g., 10"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
               />
             </div>
             <div>
@@ -150,7 +150,7 @@ export default function RoofingCalculator() {
                 value={width}
                 onChange={e => setWidth(e.target.value)}
                 placeholder="e.g., 8"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
               />
             </div>
             <div>
@@ -158,7 +158,7 @@ export default function RoofingCalculator() {
               <select
                 value={pitch}
                 onChange={e => setPitch(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
               >
                 <option value="15">15°</option>
                 <option value="30">30°</option>
@@ -176,8 +176,8 @@ export default function RoofingCalculator() {
                 onClick={() => setTileType('concrete')}
                 className={`p-4 rounded-lg border-2 font-semibold text-sm transition ${
                   tileType === 'concrete'
-                    ? 'bg-green-50 border-green-500 text-green-700'
-                    : 'border-gray-300 text-gray-700 hover:border-green-300'
+                    ? 'bg-green-100 border-green-700 text-green-900'
+                    : 'border-gray-300 text-gray-700 hover:border-green-600'
                 }`}
               >
                 <p>Concrete</p>
@@ -187,8 +187,8 @@ export default function RoofingCalculator() {
                 onClick={() => setTileType('clay')}
                 className={`p-4 rounded-lg border-2 font-semibold text-sm transition ${
                   tileType === 'clay'
-                    ? 'bg-green-50 border-green-500 text-green-700'
-                    : 'border-gray-300 text-gray-700 hover:border-green-300'
+                    ? 'bg-green-100 border-green-700 text-green-900'
+                    : 'border-gray-300 text-gray-700 hover:border-green-600'
                 }`}
               >
                 <p>Clay</p>
@@ -198,8 +198,8 @@ export default function RoofingCalculator() {
                 onClick={() => setTileType('slate')}
                 className={`p-4 rounded-lg border-2 font-semibold text-sm transition ${
                   tileType === 'slate'
-                    ? 'bg-green-50 border-green-500 text-green-700'
-                    : 'border-gray-300 text-gray-700 hover:border-green-300'
+                    ? 'bg-green-100 border-green-700 text-green-900'
+                    : 'border-gray-300 text-gray-700 hover:border-green-600'
                 }`}
               >
                 <p>Slate</p>
@@ -216,7 +216,7 @@ export default function RoofingCalculator() {
               value={adjusterQuote}
               onChange={e => setAdjusterQuote(e.target.value)}
               placeholder="Enter adjuster's quote in £"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
             />
             <p className="text-xs text-gray-500 mt-1">We'll show you the price gap between fair market value and their lowball offer</p>
           </div>
@@ -224,34 +224,34 @@ export default function RoofingCalculator() {
           {/* CALCULATE BUTTON */}
           <button
             onClick={calculate}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-lg transition"
+            className="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-3 rounded-lg text-lg transition"
           >
             Calculate Fair Market Value
           </button>
 
           {/* RESULTS */}
           {result && (
-            <div className="mt-8 bg-green-50 border-2 border-green-300 rounded-lg p-6">
+            <div className="mt-8 bg-green-100 border-2 border-green-700 rounded-lg p-6">
               <div className="flex items-center gap-2 mb-4">
-                <CheckCircle2 className="w-6 h-6 text-green-600" />
+                <CheckCircle2 className="w-6 h-6 text-green-700" />
                 <h3 className="text-xl font-bold text-green-900">Calculation Complete</h3>
               </div>
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-white p-3 rounded border border-green-200">
+                <div className="bg-white p-3 rounded border border-green-300">
                   <p className="text-xs text-gray-600">Roof Type</p>
-                  <p className="font-bold text-green-700">{result.roofType}</p>
+                  <p className="font-bold text-green-800">{result.roofType}</p>
                 </div>
-                <div className="bg-white p-3 rounded border border-green-200">
+                <div className="bg-white p-3 rounded border border-green-300">
                   <p className="text-xs text-gray-600">Total Area</p>
-                  <p className="font-bold text-green-700">{result.totalArea}m²</p>
+                  <p className="font-bold text-green-800">{result.totalArea}m²</p>
                 </div>
-                <div className="bg-white p-3 rounded border border-green-200">
+                <div className="bg-white p-3 rounded border border-green-300">
                   <p className="text-xs text-gray-600">Tiles Needed</p>
-                  <p className="font-bold text-green-700">{result.tiles.toLocaleString()}</p>
+                  <p className="font-bold text-green-800">{result.tiles.toLocaleString()}</p>
                 </div>
-                <div className="bg-white p-3 rounded border border-green-200">
+                <div className="bg-white p-3 rounded border border-green-300">
                   <p className="text-xs text-gray-600">Material Cost</p>
-                  <p className="font-bold text-green-700">£{result.materialCost}</p>
+                  <p className="font-bold text-green-800">£{result.materialCost}</p>
                 </div>
               </div>
 
@@ -264,9 +264,9 @@ export default function RoofingCalculator() {
                   <p>Labour (Professional Rate)</p>
                   <p className="font-semibold">£{result.labourCost}</p>
                 </div>
-                <div className="flex justify-between bg-green-100 p-3 rounded font-bold text-lg">
+                <div className="flex justify-between bg-green-200 p-3 rounded font-bold text-lg border border-green-700">
                   <p>Fair Market Value</p>
-                  <p className="text-green-800">£{result.totalCost}</p>
+                  <p className="text-green-900">£{result.totalCost}</p>
                 </div>
 
                 {result.adjusterQuote && (
@@ -357,9 +357,9 @@ export default function RoofingCalculator() {
               <p className="text-gray-700 text-sm">Obtain 2–3 written quotes from professional roofing contractors to support your supplement claim.</p>
             </div>
           </div>
-          <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded mt-4">
-            <p className="font-bold text-green-800 mb-2">✓ Success Rate: 70–80% of Supplement Requests Approved</p>
-            <p className="text-sm text-green-700">When backed by detailed calculations, current pricing evidence, and professional estimates, 70–80% of supplement requests are approved by insurance companies. The key is providing irrefutable documentation of fair market value.</p>
+          <div className="bg-green-100 border-l-4 border-green-700 p-4 rounded mt-4">
+            <p className="font-bold text-green-900 mb-2">✓ Success Rate: 70–80% of Supplement Requests Approved</p>
+            <p className="text-sm text-green-800">When backed by detailed calculations, current pricing evidence, and professional estimates, 70–80% of supplement requests are approved by insurance companies. The key is providing irrefutable documentation of fair market value.</p>
           </div>
         </section>
 
@@ -422,10 +422,10 @@ export default function RoofingCalculator() {
         </section>
 
         {/* CTA FOOTER */}
-        <div className="bg-green-600 text-white rounded-lg p-8 text-center mb-8">
+        <div className="bg-green-700 text-white rounded-lg p-8 text-center mb-8">
           <h2 className="text-2xl font-bold mb-3">Professional Tools for UK Roofers</h2>
           <p className="mb-6">Explore our complete range of calculators and tools built specifically for construction trades.</p>
-          <a href="/tools" className="bg-white text-green-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
+          <a href="/tools" className="bg-white text-green-700 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
             View All Calculators
           </a>
         </div>
@@ -433,4 +433,5 @@ export default function RoofingCalculator() {
     </div>
   )
 }
+
 
