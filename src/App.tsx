@@ -7,7 +7,7 @@ export default function App() {
     <Router>
       <div className="flex flex-col min-h-screen">
         <a 
-          href="https://app.smartsuite.com/apps/d1da94c3d6524e5186bacc3dfdc9c4e1/sheets/f2c92f55-a68d-40c9-9c0a-18e68eb30199?view=Grid" 
+          href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" 
           target="_blank" 
           rel="noopener noreferrer"
           className="block bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 text-white py-3 px-4 hover:from-purple-700 hover:via-purple-600 hover:to-blue-700 transition-all duration-300"
@@ -43,7 +43,7 @@ export default function App() {
               <ul className="space-y-2 text-sm">
                 <li><a href="/" className="hover:text-white">Home</a></li>
                 <li><a href="/#custom" className="hover:text-white">Custom Tools</a></li>
-                <li><a href="https://app.smartsuite.com/apps/d1da94c3d6524e5186bacc3dfdc9c4e1/sheets/f2c92f55-a68d-40c9-9c0a-18e68eb30199?view=Grid" target="_blank" rel="noopener noreferrer" className="hover:text-white">Contact Us</a></li>
+                <li><a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="hover:text-white">Contact Us</a></li>
               </ul>
             </div>
 
@@ -75,6 +75,7 @@ export default function App() {
     </Router>
   )
 }
+
 
 
 
