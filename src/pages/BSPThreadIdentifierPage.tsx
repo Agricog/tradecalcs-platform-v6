@@ -1,5 +1,6 @@
-import BSPThreadIdentifier from '../components/BSPThreadIdentifier'
+import BSPThreadFinder from '../components/BSPThreadFinder'
 
 export default function BSPThreadIdentifierPage() {
-  return <BSPThreadIdentifier />
+  return <BSPThreadFinder />
 }
+
