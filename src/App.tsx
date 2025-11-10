@@ -1,5 +1,5 @@
 import { Sparkles } from 'lucide-react'
-import Home from './pages/Homepage'
+import Home from './pages/Home'
 
 export default function App() {
   return (
