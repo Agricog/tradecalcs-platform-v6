@@ -1,16 +1,16 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import VIPBanner from './components/VIPBanner';
-import Navigation from './components/Navigation';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import Tools from './pages/Tools';
-import Pricing from './pages/Pricing';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsOfService from './pages/TermsOfService';
-import CableSizingCalculator from "./components/CableSizingCalculator"
-import VoltageDropCalculator from "./components/VoltageDropCalculator"
-import BSPThreadFinder from "./components/BSPThreadFinder"
-import RoofingCalculator from "./components/RoofingCalculator"
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Navigation from './components/Navigation'
+import Footer from './components/Footer'
+import VIPBanner from './components/VIPBanner'
+import Home from './pages/Home'
+import Tools from './pages/Tools'
+import Pricing from './pages/Pricing'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsOfService from './pages/TermsOfService'
+import CableCalculator from './components/CableCalculator'
+import VoltageDropCalculator from './components/VoltageDropCalculator'
+import BSPThreadFinder from './components/BSPThreadFinder'
+import RoofingCalculator from './components/RoofingCalculator'
 
 function App() {
   return (
@@ -34,7 +34,8 @@ function App() {
         <Footer />
       </div>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App
+
