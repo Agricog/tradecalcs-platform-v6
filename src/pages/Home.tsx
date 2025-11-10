@@ -1,6 +1,57 @@
-import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react'
+import { useState } from 'react'
+import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, X } from 'lucide-react'
+import CableSizingCalculator from '../components/CableSizingCalculator'
+import VoltageDropPage from '../components/VoltageDropPage'
+import BSPThreadIdentifier from '../components/BSPThreadIdentifier'
+import RoofingPage from '../pages/RoofingPage'
 
 export default function Homepage() {
+  const [activeCalculator, setActiveCalculator] = useState(null)
+
+  if (activeCalculator === 'cable') {
+    return (
+      <div>
+        <button onClick={() => setActiveCalculator(null)} className="fixed top-20 right-4 z-50 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg">
+          <X className="w-6 h-6" />
+        </button>
+        <CableSizingCalculator />
+      </div>
+    )
+  }
+
+  if (activeCalculator === 'voltage') {
+    return (
+      <div>
+        <button onClick={() => setActiveCalculator(null)} className="fixed top-20 right-4 z-50 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg">
+          <X className="w-6 h-6" />
+        </button>
+        <VoltageDropPage />
+      </div>
+    )
+  }
+
+  if (activeCalculator === 'bsp') {
+    return (
+      <div>
+        <button onClick={() => setActiveCalculator(null)} className="fixed top-20 right-4 z-50 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg">
+          <X className="w-6 h-6" />
+        </button>
+        <BSPThreadIdentifier />
+      </div>
+    )
+  }
+
+  if (activeCalculator === 'roofing') {
+    return (
+      <div>
+        <button onClick={() => setActiveCalculator(null)} className="fixed top-20 right-4 z-50 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg">
+          <X className="w-6 h-6" />
+        </button>
+        <RoofingPage />
+      </div>
+    )
+  }
+
   return (
     <>
       {/* HERO BANNER */}
@@ -13,9 +64,9 @@ export default function Homepage() {
             reduce errors, and work with confidence.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <a href="/tools" className="bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 flex items-center gap-2">
+            <button onClick={() => document.getElementById('calculators').scrollIntoView({ behavior: 'smooth' })} className="bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 flex items-center gap-2">
               View Free Tools <ArrowRight className="w-5 h-5" />
-            </a>
+            </button>
             <a href="#custom" className="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-purple-600">
               Request Custom Tool
             </a>
@@ -30,7 +81,6 @@ export default function Homepage() {
           <p className="text-center text-gray-600 mb-12">Built by tradespeople who understand your daily challenges</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Card 1 */}
             <div className="bg-gradient-to-br from-purple-100 to-blue-100 p-6 rounded-lg">
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center text-white mb-4">
                 <Zap className="w-6 h-6" />
@@ -39,7 +89,6 @@ export default function Homepage() {
               <p className="text-sm text-gray-700">Get instant results with our optimized calculations. No waiting, no complex forms.</p>
             </div>
 
-            {/* Card 2 */}
             <div className="bg-gradient-to-br from-purple-100 to-blue-100 p-6 rounded-lg">
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center text-white mb-4">
                 <Shield className="w-6 h-6" />
@@ -48,7 +97,6 @@ export default function Homepage() {
               <p className="text-sm text-gray-700">All electrical calculations follow current British Standards for peace of mind.</p>
             </div>
 
-            {/* Card 3 */}
             <div className="bg-gradient-to-br from-purple-100 to-blue-100 p-6 rounded-lg">
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center text-white mb-4">
                 <Smartphone className="w-6 h-6" />
@@ -57,7 +105,6 @@ export default function Homepage() {
               <p className="text-sm text-gray-700">Use on any device - phone, tablet, or desktop. Calculate on-site or in the office.</p>
             </div>
 
-            {/* Card 4 */}
             <div className="bg-gradient-to-br from-purple-100 to-blue-100 p-6 rounded-lg">
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center text-white mb-4">
                 <DollarSign className="w-6 h-6" />
@@ -70,7 +117,7 @@ export default function Homepage() {
       </section>
 
       {/* FREE CALCULATORS */}
-      <section className="py-16 px-4">
+      <section id="calculators" className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-2">Free Professional Calculators</h2>
           <p className="text-center text-gray-600 mb-12">Choose your calculator and start working smarter</p>
@@ -83,9 +130,9 @@ export default function Homepage() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Cable Sizing Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">BS 7671 compliant electrical cable sizing with all derating factors</p>
-              <a href="/tools/cable-calculator" className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
+              <button onClick={() => setActiveCalculator('cable')} className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
                 Use Calculator <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
 
             {/* Voltage Drop */}
@@ -95,9 +142,9 @@ export default function Homepage() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Voltage Drop Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">Calculate voltage drop for any circuit length and load</p>
-              <a href="/tools/voltage-drop" className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
+              <button onClick={() => setActiveCalculator('voltage')} className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
                 Use Calculator <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
 
             {/* BSP Thread */}
@@ -107,9 +154,9 @@ export default function Homepage() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">BSP Thread Identifier</h3>
               <p className="text-gray-600 text-sm mb-4">Identify British Standard Pipe threads by diameter or TPI</p>
-              <a href="/tools/bsp-thread" className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
+              <button onClick={() => setActiveCalculator('bsp')} className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
                 Use Calculator <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
 
             {/* Roofing */}
@@ -119,9 +166,9 @@ export default function Homepage() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Roofing Insurance Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">Calculate fair market value and fight for proper compensation</p>
-              <a href="/tools/roofing" className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
+              <button onClick={() => setActiveCalculator('roofing')} className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition cursor-pointer">
                 Use Calculator <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
           </div>
 
@@ -175,9 +222,9 @@ export default function Homepage() {
             <div className="bg-gradient-to-br from-purple-600 to-blue-600 text-white rounded-lg p-8">
               <h3 className="text-2xl font-bold mb-3">Ready to Work Smarter?</h3>
               <p className="mb-6 opacity-95">Join professional tradespeople who are already saving time and reducing errors with TradeCalcs.</p>
-              <a href="/tools" className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 inline-flex items-center gap-2">
+              <button onClick={() => document.getElementById('calculators').scrollIntoView({ behavior: 'smooth' })} className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 inline-flex items-center gap-2">
                 Start Using Tools <ArrowRight className="w-5 h-5" />
-              </a>
+              </button>
               <p className="text-sm opacity-75 mt-4">No signup required • Instant access • Always free</p>
             </div>
           </div>
@@ -193,7 +240,6 @@ export default function Homepage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {/* Bespoke Apps */}
             <div className="bg-white border-2 border-purple-200 rounded-lg p-6">
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mb-4 text-xl">
                 ⚙️
@@ -205,7 +251,6 @@ export default function Homepage() {
               <p className="text-purple-600 font-semibold text-sm">£2,000 - £15,000+</p>
             </div>
 
-            {/* White-Label */}
             <div className="bg-white border-2 border-purple-200 rounded-lg p-6">
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mb-4 text-xl">
                 🏢
@@ -217,7 +262,6 @@ export default function Homepage() {
               <p className="text-purple-600 font-semibold text-sm">From £99/month</p>
             </div>
 
-            {/* Integration */}
             <div className="bg-white border-2 border-purple-200 rounded-lg p-6">
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mb-4 text-xl">
                 🔗
@@ -244,6 +288,7 @@ export default function Homepage() {
     </>
   )
 }
+
 
 
 
