@@ -8,7 +8,7 @@ export default function PlastererCalculatorsPage() {
   const [coverage, setCoverage] = useState('1.5')
   const [wasteFactor, setWasteFactor] = useState('10')
   const [result, setResult] = useState<any>(null)
-  const [showCalculator, setShowCalculator] = useState(false)
+  const [showCalculator, setShowCalculator] = useState(true)
 
   const calculate = () => {
     const area = (parseFloat(length) || 0) * (parseFloat(width) || 0)
@@ -31,16 +31,13 @@ export default function PlastererCalculatorsPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-2xl mx-auto px-4 py-12">
-          <button 
-            onClick={() => {
-              setShowCalculator(false)
-              setResult(null)
-            }}
+          <a 
+            href="/"
             className="flex items-center gap-2 text-amber-600 hover:text-amber-700 mb-8"
           >
             <ArrowLeft className="w-5 h-5" />
-            Back to Page
-          </button>
+            Back to Home
+          </a>
 
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="bg-gradient-to-r from-amber-500 to-orange-500 p-6">
