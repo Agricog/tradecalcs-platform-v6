@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Zap, Wrench, Home, Calculator, Flame, Ruler, Hammer, PaintBucket, Droplet, Trees } from 'lucide-react'
+import { Zap, Wrench, Home, Calculator, Hammer, PaintBucket } from 'lucide-react'
 
 export default function Homepage() {
   // Define all calculators - easy to add more
