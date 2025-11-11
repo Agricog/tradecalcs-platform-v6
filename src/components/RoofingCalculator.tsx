@@ -48,7 +48,7 @@ export default function RoofingCalculator() {
 
     const tiles = Math.ceil(totalArea / 0.06)
     const materialCost = tiles * tileCost
-    const labourCost = Math.ceil(totalArea * 115)
+    const labourCost = totalArea * 45
 
     setResult({
       roofType: roofName,
@@ -300,7 +300,7 @@ export default function RoofingCalculator() {
               <ul className="space-y-2 text-sm text-blue-900">
                 <li>• Pricing based on Q4 2025 UK market rates (validated)</li>
                 <li>• Waste factors follow UK roofing industry best practices</li>
-                <li>• Labour rates: £115/m² (current UK professional rate)</li>
+                <li>• Labour rates: £45/m² (current UK professional rate)</li>
                 <li>• Use this data to challenge lowball insurance adjuster quotes</li>
                 <li>• Typically recover £2,000-£5,000 per insurance job</li>
               </ul>
