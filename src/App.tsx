@@ -26,16 +26,18 @@ export default function App() {
           </div>
         </a>
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/cable-calculator" element={<CableSizingCalculatorPage />} />
-          <Route path="/voltage-drop" element={<VoltageDropCalculatorPage />} />
-          <Route path="/bsp-thread" element={<BSPThreadIdentifierPage />} />
-          <Route path="/roofing-insurance" element={<RoofingCalculatorPage />} />
-          <Route path="/concrete-calculator" element={<ConcreteToBagsPage />} />
-        </Routes>
+        <div className="flex-1">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cable-calculator" element={<CableSizingCalculatorPage />} />
+            <Route path="/voltage-drop" element={<VoltageDropCalculatorPage />} />
+            <Route path="/bsp-thread" element={<BSPThreadIdentifierPage />} />
+            <Route path="/roofing-insurance" element={<RoofingCalculatorPage />} />
+            <Route path="/concrete-calculator" element={<ConcreteToBagsPage />} />
+          </Routes>
+        </div>
 
-        <footer className="bg-gray-900 text-gray-300 py-12 px-4 mt-auto">
+        <footer className="bg-gray-900 text-gray-300 py-12 px-4">
           <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
@@ -85,6 +87,7 @@ export default function App() {
     </Router>
   )
 }
+
 
 
 
