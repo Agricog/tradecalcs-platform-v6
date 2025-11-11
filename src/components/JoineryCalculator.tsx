@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Hammer, AlertCircle, CheckCircle2, Info } from 'lucide-react'
+import { Hammer, CheckCircle2, Info } from 'lucide-react'
 
 export default function JoineryCalculator() {
   const [projectType, setProjectType] = useState('built-in')
