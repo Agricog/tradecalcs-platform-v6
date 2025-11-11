@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import { Zap, Wrench, Home, Calculator, Hammer, PaintBucket } from 'lucide-react'
+import { Zap, Wrench, Home, Calculator, Flame, Ruler, Hammer, PaintBucket, Droplet, Trees } from 'lucide-react'
 
-export default function HomePage() {
+export default function Homepage() {
   // Define all calculators - easy to add more
   const calculators = [
     {
@@ -9,10 +9,9 @@ export default function HomePage() {
       name: 'Cable Sizing Calculator',
       description: 'BS 7671 compliant cable sizing with voltage drop analysis',
       icon: <Zap className="w-12 h-12" />,
-      path: '/cable-calculator',
+      path: '/cable-sizing-calculator',
       status: 'live',
       gradient: 'from-blue-500 to-indigo-600',
-      tradeFor: 'For Electricians',
       features: ['Cable sizing', 'Voltage drop', 'Load calculations']
     },
     {
@@ -20,10 +19,9 @@ export default function HomePage() {
       name: 'Voltage Drop Calculator',
       description: 'Verify BS 7671 Regulation 525 compliance instantly',
       icon: <Zap className="w-12 h-12" />,
-      path: '/voltage-drop',
+      path: '/voltage-drop-calculator',
       status: 'live',
       gradient: 'from-cyan-500 to-blue-600',
-      tradeFor: 'For Electricians',
       features: ['Voltage drop', 'Pass/fail indicators', 'BS 7671 compliant']
     },
     {
@@ -31,10 +29,9 @@ export default function HomePage() {
       name: 'BSP Thread Identifier',
       description: 'Identify British Standard Pipe threads instantly',
       icon: <Wrench className="w-12 h-12" />,
-      path: '/bsp-thread',
+      path: '/bsp-thread-identifier',
       status: 'live',
       gradient: 'from-orange-500 to-red-600',
-      tradeFor: 'For Plumbers',
       features: ['BSP threads', 'Diameter lookup', 'Quick identification']
     },
     {
@@ -42,10 +39,9 @@ export default function HomePage() {
       name: 'Roofing Insurance Calculator',
       description: 'Calculate fair market value for insurance roof replacement claims',
       icon: <Home className="w-12 h-12" />,
-      path: '/roofing-insurance',
+      path: '/roofing-calculator',
       status: 'live',
       gradient: 'from-green-600 to-green-700',
-      tradeFor: 'For Roofers',
       features: ['Roof pricing', 'Insurance claims', 'Material costs']
     },
     {
@@ -56,29 +52,16 @@ export default function HomePage() {
       path: '/plasterer-calculators',
       status: 'live',
       gradient: 'from-amber-500 to-orange-500',
-      tradeFor: 'For Plasterers',
       features: ['Plaster coverage', 'Material costs', 'Labour rates']
     },
     {
       id: 6,
-      name: 'Concrete Calculator',
-      description: 'Calculate concrete bags needed for any project',
-      icon: <Calculator className="w-12 h-12" />,
-      path: '/concrete-calculator',
-      status: 'live',
-      gradient: 'from-gray-600 to-gray-700',
-      tradeFor: 'For Builders',
-      features: ['Concrete mixing', 'Bag calculations', 'Quick estimates']
-    },
-    {
-      id: 7,
       name: 'Joinery Material & Labour Calculator',
       description: 'Calculate wood costs, waste factors & labour hours for joinery projects',
       icon: <Hammer className="w-12 h-12" />,
       path: '/joinery-calculator',
       status: 'live',
       gradient: 'from-amber-600 to-orange-600',
-      tradeFor: 'For Joiners',
       features: ['Wood pricing', 'Labour estimates', 'Waste factors']
     }
   ]
@@ -108,7 +91,7 @@ export default function HomePage() {
             <p className="text-gray-600">Calculations Monthly</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <div className="text-3xl font-bold text-purple-600 mb-2">7</div>
+            <div className="text-3xl font-bold text-purple-600 mb-2">6</div>
             <p className="text-gray-600">Professional Tools</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
@@ -138,7 +121,6 @@ export default function HomePage() {
                   </div>
                   <h3 className="text-xl font-bold mb-2">{calc.name}</h3>
                   <p className="text-sm opacity-90">{calc.description}</p>
-                  <p className="text-xs opacity-75 mt-2 font-semibold">{calc.tradeFor}</p>
                 </div>
 
                 <div className="p-6">
@@ -204,7 +186,7 @@ export default function HomePage() {
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link
-              to="/cable-calculator"
+              to="/cable-sizing-calculator"
               className="bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
             >
               Try Cable Sizing
