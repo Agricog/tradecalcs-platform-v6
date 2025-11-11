@@ -1,4 +1,4 @@
-import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Brick } from 'lucide-react'
+import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -174,8 +174,9 @@ export default function Home() {
               <div className="p-6">
                 <div className="text-xs font-bold text-red-600 mb-3 uppercase tracking-wider">For Bricklayers</div>
                 <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center text-white mb-4">
-                  <Brick className="w-6 h-6" />
+                 <Home className="w-6 h-6" />
                 </div>
+
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Brick & Block Calculator</h3>
                 <p className="text-gray-600 text-sm mb-4">Calculate bricks, concrete blocks, mortar & cement needed</p>
                 <button className="text-red-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
