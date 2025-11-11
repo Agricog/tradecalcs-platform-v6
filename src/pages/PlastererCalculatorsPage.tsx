@@ -8,7 +8,7 @@ export default function PlastererCalculatorsPage() {
   const [coverage, setCoverage] = useState('1.5')
   const [wasteFactor, setWasteFactor] = useState('10')
   const [result, setResult] = useState<any>(null)
-  const [showCalculator, setShowCalculator] = useState(true)
+  const [showCalculator, setShowCalculator] = useState(false)
 
   const calculate = () => {
     const area = (parseFloat(length) || 0) * (parseFloat(width) || 0)
@@ -308,6 +308,7 @@ export default function PlastererCalculatorsPage() {
     </>
   )
 }
+
 
 
 
