@@ -6,7 +6,7 @@ export default function BrickBlockCalculatorPage() {
     <>
       <SEO
         title="Brick & Block Calculator | UK Bricklayer Material Calculator"
-        description="Calculate bricks, concrete blocks (4\" & 6\"), mortar & cement needed for walls. Free UK calculator for bricklayers with mortar mix ratios."
+        description="Calculate bricks, concrete blocks (4 inch & 6 inch), mortar and cement needed for walls. Free UK calculator for bricklayers with mortar mix ratios."
         keywords="brick calculator, block calculator, concrete block, mortar calculator, bricklayer tools, UK construction"
         url="https://tradecalcs.co.uk/brick-block-calculator"
       />
@@ -14,4 +14,5 @@ export default function BrickBlockCalculatorPage() {
     </>
   )
 }
+
 
