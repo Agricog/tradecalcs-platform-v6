@@ -7,6 +7,7 @@ import BSPThreadIdentifierPage from './pages/BSPThreadIdentifierPage'
 import RoofingCalculatorPage from './pages/RoofingCalculatorPage'
 import ConcreteToBagsPage from './pages/ConcreteToBagsPage'
 import PlastererCalculatorsPage from './pages/PlastererCalculatorsPage'
+import JoineryCalculatorPage from './pages/JoineryCalculatorPage'
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
             <Route path="/roofing-insurance" element={<RoofingCalculatorPage />} />
             <Route path="/concrete-calculator" element={<ConcreteToBagsPage />} />
             <Route path="/plasterer-calculators" element={<PlastererCalculatorsPage />} />
+            <Route path="/joinery-calculator" element={<JoineryCalculatorPage />} />
           </Routes>
         </div>
 
@@ -89,6 +91,7 @@ export default function App() {
     </Router>
   )
 }
+
 
 
 
