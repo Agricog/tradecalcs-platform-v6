@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Home, Info, CheckCircle2 } from 'lucide-react'
+import { HomeIcon, Info, CheckCircle2 } from 'lucide-react'
 
 export default function BrickBlockCalculator() {
   const [materialType, setMaterialType] = useState<'brick' | 'block4' | 'block6'>('brick')
@@ -16,35 +16,33 @@ export default function BrickBlockCalculator() {
     const heightM = parseFloat(height)
     const wallArea = lengthM * heightM
 
-    let bricksPerM2 = 60 // Standard UK brick with 10mm joints
+    let bricksPerM2 = 60
     let materialName = 'Bricks'
-    let mortarPerItem = 0.004 // m³ mortar per brick
+    let mortarPerItem = 0.004
 
     if (materialType === 'block4') {
       bricksPerM2 = 10.76
       materialName = '4" Concrete Blocks'
-      mortarPerItem = 0.0105 // m³ per block
+      mortarPerItem = 0.0105
     } else if (materialType === 'block6') {
       bricksPerM2 = 10.76
       materialName = '6" Concrete Blocks'
-      mortarPerItem = 0.0105 // m³ per block
+      mortarPerItem = 0.0105
     }
 
     const itemsNeeded = Math.ceil(wallArea * bricksPerM2 * (1 + wasteFactor / 100))
     const mortarVolume = itemsNeeded * mortarPerItem
 
-    // Mortar mix calculations
     let mortarRatioArray = mortarRatio.split(':').map(Number)
     let totalParts = mortarRatioArray[0] + mortarRatioArray[1]
 
-    // Assuming 1 m³ mortar contains ~1500kg dry materials
     const totalMortarMass = mortarVolume * 1500
     const cementMass = (mortarRatioArray[0] / totalParts) * totalMortarMass
     const sandMass = (mortarRatioArray[1] / totalParts) * totalMortarMass
 
-    const cementBags = Math.ceil(cementMass / 25) // 25kg bags
+    const cementBags = Math.ceil(cementMass / 25)
     const sandTonnes = sandMass / 1000
-    const waterLitres = mortarVolume * 300 // Approximate water needed
+    const waterLitres = mortarVolume * 300
 
     setResults({
       materialName,
@@ -64,7 +62,7 @@ export default function BrickBlockCalculator() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white">
-              <Home className="w-6 h-6" />
+              <HomeIcon className="w-6 h-6" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900">Brick & Block Calculator</h1>
           </div>
@@ -208,4 +206,5 @@ export default function BrickBlockCalculator() {
     </div>
   )
 }
+
 
