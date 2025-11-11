@@ -1,4 +1,4 @@
-import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Home } from 'lucide-react'
+import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Home as HomeIcon } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -80,7 +80,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Cable Sizing Calculator</h3>
                 <p className="text-gray-600 text-sm mb-4">BS 7671 compliant electrical cable sizing with all derating factors</p>
-                <div className="text-purple-600 font-semibold flex items-center gap-2">
+                <div className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                   Use Calculator <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -94,7 +94,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Voltage Drop Calculator</h3>
                 <p className="text-gray-600 text-sm mb-4">Verify BS 7671 Regulation 525 compliance for electrical circuits</p>
-                <div className="text-purple-600 font-semibold flex items-center gap-2">
+                <div className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                   Use Calculator <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -108,7 +108,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">BSP Thread Identifier</h3>
                 <p className="text-gray-600 text-sm mb-4">Identify British Standard Pipe threads by diameter or TPI</p>
-                <div className="text-purple-600 font-semibold flex items-center gap-2">
+                <div className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                   Use Calculator <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -122,7 +122,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Roofing Insurance Calculator</h3>
                 <p className="text-gray-600 text-sm mb-4">Calculate fair market value and fight for proper compensation</p>
-                <div className="text-green-600 font-semibold flex items-center gap-2">
+                <div className="text-green-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                   Use Calculator <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -136,7 +136,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Concrete-to-Bags Calculator</h3>
                 <p className="text-gray-600 text-sm mb-4">Calculate exact cement and ballast bags to buy from any UK merchant</p>
-                <div className="text-green-600 font-semibold flex items-center gap-2">
+                <div className="text-green-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                   Use Calculator <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -150,7 +150,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Plasterer Calculators</h3>
                 <p className="text-gray-600 text-sm mb-4">Coverage, drying times, quotes & cost calculators for plasterers</p>
-                <div className="text-amber-600 font-semibold flex items-center gap-2">
+                <div className="text-amber-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                   View Tools <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -164,7 +164,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Joinery Material & Labour Calculator</h3>
                 <p className="text-gray-600 text-sm mb-4">Calculate wood costs, waste factors & labour hours for projects</p>
-                <div className="text-amber-700 font-semibold flex items-center gap-2">
+                <div className="text-amber-700 font-semibold flex items-center gap-2 hover:gap-3 transition">
                   Use Calculator <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -174,11 +174,11 @@ export default function Home() {
               <div className="p-6">
                 <div className="text-xs font-bold text-red-600 mb-3 uppercase tracking-wider">For Bricklayers</div>
                 <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center text-white mb-4">
-                  <Home className="w-6 h-6" />
+                  <HomeIcon className="w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Brick & Block Calculator</h3>
                 <p className="text-gray-600 text-sm mb-4">Calculate bricks, concrete blocks, mortar & cement needed</p>
-                <div className="text-red-600 font-semibold flex items-center gap-2">
+                <div className="text-red-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                   Use Calculator <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -300,6 +300,7 @@ export default function Home() {
     </>
   )
 }
+
 
 
 
