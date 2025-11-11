@@ -2,7 +2,6 @@ import { Palette, Calculator, AlertCircle, TrendingUp, Clock, Award } from 'luci
 import { useState } from 'react'
 
 export default function PlastererCalculatorsPage() {
-  const [activeTab, setActiveTab] = useState('coverage')
 
   return (
     <>
