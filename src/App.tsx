@@ -10,6 +10,7 @@ import PlastererCalculatorsPage from './pages/PlastererCalculatorsPage'
 import JoineryCalculatorPage from './pages/JoineryCalculatorPage'
 import BrickBlockCalculatorPage from './pages/BrickBlockCalculatorPage'
 import TilerCalculatorPage from './pages/TilerCalculatorPage'
+import PainterCalculatorPage from './pages/PainterCalculatorPage'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import CookiePolicy from './pages/CookiePolicy'
@@ -22,7 +23,7 @@ export default function App() {
           href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="block bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 text-white py-3 px-4 hover:from-purple-700 hover:via-purple-600 hover:to-blue-700 transition-all duration-300"
+          className="block bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 text-white py-3 px-4 hover:from-purple-700 hover:via-blue-700 hover:to-purple-700 transition-all duration-300"
         >
           <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-center">
             <Sparkles className="w-4 h-4 flex-shrink-0 animate-spin" />
@@ -45,6 +46,7 @@ export default function App() {
             <Route path="/joinery-calculator" element={<JoineryCalculatorPage />} />
             <Route path="/brick-block-calculator" element={<BrickBlockCalculatorPage />} />
             <Route path="/tiler-calculator" element={<TilerCalculatorPage />} />
+            <Route path="/painter-calculator" element={<PainterCalculatorPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
@@ -108,6 +110,7 @@ export default function App() {
     </Router>
   )
 }
+
 
 
 
