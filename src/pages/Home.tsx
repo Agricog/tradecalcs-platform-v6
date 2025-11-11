@@ -1,4 +1,4 @@
-import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, Package, Palette } from 'lucide-react'
+import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -152,6 +152,20 @@ export default function Home() {
                 <p className="text-gray-600 text-sm mb-4">Coverage, drying times, quotes & cost calculators for plasterers</p>
                 <button className="text-amber-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
                   View Tools <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </a>
+
+            <a href="/joinery-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+              <div className="p-6">
+                <div className="text-xs font-bold text-amber-700 mb-3 uppercase tracking-wider">For Joiners</div>
+                <div className="w-12 h-12 bg-amber-600 rounded-lg flex items-center justify-center text-white mb-4">
+                  <Hammer className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Joinery Material & Labour Calculator</h3>
+                <p className="text-gray-600 text-sm mb-4">Calculate wood costs, waste factors & labour hours for projects</p>
+                <button className="text-amber-700 font-semibold flex items-center gap-2 hover:gap-3 transition">
+                  Use Calculator <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </a>
