@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Home as HomeIcon, Info, CheckCircle2 } from 'lucide-react'
+import { Info, CheckCircle2 } from 'lucide-react'
 
 export default function BrickBlockCalculator() {
   const [materialType, setMaterialType] = useState<'brick' | 'block4' | 'block6'>('brick')
