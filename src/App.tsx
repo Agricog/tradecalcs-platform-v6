@@ -5,6 +5,7 @@ import CableSizingCalculatorPage from './pages/CableSizingCalculatorPage'
 import VoltageDropCalculatorPage from './pages/VoltageDropCalculatorPage'
 import BSPThreadIdentifierPage from './pages/BSPThreadIdentifierPage'
 import RoofingCalculatorPage from './pages/RoofingCalculatorPage'
+import ConcreteToBagsPage from './pages/ConcreteToBagsPage'
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/voltage-drop" element={<VoltageDropCalculatorPage />} />
           <Route path="/bsp-thread" element={<BSPThreadIdentifierPage />} />
           <Route path="/roofing-insurance" element={<RoofingCalculatorPage />} />
+          <Route path="/concrete-calculator" element={<ConcreteToBagsPage />} />
         </Routes>
 
         <footer className="bg-gray-900 text-gray-300 py-12 px-4 mt-auto">
