@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { HomeIcon, Info, CheckCircle2 } from 'lucide-react'
+import { Home as HomeIcon, Info, CheckCircle2 } from 'lucide-react'
 
 export default function BrickBlockCalculator() {
   const [materialType, setMaterialType] = useState<'brick' | 'block4' | 'block6'>('brick')
@@ -58,15 +58,28 @@ export default function BrickBlockCalculator() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 p-6">
       <div className="max-w-2xl mx-auto">
-        {/* HEADER */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white">
-              <HomeIcon className="w-6 h-6" />
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900">Brick & Block Calculator</h1>
+        {/* SEO HEADER SECTION */}
+        <div className="mb-12 text-center">
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">
+            Brick & Block Calculator
+          </h1>
+          <p className="text-lg text-gray-700 mb-4">
+            Calculate exact quantities of bricks, concrete blocks, mortar and cement needed for your brickwork project
+          </p>
+          <p className="text-gray-600 mb-6">
+            Free online calculator for UK bricklayers - estimate materials with mortar mix ratios and waste factors
+          </p>
+          
+          <div className="bg-blue-50 border-l-4 border-blue-500 p-4 text-left max-w-md mx-auto rounded">
+            <h2 className="font-bold text-gray-900 mb-2">What This Calculator Does:</h2>
+            <ul className="text-sm text-gray-700 space-y-1">
+              <li>✓ Calculates number of bricks or blocks needed</li>
+              <li>✓ Estimates mortar volume and cement bags</li>
+              <li>✓ Accounts for mortar mix ratios (1:4, 1:5, 1:6)</li>
+              <li>✓ Includes waste factor (5-15%)</li>
+              <li>✓ Works for standard bricks and concrete blocks</li>
+            </ul>
           </div>
-          <p className="text-gray-600">Calculate materials needed for brickwork or blockwork</p>
         </div>
 
         {/* INPUT SECTION */}
@@ -81,8 +94,8 @@ export default function BrickBlockCalculator() {
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-600 focus:outline-none font-semibold"
               >
                 <option value="brick">Standard UK Brick (215×102.5×65mm)</option>
-                <option value="block4">4" Concrete Block (440×215×100mm)</option>
-                <option value="block6">6" Concrete Block (440×215×140mm)</option>
+                <option value="block4">4 inch Concrete Block (440×215×100mm)</option>
+                <option value="block6">6 inch Concrete Block (440×215×140mm)</option>
               </select>
             </div>
 
@@ -202,9 +215,29 @@ export default function BrickBlockCalculator() {
             </p>
           </div>
         )}
+
+        {/* FAQ SECTION */}
+        <div className="mt-12 bg-gray-50 rounded-lg p-6">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Frequently Asked Questions</h3>
+          <div className="space-y-3 text-sm text-gray-700">
+            <div>
+              <p className="font-bold text-gray-900">What mortar ratio should I use?</p>
+              <p>1:5 is standard for general brickwork. Use 1:4 for structural walls and 1:6 for non-load bearing.</p>
+            </div>
+            <div>
+              <p className="font-bold text-gray-900">What waste factor should I add?</p>
+              <p>5-10% is typical. Add more if working with a new team or difficult layouts.</p>
+            </div>
+            <div>
+              <p className="font-bold text-gray-900">How accurate is this calculator?</p>
+              <p>Very accurate for standard UK bricks and blocks. Always verify with site measurements before ordering.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
+
 
 
