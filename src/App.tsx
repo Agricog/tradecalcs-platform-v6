@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { Sparkles } from 'lucide-react'
+import { Sparkles, Mail } from 'lucide-react'
 import Home from './pages/Home'
 import CableSizingCalculatorPage from './pages/CableSizingCalculatorPage'
 import VoltageDropCalculatorPage from './pages/VoltageDropCalculatorPage'
@@ -9,6 +9,9 @@ import ConcreteToBagsPage from './pages/ConcreteToBagsPage'
 import PlastererCalculatorsPage from './pages/PlastererCalculatorsPage'
 import JoineryCalculatorPage from './pages/JoineryCalculatorPage'
 import BrickBlockCalculatorPage from './pages/BrickBlockCalculatorPage'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsOfService from './pages/TermsOfService'
+import CookiePolicy from './pages/CookiePolicy'
 
 export default function App() {
   return (
@@ -40,6 +43,9 @@ export default function App() {
             <Route path="/plasterer-calculators" element={<PlastererCalculatorsPage />} />
             <Route path="/joinery-calculator" element={<JoineryCalculatorPage />} />
             <Route path="/brick-block-calculator" element={<BrickBlockCalculatorPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="*" element={<Home />} />
           </Routes>
         </div>
@@ -55,6 +61,12 @@ export default function App() {
               </div>
               <p className="text-sm">Professional calculators and tools for UK tradespeople. Built by traders, for traders.</p>
               <p className="text-xs mt-4">© 2025 TradeCalcs. All rights reserved.</p>
+              <div className="flex items-center gap-2 mt-4">
+                <Mail className="w-4 h-4" />
+                <a href="mailto:mick@tradecalcs.co.uk" className="text-sm hover:text-white">
+                  mick@tradecalcs.co.uk
+                </a>
+              </div>
             </div>
 
             <div>
@@ -78,9 +90,9 @@ export default function App() {
             <div>
               <h4 className="font-bold text-white mb-4">Legal</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-white">Cookie Policy</a></li>
+                <li><a href="/privacy-policy" className="hover:text-white">Privacy Policy</a></li>
+                <li><a href="/terms-of-service" className="hover:text-white">Terms of Service</a></li>
+                <li><a href="/cookie-policy" className="hover:text-white">Cookie Policy</a></li>
               </ul>
             </div>
           </div>
