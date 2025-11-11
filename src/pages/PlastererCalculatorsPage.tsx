@@ -1,5 +1,4 @@
 import { Palette, Calculator, AlertCircle, TrendingUp, Clock, Award } from 'lucide-react'
-import { useState } from 'react'
 
 export default function PlastererCalculatorsPage() {
 
