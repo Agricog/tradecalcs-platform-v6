@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { Calculator, Zap, Wrench, Home as HomeIcon, Hammer, Layers, Brush, Droplets, Lightbulb, ArrowRight } from 'lucide-react'
+import { Calculator, Zap, Wrench, Home as HomeIcon, Hammer, Layers, Brush, Lightbulb, ArrowRight } from 'lucide-react'
+
 
 export default function Home() {
   const tools = [
