@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Info, CheckCircle2, HelpCircle, Palette } from 'lucide-react'
+import { CheckCircle2, HelpCircle, Palette } from 'lucide-react'
 
 export default function PainterCalculator() {
   const [width, setWidth] = useState('')
