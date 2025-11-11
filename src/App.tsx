@@ -9,6 +9,7 @@ import ConcreteToBagsPage from './pages/ConcreteToBagsPage'
 import PlastererCalculatorsPage from './pages/PlastererCalculatorsPage'
 import JoineryCalculatorPage from './pages/JoineryCalculatorPage'
 import BrickBlockCalculatorPage from './pages/BrickBlockCalculatorPage'
+import TilerCalculatorPage from './pages/TilerCalculatorPage'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import CookiePolicy from './pages/CookiePolicy'
@@ -43,6 +44,7 @@ export default function App() {
             <Route path="/plasterer-calculators" element={<PlastererCalculatorsPage />} />
             <Route path="/joinery-calculator" element={<JoineryCalculatorPage />} />
             <Route path="/brick-block-calculator" element={<BrickBlockCalculatorPage />} />
+            <Route path="/tiler-calculator" element={<TilerCalculatorPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
@@ -73,7 +75,7 @@ export default function App() {
               <h4 className="font-bold text-white mb-4">Quick Links</h4>
               <ul className="space-y-2 text-sm">
                 <li><a href="/" className="hover:text-white">Home</a></li>
-                <li><a href="/#custom" className="hover:text-white">Custom Tools</a></li>
+                <li><a href="/#calculators" className="hover:text-white">All Calculators</a></li>
                 <li><a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="hover:text-white">Contact Us</a></li>
               </ul>
             </div>
@@ -81,9 +83,9 @@ export default function App() {
             <div>
               <h4 className="font-bold text-white mb-4">Services</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="/#custom" className="hover:text-white">Custom Development</a></li>
-                <li><a href="/#custom" className="hover:text-white">White-Label</a></li>
-                <li><a href="/#custom" className="hover:text-white">API Access</a></li>
+                <li><a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="hover:text-white">Custom Development</a></li>
+                <li><a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="hover:text-white">White-Label</a></li>
+                <li><a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="hover:text-white">API Access</a></li>
               </ul>
             </div>
 
@@ -106,6 +108,7 @@ export default function App() {
     </Router>
   )
 }
+
 
 
 
