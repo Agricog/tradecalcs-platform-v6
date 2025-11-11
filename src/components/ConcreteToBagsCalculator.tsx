@@ -48,16 +48,26 @@ export default function ConcreteToBagsCalculator() {
 
     // Get mix ratio
     const mix = mixRatios[applicationType]
-    const totalParts = mix.cementParts + mix.sandParts + mix.gravelParts
 
-    // Calculate cement needed (approximately 350kg per m³ for typical mix)
-    const cementKgPerM3 = 350 * (mix.cementParts / totalParts) * 1.5
-    const totalCementKg = volumeWithWaste * cementKgPerM3
-    const cementBags = Math.ceil(totalCementKg / 25)
+    // CORRECT CEMENT CALCULATION
+    // Standard 25kg cement bag requirements per m³:
+    // 1:3:6 (Foundation) = 6.5 bags per m³
+    // 1:2:4 (Slab/Driveway) = 8.5 bags per m³
+    // 1:2:3 (Post holes) = 9.5 bags per m³
+    
+    let cementBagsPerM3 = 6.5 // default for 1:3:6
+    
+    if (mix.ratio === '1:2:4') {
+      cementBagsPerM3 = 8.5
+    } else if (mix.ratio === '1:2:3') {
+      cementBagsPerM3 = 9.5
+    }
+    
+    const cementBags = Math.ceil(volumeWithWaste * cementBagsPerM3)
 
     // Calculate ballast needed
     const selectedMerchant = merchants.find(m => m.value === merchant)!
-    const ballastKgPerM3 = 2000 * ((mix.sandParts + mix.gravelParts) / totalParts)
+    const ballastKgPerM3 = 1950 // Approximately 1950kg of ballast per m³
     const totalBallastKg = volumeWithWaste * ballastKgPerM3
     const bulkBags = Math.ceil(totalBallastKg / selectedMerchant.bulkBagSize)
 
@@ -317,3 +327,4 @@ export default function ConcreteToBagsCalculator() {
     </div>
   )
 }
+
