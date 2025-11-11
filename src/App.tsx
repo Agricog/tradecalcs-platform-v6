@@ -40,6 +40,7 @@ export default function App() {
             <Route path="/plasterer-calculators" element={<PlastererCalculatorsPage />} />
             <Route path="/joinery-calculator" element={<JoineryCalculatorPage />} />
             <Route path="/brick-block-calculator" element={<BrickBlockCalculatorPage />} />
+            <Route path="*" element={<Home />} />
           </Routes>
         </div>
 
