@@ -7,13 +7,13 @@ export default function PlasterCoverageCalculator() {
   const [length, setLength] = useState('')
   const [width, setWidth] = useState('')
   const [coats, setCoats] = useState('2')
-  const [coverage, setCoverage] = useState('8')
+  const [coverage, setCoverage] = useState('1.5')
   const [wasteFactor, setWasteFactor] = useState('10')
   const [result, setResult] = useState<any>(null)
 
   const calculate = () => {
     const area = (parseFloat(length) || 0) * (parseFloat(width) || 0)
-    const coverageRate = parseFloat(coverage) || 8
+    const coverageRate = parseFloat(coverage) || 1.5
     const numCoats = parseFloat(coats) || 1
     const waste = parseFloat(wasteFactor) || 10
 
@@ -101,16 +101,16 @@ export default function PlasterCoverageCalculator() {
 
                 <div>
                   <label className="block text-sm font-bold text-gray-900 mb-2">
-                    Coverage Rate (m²/kg)
+                    Coverage Rate (kg/m²)
                   </label>
                   <select
                     value={coverage}
                     onChange={(e) => setCoverage(e.target.value)}
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-amber-500 focus:outline-none"
                   >
-                    <option value="6">6 (Thick/Artex)</option>
-                    <option value="8">8 (Standard)</option>
-                    <option value="10">10 (Skim Coat)</option>
+                    <option value="1.5">1.5 (Standard Skim)</option>
+                    <option value="2">2 (Artex/Thick)</option>
+                    <option value="2.5">2.5 (Heavy Coverage)</option>
                   </select>
                 </div>
 
@@ -178,4 +178,5 @@ export default function PlasterCoverageCalculator() {
     </div>
   )
 }
+
 
