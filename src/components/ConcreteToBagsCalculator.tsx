@@ -11,12 +11,12 @@ export default function ConcreteToBagsCalculator() {
   const [showResults, setShowResults] = useState(false)
   const [emailSubmitted, setEmailSubmitted] = useState(false)
 
-  // Mix ratios by application
+  // Mix ratios by application - UPDATED FOR C20/C25 STANDARDS
   const mixRatios: Record<string, { ratio: string; strength: string; cementParts: number; sandParts: number; gravelParts: number }> = {
-    foundation: { ratio: '1:3:6', strength: 'C15/20', cementParts: 1, sandParts: 3, gravelParts: 6 },
-    slab: { ratio: '1:2:4', strength: 'C20/25', cementParts: 1, sandParts: 2, gravelParts: 4 },
-    driveway: { ratio: '1:2:4', strength: 'C25/30', cementParts: 1, sandParts: 2, gravelParts: 4 },
-    postholes: { ratio: '1:2:3', strength: 'C25/30', cementParts: 1, sandParts: 2, gravelParts: 3 }
+    foundation: { ratio: '1:2:4', strength: 'C20', cementParts: 1, sandParts: 2, gravelParts: 4 },
+    slab: { ratio: '1:2:4', strength: 'C25', cementParts: 1, sandParts: 2, gravelParts: 4 },
+    driveway: { ratio: '1:2:4', strength: 'C25', cementParts: 1, sandParts: 2, gravelParts: 4 },
+    postholes: { ratio: '1:2:3', strength: 'C25', cementParts: 1, sandParts: 2, gravelParts: 3 }
   }
 
   const applications = [
@@ -49,25 +49,23 @@ export default function ConcreteToBagsCalculator() {
     // Get mix ratio
     const mix = mixRatios[applicationType]
 
-    // CORRECT CEMENT CALCULATION
-    // Standard 25kg cement bag requirements per m³:
-    // 1:3:6 (Foundation) = 6.5 bags per m³
-    // 1:2:4 (Slab/Driveway) = 8.5 bags per m³
-    // 1:2:3 (Post holes) = 9.5 bags per m³
+    // CORRECTED CEMENT CALCULATION FOR UK BUILDING STANDARDS
+    // Based on C20/C25 concrete mixes (12-13 bags per m³):
+    // Foundation (C20) = 12 bags per m³
+    // Slab/Driveway (C25) = 13 bags per m³
+    // Post holes (C25) = 13 bags per m³
     
-    let cementBagsPerM3 = 6.5 // default for 1:3:6
+    let cementBagsPerM3 = 12 // Foundation/C20 - default for footings
     
-    if (mix.ratio === '1:2:4') {
-      cementBagsPerM3 = 8.5
-    } else if (mix.ratio === '1:2:3') {
-      cementBagsPerM3 = 9.5
+    if (applicationType === 'slab' || applicationType === 'driveway' || applicationType === 'postholes') {
+      cementBagsPerM3 = 13 // C25/30 stronger mixes
     }
     
     const cementBags = Math.ceil(volumeWithWaste * cementBagsPerM3)
 
-    // Calculate ballast needed
+    // Calculate ballast needed (~1950kg per m³)
     const selectedMerchant = merchants.find(m => m.value === merchant)!
-    const ballastKgPerM3 = 1950 // Approximately 1950kg of ballast per m³
+    const ballastKgPerM3 = 1950
     const totalBallastKg = volumeWithWaste * ballastKgPerM3
     const bulkBags = Math.ceil(totalBallastKg / selectedMerchant.bulkBagSize)
 
@@ -327,4 +325,5 @@ export default function ConcreteToBagsCalculator() {
     </div>
   )
 }
+
 
