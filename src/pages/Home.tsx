@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Zap, Shield, Smartphone, DollarSign, Calculator, Flame, Ruler, Hammer, PaintBucket, Droplet, Trees, Phone, MessageSquare, Mail, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Zap, Shield, Smartphone, DollarSign, Calculator, Ruler, Hammer, PaintBucket, Trees, CheckCircle2, ArrowRight } from 'lucide-react';
 
 const Homepage = () => {
   // Define all calculators - easy to add more
