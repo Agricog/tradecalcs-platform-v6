@@ -320,7 +320,86 @@ const Homepage = () => {
             <div>
               <CheckCircle2 className="w-12 h-12 mx-auto mb-4" />
               <h3 className="font-bold text-lg mb-2">Start calculating instantly.</h3>
-              <p className="text-sm opacity
+              <p className="text-sm opacity-90">No email, no password, no waiting.</p>
+            </div>
+            <div>
+              <CheckCircle2 className="w-12 h-12 mx-auto mb-4" />
+              <h3 className="font-bold text-lg mb-2">Use on site, in the van, or at the office.</h3>
+              <p className="text-sm opacity-90">Works perfectly on any device.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CUSTOM DEVELOPMENT */}
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4 text-gray-800">Need Something Custom?</h2>
+          <p className="text-gray-600 mb-8 text-lg">
+            We build bespoke web applications and automation tools for UK trades
+          </p>
+          <a 
+            href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-block bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg transition shadow-lg"
+          >
+            Get in Touch →
+          </a>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="bg-gray-900 text-gray-300 py-12 px-4">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
+                TC
+              </div>
+              <span className="font-bold text-white">TradeCalcs</span>
+            </div>
+            <p className="text-sm">Professional calculators and tools for UK tradespeople. Built by tradespeople, for tradespeople.</p>
+            <p className="text-xs mt-4">© 2025 TradeCalcs. All rights reserved.</p>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-white mb-4">Quick Links</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link to="/" className="hover:text-white">Home</Link></li>
+              <li><a href="/#calculators" className="hover:text-white">All Calculators</a></li>
+              <li><Link to="/leadfortress" className="hover:text-white">LeadFortress</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-white mb-4">Services</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="hover:text-white">Custom Development</a></li>
+              <li><Link to="/leadfortress" className="hover:text-white">Lead Management</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-white mb-4">Legal</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link to="/privacy-policy" className="hover:text-white">Privacy Policy</Link></li>
+              <li><Link to="/terms-of-service" className="hover:text-white">Terms of Service</Link></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-700 pt-8 text-center text-xs max-w-5xl mx-auto">
+          <p>TradeCalcs is committed to providing accurate, BS-compliant calculations for UK tradespeople.</p>
+          <p className="mt-2">Built by Tradespeople, for Tradespeople</p>
+        </div>
+      </footer>
+    </>
+  );
+};
+
+export default Homepage;
+
 
 
 
