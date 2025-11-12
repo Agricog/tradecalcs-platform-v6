@@ -11,7 +11,6 @@ export default function JoineryCalculatorPage() {
   const [hourlyRate, setHourlyRate] = useState('45')
   const [result, setResult] = useState<any>(null)
 
-  // Wood pricing (GBP per m³) - Q4 2025 UK market rates
   const woodPrices: { [key: string]: number } = {
     'pine': 450,
     'oak': 850,
@@ -20,7 +19,6 @@ export default function JoineryCalculatorPage() {
     'plywood': 380
   }
 
-  // Estimated labour hours by project type (per m³ of wood)
   const labourEstimates: { [key: string]: { hours: number; waste: number } } = {
     'built-in': { hours: 12, waste: 0.18 },
     'kitchen': { hours: 15, waste: 0.20 },
@@ -30,7 +28,6 @@ export default function JoineryCalculatorPage() {
     'bespoke': { hours: 25, waste: 0.25 }
   }
 
-  // Finish multiplier (time increase)
   const finishMultipliers: { [key: string]: number } = {
     'natural': 1.0,
     'stain': 1.15,
@@ -273,4 +270,93 @@ export default function JoineryCalculatorPage() {
                 <li>• Finish type affects labour time significantly</li>
                 <li>• Always account for contingency</li>
               </ul>
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <Hammer className="w-5 h-5 text-amber-600" />
+                Wood Types
+              </h3>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li><strong>Pine:</strong> Budget option</li>
+                <li><strong>Oak:</strong> Premium/visible work</li>
+                <li><strong>Walnut:</strong> High-end projects</li>
+                <li><strong>MDF:</strong> Paint finish</li>
+                <li><strong>Plywood:</strong> Structural/hidden</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Complete Joinery Guide for Professionals</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div>
+              <h3 className="font-bold text-gray-900 mb-3">Wood Types & Pricing</h3>
+              <p className="text-gray-700 text-sm mb-4">
+                Wood pricing varies by species, grade, and market conditions. These are Q4 2025 UK estimates.
+              </p>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>✓ <strong>Pine:</strong> £450/m³ (softwood, budget-friendly)</li>
+                <li>✓ <strong>Oak:</strong> £850/m³ (hardwood, visible work)</li>
+                <li>✓ <strong>Walnut:</strong> £1200/m³ (premium hardwood)</li>
+                <li>✓ <strong>MDF:</strong> £320/m³ (engineered, paintable)</li>
+                <li>✓ <strong>Plywood:</strong> £380/m³ (structural, hidden work)</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-gray-900 mb-3">Project Labour Estimates</h3>
+              <p className="text-gray-700 text-sm mb-4">
+                Labour hours vary by project complexity and finish requirements.
+              </p>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>✓ <strong>Built-in storage:</strong> 12 hrs/m³</li>
+                <li>✓ <strong>Fitted kitchen:</strong> 15 hrs/m³</li>
+                <li>✓ <strong>Staircase:</strong> 20 hrs/m³</li>
+                <li>✓ <strong>Custom doors:</strong> 8 hrs/m³</li>
+                <li>✓ <strong>Bespoke furniture:</strong> 25 hrs/m³</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-bold text-gray-900 mb-3">Finish Types & Labour Impact</h3>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>• <strong>Natural:</strong> No additional labour</li>
+                <li>• <strong>Stain:</strong> +15% labour time</li>
+                <li>• <strong>Paint:</strong> +25% labour time</li>
+                <li>• <strong>Varnish:</strong> +35% labour time</li>
+                <li>• Finishes require prep, application & sanding</li>
+                <li>• Multiple coats needed for quality results</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-gray-900 mb-3">Pricing & Quotation Tips</h3>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>• Base hourly rate: £35-£60/hour UK average</li>
+                <li>• Add premium for complexity & experience</li>
+                <li>• Include 10-15% contingency buffer</li>
+                <li>• Factor in site access & delivery costs</li>
+                <li>• Waste factor: 12-25% depending on project</li>
+                <li>• Confirm material prices with supplier</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-yellow-50 border-l-4 border-yellow-600 p-6 rounded mt-8">
+            <h3 className="font-bold text-gray-900 mb-2">Professional Quality Assurance</h3>
+            <p className="text-sm text-gray-700">
+              This calculator provides professional estimates for UK joinery projects. Labour hours are based on industry standards. Always confirm current wood prices with your supplier before quoting. Account for project-specific factors like site access, existing structure complexity, and finish requirements. Add contingency for unexpected issues to ensure profitable projects.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 
