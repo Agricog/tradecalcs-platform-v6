@@ -45,7 +45,7 @@ export default function CableCalculator() {
 
       {/* BACK LINK */}
       <div className="max-w-5xl mx-auto px-4 py-4">
-        <a href="/tools" className="text-purple-600 hover:text-purple-800 font-semibold text-sm">
+        <a href="/" className="text-purple-600 hover:text-purple-800 font-semibold text-sm">
           ← Back to All Calculators
         </a>
       </div>
@@ -301,7 +301,7 @@ export default function CableCalculator() {
         <div className="bg-blue-700 text-white rounded-lg p-8 text-center">
           <h2 className="text-2xl font-bold mb-3">Need More Electrical Calculators?</h2>
           <p className="mb-6">Check out our voltage drop calculator and other professional resources for UK electricians.</p>
-          <a href="/tools" className="bg-white text-blue-700 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
+          <a href="/" className="bg-white text-blue-700 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
             View All Calculators
           </a>
         </div>
@@ -309,5 +309,6 @@ export default function CableCalculator() {
     </div>
   )
 }
+
 
 
