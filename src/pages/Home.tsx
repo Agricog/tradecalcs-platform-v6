@@ -96,7 +96,7 @@ export default function Home() {
             </h2>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto">
               You're under a boiler. Phone rings. By the time you see it, they've called your competitor.<br/>
-              That's happening 15-30 times per month. Do the math.
+              That's happening 15-30 times per month. Do the maths.
             </p>
           </div>
 
