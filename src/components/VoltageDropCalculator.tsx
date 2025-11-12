@@ -43,7 +43,7 @@ export default function VoltageDropCalculator() {
 
       {/* BACK LINK */}
       <div className="max-w-5xl mx-auto px-4 py-4">
-        <a href="/tools" className="text-purple-600 hover:text-purple-800 font-semibold text-sm">
+        <a href="/" className="text-purple-600 hover:text-purple-800 font-semibold text-sm">
           ← Back to All Calculators
         </a>
       </div>
@@ -313,7 +313,7 @@ export default function VoltageDropCalculator() {
         <div className="bg-cyan-600 text-white rounded-lg p-8 text-center">
           <h2 className="text-2xl font-bold mb-3">Complete Your Electrical Design Calculations</h2>
           <p className="mb-6">Use our cable sizing calculator and other professional tools to design compliant, safe electrical installations.</p>
-          <a href="/tools" className="bg-white text-cyan-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
+          <a href="/" className="bg-white text-cyan-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
             View All Calculators
           </a>
         </div>
@@ -321,5 +321,7 @@ export default function VoltageDropCalculator() {
     </div>
   )
 }
+
+
 
 
