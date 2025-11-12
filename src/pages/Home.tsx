@@ -3,7 +3,25 @@ import { Link } from 'react-router-dom'
 
 export default function Home() {
   return (
-    <>
+  <>
+    <style>{`
+      @keyframes twinkle {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+      }
+      .twinkle {
+        animation: twinkle 1.5s infinite;
+      }
+    `}</style>
+
+    {/* STRAPLINE WITH TWINKLING STARS */}
+    <a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="block bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 text-center hover:from-purple-700 hover:to-blue-700 transition">
+      <div className="flex items-center justify-center gap-2 text-sm md:text-base">
+        <span className="twinkle">✨</span>
+        <span className="font-semibold">Get VIP Access to New Tools + We Build Bespoke Web Apps for Your Business Problems</span>
+        <span className="twinkle">✨</span>
+      </div>
+    </a>
       {/* HERO BANNER */}
       <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 text-white py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
