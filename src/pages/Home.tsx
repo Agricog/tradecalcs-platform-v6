@@ -1,4 +1,5 @@
 import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Home as HomeIcon, Droplet } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export default function Home() {
   return (
@@ -61,6 +62,87 @@ export default function Home() {
               <h3 className="font-bold text-gray-900 mb-2">Always Free</h3>
               <p className="text-sm text-gray-700">No hidden costs, no premium tiers. Professional tools available to all tradespeople.</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* STOP LOSING LEADS - LEADFORTRESS SECTION */}
+      <section className="py-16 px-4 bg-gradient-to-br from-red-50 to-orange-50 border-y-2 border-red-200">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-block bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
+              💰 STOP LOSING LEADS
+            </div>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Every Missed Call is £500-£2,000 Walking Away
+            </h2>
+            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+              You're under a boiler. Phone rings. By the time you see it, they've called your competitor.<br/>
+              That's happening 15-30 times per month. Do the math.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="bg-white rounded-lg p-6 border-2 border-red-200 text-center">
+              <div className="text-4xl font-bold text-red-600 mb-2">15-30</div>
+              <p className="text-sm text-gray-700">Missed calls per month<br/>(average UK trade business)</p>
+            </div>
+            <div className="bg-white rounded-lg p-6 border-2 border-orange-200 text-center">
+              <div className="text-4xl font-bold text-orange-600 mb-2">67%</div>
+              <p className="text-sm text-gray-700">Of customers move on<br/>within 24 hours</p>
+            </div>
+            <div className="bg-white rounded-lg p-6 border-2 border-red-200 text-center">
+              <div className="text-4xl font-bold text-red-600 mb-2">£20k-£100k+</div>
+              <p className="text-sm text-gray-700">Lost revenue annually<br/>from missed leads</p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-xl p-8 border-2 border-red-200">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              LeadFortress Captures EVERY Lead, Automatically
+            </h3>
+            <p className="text-gray-700 mb-6">
+              Phone, SMS, WhatsApp, email, web forms, missed calls - all captured, logged, and tracked in one place. Even when you're on a job.
+            </p>
+            
+            <div className="space-y-3 mb-8">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-bold text-gray-900">All calls forwarded, recorded & logged</p>
+                  <p className="text-sm text-gray-600">Never miss another emergency call</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-bold text-gray-900">Auto-SMS to customers + instant alerts</p>
+                  <p className="text-sm text-gray-600">Customers know you got their message</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-bold text-gray-900">WhatsApp, texts, emails all tracked</p>
+                  <p className="text-sm text-gray-600">Everything in one professional CRM</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-bold text-gray-900">Live in 48 hours, guaranteed</p>
+                  <p className="text-sm text-gray-600">We do the setup, you do nothing</p>
+                </div>
+              </div>
+            </div>
+
+            <Link 
+              to="/leadfortress" 
+              className="inline-block bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-bold transition"
+            >
+              See How LeadFortress Works →
+            </Link>
+            <p className="text-sm text-gray-600 mt-3">£99/month • Live in 48 hours • Cancel anytime</p>
           </div>
         </div>
       </section>
@@ -328,6 +410,7 @@ export default function Home() {
     </>
   )
 }
+
 
 
 
