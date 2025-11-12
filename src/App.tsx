@@ -1,16 +1,16 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import CableSizingPage from './pages/CableSizingPage'
-import VoltageDropPage from './pages/VoltageDropPage'
-import BSPThreadPage from './pages/BSPThreadPage'
-import RoofingPage from './pages/RoofingPage'
-import ConcretePage from './pages/ConcretePage'
-import PlastererPage from './pages/PlastererPage'
-import JoineryPage from './pages/JoineryPage'
-import BrickBlockPage from './pages/BrickBlockPage'
-import TilingPage from './pages/TilingPage'
-import PaintPage from './pages/PaintPage'
-import LeadFortressPage from './pages/LeadFortressPage'
 import Homepage from './pages/Home'
+import CableSizingCalculatorPage from './pages/CableSizingCalculatorPage'
+import VoltageDropCalculatorPage from './pages/VoltageDropCalculatorPage'
+import BSPThreadIdentifierPage from './pages/BSPThreadIdentifierPage'
+import RoofingCalculatorPage from './pages/RoofingCalculatorPage'
+import ConcreteToBagsPage from './pages/ConcreteToBagsPage'
+import PlastererCalculatorsPage from './pages/PlastererCalculatorsPage'
+import JoineryCalculatorPage from './pages/JoineryCalculatorPage'
+import BrickBlockCalculatorPage from './pages/BrickBlockCalculatorPage'
+import TilerCalculatorPage from './pages/TilerCalculatorPage'
+import PainterCalculatorPage from './pages/PainterCalculatorPage'
+import LeadFortressPage from './pages/LeadFortressPage'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import CookiePolicy from './pages/CookiePolicy'
@@ -44,16 +44,16 @@ function App() {
       {/* Routes */}
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/cable-sizing" element={<CableSizingPage />} />
-        <Route path="/voltage-drop" element={<VoltageDropPage />} />
-        <Route path="/bsp-thread" element={<BSPThreadPage />} />
-        <Route path="/roofing" element={<RoofingPage />} />
-        <Route path="/concrete" element={<ConcretePage />} />
-        <Route path="/plasterer" element={<PlastererPage />} />
-        <Route path="/joinery" element={<JoineryPage />} />
-        <Route path="/brick-block" element={<BrickBlockPage />} />
-        <Route path="/tiling" element={<TilingPage />} />
-        <Route path="/paint" element={<PaintPage />} />
+        <Route path="/cable-sizing" element={<CableSizingCalculatorPage />} />
+        <Route path="/voltage-drop" element={<VoltageDropCalculatorPage />} />
+        <Route path="/bsp-thread" element={<BSPThreadIdentifierPage />} />
+        <Route path="/roofing" element={<RoofingCalculatorPage />} />
+        <Route path="/concrete" element={<ConcreteToBagsPage />} />
+        <Route path="/plasterer" element={<PlastererCalculatorsPage />} />
+        <Route path="/joinery" element={<JoineryCalculatorPage />} />
+        <Route path="/brick-block" element={<BrickBlockCalculatorPage />} />
+        <Route path="/tiling" element={<TilerCalculatorPage />} />
+        <Route path="/paint" element={<PainterCalculatorPage />} />
         <Route path="/leadfortress" element={<LeadFortressPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
@@ -110,6 +110,7 @@ function App() {
 }
 
 export default App
+
 
 
 
