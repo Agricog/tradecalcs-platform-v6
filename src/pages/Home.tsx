@@ -172,146 +172,109 @@ export default function Home() {
           <p className="text-center text-gray-600 mb-12">Choose your calculator and start working smarter</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <a href="/cable-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
-              <div className="p-6">
-                <div className="text-xs font-bold text-blue-600 mb-3 uppercase tracking-wider">For Electricians</div>
-                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white mb-4">
-                  <Zap className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Cable Sizing Calculator</h3>
-                <p className="text-gray-600 text-sm mb-4">BS 7671 compliant electrical cable sizing with all derating factors</p>
-                <div className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
-                  Use Calculator <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </a>
+  <a href="/cable-sizing" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+    <div className="p-6">
+      <div className="text-xs font-bold text-blue-600 mb-3 uppercase tracking-wider">For Electricians</div>
+      <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white mb-4">
+        <Zap className="w-6 h-6" />
+      </div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">Cable Sizing Calculator</h3>
+      <p className="text-gray-600 text-sm mb-4">BS 7671 compliant electrical cable sizing with all derating factors</p>
+      <div className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
 
-            <a href="/voltage-drop" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
-              <div className="p-6">
-                <div className="text-xs font-bold text-cyan-600 mb-3 uppercase tracking-wider">For Electricians</div>
-                <div className="w-12 h-12 bg-cyan-500 rounded-lg flex items-center justify-center text-white mb-4">
-                  <Zap className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Voltage Drop Calculator</h3>
-                <p className="text-gray-600 text-sm mb-4">Verify BS 7671 Regulation 525 compliance for electrical circuits</p>
-                <div className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
-                  Use Calculator <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </a>
+  <a href="/voltage-drop" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+    <div className="p-6">
+      <div className="text-xs font-bold text-cyan-600 mb-3 uppercase tracking-wider">For Electricians</div>
+      <div className="w-12 h-12 bg-cyan-500 rounded-lg flex items-center justify-center text-white mb-4"><Zap className="w-6 h-6" /></div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">Voltage Drop Calculator</h3>
+      <p className="text-gray-600 text-sm mb-4">Verify BS 7671 Regulation 525 compliance for electrical circuits</p>
+      <div className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
 
-            <a href="/bsp-thread" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
-              <div className="p-6">
-                <div className="text-xs font-bold text-orange-600 mb-3 uppercase tracking-wider">For Plumbers</div>
-                <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center text-white mb-4">
-                  <Lightbulb className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">BSP Thread Identifier</h3>
-                <p className="text-gray-600 text-sm mb-4">Identify British Standard Pipe threads by diameter or TPI</p>
-                <div className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
-                  Use Calculator <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </a>
+  <a href="/bsp-thread" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+    <div className="p-6">
+      <div className="text-xs font-bold text-orange-600 mb-3 uppercase tracking-wider">For Plumbers</div>
+      <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center text-white mb-4"><Lightbulb className="w-6 h-6" /></div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">BSP Thread Identifier</h3>
+      <p className="text-gray-600 text-sm mb-4">Identify British Standard Pipe threads by diameter or TPI</p>
+      <div className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
 
-            <a href="/roofing-insurance" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
-              <div className="p-6">
-                <div className="text-xs font-bold text-green-600 mb-3 uppercase tracking-wider">For Roofers</div>
-                <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4">
-                  <DollarSign className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Roofing Insurance Calculator</h3>
-                <p className="text-gray-600 text-sm mb-4">Calculate fair market value and fight for proper compensation</p>
-                <div className="text-green-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
-                  Use Calculator <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </a>
+  <a href="/roofing" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+    <div className="p-6">
+      <div className="text-xs font-bold text-green-600 mb-3 uppercase tracking-wider">For Roofers</div>
+      <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4"><DollarSign className="w-6 h-6" /></div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">Roofing Insurance Calculator</h3>
+      <p className="text-gray-600 text-sm mb-4">Calculate fair market value and fight for proper compensation</p>
+      <div className="text-green-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
 
-            <a href="/concrete-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
-              <div className="p-6">
-                <div className="text-xs font-bold text-green-600 mb-3 uppercase tracking-wider">For Builders</div>
-                <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4">
-                  <Package className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Concrete-to-Bags Calculator</h3>
-                <p className="text-gray-600 text-sm mb-4">Calculate exact cement and ballast bags to buy from any UK merchant</p>
-                <div className="text-green-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
-                  Use Calculator <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </a>
+  <a href="/concrete" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+    <div className="p-6">
+      <div className="text-xs font-bold text-green-600 mb-3 uppercase tracking-wider">For Builders</div>
+      <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4"><Package className="w-6 h-6" /></div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">Concrete-to-Bags Calculator</h3>
+      <p className="text-gray-600 text-sm mb-4">Calculate exact cement and ballast bags to buy from any UK merchant</p>
+      <div className="text-green-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
 
-            <a href="/plasterer-calculators" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
-              <div className="p-6">
-                <div className="text-xs font-bold text-amber-600 mb-3 uppercase tracking-wider">For Plasterers</div>
-                <div className="w-12 h-12 bg-amber-500 rounded-lg flex items-center justify-center text-white mb-4">
-                  <Palette className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Plasterer Calculators</h3>
-                <p className="text-gray-600 text-sm mb-4">Coverage, drying times, quotes & cost calculators for plasterers</p>
-                <div className="text-amber-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
-                  View Tools <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </a>
+  <a href="/plasterer" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+    <div className="p-6">
+      <div className="text-xs font-bold text-amber-600 mb-3 uppercase tracking-wider">For Plasterers</div>
+      <div className="w-12 h-12 bg-amber-500 rounded-lg flex items-center justify-center text-white mb-4"><Palette className="w-6 h-6" /></div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">Plasterer Calculators</h3>
+      <p className="text-gray-600 text-sm mb-4">Coverage, drying times, quotes & cost calculators for plasterers</p>
+      <div className="text-amber-600 font-semibold flex items-center gap-2 hover:gap-3 transition">View Tools <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
 
-            <a href="/joinery-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
-              <div className="p-6">
-                <div className="text-xs font-bold text-amber-700 mb-3 uppercase tracking-wider">For Joiners</div>
-                <div className="w-12 h-12 bg-amber-600 rounded-lg flex items-center justify-center text-white mb-4">
-                  <Hammer className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Joinery Material & Labour Calculator</h3>
-                <p className="text-gray-600 text-sm mb-4">Calculate wood costs, waste factors & labour hours for projects</p>
-                <div className="text-amber-700 font-semibold flex items-center gap-2 hover:gap-3 transition">
-                  Use Calculator <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </a>
+  <a href="/joinery" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+    <div className="p-6">
+      <div className="text-xs font-bold text-amber-700 mb-3 uppercase tracking-wider">For Joiners</div>
+      <div className="w-12 h-12 bg-amber-600 rounded-lg flex items-center justify-center text-white mb-4"><Hammer className="w-6 h-6" /></div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">Joinery Material & Labour Calculator</h3>
+      <p className="text-gray-600 text-sm mb-4">Calculate wood costs, waste factors & labour hours for projects</p>
+      <div className="text-amber-700 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
 
-            <a href="/brick-block-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
-              <div className="p-6">
-                <div className="text-xs font-bold text-red-600 mb-3 uppercase tracking-wider">For Bricklayers</div>
-                <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center text-white mb-4">
-                  <HomeIcon className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Brick & Block Calculator</h3>
-                <p className="text-gray-600 text-sm mb-4">Calculate bricks, concrete blocks, mortar & cement needed</p>
-                <div className="text-red-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
-                  Use Calculator <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </a>
+  <a href="/brick-block" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+    <div className="p-6">
+      <div className="text-xs font-bold text-red-600 mb-3 uppercase tracking-wider">For Bricklayers</div>
+      <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center text-white mb-4"><HomeIcon className="w-6 h-6" /></div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">Brick & Block Calculator</h3>
+      <p className="text-gray-600 text-sm mb-4">Calculate bricks, concrete blocks, mortar & cement needed</p>
+      <div className="text-red-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
 
-            <a href="/tiler-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
-              <div className="p-6">
-                <div className="text-xs font-bold text-amber-600 mb-3 uppercase tracking-wider">For Tilers</div>
-                <div className="w-12 h-12 bg-amber-500 rounded-lg flex items-center justify-center text-white mb-4">
-                  <Droplet className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Tiling Calculator</h3>
-                <p className="text-gray-600 text-sm mb-4">Calculate tiles, adhesive & grout for walls and floors</p>
-                <div className="text-amber-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
-                  Use Calculator <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </a>
+  <a href="/tiling" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+    <div className="p-6">
+      <div className="text-xs font-bold text-amber-600 mb-3 uppercase tracking-wider">For Tilers</div>
+      <div className="w-12 h-12 bg-amber-500 rounded-lg flex items-center justify-center text-white mb-4"><Droplet className="w-6 h-6" /></div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">Tiling Calculator</h3>
+      <p className="text-gray-600 text-sm mb-4">Calculate tiles, adhesive & grout for walls and floors</p>
+      <div className="text-amber-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
 
-            <a href="/painter-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
-              <div className="p-6">
-                <div className="text-xs font-bold text-red-600 mb-3 uppercase tracking-wider">For Painters & Decorators</div>
-                <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center text-white mb-4">
-                  <Palette className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Paint Calculator</h3>
-                <p className="text-gray-600 text-sm mb-4">Calculate paint & primer quantities for any room or project</p>
-                <div className="text-red-600 font-semibold flex items-center gap-2 hover:gap-3 transition">
-                  Use Calculator <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </a>
-          </div>
+  <a href="/paint" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+    <div className="p-6">
+      <div className="text-xs font-bold text-red-600 mb-3 uppercase tracking-wider">For Painters & Decorators</div>
+      <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center text-white mb-4"><Palette className="w-6 h-6" /></div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">Paint Calculator</h3>
+      <p className="text-gray-600 text-sm mb-4">Calculate paint & primer quantities for any room or project</p>
+      <div className="text-red-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
+</div>
+
 
           <p className="text-center text-gray-600 mt-8">More calculators coming soon for carpenters, bricklayers, and more trades</p>
         </div>
