@@ -63,7 +63,7 @@ export default function App() {
                 </div>
                 <span className="font-bold text-white">TradeCalcs</span>
               </div>
-              <p className="text-sm">Professional calculators and tools for UK tradespeople. Built by traders, for traders.</p>
+              <p className="text-sm">Professional calculators and tools for UK tradespeople. Built by the trades, for the trades.</p>
               <p className="text-xs mt-4">© 2025 TradeCalcs. All rights reserved.</p>
               <div className="flex items-center gap-2 mt-4">
                 <Mail className="w-4 h-4" />
