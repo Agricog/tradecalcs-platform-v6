@@ -207,7 +207,7 @@ export default function Home() {
   <a href="/roofing" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
     <div className="p-6">
       <div className="text-xs font-bold text-green-600 mb-3 uppercase tracking-wider">For Roofers</div>
-      <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4"><DollarSign className="w-6 h-6" /></div>
+      <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4"><PoundSterling className="w-6 h-6" /></div>
       <h3 className="text-xl font-bold text-gray-900 mb-2">Roofing Insurance Calculator</h3>
       <p className="text-gray-600 text-sm mb-4">Calculate fair market value and fight for proper compensation</p>
       <div className="text-green-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
