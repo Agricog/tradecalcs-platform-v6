@@ -75,7 +75,7 @@ export default function Home() {
 
             <div className="bg-gradient-to-br from-purple-100 to-blue-100 p-6 rounded-lg">
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center text-white mb-4">
-                <DollarSign className="w-6 h-6" />
+                <PoundSterling className="w-6 h-6" />
               </div>
               <h3 className="font-bold text-gray-900 mb-2">Always Free</h3>
               <p className="text-sm text-gray-700">No hidden costs, no premium tiers. Professional tools available to all tradespeople.</p>
