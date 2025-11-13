@@ -1,4 +1,4 @@
-import { Zap, Shield, Smartphone, DollarSign, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Home as HomeIcon, Droplet } from 'lucide-react'
+import { Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Home as HomeIcon, Droplet } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function Home() {
