@@ -14,7 +14,8 @@ import LeadFortressPage from './pages/LeadFortressPage'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import CookiePolicy from './pages/CookiePolicy'
-import CISCalculator from './components/CISCalculator'
+import CISCalculator from './components/CISCalculator.jsx'
+
 
 function App() {
   return (
