@@ -1,9 +1,32 @@
-import React, { useState } from 'react';
-import { Calculator, Info, Download, RotateCcw, Lightbulb, Save } from 'lucide-react';
+import { useState } from 'react';
+import { Calculator, Download, RotateCcw, Lightbulb, Save } from 'lucide-react';
 import SaveJobModal from './SaveJobModal';
 
+interface GrossToNetResults {
+  grossLabour: number;
+  materials: number;
+  cisDeduction: number;
+  netLabour: number;
+  subtotal: number;
+  vatAmount: number;
+  grandTotal: number;
+  hmrcPayment: number;
+}
+
+interface NetToGrossResults {
+  requiredGrossLabour: number;
+  netLabour: number;
+  materials: number;
+  cisDeduction: number;
+  subtotal: number;
+  vatAmount: number;
+  grandTotal: number;
+  invoiceAmount: number;
+  hmrcPayment: number;
+}
+
 export default function CISCalculator() {
-  const [mode, setMode] = useState('grossToNet');
+  const [mode, setMode] = useState<'grossToNet' | 'netToGross'>('grossToNet');
   const [cisRate, setCisRate] = useState(20);
   const [labourAmount, setLabourAmount] = useState('');
   const [materialsAmount, setMaterialsAmount] = useState('');
@@ -12,7 +35,7 @@ export default function CISCalculator() {
 
   const VAT_RATE = 0.20;
 
-  const calculateGrossToNet = () => {
+  const calculateGrossToNet = (): GrossToNetResults => {
     const labour = parseFloat(labourAmount) || 0;
     const materials = parseFloat(materialsAmount) || 0;
     const cisDeduction = labour * (cisRate / 100);
@@ -39,7 +62,7 @@ export default function CISCalculator() {
     };
   };
 
-  const calculateNetToGross = () => {
+  const calculateNetToGross = (): NetToGrossResults => {
     const netRequired = parseFloat(labourAmount) || 0;
     const materials = parseFloat(materialsAmount) || 0;
     
@@ -71,7 +94,7 @@ export default function CISCalculator() {
   const results = mode === 'grossToNet' ? calculateGrossToNet() : calculateNetToGross();
   const hasValues = (parseFloat(labourAmount) > 0 || parseFloat(materialsAmount) > 0);
 
-  const formatCurrency = (amount) => {
+  const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-GB', {
       style: 'currency',
       currency: 'GBP'
@@ -82,22 +105,24 @@ export default function CISCalculator() {
     let text = `CIS Calculation Summary\n======================\n\n`;
     
     if (mode === 'grossToNet') {
-      text += `Gross Labour: ${formatCurrency(results.grossLabour)}\n`;
-      text += `Materials: ${formatCurrency(results.materials)}\n`;
-      text += `CIS Deduction (${cisRate}%): -${formatCurrency(results.cisDeduction)}\n`;
-      text += `Net Labour: ${formatCurrency(results.netLabour)}\n`;
-      text += `Subtotal: ${formatCurrency(results.subtotal)}\n`;
-      if (includeVAT) text += `VAT (20%): ${formatCurrency(results.vatAmount)}\n`;
-      text += `\nTotal to Pay Subcontractor: ${formatCurrency(results.grandTotal)}\n`;
-      text += `CIS to Pay HMRC: ${formatCurrency(results.hmrcPayment)}`;
+      const res = results as GrossToNetResults;
+      text += `Gross Labour: ${formatCurrency(res.grossLabour)}\n`;
+      text += `Materials: ${formatCurrency(res.materials)}\n`;
+      text += `CIS Deduction (${cisRate}%): -${formatCurrency(res.cisDeduction)}\n`;
+      text += `Net Labour: ${formatCurrency(res.netLabour)}\n`;
+      text += `Subtotal: ${formatCurrency(res.subtotal)}\n`;
+      if (includeVAT) text += `VAT (20%): ${formatCurrency(res.vatAmount)}\n`;
+      text += `\nTotal to Pay Subcontractor: ${formatCurrency(res.grandTotal)}\n`;
+      text += `CIS to Pay HMRC: ${formatCurrency(res.hmrcPayment)}`;
     } else {
-      text += `Required Net Labour: ${formatCurrency(results.netLabour)}\n`;
-      text += `Required Gross Labour: ${formatCurrency(results.requiredGrossLabour)}\n`;
-      text += `CIS Deduction (${cisRate}%): -${formatCurrency(results.cisDeduction)}\n`;
-      text += `Materials: ${formatCurrency(results.materials)}\n`;
-      text += `\nInvoice Amount: ${formatCurrency(results.invoiceAmount)}\n`;
-      text += `Total Payment (inc VAT): ${formatCurrency(results.grandTotal)}\n`;
-      text += `CIS to Pay HMRC: ${formatCurrency(results.hmrcPayment)}`;
+      const res = results as NetToGrossResults;
+      text += `Required Net Labour: ${formatCurrency(res.netLabour)}\n`;
+      text += `Required Gross Labour: ${formatCurrency(res.requiredGrossLabour)}\n`;
+      text += `CIS Deduction (${cisRate}%): -${formatCurrency(res.cisDeduction)}\n`;
+      text += `Materials: ${formatCurrency(res.materials)}\n`;
+      text += `\nInvoice Amount: ${formatCurrency(res.invoiceAmount)}\n`;
+      text += `Total Payment (inc VAT): ${formatCurrency(res.grandTotal)}\n`;
+      text += `CIS to Pay HMRC: ${formatCurrency(res.hmrcPayment)}`;
     }
 
     navigator.clipboard.writeText(text);
@@ -186,7 +211,7 @@ export default function CISCalculator() {
         <div className="input-group">
           <label>CIS Deduction Rate</label>
           <div className="input-wrapper">
-            <input type="number" value={cisRate} onChange={(e) => setCisRate(parseFloat(e.target.value))} min="0" max="30" step="1" />
+            <input type="number" value={cisRate} onChange={(e) => setCisRate(parseFloat(e.target.value) || 20)} min="0" max="30" step="1" />
             <span className="percentage-symbol">%</span>
           </div>
           <small className="help-text">20% for verified, 30% for unverified subcontractors</small>
@@ -207,10 +232,10 @@ export default function CISCalculator() {
           <div className="results-grid">
             {mode === 'grossToNet' ? (
               <>
-                <div className="result-item"><span className="result-label">Gross Labour</span><span className="result-value">{formatCurrency(results.grossLabour)}</span></div>
+                <div className="result-item"><span className="result-label">Gross Labour</span><span className="result-value">{formatCurrency((results as GrossToNetResults).grossLabour)}</span></div>
                 <div className="result-item"><span className="result-label">Materials</span><span className="result-value">{formatCurrency(results.materials)}</span></div>
                 <div className="result-item highlight-warning"><span className="result-label">CIS Deduction ({cisRate}%)</span><span className="result-value">-{formatCurrency(results.cisDeduction)}</span></div>
-                <div className="result-item"><span className="result-label">Net Labour</span><span className="result-value">{formatCurrency(results.netLabour)}</span></div>
+                <div className="result-item"><span className="result-label">Net Labour</span><span className="result-value">{formatCurrency((results as GrossToNetResults).netLabour)}</span></div>
                 <div className="result-item"><span className="result-label">Subtotal</span><span className="result-value">{formatCurrency(results.subtotal)}</span></div>
                 {includeVAT && <div className="result-item"><span className="result-label">VAT (20%)</span><span className="result-value">{formatCurrency(results.vatAmount)}</span></div>}
                 <div className="result-item highlight-success"><span className="result-label">Total to Pay Subcontractor</span><span className="result-value large">{formatCurrency(results.grandTotal)}</span></div>
@@ -218,11 +243,11 @@ export default function CISCalculator() {
               </>
             ) : (
               <>
-                <div className="result-item"><span className="result-label">Net Labour Required</span><span className="result-value">{formatCurrency(results.netLabour)}</span></div>
-                <div className="result-item highlight-info"><span className="result-label">Required Gross Labour</span><span className="result-value">{formatCurrency(results.requiredGrossLabour)}</span></div>
+                <div className="result-item"><span className="result-label">Net Labour Required</span><span className="result-value">{formatCurrency((results as NetToGrossResults).netLabour)}</span></div>
+                <div className="result-item highlight-info"><span className="result-label">Required Gross Labour</span><span className="result-value">{formatCurrency((results as NetToGrossResults).requiredGrossLabour)}</span></div>
                 <div className="result-item highlight-warning"><span className="result-label">CIS Deduction ({cisRate}%)</span><span className="result-value">-{formatCurrency(results.cisDeduction)}</span></div>
                 <div className="result-item"><span className="result-label">Materials</span><span className="result-value">{formatCurrency(results.materials)}</span></div>
-                <div className="result-item highlight-success"><span className="result-label">Invoice Amount</span><span className="result-value large">{formatCurrency(results.invoiceAmount)}</span></div>
+                <div className="result-item highlight-success"><span className="result-label">Invoice Amount</span><span className="result-value large">{formatCurrency((results as NetToGrossResults).invoiceAmount)}</span></div>
                 {includeVAT && <div className="result-item"><span className="result-label">Total Payment (inc VAT)</span><span className="result-value">{formatCurrency(results.grandTotal)}</span></div>}
                 <div className="result-item highlight-info"><span className="result-label">CIS to HMRC</span><span className="result-value">{formatCurrency(results.hmrcPayment)}</span></div>
               </>
@@ -252,4 +277,6 @@ export default function CISCalculator() {
     </div>
   );
 }
+
+
 
