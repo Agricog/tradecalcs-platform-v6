@@ -1,4 +1,4 @@
-import { Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Home as HomeIcon, Droplet } from 'lucide-react'
+import { Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Home as HomeIcon, Droplet, Calculator } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function Home() {
@@ -273,6 +273,18 @@ export default function Home() {
       <div className="text-red-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
     </div>
   </a>
+
+  {/* NEW CIS CALCULATOR CARD */}
+  <a href="/calculators/cis-calculator" className="bg-white border-2 border-purple-300 rounded-lg overflow-hidden hover:shadow-lg transition relative">
+    <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</div>
+    <div className="p-6">
+      <div className="text-xs font-bold text-purple-600 mb-3 uppercase tracking-wider">For All Trades</div>
+      <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center text-white mb-4"><Calculator className="w-6 h-6" /></div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">CIS Tax Calculator</h3>
+      <p className="text-gray-600 text-sm mb-4">Calculate Construction Industry Scheme deductions for contractors & subcontractors</p>
+      <div className="text-purple-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
 </div>
 
 
@@ -391,6 +403,8 @@ export default function Home() {
     </>
   )
 }
+
+
 
 
 
