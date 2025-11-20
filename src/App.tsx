@@ -56,7 +56,7 @@ function App() {
         <Route path="/brick-block" element={<BrickBlockCalculatorPage />} />
         <Route path="/tiling" element={<TilerCalculatorPage />} />
         <Route path="/paint" element={<PainterCalculatorPage />} />
-        <Route path="/cis-calculator" element={<CISCalculator />} />
+        <Route path="/calculators/cis-calculator" element={<CISCalculator />} />
         <Route path="/leadfortress" element={<LeadFortressPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
