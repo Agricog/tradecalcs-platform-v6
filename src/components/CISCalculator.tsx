@@ -362,9 +362,112 @@ export default function CISCalculator() {
       </div>
 
       {showSaveModal && <SaveJobModal calculatorType="CIS Calculator" mode={mode} inputs={{ labourAmount, materialsAmount, cisRate, includeVAT }} results={results} onClose={() => setShowSaveModal(false)} />}
+            {showSaveModal && <SaveJobModal calculatorType="CIS Calculator" mode={mode} inputs={{ labourAmount, materialsAmount, cisRate, includeVAT }} results={results} onClose={() => setShowSaveModal(false)} />}
+
+        {/* EDUCATIONAL CONTENT SECTION */}
+        <div style={{ background: '#1e293b', borderRadius: '16px', padding: '40px', marginTop: '40px', border: '1px solid #334155' }}>
+          <h2 style={{ fontSize: '28px', fontWeight: '700', color: 'white', marginBottom: '30px', textAlign: 'center' }}>Complete CIS Guide for UK Construction Professionals</h2>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', marginBottom: '40px' }}>
+            <div>
+              <h3 style={{ fontSize: '20px', fontWeight: '600', color: 'white', marginBottom: '15px' }}>Understanding CIS Deductions</h3>
+              <p style={{ color: '#94a3b8', marginBottom: '12px', lineHeight: '1.6' }}>
+                The Construction Industry Scheme (CIS) sets out rules for how contractors must handle payments to subcontractors. Contractors must deduct money from payments and pass it to HMRC as advance payment of the subcontractor's tax and National Insurance.
+              </p>
+              <ul style={{ color: '#94a3b8', lineHeight: '1.8' }}>
+                <li><strong style={{ color: '#cbd5e1' }}>20% rate:</strong> Verified registered subcontractors</li>
+                <li><strong style={{ color: '#cbd5e1' }}>30% rate:</strong> Unregistered subcontractors</li>
+                <li><strong style={{ color: '#cbd5e1' }}>0% rate:</strong> Gross payment status (rare, requires application)</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 style={{ fontSize: '20px', fontWeight: '600', color: 'white', marginBottom: '15px' }}>What's Covered by CIS?</h3>
+              <p style={{ color: '#cbd5e1', marginBottom: '12px', fontWeight: '600' }}>Labour costs ARE deducted:</p>
+              <ul style={{ color: '#94a3b8', marginBottom: '15px', lineHeight: '1.8' }}>
+                <li>All wages and subcontractor payments</li>
+                <li>Site supervision costs</li>
+                <li>Labour-only services</li>
+              </ul>
+              <p style={{ color: '#cbd5e1', marginBottom: '12px', fontWeight: '600' }}>Materials are NOT deducted:</p>
+              <ul style={{ color: '#94a3b8', lineHeight: '1.8' }}>
+                <li>Building materials (bricks, cement, timber, etc.)</li>
+                <li>Equipment and tool costs</li>
+                <li>Plant hire (when separately invoiced)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '2px solid #3b82f6', borderRadius: '12px', padding: '30px', marginBottom: '30px' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#60a5fa', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              💡 CIS Monthly Returns & Deadlines
+            </h3>
+            <p style={{ color: '#93c5fd', lineHeight: '1.6', marginBottom: '12px' }}>
+              <strong>Contractors must file monthly CIS returns to HMRC by the 19th of each month</strong> following the tax month end. The CIS tax month runs from the 6th of one month to the 5th of the next.
+            </p>
+            <p style={{ color: '#93c5fd', lineHeight: '1.6' }}>
+              Late returns incur automatic penalties starting at £100 per month, increasing for repeated failures.
+            </p>
+          </div>
+
+          <div style={{ marginBottom: '40px' }}>
+            <h3 style={{ fontSize: '24px', fontWeight: '600', color: 'white', marginBottom: '20px' }}>Common CIS Mistakes to Avoid</h3>
+            <div style={{ display: 'grid', gap: '15px' }}>
+              <div style={{ padding: '20px', background: 'rgba(251, 146, 60, 0.1)', borderLeft: '4px solid #fb923c', borderRadius: '8px' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#fbbf24' }}>❌ Not verifying subcontractors before payment</h4>
+                <p style={{ color: '#94a3b8', fontSize: '14px', margin: 0 }}>Always verify subcontractors with HMRC before making first payment. Use wrong rate = penalties.</p>
+              </div>
+              
+              <div style={{ padding: '20px', background: 'rgba(251, 146, 60, 0.1)', borderLeft: '4px solid #fb923c', borderRadius: '8px' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#fbbf24' }}>❌ Deducting CIS from materials</h4>
+                <p style={{ color: '#94a3b8', fontSize: '14px', margin: 0 }}>Only labour is subject to CIS. Materials must be separately invoiced and paid in full.</p>
+              </div>
+              
+              <div style={{ padding: '20px', background: 'rgba(251, 146, 60, 0.1)', borderLeft: '4px solid #fb923c', borderRadius: '8px' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#fbbf24' }}>❌ Missing monthly return deadlines</h4>
+                <p style={{ color: '#94a3b8', fontSize: '14px', margin: 0 }}>File by the 19th every month. Late filing = £100+ penalties that add up fast.</p>
+              </div>
+              
+              <div style={{ padding: '20px', background: 'rgba(251, 146, 60, 0.1)', borderLeft: '4px solid #fb923c', borderRadius: '8px' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#fbbf24' }}>❌ Poor record keeping</h4>
+                <p style={{ color: '#94a3b8', fontSize: '14px', margin: 0 }}>HMRC requires 3+ years of CIS records. Keep payment statements, verification records, and returns.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
+            <div>
+              <h3 style={{ fontSize: '20px', fontWeight: '600', color: 'white', marginBottom: '15px' }}>For Contractors (Paying Subbies)</h3>
+              <ol style={{ color: '#94a3b8', lineHeight: '1.8' }}>
+                <li>Verify subcontractor with HMRC before first payment</li>
+                <li>Calculate gross labour amount (exclude materials)</li>
+                <li>Apply correct CIS rate (20% or 30%)</li>
+                <li>Deduct CIS from labour only</li>
+                <li>Pay net amount to subcontractor</li>
+                <li>Pay CIS deduction to HMRC via monthly return</li>
+                <li>Issue CIS payment statement to subcontractor</li>
+              </ol>
+            </div>
+
+            <div>
+              <h3 style={{ fontSize: '20px', fontWeight: '600', color: 'white', marginBottom: '15px' }}>For Subcontractors (Invoicing Work)</h3>
+              <ol style={{ color: '#94a3b8', lineHeight: '1.8' }}>
+                <li>Register for CIS with HMRC (to get 20% rate)</li>
+                <li>Calculate net labour you need to receive</li>
+                <li>Gross up by CIS rate to get invoice amount</li>
+                <li>Separate materials from labour on invoice</li>
+                <li>Show CIS deduction clearly on invoice</li>
+                <li>Track all CIS deductions for tax return</li>
+                <li>Claim CIS deductions back via Self Assessment</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
+
 
 
 
