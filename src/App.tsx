@@ -45,23 +45,23 @@ function App() {
 
       {/* Routes */}
       <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/cable-sizing" element={<CableSizingCalculatorPage />} />
-        <Route path="/voltage-drop" element={<VoltageDropCalculatorPage />} />
-        <Route path="/bsp-thread" element={<BSPThreadIdentifierPage />} />
-        <Route path="/roofing" element={<RoofingCalculatorPage />} />
-        <Route path="/concrete" element={<ConcreteToBagsPage />} />
-        <Route path="/plasterer" element={<PlastererCalculatorsPage />} />
-        <Route path="/joinery" element={<JoineryCalculatorPage />} />
-        <Route path="/brick-block" element={<BrickBlockCalculatorPage />} />
-        <Route path="/tiling" element={<TilerCalculatorPage />} />
-        <Route path="/paint" element={<PainterCalculatorPage />} />
-        <Route path="/calculators/cis-calculator" element={<CISCalculator />} />
-        <Route path="/leadfortress" element={<LeadFortressPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/terms-of-service" element={<TermsOfService />} />
-        <Route path="/cookie-policy" element={<CookiePolicy />} />
-      </Routes>
+  <Route path="/" element={<Homepage />} />
+  <Route path="/cable-sizing" element={<CableSizingCalculatorPage />} />
+  <Route path="/voltage-drop" element={<VoltageDropCalculatorPage />} />
+  <Route path="/bsp-thread" element={<BSPThreadIdentifierPage />} />
+  <Route path="/roofing" element={<RoofingCalculatorPage />} />
+  <Route path="/concrete" element={<ConcreteToBagsPage />} />
+  <Route path="/plasterer" element={<PlastererCalculatorsPage />} />
+  <Route path="/joinery" element={<JoineryCalculatorPage />} />
+  <Route path="/brick-block" element={<BrickBlockCalculatorPage />} />
+  <Route path="/tiling" element={<TilerCalculatorPage />} />
+  <Route path="/paint" element={<PainterCalculatorPage />} />
+  <Route path="/calculators/cis-calculator" element={<CISCalculatorPage />} />
+  <Route path="/leadfortress" element={<LeadFortressPage />} />
+  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+  <Route path="/terms-of-service" element={<TermsOfService />} />
+  <Route path="/cookie-policy" element={<CookiePolicy />} />
+</Routes>
 
       {/* Footer (only shows on calculator pages, Home has its own) */}
       <footer className="bg-gray-900 text-gray-300 py-12 px-4">
