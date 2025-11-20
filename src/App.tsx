@@ -14,6 +14,7 @@ import LeadFortressPage from './pages/LeadFortressPage'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import CookiePolicy from './pages/CookiePolicy'
+import CISCalculator from './components/CISCalculator'
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
         <Route path="/brick-block" element={<BrickBlockCalculatorPage />} />
         <Route path="/tiling" element={<TilerCalculatorPage />} />
         <Route path="/paint" element={<PainterCalculatorPage />} />
+        <Route path="/cis-calculator" element={<CISCalculator />} />
         <Route path="/leadfortress" element={<LeadFortressPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
@@ -110,6 +112,7 @@ function App() {
 }
 
 export default App
+
 
 
 
