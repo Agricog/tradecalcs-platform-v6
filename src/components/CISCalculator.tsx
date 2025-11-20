@@ -359,12 +359,7 @@ export default function CISCalculator() {
             <p className="info-card-text">For CIS-registered businesses with gross payment status (requires application).</p>
           </div>
         </div>
-      </div>
 
-      {showSaveModal && <SaveJobModal calculatorType="CIS Calculator" mode={mode} inputs={{ labourAmount, materialsAmount, cisRate, includeVAT }} results={results} onClose={() => setShowSaveModal(false)} />}
-            {showSaveModal && <SaveJobModal calculatorType="CIS Calculator" mode={mode} inputs={{ labourAmount, materialsAmount, cisRate, includeVAT }} results={results} onClose={() => setShowSaveModal(false)} />}
-
-        {/* EDUCATIONAL CONTENT SECTION */}
         <div style={{ background: '#1e293b', borderRadius: '16px', padding: '40px', marginTop: '40px', border: '1px solid #334155' }}>
           <h2 style={{ fontSize: '28px', fontWeight: '700', color: 'white', marginBottom: '30px', textAlign: 'center' }}>Complete CIS Guide for UK Construction Professionals</h2>
           
@@ -464,9 +459,12 @@ export default function CISCalculator() {
           </div>
         </div>
       </div>
+
+      {showSaveModal && <SaveJobModal calculatorType="CIS Calculator" mode={mode} inputs={{ labourAmount, materialsAmount, cisRate, includeVAT }} results={results} onClose={() => setShowSaveModal(false)} />}
     </div>
   );
 }
+
 
 
 
