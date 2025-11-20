@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calculator, Download, RotateCcw, Lightbulb, Save, Info } from 'lucide-react';
+import { RotateCcw, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SaveJobModal from './SaveJobModal';
 
