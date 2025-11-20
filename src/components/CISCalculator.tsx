@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Calculator, Download, RotateCcw, Lightbulb, Save } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import SaveJobModal from './SaveJobModal';
 
 interface GrossToNetResults {
@@ -172,6 +173,21 @@ export default function CISCalculator() {
         @media (max-width: 640px) { .mode-toggle { grid-template-columns: 1fr; } }
       `}</style>
 
+      {/* BACK BUTTON */}
+      <Link to="/" style={{ 
+        display: 'inline-flex', 
+        alignItems: 'center', 
+        gap: '8px', 
+        color: '#667eea', 
+        textDecoration: 'none', 
+        marginBottom: '20px',
+        fontSize: '14px',
+        fontWeight: '500',
+        transition: 'gap 0.2s'
+      }}>
+        ← Back to All Calculators
+      </Link>
+
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <Calculator size={32} style={{ color: '#667eea', margin: '0 auto 10px' }} />
         <h1 style={{ fontSize: '32px', color: '#1f2937', margin: '10px 0' }}>CIS Tax Calculator</h1>
@@ -277,6 +293,7 @@ export default function CISCalculator() {
     </div>
   );
 }
+
 
 
 
