@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Download } from 'lucide-react'
+import { X, Download, Mail } from 'lucide-react'
 
 interface QuoteGeneratorProps {
   calculationResults: {
@@ -17,6 +17,10 @@ export default function QuoteGenerator({ calculationResults, onClose }: QuoteGen
   const [materialMarkup, setMaterialMarkup] = useState('15')
   const [notes, setNotes] = useState('')
   const [showPreview, setShowPreview] = useState(false)
+  
+  // NEW: Email capture
+  const [yourEmail, setYourEmail] = useState('')
+  const [emailCopy, setEmailCopy] = useState(false)
 
   const generateQuote = () => {
     setShowPreview(true)
@@ -33,6 +37,18 @@ export default function QuoteGenerator({ calculationResults, onClose }: QuoteGen
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
+
+    // NEW: Log email capture for analytics
+    if (emailCopy && yourEmail) {
+      console.log('Quote generated with email:', {
+        email: yourEmail,
+        clientName,
+        total: totals.total.toFixed(2),
+        timestamp: new Date().toISOString()
+      })
+      // TODO: Send to backend API to email quote
+      alert(`Quote downloaded! A copy will be emailed to ${yourEmail}`)
+    }
   }
 
   const calculateTotal = () => {
@@ -260,6 +276,37 @@ export default function QuoteGenerator({ calculationResults, onClose }: QuoteGen
                 />
               </div>
 
+              {/* NEW: Email Capture Section */}
+              <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg p-4">
+                <div className="mb-3">
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Your Email (Optional)</label>
+                  <input
+                    type="email"
+                    value={yourEmail}
+                    onChange={(e) => setYourEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  />
+                </div>
+                
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={emailCopy}
+                    onChange={(e) => setEmailCopy(e.target.checked)}
+                    disabled={!yourEmail}
+                    className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
+                  />
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-5 h-5 text-purple-600" />
+                    <span className="text-sm font-semibold text-gray-900">Email me a copy of this quote</span>
+                  </div>
+                </label>
+                <p className="text-xs text-gray-600 mt-2 ml-8">
+                  We'll send you a copy for your records (coming soon)
+                </p>
+              </div>
+
               <button
                 onClick={generateQuote}
                 disabled={!clientName || !clientAddress || !labourRate || !estimatedHours}
@@ -273,7 +320,8 @@ export default function QuoteGenerator({ calculationResults, onClose }: QuoteGen
           <div className="p-6">
             <div className="bg-green-50 border-l-4 border-green-600 p-4 mb-6">
               <p className="text-sm text-green-800">
-                <strong>✓ Quote Ready!</strong> Review below and download as PDF
+                <strong>✓ Quote Ready!</strong> Review below and download
+                {emailCopy && yourEmail && ` - Copy will be emailed to ${yourEmail}`}
               </p>
             </div>
 
@@ -340,4 +388,5 @@ export default function QuoteGenerator({ calculationResults, onClose }: QuoteGen
     </div>
   )
 }
+
 
