@@ -286,7 +286,7 @@ export default function Home() {
     </div>
   </a>
 
-  {/* NEW HAULCHECK STGO CALCULATOR CARD */}
+  {/* HAULCHECK STGO CALCULATOR CARD */}
   <a href="/calculators/stgo-calculator" className="bg-white border-2 border-orange-300 rounded-lg overflow-hidden hover:shadow-lg transition relative">
     <div className="absolute top-4 right-4 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</div>
     <div className="p-6">
@@ -297,6 +297,22 @@ export default function Home() {
       <h3 className="text-xl font-bold text-gray-900 mb-2">HaulCheck - STGO Compliance</h3>
       <p className="text-gray-600 text-sm mb-4">Avoid £750K fines - instant STGO category checks, weight limits & notification requirements</p>
       <div className="text-orange-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+    </div>
+  </a>
+
+  {/* SCAFFOLD CALCULATOR CARD */}
+  <a href="/calculators/scaffold-calculator" className="bg-white border-2 border-blue-300 rounded-lg overflow-hidden hover:shadow-lg transition relative">
+    <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</div>
+    <div className="p-6">
+      <div className="text-xs font-bold text-blue-600 mb-3 uppercase tracking-wider">For Scaffolders</div>
+      <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white mb-4">
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+        </svg>
+      </div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">Scaffold Calculator</h3>
+      <p className="text-gray-600 text-sm mb-4">Calculate tubes, fittings, boards, ties & costs for independent and putlog scaffolds</p>
+      <div className="text-blue-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
     </div>
   </a>
 </div>
@@ -417,6 +433,7 @@ export default function Home() {
     </>
   )
 }
+
 
 
 
