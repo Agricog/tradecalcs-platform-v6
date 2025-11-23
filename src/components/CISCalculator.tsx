@@ -458,12 +458,39 @@ export default function CISCalculator() {
             </div>
           </div>
         </div>
+
+        {/* CONTACT FORM SECTION */}
+        <div style={{ background: '#f8fafc', borderRadius: '16px', padding: '40px', marginTop: '40px', border: '1px solid #e2e8f0' }}>
+          <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+            <h3 style={{ fontSize: '28px', fontWeight: '700', color: '#1e293b', marginBottom: '12px' }}>Need Help or Have Questions?</h3>
+            <p style={{ fontSize: '16px', color: '#64748b' }}>
+              Got a specific calculation requirement or want a custom tool for your trade? Fill out the form below.
+            </p>
+          </div>
+          
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <iframe 
+              src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" 
+              width="100%" 
+              height="650px" 
+              frameBorder="0"
+              title="Contact Form"
+              style={{ borderRadius: '12px', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)' }}
+            />
+          </div>
+          
+          <p style={{ textAlign: 'center', fontSize: '14px', color: '#64748b', marginTop: '20px' }}>
+            Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" style={{ color: '#8b5cf6', fontWeight: '600', textDecoration: 'none' }}>mick@tradecalcs.co.uk</a>
+          </p>
+        </div>
       </div>
 
       {showSaveModal && <SaveJobModal calculatorType="CIS Calculator" mode={mode} inputs={{ labourAmount, materialsAmount, cisRate, includeVAT }} results={results} onClose={() => setShowSaveModal(false)} />}
     </div>
   );
 }
+
+
 
 
 
