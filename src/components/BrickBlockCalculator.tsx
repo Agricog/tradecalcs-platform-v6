@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Info, CheckCircle2, HelpCircle } from 'lucide-react'
+import QuoteGenerator from './QuoteGenerator'
 
 export default function BrickBlockCalculator() {
   const [materialType, setMaterialType] = useState<'brick' | 'block4' | 'block6'>('brick')
@@ -8,6 +9,7 @@ export default function BrickBlockCalculator() {
   const [mortarRatio, setMortarRatio] = useState('1:5')
   const [wasteFactor, setWasteFactor] = useState(5)
   const [results, setResults] = useState<any>(null)
+  const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
   const calculate = () => {
     if (!length || !height) return
@@ -159,52 +161,81 @@ export default function BrickBlockCalculator() {
             </div>
 
             {results && (
-              <div className="bg-white rounded-lg shadow-lg p-8">
-                <div className="flex items-center gap-2 mb-6">
-                  <CheckCircle2 className="w-6 h-6 text-green-600" />
-                  <h2 className="text-xl font-bold text-gray-900">Materials Required</h2>
-                </div>
+              <>
+                <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
+                  <div className="flex items-center gap-2 mb-6">
+                    <CheckCircle2 className="w-6 h-6 text-green-600" />
+                    <h2 className="text-xl font-bold text-gray-900">Materials Required</h2>
+                  </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
-                      <p className="text-sm text-gray-600">Wall Area</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.wallArea} m²</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
+                        <p className="text-sm text-gray-600">Wall Area</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.wallArea} m²</p>
+                      </div>
+
+                      <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
+                        <p className="text-sm text-gray-600">{results.materialName}</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.itemsNeeded.toLocaleString()}</p>
+                      </div>
+
+                      <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
+                        <p className="text-sm text-gray-600">Mortar Volume</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.mortarVolume} m³</p>
+                      </div>
                     </div>
 
-                    <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
-                      <p className="text-sm text-gray-600">{results.materialName}</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.itemsNeeded.toLocaleString()}</p>
-                    </div>
+                    <div className="space-y-4">
+                      <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
+                        <p className="text-sm text-gray-600">Cement (25kg Bags)</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.cementBags}</p>
+                      </div>
 
-                    <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
-                      <p className="text-sm text-gray-600">Mortar Volume</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.mortarVolume} m³</p>
+                      <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
+                        <p className="text-sm text-gray-600">Sand</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.sandTonnes} tonnes</p>
+                      </div>
+
+                      <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+                        <p className="text-sm text-gray-600">Water Required</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.waterLitres} litres</p>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
-                      <p className="text-sm text-gray-600">Cement (25kg Bags)</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.cementBags}</p>
-                    </div>
-
-                    <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
-                      <p className="text-sm text-gray-600">Sand</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.sandTonnes} tonnes</p>
-                    </div>
-
-                    <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
-                      <p className="text-sm text-gray-600">Water Required</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.waterLitres} litres</p>
-                    </div>
-                  </div>
+                  <p className="text-xs text-gray-500 mt-6 text-center">
+                    ✓ Includes waste factor of {wasteFactor}% • {results.materialName} with {mortarRatio} mortar
+                  </p>
                 </div>
 
-                <p className="text-xs text-gray-500 mt-6 text-center">
-                  ✓ Includes waste factor of {wasteFactor}% • {results.materialName} with {mortarRatio} mortar
-                </p>
-              </div>
+                {/* QUOTE GENERATOR CTA */}
+                <div className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg mb-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
+                      <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowQuoteGenerator(true)}
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Generate Free Quote
+                  </button>
+                  <p className="text-xs text-center text-gray-500 mt-2">
+                    Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
+                  </p>
+                </div>
+              </>
             )}
           </div>
 
@@ -275,9 +306,26 @@ export default function BrickBlockCalculator() {
           </div>
         </div>
       </div>
+
+      {/* QUOTE GENERATOR MODAL */}
+      {showQuoteGenerator && results && (
+        <QuoteGenerator
+          calculationResults={{
+            materials: [
+              { item: results.materialName, quantity: results.itemsNeeded.toString(), unit: 'units' },
+              { item: 'Cement (25kg bags)', quantity: results.cementBags.toString(), unit: 'bags' },
+              { item: 'Building Sand', quantity: results.sandTonnes, unit: 'tonnes' },
+              { item: 'Installation & Labour', quantity: '1', unit: 'job' }
+            ],
+            summary: `${results.wallArea}m² wall - ${mortarRatio} mortar mix with ${wasteFactor}% waste factor included`
+          }}
+          onClose={() => setShowQuoteGenerator(false)}
+        />
+      )}
     </div>
   )
 }
+
 
                     
 
