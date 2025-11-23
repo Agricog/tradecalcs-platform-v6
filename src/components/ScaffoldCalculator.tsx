@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CheckCircle2, HelpCircle, Layers, AlertTriangle } from 'lucide-react'
+import QuoteGenerator from './QuoteGenerator'
 
 export default function ScaffoldCalculator() {
   const [scaffoldType, setScaffoldType] = useState<'independent' | 'putlog'>('independent')
@@ -10,6 +11,7 @@ export default function ScaffoldCalculator() {
   const [lifts, setLifts] = useState('')
   const [boardType, setBoardType] = useState('standard')
   const [results, setResults] = useState<any>(null)
+  const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
   const calculate = () => {
     if (!height || !length || !width) return
@@ -262,89 +264,118 @@ export default function ScaffoldCalculator() {
             </div>
 
             {results && (
-              <div className="bg-white rounded-lg shadow-lg p-8">
-                <div className="flex items-center gap-2 mb-6">
-                  <CheckCircle2 className="w-6 h-6 text-green-600" />
-                  <h2 className="text-xl font-bold text-gray-900">Materials Required</h2>
-                </div>
-
-                {results.warnings.length > 0 && (
-                  <div className="bg-amber-50 rounded-lg p-4 mb-6 border-l-4 border-amber-600">
-                    <h4 className="font-semibold text-amber-900 mb-2">Safety Warnings</h4>
-                    {results.warnings.map((warning: string, index: number) => (
-                      <p key={index} className="text-sm text-amber-800 mb-1">{warning}</p>
-                    ))}
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <div className="space-y-4">
-                    <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
-                      <p className="text-sm text-gray-600">Scaffold Dimensions</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.height}m × {results.length}m × {results.width}m</p>
-                      <p className="text-xs text-gray-500 mt-1">{results.bayCount} bays × {results.liftCount} lifts</p>
-                    </div>
-
-                    <div className="bg-cyan-50 rounded-lg p-4 border-l-4 border-cyan-600">
-                      <p className="text-sm text-gray-600">Total Tubes (6.3m)</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.totalTubes}</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Standards: {results.standardTubes} • Ledgers: {results.ledgerTubes}<br/>
-                        Transoms: {results.transomTubes} • Braces: {results.braceTubes}
-                      </p>
-                    </div>
-
-                    <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
-                      <p className="text-sm text-gray-600">Total Fittings</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.totalFittings}</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Right angle: {results.rightAngleFittings} • Swivel: {results.swivelFittings}<br/>
-                        Base plates: {results.basePlates} • Board clips: {results.boardClips}
-                      </p>
-                    </div>
+              <>
+                <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
+                  <div className="flex items-center gap-2 mb-6">
+                    <CheckCircle2 className="w-6 h-6 text-green-600" />
+                    <h2 className="text-xl font-bold text-gray-900">Materials Required</h2>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="bg-cyan-50 rounded-lg p-4 border-l-4 border-cyan-600">
-                      <p className="text-sm text-gray-600">Scaffold Boards</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.totalBoards}</p>
-                      <p className="text-xs text-gray-500 mt-1">Standard 3.9m boards</p>
+                  {results.warnings.length > 0 && (
+                    <div className="bg-amber-50 rounded-lg p-4 mb-6 border-l-4 border-amber-600">
+                      <h4 className="font-semibold text-amber-900 mb-2">Safety Warnings</h4>
+                      {results.warnings.map((warning: string, index: number) => (
+                        <p key={index} className="text-sm text-amber-800 mb-1">{warning}</p>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="space-y-4">
+                      <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+                        <p className="text-sm text-gray-600">Scaffold Dimensions</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.height}m × {results.length}m × {results.width}m</p>
+                        <p className="text-xs text-gray-500 mt-1">{results.bayCount} bays × {results.liftCount} lifts</p>
+                      </div>
+
+                      <div className="bg-cyan-50 rounded-lg p-4 border-l-4 border-cyan-600">
+                        <p className="text-sm text-gray-600">Total Tubes (6.3m)</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.totalTubes}</p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Standards: {results.standardTubes} • Ledgers: {results.ledgerTubes}<br/>
+                          Transoms: {results.transomTubes} • Braces: {results.braceTubes}
+                        </p>
+                      </div>
+
+                      <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+                        <p className="text-sm text-gray-600">Total Fittings</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.totalFittings}</p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Right angle: {results.rightAngleFittings} • Swivel: {results.swivelFittings}<br/>
+                          Base plates: {results.basePlates} • Board clips: {results.boardClips}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
-                      <p className="text-sm text-gray-600">Toe Boards</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.toeBoards}</p>
-                      <p className="text-xs text-gray-500 mt-1">All working levels</p>
-                    </div>
+                    <div className="space-y-4">
+                      <div className="bg-cyan-50 rounded-lg p-4 border-l-4 border-cyan-600">
+                        <p className="text-sm text-gray-600">Scaffold Boards</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.totalBoards}</p>
+                        <p className="text-xs text-gray-500 mt-1">Standard 3.9m boards</p>
+                      </div>
 
-                    <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
-                      <p className="text-sm text-gray-600">Wall Ties Required</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.totalTies}</p>
-                      <p className="text-xs text-gray-500 mt-1">Every 4m horizontal and vertical</p>
-                    </div>
+                      <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+                        <p className="text-sm text-gray-600">Toe Boards</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.toeBoards}</p>
+                        <p className="text-xs text-gray-500 mt-1">All working levels</p>
+                      </div>
 
-                    <div className="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-600">
-                      <p className="text-sm text-gray-600">Max Load Capacity</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.maxLoad} kg</p>
-                      <p className="text-xs text-gray-500 mt-1">Class 3 light duty (244kg/m²)</p>
+                      <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
+                        <p className="text-sm text-gray-600">Wall Ties Required</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.totalTies}</p>
+                        <p className="text-xs text-gray-500 mt-1">Every 4m horizontal and vertical</p>
+                      </div>
+
+                      <div className="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-600">
+                        <p className="text-sm text-gray-600">Max Load Capacity</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.maxLoad} kg</p>
+                        <p className="text-xs text-gray-500 mt-1">Class 3 light duty (244kg/m²)</p>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-6 border-l-4 border-green-600">
-                  <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                    💷 Estimated Weekly Hire Cost
-                  </h3>
-                  <p className="text-3xl font-bold text-green-700 mb-2">£{results.totalWeeklyCost}</p>
-                  <p className="text-sm text-gray-600">
-                    Based on typical UK hire rates. Actual costs vary by supplier and location.
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-6 border-l-4 border-green-600">
+                    <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                      💷 Estimated Weekly Hire Cost
+                    </h3>
+                    <p className="text-3xl font-bold text-green-700 mb-2">£{results.totalWeeklyCost}</p>
+                    <p className="text-sm text-gray-600">
+                      Based on typical UK hire rates. Actual costs vary by supplier and location.
+                    </p>
+                  </div>
+
+                  <p className="text-xs text-gray-500 mt-6 text-center">
+                    ✓ {results.scaffoldType === 'independent' ? 'Independent' : 'Putlog'} scaffold • {results.height}m height • Building Regs compliant
                   </p>
                 </div>
 
-                <p className="text-xs text-gray-500 mt-6 text-center">
-                  ✓ {results.scaffoldType === 'independent' ? 'Independent' : 'Putlog'} scaffold • {results.height}m height • Building Regs compliant
-                </p>
-              </div>
+                {/* QUOTE GENERATOR CTA */}
+                <div className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg mb-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
+                      <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowQuoteGenerator(true)}
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Generate Free Quote
+                  </button>
+                  <p className="text-xs text-center text-gray-500 mt-2">
+                    Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
+                  </p>
+                </div>
+              </>
             )}
           </div>
 
@@ -446,6 +477,25 @@ export default function ScaffoldCalculator() {
           </div>
         </div>
       </div>
+
+      {/* QUOTE GENERATOR MODAL */}
+      {showQuoteGenerator && results && (
+        <QuoteGenerator
+          calculationResults={{
+            materials: [
+              { item: 'Scaffold Tubes (6.3m)', quantity: results.totalTubes.toString(), unit: 'tubes' },
+              { item: 'Fittings (right angle, swivel, base plates)', quantity: results.totalFittings.toString(), unit: 'pieces' },
+              { item: 'Scaffold Boards (3.9m)', quantity: results.totalBoards.toString(), unit: 'boards' },
+              { item: 'Wall Ties & Anchors', quantity: results.totalTies.toString(), unit: 'pieces' },
+              { item: 'Toe Boards', quantity: results.toeBoards.toString(), unit: 'pieces' },
+              { item: 'Erection & Dismantling Labour', quantity: '1', unit: 'job' }
+            ],
+            summary: `${results.scaffoldType === 'independent' ? 'Independent' : 'Putlog'} scaffold ${results.height}m × ${results.length}m × ${results.width}m (${results.bayCount} bays × ${results.liftCount} lifts) - Class 3 max load ${results.maxLoad}kg`
+          }}
+          onClose={() => setShowQuoteGenerator(false)}
+        />
+      )}
     </div>
   )
 }
+
