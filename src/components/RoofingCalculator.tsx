@@ -452,8 +452,33 @@ export default function RoofingCalculator() {
           </div>
         </section>
 
+        {/* CONTACT FORM SECTION */}
+        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+          <div className="text-center mb-6">
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Need Help or Have Questions?</h3>
+            <p className="text-gray-700">
+              Got a specific calculation requirement or want a custom tool for your trade? Fill out the form below.
+            </p>
+          </div>
+          
+          <div className="max-w-3xl mx-auto">
+            <iframe 
+              src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" 
+              width="100%" 
+              height="650px" 
+              frameBorder="0"
+              title="Contact Form"
+              className="rounded-lg"
+            />
+          </div>
+          
+          <p className="text-center text-sm text-gray-600 mt-4">
+            Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 font-semibold hover:underline">mick@tradecalcs.co.uk</a>
+          </p>
+        </div>
+
         {/* CTA FOOTER */}
-        <div className="bg-green-700 text-white rounded-lg p-8 text-center mb-8">
+        <div className="bg-green-700 text-white rounded-lg p-8 text-center">
           <h2 className="text-2xl font-bold mb-3">Professional Tools for UK Roofers</h2>
           <p className="mb-6">Explore our complete range of calculators and tools built specifically for construction trades.</p>
           <a href="/tools" className="bg-white text-green-700 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
@@ -480,6 +505,7 @@ export default function RoofingCalculator() {
     </div>
   )
 }
+
 
 
 
