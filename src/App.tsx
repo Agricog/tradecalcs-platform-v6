@@ -17,6 +17,7 @@ import CookiePolicy from './pages/CookiePolicy'
 import CISCalculatorPage from './pages/CISCalculatorPage'
 import STGOCalculatorPage from './pages/STGOCalculatorPage'
 import ScaffoldCalculatorPage from './pages/ScaffoldCalculatorPage'
+import InsulationCalculatorPage from './pages/InsulationCalculatorPage'
 
 
 function App() {
@@ -94,6 +95,8 @@ function App() {
         <Route path="/stgo-calculator" element={<STGOCalculatorPage />} />
         <Route path="/calculators/scaffold-calculator" element={<ScaffoldCalculatorPage />} />
         <Route path="/scaffold-calculator" element={<ScaffoldCalculatorPage />} />
+        <Route path="/calculators/insulation-calculator" element={<InsulationCalculatorPage />} />
+        <Route path="/insulation-calculator" element={<InsulationCalculatorPage />} />
         <Route path="/leadfortress" element={<LeadFortressPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
