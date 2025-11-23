@@ -377,6 +377,31 @@ export default function BSPThreadFinder() {
           <p className="text-sm text-green-800">Identify threads correctly the first time and avoid ordering wrong fittings. Professional plumbers save 15-30 minutes per job by identifying threads on-site instead of guessing or making multiple trips to merchants.</p>
         </div>
 
+        {/* CONTACT FORM SECTION */}
+        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+          <div className="text-center mb-6">
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Need Help or Have Questions?</h3>
+            <p className="text-gray-700">
+              Got a specific calculation requirement or want a custom tool for your trade? Fill out the form below.
+            </p>
+          </div>
+          
+          <div className="max-w-3xl mx-auto">
+            <iframe 
+              src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" 
+              width="100%" 
+              height="600px" 
+              frameBorder="0"
+              title="Contact Form"
+              className="rounded-lg"
+            />
+          </div>
+          
+          <p className="text-center text-sm text-gray-600 mt-4">
+            Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 font-semibold hover:underline">mick@tradecalcs.co.uk</a>
+          </p>
+        </div>
+
         {/* CTA FOOTER */}
         <div className="bg-orange-600 text-white rounded-lg p-8 text-center">
           <h2 className="text-2xl font-bold mb-3">More Professional Tools for UK Plumbers</h2>
@@ -403,6 +428,7 @@ export default function BSPThreadFinder() {
     </div>
   )
 }
+
 
 
 
