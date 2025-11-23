@@ -390,7 +390,7 @@ export default function BSPThreadFinder() {
             <iframe 
               src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" 
               width="100%" 
-              height="600px" 
+              height="650px" 
               frameBorder="0"
               title="Contact Form"
               className="rounded-lg"
