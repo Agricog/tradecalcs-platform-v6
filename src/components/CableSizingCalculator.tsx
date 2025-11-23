@@ -341,7 +341,6 @@ export default function CableCalculator() {
       {/* QUOTE GENERATOR MODAL */}
       {showQuoteGenerator && (
         <QuoteGenerator
-          calculationType="Cable Sizing"
           calculationResults={{
             materials: [
               { item: `${result.size}mm² Twin & Earth Cable`, quantity: result.length, unit: 'meters' },
