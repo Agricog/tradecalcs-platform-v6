@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { X, Download, Mail } from 'lucide-react'
+import { X, Download } from 'lucide-react'
 
 interface QuoteGeneratorProps {
-  calculationType: string
   calculationResults: {
     materials: Array<{ item: string; quantity: string; unit: string }>
     summary?: string
@@ -10,7 +9,7 @@ interface QuoteGeneratorProps {
   onClose: () => void
 }
 
-export default function QuoteGenerator({ calculationType, calculationResults, onClose }: QuoteGeneratorProps) {
+export default function QuoteGenerator({ calculationResults, onClose }: QuoteGeneratorProps) {
   const [clientName, setClientName] = useState('')
   const [clientAddress, setClientAddress] = useState('')
   const [labourRate, setLabourRate] = useState('')
