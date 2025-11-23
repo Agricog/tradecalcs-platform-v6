@@ -118,7 +118,7 @@ export default function CISCalculator() {
   };
 
   return (
-    <div style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', minHeight: '100vh', padding: '40px 20px' }}>
+    <div style={{ background: '#f1f5f9', minHeight: '100vh', padding: '40px 20px' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
@@ -130,59 +130,59 @@ export default function CISCalculator() {
         .back-link:hover { gap: 12px; }
         
         .header-section { text-align: center; margin-bottom: 40px; }
-        .main-title { font-size: 36px; font-weight: 700; color: white; margin: 0 0 12px 0; }
-        .subtitle { font-size: 16px; color: #94a3b8; margin: 0; }
+        .main-title { font-size: 36px; font-weight: 700; color: #1e293b; margin: 0 0 12px 0; }
+        .subtitle { font-size: 16px; color: #64748b; margin: 0; }
         
-        .calc-card { background: #1e293b; border-radius: 16px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); margin-bottom: 30px; border: 1px solid #334155; }
+        .calc-card { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 30px; border: 1px solid #e2e8f0; }
         
-        .section-title { font-size: 12px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+        .section-title { font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
         
         .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
-        .mode-btn { background: #0f172a; border: 2px solid #334155; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; text-align: center; }
+        .mode-btn { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; text-align: center; }
         .mode-btn:hover { border-color: #10b981; background: rgba(16, 185, 129, 0.05); }
         .mode-btn.active { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
-        .mode-title { font-size: 18px; font-weight: 600; color: white; margin-bottom: 4px; }
-        .mode-desc { font-size: 13px; color: #94a3b8; }
+        .mode-title { font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 4px; }
+        .mode-desc { font-size: 13px; color: #64748b; }
         
         .rate-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 32px; }
-        .rate-btn { background: #0f172a; border: 2px solid #334155; border-radius: 12px; padding: 18px; cursor: pointer; transition: all 0.2s; text-align: center; }
+        .rate-btn { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 18px; cursor: pointer; transition: all 0.2s; text-align: center; }
         .rate-btn:hover { border-color: #3b82f6; background: rgba(59, 130, 246, 0.05); }
         .rate-btn.active { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
-        .rate-value { font-size: 20px; font-weight: 700; color: white; margin-bottom: 4px; }
-        .rate-label { font-size: 12px; color: #94a3b8; }
+        .rate-value { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+        .rate-label { font-size: 12px; color: #64748b; }
         
         .input-group { margin-bottom: 24px; }
-        .input-label { display: block; font-size: 14px; font-weight: 500; color: #cbd5e1; margin-bottom: 8px; }
+        .input-label { display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 8px; }
         .input-wrapper { position: relative; }
-        .input-symbol { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #64748b; font-weight: 500; pointer-events: none; }
-        .input-field { width: 100%; padding: 14px 16px 14px 40px; background: #0f172a; border: 2px solid #334155; border-radius: 10px; color: white; font-size: 16px; transition: all 0.2s; }
-        .input-field:focus { outline: none; border-color: #10b981; background: rgba(16, 185, 129, 0.05); }
+        .input-symbol { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-weight: 500; pointer-events: none; }
+        .input-field { width: 100%; padding: 14px 16px 14px 40px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 16px; transition: all 0.2s; }
+        .input-field:focus { outline: none; border-color: #10b981; background: white; }
         .input-help { display: block; margin-top: 6px; font-size: 12px; color: #64748b; }
         
-        .checkbox-wrapper { display: flex; align-items: center; gap: 10px; padding: 16px; background: #0f172a; border-radius: 10px; border: 1px solid #334155; margin-bottom: 24px; }
+        .checkbox-wrapper { display: flex; align-items: center; gap: 10px; padding: 16px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 24px; }
         .checkbox-wrapper input { width: 18px; height: 18px; cursor: pointer; }
-        .checkbox-label { font-size: 14px; color: #cbd5e1; font-weight: 500; }
+        .checkbox-label { font-size: 14px; color: #475569; font-weight: 500; }
         
         .btn-grid { display: grid; grid-template-columns: 120px 1fr; gap: 12px; }
         .btn { padding: 14px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-reset { background: #334155; color: #cbd5e1; }
-        .btn-reset:hover { background: #475569; }
-        .btn-calculate { background: #10b981; color: #0f172a; }
-        .btn-calculate:hover { background: #059669; transform: translateY(-1px); }
+        .btn-reset { background: #e2e8f0; color: #475569; }
+        .btn-reset:hover { background: #cbd5e1; }
+        .btn-calculate { background: #10b981; color: white; }
+        .btn-calculate:hover { background: #059669; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
         
         .results-card { background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 16px; padding: 32px; margin-top: 32px; }
         .results-title { font-size: 20px; font-weight: 700; color: white; margin: 0 0 24px 0; }
         .results-grid { display: grid; gap: 12px; }
-        .result-row { display: flex; justify-content: space-between; padding: 16px; background: rgba(15, 23, 42, 0.4); border-radius: 10px; backdrop-filter: blur(10px); }
-        .result-row.highlight { background: rgba(15, 23, 42, 0.6); border: 2px solid rgba(255, 255, 255, 0.2); }
-        .result-label { font-size: 14px; color: rgba(255, 255, 255, 0.9); font-weight: 500; }
+        .result-row { display: flex; justify-content: space-between; padding: 16px; background: rgba(255, 255, 255, 0.15); border-radius: 10px; backdrop-filter: blur(10px); }
+        .result-row.highlight { background: rgba(255, 255, 255, 0.25); border: 2px solid rgba(255, 255, 255, 0.3); }
+        .result-label { font-size: 14px; color: white; font-weight: 500; }
         .result-value { font-size: 18px; color: white; font-weight: 700; }
         
-        .info-section { background: #1e293b; border-radius: 16px; padding: 32px; margin-top: 40px; border: 1px solid #334155; }
-        .info-title { font-size: 18px; font-weight: 600; color: white; margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
-        .info-card { background: #0f172a; border-radius: 12px; padding: 20px; margin-bottom: 12px; border-left: 4px solid #3b82f6; }
+        .info-section { background: white; border-radius: 16px; padding: 32px; margin-top: 40px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .info-title { font-size: 18px; font-weight: 600; color: #1e293b; margin: 0 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        .info-card { background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 12px; border-left: 4px solid #3b82f6; }
         .info-card-title { font-size: 15px; font-weight: 600; color: #3b82f6; margin-bottom: 8px; }
-        .info-card-text { font-size: 13px; color: #94a3b8; line-height: 1.6; margin: 0; }
+        .info-card-text { font-size: 13px; color: #64748b; line-height: 1.6; margin: 0; }
         
         @media (max-width: 768px) {
           .mode-grid, .rate-grid { grid-template-columns: 1fr; }
@@ -360,32 +360,32 @@ export default function CISCalculator() {
           </div>
         </div>
 
-        <div style={{ background: '#1e293b', borderRadius: '16px', padding: '40px', marginTop: '40px', border: '1px solid #334155' }}>
-          <h2 style={{ fontSize: '28px', fontWeight: '700', color: 'white', marginBottom: '30px', textAlign: 'center' }}>Complete CIS Guide for UK Construction Professionals</h2>
+        <div style={{ background: 'white', borderRadius: '16px', padding: '40px', marginTop: '40px', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+          <h2 style={{ fontSize: '28px', fontWeight: '700', color: '#1e293b', marginBottom: '30px', textAlign: 'center' }}>Complete CIS Guide for UK Construction Professionals</h2>
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', marginBottom: '40px' }}>
             <div>
-              <h3 style={{ fontSize: '20px', fontWeight: '600', color: 'white', marginBottom: '15px' }}>Understanding CIS Deductions</h3>
-              <p style={{ color: '#94a3b8', marginBottom: '12px', lineHeight: '1.6' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#1e293b', marginBottom: '15px' }}>Understanding CIS Deductions</h3>
+              <p style={{ color: '#64748b', marginBottom: '12px', lineHeight: '1.6' }}>
                 The Construction Industry Scheme (CIS) sets out rules for how contractors must handle payments to subcontractors. Contractors must deduct money from payments and pass it to HMRC as advance payment of the subcontractor's tax and National Insurance.
               </p>
-              <ul style={{ color: '#94a3b8', lineHeight: '1.8' }}>
-                <li><strong style={{ color: '#cbd5e1' }}>20% rate:</strong> Verified registered subcontractors</li>
-                <li><strong style={{ color: '#cbd5e1' }}>30% rate:</strong> Unregistered subcontractors</li>
-                <li><strong style={{ color: '#cbd5e1' }}>0% rate:</strong> Gross payment status (rare, requires application)</li>
+              <ul style={{ color: '#64748b', lineHeight: '1.8' }}>
+                <li><strong style={{ color: '#475569' }}>20% rate:</strong> Verified registered subcontractors</li>
+                <li><strong style={{ color: '#475569' }}>30% rate:</strong> Unregistered subcontractors</li>
+                <li><strong style={{ color: '#475569' }}>0% rate:</strong> Gross payment status (rare, requires application)</li>
               </ul>
             </div>
 
             <div>
-              <h3 style={{ fontSize: '20px', fontWeight: '600', color: 'white', marginBottom: '15px' }}>What's Covered by CIS?</h3>
-              <p style={{ color: '#cbd5e1', marginBottom: '12px', fontWeight: '600' }}>Labour costs ARE deducted:</p>
-              <ul style={{ color: '#94a3b8', marginBottom: '15px', lineHeight: '1.8' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#1e293b', marginBottom: '15px' }}>What's Covered by CIS?</h3>
+              <p style={{ color: '#475569', marginBottom: '12px', fontWeight: '600' }}>Labour costs ARE deducted:</p>
+              <ul style={{ color: '#64748b', marginBottom: '15px', lineHeight: '1.8' }}>
                 <li>All wages and subcontractor payments</li>
                 <li>Site supervision costs</li>
                 <li>Labour-only services</li>
               </ul>
-              <p style={{ color: '#cbd5e1', marginBottom: '12px', fontWeight: '600' }}>Materials are NOT deducted:</p>
-              <ul style={{ color: '#94a3b8', lineHeight: '1.8' }}>
+              <p style={{ color: '#475569', marginBottom: '12px', fontWeight: '600' }}>Materials are NOT deducted:</p>
+              <ul style={{ color: '#64748b', lineHeight: '1.8' }}>
                 <li>Building materials (bricks, cement, timber, etc.)</li>
                 <li>Equipment and tool costs</li>
                 <li>Plant hire (when separately invoiced)</li>
@@ -394,46 +394,46 @@ export default function CISCalculator() {
           </div>
 
           <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '2px solid #3b82f6', borderRadius: '12px', padding: '30px', marginBottom: '30px' }}>
-            <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#60a5fa', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#3b82f6', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               💡 CIS Monthly Returns & Deadlines
             </h3>
-            <p style={{ color: '#93c5fd', lineHeight: '1.6', marginBottom: '12px' }}>
+            <p style={{ color: '#1e40af', lineHeight: '1.6', marginBottom: '12px' }}>
               <strong>Contractors must file monthly CIS returns to HMRC by the 19th of each month</strong> following the tax month end. The CIS tax month runs from the 6th of one month to the 5th of the next.
             </p>
-            <p style={{ color: '#93c5fd', lineHeight: '1.6' }}>
+            <p style={{ color: '#1e40af', lineHeight: '1.6' }}>
               Late returns incur automatic penalties starting at £100 per month, increasing for repeated failures.
             </p>
           </div>
 
           <div style={{ marginBottom: '40px' }}>
-            <h3 style={{ fontSize: '24px', fontWeight: '600', color: 'white', marginBottom: '20px' }}>Common CIS Mistakes to Avoid</h3>
+            <h3 style={{ fontSize: '24px', fontWeight: '600', color: '#1e293b', marginBottom: '20px' }}>Common CIS Mistakes to Avoid</h3>
             <div style={{ display: 'grid', gap: '15px' }}>
-              <div style={{ padding: '20px', background: 'rgba(251, 146, 60, 0.1)', borderLeft: '4px solid #fb923c', borderRadius: '8px' }}>
-                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#fbbf24' }}>❌ Not verifying subcontractors before payment</h4>
-                <p style={{ color: '#94a3b8', fontSize: '14px', margin: 0 }}>Always verify subcontractors with HMRC before making first payment. Use wrong rate = penalties.</p>
+              <div style={{ padding: '20px', background: '#fef3c7', borderLeft: '4px solid #f59e0b', borderRadius: '8px' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#92400e' }}>❌ Not verifying subcontractors before payment</h4>
+                <p style={{ color: '#78350f', fontSize: '14px', margin: 0 }}>Always verify subcontractors with HMRC before making first payment. Use wrong rate = penalties.</p>
               </div>
               
-              <div style={{ padding: '20px', background: 'rgba(251, 146, 60, 0.1)', borderLeft: '4px solid #fb923c', borderRadius: '8px' }}>
-                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#fbbf24' }}>❌ Deducting CIS from materials</h4>
-                <p style={{ color: '#94a3b8', fontSize: '14px', margin: 0 }}>Only labour is subject to CIS. Materials must be separately invoiced and paid in full.</p>
+              <div style={{ padding: '20px', background: '#fef3c7', borderLeft: '4px solid #f59e0b', borderRadius: '8px' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#92400e' }}>❌ Deducting CIS from materials</h4>
+                <p style={{ color: '#78350f', fontSize: '14px', margin: 0 }}>Only labour is subject to CIS. Materials must be separately invoiced and paid in full.</p>
               </div>
               
-              <div style={{ padding: '20px', background: 'rgba(251, 146, 60, 0.1)', borderLeft: '4px solid #fb923c', borderRadius: '8px' }}>
-                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#fbbf24' }}>❌ Missing monthly return deadlines</h4>
-                <p style={{ color: '#94a3b8', fontSize: '14px', margin: 0 }}>File by the 19th every month. Late filing = £100+ penalties that add up fast.</p>
+              <div style={{ padding: '20px', background: '#fef3c7', borderLeft: '4px solid #f59e0b', borderRadius: '8px' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#92400e' }}>❌ Missing monthly return deadlines</h4>
+                <p style={{ color: '#78350f', fontSize: '14px', margin: 0 }}>File by the 19th every month. Late filing = £100+ penalties that add up fast.</p>
               </div>
               
-              <div style={{ padding: '20px', background: 'rgba(251, 146, 60, 0.1)', borderLeft: '4px solid #fb923c', borderRadius: '8px' }}>
-                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#fbbf24' }}>❌ Poor record keeping</h4>
-                <p style={{ color: '#94a3b8', fontSize: '14px', margin: 0 }}>HMRC requires 3+ years of CIS records. Keep payment statements, verification records, and returns.</p>
+              <div style={{ padding: '20px', background: '#fef3c7', borderLeft: '4px solid #f59e0b', borderRadius: '8px' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#92400e' }}>❌ Poor record keeping</h4>
+                <p style={{ color: '#78350f', fontSize: '14px', margin: 0 }}>HMRC requires 3+ years of CIS records. Keep payment statements, verification records, and returns.</p>
               </div>
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
             <div>
-              <h3 style={{ fontSize: '20px', fontWeight: '600', color: 'white', marginBottom: '15px' }}>For Contractors (Paying Subbies)</h3>
-              <ol style={{ color: '#94a3b8', lineHeight: '1.8' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#1e293b', marginBottom: '15px' }}>For Contractors (Paying Subbies)</h3>
+              <ol style={{ color: '#64748b', lineHeight: '1.8' }}>
                 <li>Verify subcontractor with HMRC before first payment</li>
                 <li>Calculate gross labour amount (exclude materials)</li>
                 <li>Apply correct CIS rate (20% or 30%)</li>
@@ -445,8 +445,8 @@ export default function CISCalculator() {
             </div>
 
             <div>
-              <h3 style={{ fontSize: '20px', fontWeight: '600', color: 'white', marginBottom: '15px' }}>For Subcontractors (Invoicing Work)</h3>
-              <ol style={{ color: '#94a3b8', lineHeight: '1.8' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#1e293b', marginBottom: '15px' }}>For Subcontractors (Invoicing Work)</h3>
+              <ol style={{ color: '#64748b', lineHeight: '1.8' }}>
                 <li>Register for CIS with HMRC (to get 20% rate)</li>
                 <li>Calculate net labour you need to receive</li>
                 <li>Gross up by CIS rate to get invoice amount</li>
@@ -460,7 +460,7 @@ export default function CISCalculator() {
         </div>
 
         {/* CONTACT FORM SECTION */}
-        <div style={{ background: '#f8fafc', borderRadius: '16px', padding: '40px', marginTop: '40px', border: '1px solid #e2e8f0' }}>
+        <div style={{ background: 'white', borderRadius: '16px', padding: '40px', marginTop: '40px', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
           <div style={{ textAlign: 'center', marginBottom: '30px' }}>
             <h3 style={{ fontSize: '28px', fontWeight: '700', color: '#1e293b', marginBottom: '12px' }}>Need Help or Have Questions?</h3>
             <p style={{ fontSize: '16px', color: '#64748b' }}>
@@ -475,7 +475,7 @@ export default function CISCalculator() {
               height="650px" 
               frameBorder="0"
               title="Contact Form"
-              style={{ borderRadius: '12px', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)' }}
+              style={{ borderRadius: '12px', border: '1px solid #e2e8f0' }}
             />
           </div>
           
@@ -489,6 +489,7 @@ export default function CISCalculator() {
     </div>
   );
 }
+
 
 
 
