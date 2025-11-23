@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Zap, Info, CheckCircle2 } from 'lucide-react'
+import QuoteGenerator from './QuoteGenerator'
 
 export default function VoltageDropCalculator() {
   const [current, setCurrent] = useState('')
@@ -7,6 +8,7 @@ export default function VoltageDropCalculator() {
   const [cableSize, setCableSize] = useState('2.5')
   const [circuitType, setCircuitType] = useState('lighting')
   const [result, setResult] = useState<any>(null)
+  const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
   const cableResistance: Record<string, number> = {
     '1': 18.1, '1.5': 12.1, '2.5': 7.41, '4': 4.62, '6': 3.08,
@@ -32,7 +34,10 @@ export default function VoltageDropCalculator() {
       vdPercent: vdPercent.toFixed(2),
       maxVD,
       compliant,
-      formula: `VD = (2 × ${I}A × ${L}m × ${R.toFixed(4)}Ω/m) = ${vd.toFixed(2)}V`
+      formula: `VD = (2 × ${I}A × ${L}m × ${R.toFixed(4)}Ω/m) = ${vd.toFixed(2)}V`,
+      current: I,
+      length: L,
+      cableSize
     })
   }
 
@@ -174,32 +179,61 @@ export default function VoltageDropCalculator() {
 
           {/* RESULTS */}
           {result && (
-            <div className={`mt-8 rounded-lg p-6 ${result.compliant ? 'bg-cyan-50 border-2 border-cyan-300' : 'bg-red-50 border-2 border-red-300'}`}>
-              <div className="flex items-center gap-2 mb-4">
-                {result.compliant ? (
-                  <CheckCircle2 className="w-6 h-6 text-cyan-600" />
-                ) : (
-                  <Info className="w-6 h-6 text-red-600" />
-                )}
-                <h3 className={`text-xl font-bold ${result.compliant ? 'text-cyan-900' : 'text-red-900'}`}>
-                  {result.compliant ? 'COMPLIANT ✓' : 'EXCEEDS LIMIT ⚠'}
-                </h3>
+            <>
+              <div className={`mt-8 rounded-lg p-6 ${result.compliant ? 'bg-cyan-50 border-2 border-cyan-300' : 'bg-red-50 border-2 border-red-300'}`}>
+                <div className="flex items-center gap-2 mb-4">
+                  {result.compliant ? (
+                    <CheckCircle2 className="w-6 h-6 text-cyan-600" />
+                  ) : (
+                    <Info className="w-6 h-6 text-red-600" />
+                  )}
+                  <h3 className={`text-xl font-bold ${result.compliant ? 'text-cyan-900' : 'text-red-900'}`}>
+                    {result.compliant ? 'COMPLIANT ✓' : 'EXCEEDS LIMIT ⚠'}
+                  </h3>
+                </div>
+
+                <div className="bg-white p-4 rounded border-t-2 border-b-2" style={{ borderColor: result.compliant ? '#06b6d4' : '#ef4444' }}>
+                  <div className="flex justify-between mb-3">
+                    <p className="font-semibold">Voltage Drop</p>
+                    <p className="font-bold text-lg">{result.vd}V ({result.vdPercent}%)</p>
+                  </div>
+                  <div className="flex justify-between mb-3">
+                    <p className="font-semibold">Limit</p>
+                    <p className="font-bold">{result.maxVD}%</p>
+                  </div>
+                  <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded mt-3">
+                    <p className="font-mono">{result.formula}</p>
+                  </div>
+                </div>
               </div>
 
-              <div className="bg-white p-4 rounded border-t-2 border-b-2" style={{ borderColor: result.compliant ? '#06b6d4' : '#ef4444' }}>
-                <div className="flex justify-between mb-3">
-                  <p className="font-semibold">Voltage Drop</p>
-                  <p className="font-bold text-lg">{result.vd}V ({result.vdPercent}%)</p>
+              {/* QUOTE GENERATOR CTA */}
+              <div className="mt-6 p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
+                    <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
+                  </div>
                 </div>
-                <div className="flex justify-between mb-3">
-                  <p className="font-semibold">Limit</p>
-                  <p className="font-bold">{result.maxVD}%</p>
-                </div>
-                <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded mt-3">
-                  <p className="font-mono">{result.formula}</p>
-                </div>
+                <button
+                  onClick={() => setShowQuoteGenerator(true)}
+                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  Generate Free Quote
+                </button>
+                <p className="text-xs text-center text-gray-500 mt-2">
+                  Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
+                </p>
               </div>
-            </div>
+            </>
           )}
         </div>
 
@@ -318,9 +352,24 @@ export default function VoltageDropCalculator() {
           </a>
         </div>
       </div>
+
+      {/* QUOTE GENERATOR MODAL */}
+      {showQuoteGenerator && (
+        <QuoteGenerator
+          calculationResults={{
+            materials: [
+              { item: `${result.cableSize}mm² Twin & Earth Cable`, quantity: result.length.toString(), unit: 'meters' },
+              { item: 'Cable Installation & Testing', quantity: '1', unit: 'job' }
+            ],
+            summary: `BS 7671 compliant voltage drop verification: ${result.vd}V (${result.vdPercent}%) for ${result.current}A load at ${result.length}m length`
+          }}
+          onClose={() => setShowQuoteGenerator(false)}
+        />
+      )}
     </div>
   )
 }
+
 
 
 
