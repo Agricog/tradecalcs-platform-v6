@@ -169,7 +169,42 @@ export default function Home() {
       <section id="calculators" className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-2">Free Professional Calculators</h2>
-          <p className="text-center text-gray-600 mb-12">Choose your calculator and start working smarter</p>
+          <p className="text-center text-gray-600 mb-8">Choose your calculator and start working smarter</p>
+          
+          {/* NEW: CTA SECTION ABOVE CALCULATORS */}
+          <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl p-8 mb-12 shadow-xl">
+            <div className="max-w-3xl mx-auto text-center">
+              <h3 className="text-3xl font-bold mb-4">Generate Professional Quotes in 2 Minutes</h3>
+              <p className="text-lg mb-6 opacity-90">
+                Calculate materials, labour costs, and create client-ready PDF quotes instantly
+              </p>
+              
+              <div className="flex flex-wrap justify-center gap-4 mb-6">
+                <a 
+                  href="/paint-calculator" 
+                  className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
+                >
+                  🎨 Painter Calculator
+                </a>
+                <a 
+                  href="/cable-sizing-calculator" 
+                  className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
+                >
+                  ⚡ Electrician Calculator
+                </a>
+                <a 
+                  href="/joinery-calculator" 
+                  className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
+                >
+                  🪚 Joinery Calculator
+                </a>
+              </div>
+              
+              <p className="text-sm opacity-75">
+                ✓ Free to use • ✓ No sign-up required • ✓ Professional PDF quotes
+              </p>
+            </div>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
   <a href="/cable-sizing-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
@@ -449,6 +484,7 @@ export default function Home() {
     </>
   )
 }
+
 
 
 
