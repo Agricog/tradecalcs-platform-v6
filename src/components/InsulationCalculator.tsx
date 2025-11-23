@@ -6,7 +6,6 @@ export default function InsulationCalculator() {
   const [constructionType, setConstructionType] = useState('')
   const [insulationType, setInsulationType] = useState('')
   const [thickness, setThickness] = useState('')
-  const [targetUValue, setTargetUValue] = useState('')
   const [area, setArea] = useState('')
   const [results, setResults] = useState<any>(null)
 
