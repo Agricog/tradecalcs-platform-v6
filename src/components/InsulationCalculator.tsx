@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Info, CheckCircle2, HelpCircle, Layers, AlertTriangle } from 'lucide-react'
+import QuoteGenerator from './QuoteGenerator'
 
 export default function InsulationCalculator() {
   const [elementType, setElementType] = useState<'wall' | 'roof' | 'floor'>('wall')
@@ -8,6 +9,7 @@ export default function InsulationCalculator() {
   const [thickness, setThickness] = useState('')
   const [area, setArea] = useState('')
   const [results, setResults] = useState<any>(null)
+  const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
   // U-value calculation data (simplified - real calculations are more complex)
   const materialRValues: Record<string, number> = {
@@ -246,77 +248,108 @@ export default function InsulationCalculator() {
             </div>
 
             {results && (
-              <div className="bg-white rounded-lg shadow-lg p-8">
-                <div className="flex items-center gap-2 mb-6">
-                  {results.isCompliant ? (
-                    <CheckCircle2 className="w-6 h-6 text-green-600" />
-                  ) : (
-                    <AlertTriangle className="w-6 h-6 text-red-600" />
-                  )}
-                  <h2 className="text-xl font-bold text-gray-900">
-                    {results.isCompliant ? 'Part L Compliant' : 'Below Standard'}
-                  </h2>
-                </div>
+              <>
+                <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
+                  <div className="flex items-center gap-2 mb-6">
+                    {results.isCompliant ? (
+                      <CheckCircle2 className="w-6 h-6 text-green-600" />
+                    ) : (
+                      <AlertTriangle className="w-6 h-6 text-red-600" />
+                    )}
+                    <h2 className="text-xl font-bold text-gray-900">
+                      {results.isCompliant ? 'Part L Compliant' : 'Below Standard'}
+                    </h2>
+                  </div>
 
-                <div className={`rounded-lg p-4 mb-6 border-l-4 ${
-                  results.isCompliant ? 'bg-green-50 border-green-600' : 'bg-red-50 border-red-600'
-                }`}>
-                  <p className="text-sm text-gray-600">Calculated U-Value</p>
-                  <p className="text-3xl font-bold text-gray-900">{results.calculatedUValue} W/m²K</p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Target: {results.regulationTarget} W/m²K (Part L 2021)
+                  <div className={`rounded-lg p-4 mb-6 border-l-4 ${
+                    results.isCompliant ? 'bg-green-50 border-green-600' : 'bg-red-50 border-red-600'
+                  }`}>
+                    <p className="text-sm text-gray-600">Calculated U-Value</p>
+                    <p className="text-3xl font-bold text-gray-900">{results.calculatedUValue} W/m²K</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Target: {results.regulationTarget} W/m²K (Part L 2021)
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="space-y-4">
+                      <div className="bg-teal-50 rounded-lg p-4 border-l-4 border-teal-600">
+                        <p className="text-sm text-gray-600">Thermal Resistance (R-value)</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.thermalResistance} m²K/W</p>
+                      </div>
+
+                      <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
+                        <p className="text-sm text-gray-600">Insulation Type</p>
+                        <p className="text-lg font-bold text-gray-900">{getInsulationName(results.insulationType)}</p>
+                        <p className="text-xs text-gray-500 mt-1">{results.thickness}mm thick</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      {!results.isCompliant && (
+                        <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
+                          <p className="text-sm text-gray-600">Recommended Thickness</p>
+                          <p className="text-2xl font-bold text-gray-900">{results.recommendedThickness}mm</p>
+                          <p className="text-xs text-gray-500 mt-1">For Part L compliance</p>
+                        </div>
+                      )}
+
+                      {results.area > 0 && (
+                        <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+                          <p className="text-sm text-gray-600">Estimated Material Cost</p>
+                          <p className="text-2xl font-bold text-gray-900">£{results.materialCost}</p>
+                          <p className="text-xs text-gray-500 mt-1">{results.area}m² at current thickness</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {!results.isCompliant && (
+                    <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600 mb-6">
+                      <h4 className="font-semibold text-red-900 mb-2">⚠️ Non-Compliant</h4>
+                      <p className="text-sm text-red-800 mb-2">
+                        Your U-value is {Math.abs(parseFloat(results.difference))}% {parseFloat(results.difference) > 0 ? 'higher' : 'lower'} than Building Regulations Part L requirements.
+                      </p>
+                      <p className="text-sm text-red-800">
+                        Increase insulation thickness to {results.recommendedThickness}mm to meet compliance.
+                      </p>
+                    </div>
+                  )}
+
+                  <p className="text-xs text-gray-500 mt-6 text-center">
+                    ✓ Simplified calculation • {results.elementType} • {results.constructionType} • Part L 2021
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <div className="space-y-4">
-                    <div className="bg-teal-50 rounded-lg p-4 border-l-4 border-teal-600">
-                      <p className="text-sm text-gray-600">Thermal Resistance (R-value)</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.thermalResistance} m²K/W</p>
-                    </div>
-
-                    <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
-                      <p className="text-sm text-gray-600">Insulation Type</p>
-                      <p className="text-lg font-bold text-gray-900">{getInsulationName(results.insulationType)}</p>
-                      <p className="text-xs text-gray-500 mt-1">{results.thickness}mm thick</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    {!results.isCompliant && (
-                      <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
-                        <p className="text-sm text-gray-600">Recommended Thickness</p>
-                        <p className="text-2xl font-bold text-gray-900">{results.recommendedThickness}mm</p>
-                        <p className="text-xs text-gray-500 mt-1">For Part L compliance</p>
+                {/* QUOTE GENERATOR CTA */}
+                {results.area > 0 && (
+                  <div className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg mb-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
                       </div>
-                    )}
-
-                    {results.area > 0 && (
-                      <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
-                        <p className="text-sm text-gray-600">Estimated Material Cost</p>
-                        <p className="text-2xl font-bold text-gray-900">£{results.materialCost}</p>
-                        <p className="text-xs text-gray-500 mt-1">{results.area}m² at current thickness</p>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
+                        <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
                       </div>
-                    )}
-                  </div>
-                </div>
-
-                {!results.isCompliant && (
-                  <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600 mb-6">
-                    <h4 className="font-semibold text-red-900 mb-2">⚠️ Non-Compliant</h4>
-                    <p className="text-sm text-red-800 mb-2">
-                      Your U-value is {Math.abs(parseFloat(results.difference))}% {parseFloat(results.difference) > 0 ? 'higher' : 'lower'} than Building Regulations Part L requirements.
-                    </p>
-                    <p className="text-sm text-red-800">
-                      Increase insulation thickness to {results.recommendedThickness}mm to meet compliance.
+                    </div>
+                    <button
+                      onClick={() => setShowQuoteGenerator(true)}
+                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      </svg>
+                      Generate Free Quote
+                    </button>
+                    <p className="text-xs text-center text-gray-500 mt-2">
+                      Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
                     </p>
                   </div>
                 )}
-
-                <p className="text-xs text-gray-500 mt-6 text-center">
-                  ✓ Simplified calculation • {results.elementType} • {results.constructionType} • Part L 2021
-                </p>
-              </div>
+              </>
             )}
           </div>
 
@@ -414,6 +447,23 @@ export default function InsulationCalculator() {
           </div>
         </div>
       </div>
+
+      {/* QUOTE GENERATOR MODAL */}
+      {showQuoteGenerator && results && results.area > 0 && (
+        <QuoteGenerator
+          calculationResults={{
+            materials: [
+              { item: getInsulationName(results.insulationType), quantity: results.area.toString(), unit: 'm²' },
+              { item: `${results.thickness}mm Insulation Boards`, quantity: results.area.toString(), unit: 'm²' },
+              { item: 'Fixings & Adhesive', quantity: '1', unit: 'job' },
+              { item: 'Installation Labour', quantity: '1', unit: 'job' }
+            ],
+            summary: `${results.elementType} insulation - U-value: ${results.calculatedUValue} W/m²K ${results.isCompliant ? '(Part L compliant)' : `(Non-compliant - recommend ${results.recommendedThickness}mm)`}`
+          }}
+          onClose={() => setShowQuoteGenerator(false)}
+        />
+      )}
     </div>
   )
 }
+
