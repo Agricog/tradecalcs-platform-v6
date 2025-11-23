@@ -48,17 +48,37 @@ function App() {
       {/* Routes */}
       <Routes>
         <Route path="/" element={<Homepage />} />
+        
+        {/* Cable Sizing - new URL + old redirect */}
+        <Route path="/cable-sizing-calculator" element={<CableSizingCalculatorPage />} />
         <Route path="/cable-sizing" element={<CableSizingCalculatorPage />} />
+        
+        {/* Voltage Drop - new URL + old redirect */}
+        <Route path="/voltage-drop-calculator" element={<VoltageDropCalculatorPage />} />
         <Route path="/voltage-drop" element={<VoltageDropCalculatorPage />} />
+        
+        {/* BSP Thread - new URL + old redirect */}
+        <Route path="/bsp-thread-calculator" element={<BSPThreadIdentifierPage />} />
         <Route path="/bsp-thread" element={<BSPThreadIdentifierPage />} />
+        
+        {/* Roofing Insurance - new URL + old redirect */}
+        <Route path="/roofing-insurance-calculator" element={<RoofingCalculatorPage />} />
         <Route path="/roofing" element={<RoofingCalculatorPage />} />
+        
+        {/* Concrete - new URL + old redirect */}
+        <Route path="/concrete-calculator" element={<ConcreteToBagsPage />} />
         <Route path="/concrete" element={<ConcreteToBagsPage />} />
         
         {/* Plasterer - new URL + old redirect */}
         <Route path="/plasterer-calculator" element={<PlastererCalculatorsPage />} />
         <Route path="/plasterer" element={<PlastererCalculatorsPage />} />
         
+        {/* Joinery - new URL + old redirect */}
+        <Route path="/joinery-calculator" element={<JoineryCalculatorPage />} />
         <Route path="/joinery" element={<JoineryCalculatorPage />} />
+        
+        {/* Brick Block - new URL + old redirect */}
+        <Route path="/brick-block-calculator" element={<BrickBlockCalculatorPage />} />
         <Route path="/brick-block" element={<BrickBlockCalculatorPage />} />
         
         {/* Tiling - new URL + old redirect */}
@@ -130,6 +150,7 @@ function App() {
 }
 
 export default App
+
 
 
 
