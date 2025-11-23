@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Package, Calculator, AlertCircle, CheckCircle2, ShoppingCart, ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import QuoteGenerator from './QuoteGenerator'
 
 export default function ConcreteToBagsCalculator() {
   const navigate = useNavigate()
@@ -12,6 +13,7 @@ export default function ConcreteToBagsCalculator() {
   const [email, setEmail] = useState('')
   const [showResults, setShowResults] = useState(false)
   const [emailSubmitted, setEmailSubmitted] = useState(false)
+  const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
   const mixRatios: Record<string, { ratio: string; strength: string; cementParts: number; sandParts: number; gravelParts: number }> = {
     foundation: { ratio: '1:2:4', strength: 'C20', cementParts: 1, sandParts: 2, gravelParts: 4 },
@@ -212,62 +214,91 @@ export default function ConcreteToBagsCalculator() {
 
         {/* RESULTS */}
         {showResults && results && (
-          <div className="mt-8 bg-white rounded-xl shadow-xl border-2 border-green-200 p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                <ShoppingCart className="w-6 h-6 text-green-600" />
+          <>
+            <div className="mt-8 bg-white rounded-xl shadow-xl border-2 border-green-200 p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                  <ShoppingCart className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">Your Shopping List</h3>
+                  <p className="text-gray-600">Buy these from {results.merchantName}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900">Your Shopping List</h3>
-                <p className="text-gray-600">Buy these from {results.merchantName}</p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border-2 border-green-200">
+                  <div className="text-sm font-semibold text-green-700 mb-1">CEMENT</div>
+                  <div className="text-4xl font-bold text-gray-900 mb-2">{results.cementBags} bags</div>
+                  <div className="text-sm text-gray-600">25kg bags × {results.cementBags}</div>
+                </div>
+
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border-2 border-blue-200">
+                  <div className="text-sm font-semibold text-blue-700 mb-1">BALLAST</div>
+                  <div className="text-4xl font-bold text-gray-900 mb-2">{results.bulkBags} bulk bags</div>
+                  <div className="text-sm text-gray-600">All-in ballast (sand + gravel)</div>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 mb-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                  <div>
+                    <div className="text-sm text-gray-600 mb-1">Volume</div>
+                    <div className="font-bold text-gray-900">{results.volumeM3}m³</div>
+                  </div>
+                  <div>
+                    <div className="text-sm text-gray-600 mb-1">Mix Ratio</div>
+                    <div className="font-bold text-gray-900">{results.mix.ratio}</div>
+                  </div>
+                  <div>
+                    <div className="text-sm text-gray-600 mb-1">Strength</div>
+                    <div className="font-bold text-gray-900">{results.mix.strength}</div>
+                  </div>
+                  <div>
+                    <div className="text-sm text-gray-600 mb-1">Est. Cost</div>
+                    <div className="font-bold text-green-600">£{results.totalCost}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-semibold text-blue-900 mb-1">Pro Tip: Mixing Instructions</p>
+                    <p className="text-sm text-blue-800">Mix ratio {results.mix.ratio} means: {results.mix.cementParts} part cement, {results.mix.sandParts} parts sand, {results.mix.gravelParts} parts gravel. Add water gradually until workable consistency. This calculation includes 10% waste factor.</p>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border-2 border-green-200">
-                <div className="text-sm font-semibold text-green-700 mb-1">CEMENT</div>
-                <div className="text-4xl font-bold text-gray-900 mb-2">{results.cementBags} bags</div>
-                <div className="text-sm text-gray-600">25kg bags × {results.cementBags}</div>
+            {/* QUOTE GENERATOR CTA */}
+            <div className="mt-6 p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
+                  <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
+                </div>
               </div>
-
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border-2 border-blue-200">
-                <div className="text-sm font-semibold text-blue-700 mb-1">BALLAST</div>
-                <div className="text-4xl font-bold text-gray-900 mb-2">{results.bulkBags} bulk bags</div>
-                <div className="text-sm text-gray-600">All-in ballast (sand + gravel)</div>
-              </div>
+              <button
+                onClick={() => setShowQuoteGenerator(true)}
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Generate Free Quote
+              </button>
+              <p className="text-xs text-center text-gray-500 mt-2">
+                Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
+              </p>
             </div>
-
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 mb-6">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div>
-                  <div className="text-sm text-gray-600 mb-1">Volume</div>
-                  <div className="font-bold text-gray-900">{results.volumeM3}m³</div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600 mb-1">Mix Ratio</div>
-                  <div className="font-bold text-gray-900">{results.mix.ratio}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600 mb-1">Strength</div>
-                  <div className="font-bold text-gray-900">{results.mix.strength}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600 mb-1">Est. Cost</div>
-                  <div className="font-bold text-green-600">£{results.totalCost}</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="font-semibold text-blue-900 mb-1">Pro Tip: Mixing Instructions</p>
-                  <p className="text-sm text-blue-800">Mix ratio {results.mix.ratio} means: {results.mix.cementParts} part cement, {results.mix.sandParts} parts sand, {results.mix.gravelParts} parts gravel. Add water gradually until workable consistency. This calculation includes 10% waste factor.</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          </>
         )}
 
         {/* EMAIL CAPTURE CTA */}
@@ -420,9 +451,26 @@ export default function ConcreteToBagsCalculator() {
           </button>
         </div>
       </div>
+
+      {/* QUOTE GENERATOR MODAL */}
+      {showQuoteGenerator && results && (
+        <QuoteGenerator
+          calculationResults={{
+            materials: [
+              { item: `Cement (25kg bags)`, quantity: results.cementBags.toString(), unit: 'bags' },
+              { item: `All-in Ballast (bulk bags)`, quantity: results.bulkBags.toString(), unit: 'bags' },
+              { item: `${applications.find(a => a.value === applicationType)?.label} - ${results.mix.ratio} Mix`, quantity: results.volumeM3, unit: 'm³' },
+              { item: 'Mixing & Pouring Labour', quantity: '1', unit: 'job' }
+            ],
+            summary: `${results.volumeM3}m³ concrete ${results.mix.strength} (${results.mix.ratio} mix ratio) - includes 10% waste factor`
+          }}
+          onClose={() => setShowQuoteGenerator(false)}
+        />
+      )}
     </div>
   )
 }
+
 
 
 
