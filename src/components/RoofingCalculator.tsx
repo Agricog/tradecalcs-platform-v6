@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Home, Info, CheckCircle2 } from 'lucide-react'
+import QuoteGenerator from './QuoteGenerator'
 
 export default function RoofingCalculator() {
   const [roofType, setRoofType] = useState('gable')
@@ -9,6 +10,7 @@ export default function RoofingCalculator() {
   const [tileType, setTileType] = useState('concrete')
   const [adjusterQuote, setAdjusterQuote] = useState('')
   const [result, setResult] = useState<any>(null)
+  const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
   const calculate = () => {
     if (!length || !width) {
@@ -231,63 +233,92 @@ export default function RoofingCalculator() {
 
           {/* RESULTS */}
           {result && (
-            <div className="mt-8 bg-green-100 border-2 border-green-700 rounded-lg p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <CheckCircle2 className="w-6 h-6 text-green-700" />
-                <h3 className="text-xl font-bold text-green-900">Calculation Complete</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-white p-3 rounded border border-green-300">
-                  <p className="text-xs text-gray-600">Roof Type</p>
-                  <p className="font-bold text-green-800">{result.roofType}</p>
+            <>
+              <div className="mt-8 bg-green-100 border-2 border-green-700 rounded-lg p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <CheckCircle2 className="w-6 h-6 text-green-700" />
+                  <h3 className="text-xl font-bold text-green-900">Calculation Complete</h3>
                 </div>
-                <div className="bg-white p-3 rounded border border-green-300">
-                  <p className="text-xs text-gray-600">Total Area</p>
-                  <p className="font-bold text-green-800">{result.totalArea}m²</p>
-                </div>
-                <div className="bg-white p-3 rounded border border-green-300">
-                  <p className="text-xs text-gray-600">Tiles Needed</p>
-                  <p className="font-bold text-green-800">{result.tiles.toLocaleString()}</p>
-                </div>
-                <div className="bg-white p-3 rounded border border-green-300">
-                  <p className="text-xs text-gray-600">Material Cost</p>
-                  <p className="font-bold text-green-800">£{result.materialCost}</p>
-                </div>
-              </div>
-
-              <div className="bg-white border-t-2 border-green-300 pt-4">
-                <div className="flex justify-between mb-2">
-                  <p>Materials</p>
-                  <p className="font-semibold">£{result.materialCost}</p>
-                </div>
-                <div className="flex justify-between mb-4">
-                  <p>Labour (Professional Rate)</p>
-                  <p className="font-semibold">£{result.labourCost}</p>
-                </div>
-                <div className="flex justify-between bg-green-200 p-3 rounded font-bold text-lg border border-green-700">
-                  <p>Fair Market Value</p>
-                  <p className="text-green-900">£{result.totalCost}</p>
-                </div>
-
-                {result.adjusterQuote && (
-                  <div className="mt-4 bg-red-50 border border-red-200 p-3 rounded">
-                    <p className="text-sm font-semibold text-red-800 mb-2">⚠️ Price Gap Analysis</p>
-                    <div className="flex justify-between text-sm mb-2">
-                      <p>Fair Market Value</p>
-                      <p>£{result.totalCost}</p>
-                    </div>
-                    <div className="flex justify-between text-sm mb-2 border-t border-red-200 pt-2">
-                      <p>Adjuster's Quote</p>
-                      <p>£{result.adjusterQuote}</p>
-                    </div>
-                    <div className="flex justify-between text-sm font-bold text-red-700">
-                      <p>You're Being Underpaid By</p>
-                      <p>£{result.gap}</p>
-                    </div>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-white p-3 rounded border border-green-300">
+                    <p className="text-xs text-gray-600">Roof Type</p>
+                    <p className="font-bold text-green-800">{result.roofType}</p>
                   </div>
-                )}
+                  <div className="bg-white p-3 rounded border border-green-300">
+                    <p className="text-xs text-gray-600">Total Area</p>
+                    <p className="font-bold text-green-800">{result.totalArea}m²</p>
+                  </div>
+                  <div className="bg-white p-3 rounded border border-green-300">
+                    <p className="text-xs text-gray-600">Tiles Needed</p>
+                    <p className="font-bold text-green-800">{result.tiles.toLocaleString()}</p>
+                  </div>
+                  <div className="bg-white p-3 rounded border border-green-300">
+                    <p className="text-xs text-gray-600">Material Cost</p>
+                    <p className="font-bold text-green-800">£{result.materialCost}</p>
+                  </div>
+                </div>
+
+                <div className="bg-white border-t-2 border-green-300 pt-4">
+                  <div className="flex justify-between mb-2">
+                    <p>Materials</p>
+                    <p className="font-semibold">£{result.materialCost}</p>
+                  </div>
+                  <div className="flex justify-between mb-4">
+                    <p>Labour (Professional Rate)</p>
+                    <p className="font-semibold">£{result.labourCost}</p>
+                  </div>
+                  <div className="flex justify-between bg-green-200 p-3 rounded font-bold text-lg border border-green-700">
+                    <p>Fair Market Value</p>
+                    <p className="text-green-900">£{result.totalCost}</p>
+                  </div>
+
+                  {result.adjusterQuote && (
+                    <div className="mt-4 bg-red-50 border border-red-200 p-3 rounded">
+                      <p className="text-sm font-semibold text-red-800 mb-2">⚠️ Price Gap Analysis</p>
+                      <div className="flex justify-between text-sm mb-2">
+                        <p>Fair Market Value</p>
+                        <p>£{result.totalCost}</p>
+                      </div>
+                      <div className="flex justify-between text-sm mb-2 border-t border-red-200 pt-2">
+                        <p>Adjuster's Quote</p>
+                        <p>£{result.adjusterQuote}</p>
+                      </div>
+                      <div className="flex justify-between text-sm font-bold text-red-700">
+                        <p>You're Being Underpaid By</p>
+                        <p>£{result.gap}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+
+              {/* QUOTE GENERATOR CTA */}
+              <div className="mt-6 p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
+                    <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowQuoteGenerator(true)}
+                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  Generate Free Quote
+                </button>
+                <p className="text-xs text-center text-gray-500 mt-2">
+                  Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
+                </p>
+              </div>
+            </>
           )}
         </div>
 
@@ -430,8 +461,25 @@ export default function RoofingCalculator() {
           </a>
         </div>
       </div>
+
+      {/* QUOTE GENERATOR MODAL */}
+      {showQuoteGenerator && result && (
+        <QuoteGenerator
+          calculationResults={{
+            materials: [
+              { item: `${result.tileName} Roof Tiles`, quantity: result.tiles.toString(), unit: 'tiles' },
+              { item: 'Roofing Battens & Felt', quantity: result.totalArea, unit: 'm²' },
+              { item: 'Ridge Tiles & Fixings', quantity: '1', unit: 'job' },
+              { item: 'Professional Roofing Labour', quantity: result.totalArea, unit: 'm²' }
+            ],
+            summary: `${result.roofType} - ${result.totalArea}m² (${result.waste}% waste factor included) - ${pitch}° pitch`
+          }}
+          onClose={() => setShowQuoteGenerator(false)}
+        />
+      )}
     </div>
   )
 }
+
 
 
