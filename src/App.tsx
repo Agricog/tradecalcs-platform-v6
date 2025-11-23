@@ -53,11 +53,22 @@ function App() {
         <Route path="/bsp-thread" element={<BSPThreadIdentifierPage />} />
         <Route path="/roofing" element={<RoofingCalculatorPage />} />
         <Route path="/concrete" element={<ConcreteToBagsPage />} />
+        
+        {/* Plasterer - new URL + old redirect */}
+        <Route path="/plasterer-calculator" element={<PlastererCalculatorsPage />} />
         <Route path="/plasterer" element={<PlastererCalculatorsPage />} />
+        
         <Route path="/joinery" element={<JoineryCalculatorPage />} />
         <Route path="/brick-block" element={<BrickBlockCalculatorPage />} />
+        
+        {/* Tiling - new URL + old redirect */}
+        <Route path="/tiling-calculator" element={<TilerCalculatorPage />} />
         <Route path="/tiling" element={<TilerCalculatorPage />} />
+        
+        {/* Paint - new URL + old redirect */}
+        <Route path="/paint-calculator" element={<PainterCalculatorPage />} />
         <Route path="/paint" element={<PainterCalculatorPage />} />
+        
         <Route path="/calculators/cis-calculator" element={<CISCalculatorPage />} />
         <Route path="/calculators/stgo-calculator" element={<STGOCalculatorPage />} />
         <Route path="/stgo-calculator" element={<STGOCalculatorPage />} />
@@ -119,6 +130,7 @@ function App() {
 }
 
 export default App
+
 
 
 
