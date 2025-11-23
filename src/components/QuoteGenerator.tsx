@@ -1,356 +1,342 @@
 import { useState } from 'react'
-import { Zap, Info, CheckCircle2 } from 'lucide-react'
-import QuoteGenerator from './QuoteGenerator'
+import { X, Download } from 'lucide-react'
 
-export default function CableCalculator() {
-  const [loadType, setLoadType] = useState<'amps' | 'kw'>('amps')
-  const [current, setCurrent] = useState('')
-  const [kW, setKW] = useState('')
-  const [length, setLength] = useState('')
-  const [method, setMethod] = useState('C')
-  const [lighting, setLighting] = useState(false)
-  const [result, setResult] = useState<any>(null)
-  const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
+interface QuoteGeneratorProps {
+  calculationResults: {
+    materials: Array<{ item: string; quantity: string; unit: string }>
+    summary?: string
+  }
+  onClose: () => void
+}
 
-  const calculate = () => {
-    let amps = parseFloat(current)
-    if (loadType === 'kw' && kW) amps = parseFloat(kW) * 1000 / 230
-    if (!amps || !length) {
-      alert('Please fill all fields')
-      return
+export default function QuoteGenerator({ calculationResults, onClose }: QuoteGeneratorProps) {
+  const [clientName, setClientName] = useState('')
+  const [clientAddress, setClientAddress] = useState('')
+  const [labourRate, setLabourRate] = useState('')
+  const [estimatedHours, setEstimatedHours] = useState('')
+  const [materialMarkup, setMaterialMarkup] = useState('15')
+  const [notes, setNotes] = useState('')
+  const [showPreview, setShowPreview] = useState(false)
+
+  const generateQuote = () => {
+    setShowPreview(true)
+  }
+
+  const downloadPDF = () => {
+    const quoteHTML = generateQuoteHTML()
+    const blob = new Blob([quoteHTML], { type: 'text/html' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `Quote-${clientName.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.html`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
+  const calculateTotal = () => {
+    const labour = parseFloat(labourRate) * parseFloat(estimatedHours)
+    const materialsBase = calculationResults.materials.reduce((sum) => {
+      return sum + 100
+    }, 0)
+    const materialsWithMarkup = materialsBase * (1 + parseFloat(materialMarkup) / 100)
+    const subtotal = labour + materialsWithMarkup
+    const vat = subtotal * 0.2
+    return {
+      labour,
+      materials: materialsWithMarkup,
+      subtotal,
+      vat,
+      total: subtotal + vat
     }
+  }
 
-    let size = 1.5
-    if (amps <= 13.5) size = 1.5
-    else if (amps <= 18) size = 2.5
-    else if (amps <= 24) size = 4
-    else if (amps <= 32) size = 6
-    else if (amps <= 41) size = 10
-    else if (amps <= 57) size = 16
-    else if (amps <= 76) size = 25
-    else size = 35
+  const totals = calculateTotal()
 
-    setResult({
-      amps: amps.toFixed(1),
-      size,
-      length,
-      method,
-      lighting,
-      formula: `Recommended: ${size}mm² copper cable for ${amps.toFixed(1)}A over ${length}m (Method ${method})`
-    })
+  const generateQuoteHTML = () => {
+    return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote - ${clientName}</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; }
+        .header { border-bottom: 3px solid #6366f1; padding-bottom: 20px; margin-bottom: 30px; }
+        .header h1 { color: #6366f1; margin: 0 0 10px 0; font-size: 32px; }
+        .header p { color: #666; margin: 5px 0; }
+        .section { margin: 30px 0; }
+        .section h2 { color: #6366f1; border-bottom: 2px solid #6366f1; padding-bottom: 10px; margin-bottom: 15px; }
+        .client-info { background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #6366f1; color: white; padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid #e5e7eb; }
+        tr:hover { background: #f9fafb; }
+        .totals { background: #f9fafb; padding: 20px; border-radius: 8px; margin-top: 30px; }
+        .totals-row { display: flex; justify-content: space-between; padding: 8px 0; }
+        .total-final { font-size: 24px; font-weight: bold; color: #6366f1; border-top: 2px solid #6366f1; padding-top: 15px; margin-top: 15px; }
+        .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 14px; }
+        .terms { background: #fef3c7; padding: 15px; border-left: 4px solid #f59e0b; margin: 20px 0; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 Professional Quote</h1>
+        <p><strong>Date:</strong> ${new Date().toLocaleDateString('en-GB')}</p>
+        <p><strong>Valid for:</strong> 30 days</p>
+    </div>
+
+    <div class="client-info">
+        <h2 style="margin-top: 0; border: none; padding: 0;">Client Details</h2>
+        <p><strong>Name:</strong> ${clientName}</p>
+        <p><strong>Address:</strong> ${clientAddress}</p>
+    </div>
+
+    <div class="section">
+        <h2>📦 Materials Required</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${calculationResults.materials.map(item => `
+                    <tr>
+                        <td>${item.item}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.unit}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+        ${calculationResults.summary ? `<p><em>${calculationResults.summary}</em></p>` : ''}
+    </div>
+
+    <div class="section">
+        <h2>⏱️ Labour</h2>
+        <p>Estimated Hours: <strong>${estimatedHours} hours</strong></p>
+        <p>Rate: <strong>£${parseFloat(labourRate).toFixed(2)}/hour</strong></p>
+    </div>
+
+    ${notes ? `
+    <div class="section">
+        <h2>📝 Additional Notes</h2>
+        <p>${notes}</p>
+    </div>
+    ` : ''}
+
+    <div class="totals">
+        <div class="totals-row">
+            <span>Labour:</span>
+            <span><strong>£${totals.labour.toFixed(2)}</strong></span>
+        </div>
+        <div class="totals-row">
+            <span>Materials (inc. ${materialMarkup}% markup):</span>
+            <span><strong>£${totals.materials.toFixed(2)}</strong></span>
+        </div>
+        <div class="totals-row">
+            <span>Subtotal:</span>
+            <span><strong>£${totals.subtotal.toFixed(2)}</strong></span>
+        </div>
+        <div class="totals-row">
+            <span>VAT (20%):</span>
+            <span><strong>£${totals.vat.toFixed(2)}</strong></span>
+        </div>
+        <div class="totals-row total-final">
+            <span>TOTAL:</span>
+            <span>£${totals.total.toFixed(2)}</span>
+        </div>
+    </div>
+
+    <div class="terms">
+        <p><strong>Payment Terms:</strong> 50% deposit required to commence work. Balance due on completion.</p>
+        <p><strong>Validity:</strong> This quote is valid for 30 days from the date above.</p>
+    </div>
+
+    <div class="footer">
+        <p><strong>Generated by TradeCalcs</strong> - Professional Quote Generator</p>
+        <p>tradecalcs.co.uk</p>
+    </div>
+</body>
+</html>
+    `
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <title>Cable Sizing Calculator UK | BS 7671 18th Edition Compliant Cable Selection</title>
-      <meta name="description" content="Professional UK cable sizing calculator. BS 7671 18th Edition compliant. Instant cable size selection with voltage drop analysis and derating factors." />
-
-      {/* BACK LINK */}
-      <div className="max-w-5xl mx-auto px-4 py-4">
-        <a href="/" className="text-purple-600 hover:text-purple-800 font-semibold text-sm">
-          ← Back to All Calculators
-        </a>
-      </div>
-
-      {/* BLUE HEADER BANNER */}
-      <div className="bg-gradient-to-r from-blue-700 to-blue-600 text-white py-12 px-4">
-        <div className="max-w-5xl mx-auto text-center">
-          <Zap className="w-12 h-12 mx-auto mb-3" />
-          <h1 className="text-4xl font-bold mb-2">Cable Sizing Calculator UK</h1>
-          <p className="text-lg opacity-95">BS 7671 compliant electrical cable sizing with voltage drop analysis and derating factors</p>
-        </div>
-      </div>
-
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        {/* MAIN CALCULATOR FORM */}
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <div className="bg-blue-700 text-white rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-2 mb-1">
-              <Zap className="w-5 h-5" />
-              <h2 className="text-lg font-bold">Cable Size Calculator</h2>
-            </div>
-            <p className="text-sm opacity-90">BS 7671 compliant cable sizing with voltage drop analysis</p>
-          </div>
-
-          {/* LOAD TYPE TOGGLE */}
-          <div className="mb-6">
-            <div className="flex gap-2 mb-3">
-              <button
-                onClick={() => setLoadType('amps')}
-                className={`flex-1 px-4 py-2 rounded-lg font-bold transition ${
-                  loadType === 'amps'
-                    ? 'bg-blue-700 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                Enter Amps
-              </button>
-              <button
-                onClick={() => setLoadType('kw')}
-                className={`flex-1 px-4 py-2 rounded-lg font-bold transition ${
-                  loadType === 'kw'
-                    ? 'bg-blue-700 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                Enter kW
-              </button>
-            </div>
-          </div>
-
-          {/* STEP 1: LOAD CURRENT */}
-          <div className="mb-6">
-            <label className="block font-bold text-gray-800 mb-2">1. Load Current (Amps)</label>
-            {loadType === 'amps' ? (
-              <>
-                <input
-                  type="number"
-                  value={current}
-                  onChange={e => setCurrent(e.target.value)}
-                  placeholder="Enter amps..."
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-700 mb-2"
-                />
-                <div className="flex gap-2 flex-wrap">
-                  {['6A', '10A', '16A', '20A', '32A', '40A'].map(amp => (
-                    <button
-                      key={amp}
-                      onClick={() => setCurrent(amp.replace('A', ''))}
-                      className="px-3 py-1 bg-blue-100 text-blue-700 rounded font-semibold text-sm hover:bg-blue-200"
-                    >
-                      {amp}
-                    </button>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <>
-                <input
-                  type="number"
-                  value={kW}
-                  onChange={e => setKW(e.target.value)}
-                  placeholder="Enter kW..."
-                  step="0.1"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-700 mb-2"
-                />
-                <p className="text-xs text-gray-500">1kW ≈ 4.35A (at 230V)</p>
-              </>
-            )}
-          </div>
-
-          {/* STEP 2: CABLE LENGTH */}
-          <div className="mb-6">
-            <label className="block font-bold text-gray-800 mb-2">2. Cable Length (meters)</label>
-            <input
-              type="number"
-              value={length}
-              onChange={e => setLength(e.target.value)}
-              placeholder="Enter length..."
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-700 mb-2"
-            />
-            <div className="flex gap-2 flex-wrap">
-              {['5m', '10m', '20m', '50m'].map(len => (
-                <button
-                  key={len}
-                  onClick={() => setLength(len.replace('m', ''))}
-                  className="px-3 py-1 bg-blue-100 text-blue-700 rounded font-semibold text-sm hover:bg-blue-200"
-                >
-                  {len}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* STEP 3: INSTALLATION METHOD */}
-          <div className="mb-6">
-            <label className="block font-bold text-gray-800 mb-2">3. Installation Method</label>
-            <select
-              value={method}
-              onChange={e => setMethod(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-700"
-            >
-              <option value="C">Clipped direct to wall/surface (Method C)</option>
-              <option value="B">Enclosed in conduit/trunking (Method B)</option>
-              <option value="E">In cable tray or basket (Method E)</option>
-            </select>
-            <p className="text-xs text-gray-500 mt-1">Cable clipped directly to wall, ceiling, or surface (Method C)</p>
-          </div>
-
-          {/* STEP 4: LIGHTING CIRCUIT CHECKBOX */}
-          <div className="mb-6">
-            <label className="inline-flex items-center gap-2 text-gray-800 font-semibold">
-              <input
-                type="checkbox"
-                checked={lighting}
-                onChange={e => setLighting(e.target.checked)}
-                className="w-4 h-4 rounded border-gray-300"
-              />
-              This is a lighting circuit (3% voltage drop limit instead of 5%)
-            </label>
-          </div>
-
-          {/* CALCULATE BUTTON */}
-          <button
-            onClick={calculate}
-            className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-lg text-lg transition"
-          >
-            Calculate Cable Size
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-gray-900">Generate Professional Quote</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <X className="w-6 h-6" />
           </button>
+        </div>
 
-          {/* RESULTS */}
-          {result && (
-            <>
-              <div className="mt-8 bg-blue-50 border-2 border-blue-300 rounded-lg p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <CheckCircle2 className="w-6 h-6 text-blue-700" />
-                  <h3 className="text-xl font-bold text-blue-900">Cable Size Recommendation</h3>
+        {!showPreview ? (
+          <div className="p-6">
+            <div className="bg-blue-50 border-l-4 border-blue-600 p-4 mb-6">
+              <p className="text-sm text-blue-800">
+                <strong>FREE Quote Generator</strong> - Turn your calculation into a professional quote in 2 minutes
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Client Name *</label>
+                <input
+                  type="text"
+                  value={clientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                  placeholder="John Smith"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Client Address *</label>
+                <textarea
+                  value={clientAddress}
+                  onChange={(e) => setClientAddress(e.target.value)}
+                  placeholder="123 High Street, London, SW1A 1AA"
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Labour Rate (£/hour) *</label>
+                  <input
+                    type="number"
+                    value={labourRate}
+                    onChange={(e) => setLabourRate(e.target.value)}
+                    placeholder="50"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                    required
+                  />
                 </div>
-                <div className="bg-white p-4 rounded border-t-2 border-b-2 border-blue-300">
-                  <p className="text-gray-700 mb-2">{result.formula}</p>
-                  <div className="text-xs text-gray-500 bg-blue-50 p-2 rounded mt-3">
-                    Results assume standard conditions (30°C ambient, no grouping factors). Additional derating may apply for grouped circuits or high temperatures.
-                  </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Estimated Hours *</label>
+                  <input
+                    type="number"
+                    step="0.5"
+                    value={estimatedHours}
+                    onChange={(e) => setEstimatedHours(e.target.value)}
+                    placeholder="8"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                    required
+                  />
                 </div>
               </div>
 
-              {/* QUOTE GENERATOR CTA */}
-              <div className="mt-6 p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
-                    <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
-                  </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Material Markup (%)</label>
+                <input
+                  type="number"
+                  value={materialMarkup}
+                  onChange={(e) => setMaterialMarkup(e.target.value)}
+                  placeholder="15"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                />
+                <p className="text-xs text-gray-500 mt-1">Typical range: 10-20%</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Additional Notes (Optional)</label>
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Work includes... Materials to be sourced from..."
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                />
+              </div>
+
+              <button
+                onClick={generateQuote}
+                disabled={!clientName || !clientAddress || !labourRate || !estimatedHours}
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Preview Quote
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="p-6">
+            <div className="bg-green-50 border-l-4 border-green-600 p-4 mb-6">
+              <p className="text-sm text-green-800">
+                <strong>✓ Quote Ready!</strong> Review below and download as PDF
+              </p>
+            </div>
+
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
+              <h3 className="text-lg font-bold mb-4">Quote Summary</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Client:</span>
+                  <span className="font-semibold">{clientName}</span>
                 </div>
-                <button
-                  onClick={() => setShowQuoteGenerator(true)}
-                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                  </svg>
-                  Generate Free Quote
-                </button>
-                <p className="text-xs text-center text-gray-500 mt-2">
-                  Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
+                <div className="flex justify-between">
+                  <span>Labour ({estimatedHours}h @ £{labourRate}/h):</span>
+                  <span className="font-semibold">£{totals.labour.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Materials (+ {materialMarkup}% markup):</span>
+                  <span className="font-semibold">£{totals.materials.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>VAT (20%):</span>
+                  <span className="font-semibold">£{totals.vat.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-lg font-bold text-purple-600 pt-2 border-t-2 border-gray-300">
+                  <span>TOTAL:</span>
+                  <span>£{totals.total.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <button
+                onClick={downloadPDF}
+                className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+              >
+                <Download className="w-5 h-5" />
+                Download Quote (HTML)
+              </button>
+
+              <button
+                onClick={() => setShowPreview(false)}
+                className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-lg font-bold transition"
+              >
+                Edit Details
+              </button>
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
+                <p className="text-sm text-yellow-800 mb-2">
+                  <strong>Want branded quotes with your logo?</strong>
                 </p>
+                <p className="text-xs text-yellow-700 mb-3">
+                  Upgrade to TradeCalcs Pro for professional branding, email integration, and quote tracking
+                </p>
+                <a
+                  href="/pro"
+                  className="inline-block bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
+                >
+                  Learn More - £99/year
+                </a>
               </div>
-            </>
-          )}
-        </div>
-
-        {/* IMPORTANT NOTES */}
-        <div className="bg-blue-50 border-l-4 border-blue-700 rounded-lg p-6 mb-8">
-          <div className="flex items-start gap-3">
-            <Info className="w-6 h-6 text-blue-700 mt-1 flex-shrink-0" />
-            <div>
-              <h3 className="font-bold text-blue-900 mb-3">Important Notes</h3>
-              <ul className="space-y-2 text-sm text-blue-900">
-                <li>• This calculator follows BS 7671:2018+A2:2022 (18th Edition) requirements</li>
-                <li>• Results assume standard conditions (30°C ambient, no grouping factors)</li>
-                <li>• Additional derating may apply for grouped circuits or high temperatures</li>
-                <li>• Always consult a qualified electrician for professional installations</li>
-              </ul>
             </div>
           </div>
-        </div>
-
-        {/* HOW TO USE */}
-        <section className="bg-white rounded-lg shadow p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">How to Use the Cable Sizing Calculator</h2>
-          <p className="text-gray-700 mb-4">
-            Choosing the correct cable size is critical for electrical safety and compliance with BS 7671:2018+A2:2022 (the 18th Edition wiring regulations). Our free cable sizing calculator helps UK electricians determine the appropriate cable size for any electrical installation in seconds.
-          </p>
-        </section>
-
-        {/* WHAT THIS CALCULATOR DOES */}
-        <section className="bg-white rounded-lg shadow p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">What This Calculator Does</h2>
-          <p className="text-gray-700 mb-4">
-            This professional-grade tool calculates the minimum cable size required for electrical circuits in UK installations. It accounts for load current, voltage drop, installation methods, derating factors, and protective device ratings to ensure compliance with BS 7671.
-          </p>
-        </section>
-
-        {/* WHY CORRECT CABLE SIZING MATTERS */}
-        <section className="bg-white rounded-lg shadow p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Why Correct Cable Sizing Matters</h2>
-          <p className="text-gray-700 mb-4">
-            Undersized cables can lead to dangerous overheating, fire risks, excessive voltage drop, and non-compliance with BS 7671. Oversized cables waste money and installation space. Getting it right protects lives, property, and your professional reputation.
-          </p>
-          <div className="bg-blue-50 border-l-4 border-blue-700 p-4 rounded">
-            <p className="font-bold text-blue-900 mb-2">⚡ Important Compliance Note</p>
-            <p className="text-sm text-blue-800">All calculations must comply with BS 7671:2018+A2:2022. This calculator is designed for UK installations using standard PVC/XLPE insulated copper conductors. Always verify your calculations with current regulations and manufacturer data sheets.</p>
-          </div>
-        </section>
-
-        {/* COMMON MISTAKES */}
-        <section className="bg-white rounded-lg shadow p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Common Cable Sizing Mistakes</h2>
-          <p className="text-gray-700 mb-4">
-            Professional electricians know that mistakes in cable sizing are costly. Common errors include ignoring derating factors, using incorrect installation methods, forgetting voltage drop limits, and not accounting for future load growth. This calculator helps you avoid all these pitfalls.
-          </p>
-        </section>
-
-        {/* SAVE TIME BOX */}
-        <div className="bg-green-50 border-l-4 border-green-600 rounded-lg p-6 mb-8">
-          <div className="flex items-start gap-2">
-            <CheckCircle2 className="w-6 h-6 text-green-600 mt-1 flex-shrink-0" />
-            <div>
-              <p className="font-bold text-green-900 mb-2">✓ Save Time On Every Job</p>
-              <p className="text-sm text-green-800">Professional electricians save 10–15 minutes per circuit calculation using our tool. That's hours saved every installation, allowing you to complete more jobs without compromising on safety or compliance.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* FAQ */}
-        <section className="bg-white rounded-lg shadow p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            <div>
-              <h4 className="font-bold text-gray-800 mb-1">Q: Is this calculator compliant with the 18th Edition?</h4>
-              <p className="text-sm text-gray-700">Yes, all calculations follow BS 7671:2018+A2:2022 requirements including current-carrying capacity tables and voltage drop limits.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-gray-800 mb-1">Q: Can I use this for three-phase installations?</h4>
-              <p className="text-sm text-gray-700">Yes, the calculator supports both single-phase (230V) and three-phase (400V) installations with appropriate voltage drop calculations.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-gray-800 mb-1">Q: What if I have multiple derating factors?</h4>
-              <p className="text-sm text-gray-700">Apply all relevant derating factors cumulatively. The calculator guides you through the process step by step.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-gray-800 mb-1">Q: Is this free to use?</h4>
-              <p className="text-sm text-gray-700">Yes, completely free with no hidden costs, registration, or limits. Built by electricians for electricians.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA FOOTER */}
-        <div className="bg-blue-700 text-white rounded-lg p-8 text-center">
-          <h2 className="text-2xl font-bold mb-3">Need More Electrical Calculators?</h2>
-          <p className="mb-6">Check out our voltage drop calculator and other professional resources for UK electricians.</p>
-          <a href="/" className="bg-white text-blue-700 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
-            View All Calculators
-          </a>
-        </div>
+        )}
       </div>
-
-      {/* QUOTE GENERATOR MODAL */}
-      {showQuoteGenerator && (
-        <QuoteGenerator
-          calculationResults={{
-            materials: [
-              { item: `${result.size}mm² Twin & Earth Cable`, quantity: result.length, unit: 'meters' },
-              { item: 'Cable Installation & Testing', quantity: '1', unit: 'job' }
-            ],
-            summary: `BS 7671 compliant cable sizing for ${result.amps}A load at ${result.length}m length (Method ${result.method})`
-          }}
-          onClose={() => setShowQuoteGenerator(false)}
-        />
-      )}
     </div>
   )
 }
