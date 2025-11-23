@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { TruckIcon, AlertTriangle, CheckCircle, XCircle, Download } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react'
+import { TruckIcon, AlertTriangle, CheckCircle, XCircle, Download, Info, HelpCircle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 interface CalculationData {
   isCompliant: boolean;
@@ -19,104 +19,104 @@ interface CalculationData {
 }
 
 export default function STGOCalculator() {
-  const [tractorWeight, setTractorWeight] = useState('');
-  const [trailerWeight, setTrailerWeight] = useState('');
-  const [loadWeight, setLoadWeight] = useState('');
-  const [vehicleLength, setVehicleLength] = useState('');
-  const [vehicleWidth, setVehicleWidth] = useState('');
-  const [axleCount, setAxleCount] = useState('');
-  const [loadType, setLoadType] = useState('');
-  const [movementDate, setMovementDate] = useState('');
-  const [results, setResults] = useState<CalculationData | null>(null);
+  const [tractorWeight, setTractorWeight] = useState('')
+  const [trailerWeight, setTrailerWeight] = useState('')
+  const [loadWeight, setLoadWeight] = useState('')
+  const [vehicleLength, setVehicleLength] = useState('')
+  const [vehicleWidth, setVehicleWidth] = useState('')
+  const [axleCount, setAxleCount] = useState('')
+  const [loadType, setLoadType] = useState('')
+  const [movementDate, setMovementDate] = useState('')
+  const [results, setResults] = useState<CalculationData | null>(null)
 
-  const calculateCompliance = (e: React.FormEvent) => {
-    e.preventDefault();
+  const calculateCompliance = () => {
+    if (!tractorWeight || !trailerWeight || !loadWeight || !axleCount || !loadType || !movementDate) return
 
-    const tractor = parseFloat(tractorWeight);
-    const trailer = parseFloat(trailerWeight);
-    const load = parseFloat(loadWeight);
-    const length = parseFloat(vehicleLength) || 0;
-    const width = parseFloat(vehicleWidth) || 0;
-    const totalWeight = tractor + trailer + load;
+    const tractor = parseFloat(tractorWeight)
+    const trailer = parseFloat(trailerWeight)
+    const load = parseFloat(loadWeight)
+    const length = parseFloat(vehicleLength) || 0
+    const width = parseFloat(vehicleWidth) || 0
+    const totalWeight = tractor + trailer + load
     
-    const today = new Date();
-    const moveDate = new Date(movementDate);
-    const daysUntilMovement = Math.ceil((moveDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    const today = new Date()
+    const moveDate = new Date(movementDate)
+    const daysUntilMovement = Math.ceil((moveDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
-    const standardLimit = 44000;
-    let category = 'Standard';
-    let requiredNoticeDays = 0;
-    let maxSpeed = '60 mph (motorway), 50 mph (dual carriageway)';
-    let isCompliant = true;
-    let issues: string[] = [];
-    let requirements: string[] = [];
+    const standardLimit = 44000
+    let category = 'Standard'
+    let requiredNoticeDays = 0
+    let maxSpeed = '60 mph (motorway), 50 mph (dual carriageway)'
+    let isCompliant = true
+    let issues: string[] = []
+    let requirements: string[] = []
 
     if (totalWeight > standardLimit) {
       if (loadType === 'divisible') {
-        isCompliant = false;
-        issues.push('Divisible loads exceeding 44,000kg must be split across multiple vehicles');
-        category = 'Non-compliant';
+        isCompliant = false
+        issues.push('Divisible loads exceeding 44,000kg must be split across multiple vehicles')
+        category = 'Non-compliant'
       } else {
         if (totalWeight <= 50000) {
-          category = 'Category 1';
-          requiredNoticeDays = 2;
-          maxSpeed = '40 mph (all roads)';
-          requirements.push('2 working days\' notice to National Highways via ESDAL');
-          requirements.push('STGO Category 1 plate displayed on vehicle front');
+          category = 'Category 1'
+          requiredNoticeDays = 2
+          maxSpeed = '40 mph (all roads)'
+          requirements.push('2 working days\' notice to National Highways via ESDAL')
+          requirements.push('STGO Category 1 plate displayed on vehicle front')
         } else if (totalWeight <= 80000) {
-          category = 'Category 2';
-          requiredNoticeDays = 5;
-          maxSpeed = '30 mph (all roads)';
-          requirements.push('5 working days\' notice to National Highways via ESDAL');
-          requirements.push('STGO Category 2 plate displayed on vehicle front');
-          requirements.push('Special speed limit: 30 mph maximum');
+          category = 'Category 2'
+          requiredNoticeDays = 5
+          maxSpeed = '30 mph (all roads)'
+          requirements.push('5 working days\' notice to National Highways via ESDAL')
+          requirements.push('STGO Category 2 plate displayed on vehicle front')
+          requirements.push('Special speed limit: 30 mph maximum')
         } else if (totalWeight <= 150000) {
-          category = 'Category 3';
-          requiredNoticeDays = 5;
-          maxSpeed = '12 mph (all roads)';
-          requirements.push('5 working days\' notice to National Highways via ESDAL');
-          requirements.push('STGO Category 3 plate displayed on vehicle front');
-          requirements.push('Special speed limit: 12 mph maximum');
-          requirements.push('Extensive route planning and police notifications required');
+          category = 'Category 3'
+          requiredNoticeDays = 5
+          maxSpeed = '12 mph (all roads)'
+          requirements.push('5 working days\' notice to National Highways via ESDAL')
+          requirements.push('STGO Category 3 plate displayed on vehicle front')
+          requirements.push('Special speed limit: 12 mph maximum')
+          requirements.push('Extensive route planning and police notifications required')
         } else {
-          isCompliant = false;
-          issues.push('Load exceeds maximum STGO limit of 150,000kg');
-          category = 'Exceeds STGO Limits';
+          isCompliant = false
+          issues.push('Load exceeds maximum STGO limit of 150,000kg')
+          category = 'Exceeds STGO Limits'
         }
 
         if (requiredNoticeDays > 0 && daysUntilMovement < requiredNoticeDays) {
-          isCompliant = false;
-          issues.push(`Insufficient notice: ${requiredNoticeDays} working days required, only ${daysUntilMovement} days until movement`);
+          isCompliant = false
+          issues.push(`Insufficient notice: ${requiredNoticeDays} working days required, only ${daysUntilMovement} days until movement`)
         }
       }
     }
 
-    const weightPerAxle = totalWeight / parseInt(axleCount);
-    const maxAxleWeight = 12500;
+    const weightPerAxle = totalWeight / parseInt(axleCount)
+    const maxAxleWeight = 12500
     
     if (weightPerAxle > maxAxleWeight && axleCount !== '7+') {
-      isCompliant = false;
-      issues.push(`Average axle weight (${Math.round(weightPerAxle)}kg) may exceed limits`);
+      isCompliant = false
+      issues.push(`Average axle weight (${Math.round(weightPerAxle)}kg) may exceed limits`)
     }
 
     if (length > 30) {
-      requirements.push(`Length exceeds 30m (${length}m) - additional notification required`);
+      requirements.push(`Length exceeds 30m (${length}m) - additional notification required`)
     }
     if (width > 6.1) {
-      isCompliant = false;
-      issues.push(`Width exceeds 6.1m (${width}m) - police escort required`);
+      isCompliant = false
+      issues.push(`Width exceeds 6.1m (${width}m) - police escort required`)
     }
 
     if (category.includes('Category')) {
-      requirements.push('Load must be properly secured per DfT guidance');
-      requirements.push('Driver must hold valid HGV license');
+      requirements.push('Load must be properly secured per DfT guidance')
+      requirements.push('Driver must hold valid HGV license')
       
       if (totalWeight > 80000) {
-        requirements.push('⚠️ Bridge assessments required - contact National Highways');
+        requirements.push('⚠️ Bridge assessments required - contact National Highways')
       }
     }
 
-    const calculationData: CalculationData = {
+    setResults({
       isCompliant,
       category,
       totalWeight,
@@ -130,15 +130,13 @@ export default function STGOCalculator() {
       maxSpeed,
       issues,
       requirements
-    };
-
-    setResults(calculationData);
-  };
+    })
+  }
 
   const downloadPDF = () => {
-    if (!results) return;
+    if (!results) return
 
-    const { totalWeight, tractorWeight, trailerWeight, loadWeight, category, isCompliant, requirements, issues, vehicleLength, vehicleWidth, maxSpeed } = results;
+    const { totalWeight, tractorWeight, trailerWeight, loadWeight, category, isCompliant, requirements, issues, vehicleLength, vehicleWidth, maxSpeed } = results
 
     const pdfContent = `
       <html>
@@ -233,354 +231,353 @@ export default function STGOCalculator() {
         </div>
       </body>
       </html>
-    `;
+    `
 
-    const blob = new Blob([pdfContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `HaulCheck-STGO-Report-${new Date().toISOString().split('T')[0]}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+    const blob = new Blob([pdfContent], { type: 'text/html' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `HaulCheck-STGO-Report-${new Date().toISOString().split('T')[0]}.html`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <Link to="/" className="inline-flex items-center text-orange-600 hover:text-orange-700 mb-6 font-medium">
-          ← Back to All Calculators
-        </Link>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
+      <div className="bg-gradient-to-r from-orange-600 to-red-600 py-4 px-6">
+        <div className="max-w-5xl mx-auto">
+          <Link to="/" className="text-white font-semibold flex items-center gap-2 hover:opacity-90 transition w-fit">
+            ← Back to All Calculators
+          </Link>
+        </div>
+      </div>
 
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            HaulCheck - STGO Compliance Calculator
+      <div className="max-w-5xl mx-auto p-6">
+        <div className="mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            HaulCheck - STGO Compliance Calculator for UK Hauliers
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-xl text-gray-700 mb-4">
             Avoid £750K fines with instant STGO compliance checks before movement
+          </p>
+          <p className="text-gray-600 mb-6">
+            Industry-trusted STGO calculator for professional haulage operators across the UK. Check Category 1, 2, 3 compliance, weight limits, and notification requirements.
           </p>
         </div>
 
-        <div className="bg-red-50 border-2 border-red-500 rounded-lg p-4 mb-8 flex gap-3">
-          <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" />
-          <div>
-            <h3 className="font-semibold text-red-900 mb-1">For Guidance Only</h3>
-            <p className="text-sm text-red-800">
-              This calculator provides preliminary checks. Always verify with DVSA guidance. Non-compliance can result in fines up to £759,000 and operator license revocation.
-            </p>
+        <div className="bg-red-50 rounded-lg p-4 mb-8 border-l-4 border-red-600">
+          <div className="flex gap-3">
+            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <h3 className="font-semibold text-red-900 mb-1">For Guidance Only</h3>
+              <p className="text-sm text-red-800">
+                This calculator provides preliminary checks. Always verify with DVSA guidance. Non-compliance can result in fines up to £759,000 and operator license revocation.
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <form onSubmit={calculateCompliance} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tractor Weight (kg)
-              </label>
-              <input
-                type="number"
-                value={tractorWeight}
-                onChange={(e) => setTractorWeight(e.target.value)}
-                placeholder="e.g., 8000"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                required
-              />
-              <p className="text-sm text-gray-500 mt-1">Unladen weight of tractor unit only</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Trailer Weight (kg)
-              </label>
-              <input
-                type="number"
-                value={trailerWeight}
-                onChange={(e) => setTrailerWeight(e.target.value)}
-                placeholder="e.g., 10000"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                required
-              />
-              <p className="text-sm text-gray-500 mt-1">Unladen weight of trailer only</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Load Weight (kg)
-              </label>
-              <input
-                type="number"
-                value={loadWeight}
-                onChange={(e) => setLoadWeight(e.target.value)}
-                placeholder="e.g., 32000"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                required
-              />
-              <p className="text-sm text-gray-500 mt-1">Weight of cargo/equipment being transported</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Vehicle Length (m) - Optional
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                value={vehicleLength}
-                onChange={(e) => setVehicleLength(e.target.value)}
-                placeholder="e.g., 16.5"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              />
-              <p className="text-sm text-gray-500 mt-1">Total length of tractor + trailer + load</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Vehicle Width (m) - Optional
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                value={vehicleWidth}
-                onChange={(e) => setVehicleWidth(e.target.value)}
-                placeholder="e.g., 2.55"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              />
-              <p className="text-sm text-gray-500 mt-1">Maximum width including load</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Number of Axles
-              </label>
-              <select
-                value={axleCount}
-                onChange={(e) => setAxleCount(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                required
-              >
-                <option value="">Select axles</option>
-                <option value="3">3 axles</option>
-                <option value="4">4 axles</option>
-                <option value="5">5 axles</option>
-                <option value="6">6 axles</option>
-                <option value="7+">7+ axles</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Load Type
-              </label>
-              <select
-                value={loadType}
-                onChange={(e) => setLoadType(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                required
-              >
-                <option value="">Select type</option>
-                <option value="indivisible">Indivisible (cannot be split)</option>
-                <option value="divisible">Divisible (can be split)</option>
-              </select>
-              <p className="text-sm text-gray-500 mt-1">Divisible loads over standard weights must be split</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Planned Movement Date
-              </label>
-              <input
-                type="date"
-                value={movementDate}
-                onChange={(e) => setMovementDate(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                required
-              />
-              <p className="text-sm text-gray-500 mt-1">Required for notice period calculation</p>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-semibold py-3 px-6 rounded-lg transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-            >
-              <TruckIcon className="w-5 h-5" />
-              Check STGO Compliance
-            </button>
-          </form>
-        </div>
-
-        {results && (
-          <div className="space-y-6">
-            <div className={`rounded-lg p-6 border-2 shadow-xl ${
-              results.isCompliant 
-                ? 'bg-gradient-to-br from-green-50 to-green-100 border-green-500' 
-                : 'bg-gradient-to-br from-red-50 to-red-100 border-red-500'
-            }`}>
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg ${
-                  results.isCompliant 
-                    ? 'bg-gradient-to-br from-green-500 to-green-600' 
-                    : 'bg-gradient-to-br from-red-500 to-red-600'
-                }`}>
-                  {results.isCompliant ? (
-                    <CheckCircle className="w-7 h-7 text-white" />
-                  ) : (
-                    <XCircle className="w-7 h-7 text-white" />
-                  )}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Check Compliance</h2>
+              
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Tractor Weight (kg)</label>
+                    <input
+                      type="number"
+                      value={tractorWeight}
+                      onChange={(e) => setTractorWeight(e.target.value)}
+                      placeholder="e.g. 8000"
+                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-600 focus:outline-none"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Unladen tractor unit only</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Trailer Weight (kg)</label>
+                    <input
+                      type="number"
+                      value={trailerWeight}
+                      onChange={(e) => setTrailerWeight(e.target.value)}
+                      placeholder="e.g. 10000"
+                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-600 focus:outline-none"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Unladen trailer only</p>
+                  </div>
                 </div>
+
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">
-                    {results.isCompliant ? 'Potentially Compliant' : 'Non-Compliant'}
-                  </div>
-                  <div className="text-lg font-semibold text-gray-700">
-                    {results.category}
-                  </div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Load Weight (kg)</label>
+                  <input
+                    type="number"
+                    value={loadWeight}
+                    onChange={(e) => setLoadWeight(e.target.value)}
+                    placeholder="e.g. 32000"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-600 focus:outline-none"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Weight of cargo/equipment being transported</p>
                 </div>
-              </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg p-3 border border-gray-200 shadow-sm">
-                  <div className="text-xs font-semibold text-gray-500 uppercase">Tractor</div>
-                  <div className="text-lg font-bold text-gray-900">{results.tractorWeight.toLocaleString()} kg</div>
-                </div>
-                <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg p-3 border border-gray-200 shadow-sm">
-                  <div className="text-xs font-semibold text-gray-500 uppercase">Trailer</div>
-                  <div className="text-lg font-bold text-gray-900">{results.trailerWeight.toLocaleString()} kg</div>
-                </div>
-                <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg p-3 border border-gray-200 shadow-sm">
-                  <div className="text-xs font-semibold text-gray-500 uppercase">Load</div>
-                  <div className="text-lg font-bold text-gray-900">{results.loadWeight.toLocaleString()} kg</div>
-                </div>
-                <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg p-3 border border-gray-200 shadow-sm">
-                  <div className="text-xs font-semibold text-gray-500 uppercase">Total GVW</div>
-                  <div className="text-lg font-bold text-gray-900">{results.totalWeight.toLocaleString()} kg</div>
-                </div>
-              </div>
-
-              {results.issues.length > 0 && (
-                <div className="mt-6">
-                  <h4 className="font-semibold text-red-900 mb-3">⚠️ Compliance Issues</h4>
-                  <div className="space-y-2">
-                    {results.issues.map((issue: string, index: number) => (
-                      <div key={index} className="flex gap-3 bg-white rounded-lg p-3 border border-red-200 shadow-sm">
-                        <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-sm text-gray-700">{issue}</span>
-                      </div>
-                    ))}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Vehicle Length (m)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={vehicleLength}
+                      onChange={(e) => setVehicleLength(e.target.value)}
+                      placeholder="e.g. 16.5"
+                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-600 focus:outline-none"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Optional but recommended</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Vehicle Width (m)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={vehicleWidth}
+                      onChange={(e) => setVehicleWidth(e.target.value)}
+                      placeholder="e.g. 2.55"
+                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-600 focus:outline-none"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Optional but recommended</p>
                   </div>
                 </div>
-              )}
 
-              {results.requirements.length > 0 && (
-                <div className="mt-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">📋 Requirements</h4>
-                  <div className="space-y-2">
-                    {results.requirements.map((req: string, index: number) => (
-                      <div key={index} className="flex gap-3 bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
-                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-sm text-gray-700">{req}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {results.isCompliant && (
-                <div className="mt-6 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg border border-green-200">
-                  <p className="text-sm font-semibold mb-2 text-green-900">📄 Download Compliance Report</p>
-                  <p className="text-xs text-gray-700 mb-3">Save this calculation for your records and Traffic Commissioner audit trails.</p>
-                  <button
-                    onClick={downloadPDF}
-                    className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition shadow-md hover:shadow-lg flex items-center gap-2"
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Number of Axles</label>
+                  <select
+                    value={axleCount}
+                    onChange={(e) => setAxleCount(e.target.value)}
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-600 focus:outline-none font-semibold"
                   >
-                    <Download className="w-4 h-4" />
-                    Download PDF Report
-                  </button>
+                    <option value="">Select axles</option>
+                    <option value="3">3 axles</option>
+                    <option value="4">4 axles</option>
+                    <option value="5">5 axles</option>
+                    <option value="6">6 axles</option>
+                    <option value="7+">7+ axles</option>
+                  </select>
                 </div>
-              )}
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Load Type</label>
+                  <select
+                    value={loadType}
+                    onChange={(e) => setLoadType(e.target.value)}
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-600 focus:outline-none font-semibold"
+                  >
+                    <option value="">Select type</option>
+                    <option value="indivisible">Indivisible (cannot be split)</option>
+                    <option value="divisible">Divisible (can be split)</option>
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">Divisible loads over standard weights must be split</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Planned Movement Date</label>
+                  <input
+                    type="date"
+                    value={movementDate}
+                    onChange={(e) => setMovementDate(e.target.value)}
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-600 focus:outline-none"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Required for notice period calculation</p>
+                </div>
+
+                <button
+                  onClick={calculateCompliance}
+                  className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+                >
+                  <TruckIcon className="w-5 h-5" />
+                  Check STGO Compliance
+                </button>
+              </div>
             </div>
 
-            {!results.isCompliant && (
-              <div className="bg-white rounded-lg p-6 border-l-4 border-red-500 shadow-lg">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">⚠️ Action Required</h3>
-                <p className="text-gray-600 mb-4">
-                  Your planned movement does not comply with STGO regulations. Operating non-compliant can result in:
-                </p>
-                <ul className="space-y-2 text-sm text-gray-600 ml-6 list-disc">
-                  <li>Vehicle prohibition (immediate roadside detention)</li>
-                  <li>Fixed penalty notices (£50-300 per violation)</li>
-                  <li>Court prosecution (£10,000-759,000 fines)</li>
-                  <li>Traffic Commissioner investigation</li>
-                  <li>Operator license suspension or revocation</li>
-                </ul>
+            {results && (
+              <div className="bg-white rounded-lg shadow-lg p-8">
+                <div className="flex items-center gap-2 mb-6">
+                  {results.isCompliant ? (
+                    <CheckCircle className="w-6 h-6 text-green-600" />
+                  ) : (
+                    <XCircle className="w-6 h-6 text-red-600" />
+                  )}
+                  <h2 className="text-xl font-bold text-gray-900">
+                    {results.isCompliant ? 'Potentially Compliant' : 'Non-Compliant'}
+                  </h2>
+                </div>
+
+                <div className={`rounded-lg p-4 mb-6 border-l-4 ${
+                  results.isCompliant ? 'bg-green-50 border-green-600' : 'bg-red-50 border-red-600'
+                }`}>
+                  <p className="text-sm text-gray-600">STGO Status</p>
+                  <p className="text-2xl font-bold text-gray-900">{results.category}</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div className="space-y-4">
+                    <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
+                      <p className="text-sm text-gray-600">Tractor</p>
+                      <p className="text-2xl font-bold text-gray-900">{results.tractorWeight.toLocaleString()} kg</p>
+                    </div>
+
+                    <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
+                      <p className="text-sm text-gray-600">Trailer</p>
+                      <p className="text-2xl font-bold text-gray-900">{results.trailerWeight.toLocaleString()} kg</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
+                      <p className="text-sm text-gray-600">Load</p>
+                      <p className="text-2xl font-bold text-gray-900">{results.loadWeight.toLocaleString()} kg</p>
+                    </div>
+
+                    <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
+                      <p className="text-sm text-gray-600">Total GVW</p>
+                      <p className="text-2xl font-bold text-gray-900">{results.totalWeight.toLocaleString()} kg</p>
+                    </div>
+                  </div>
+                </div>
+
+                {results.issues.length > 0 && (
+                  <div className="mb-6">
+                    <h4 className="font-semibold text-red-900 mb-3">⚠️ Compliance Issues</h4>
+                    <div className="space-y-2">
+                      {results.issues.map((issue, index) => (
+                        <div key={index} className="flex gap-3 bg-red-50 rounded-lg p-3 border border-red-200">
+                          <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                          <span className="text-sm text-gray-700">{issue}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {results.requirements.length > 0 && (
+                  <div className="mb-6">
+                    <h4 className="font-semibold text-gray-900 mb-3">📋 Requirements</h4>
+                    <div className="space-y-2">
+                      {results.requirements.map((req, index) => (
+                        <div key={index} className="flex gap-3 bg-gray-50 rounded-lg p-3 border border-gray-200">
+                          <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                          <span className="text-sm text-gray-700">{req}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {results.isCompliant && (
+                  <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
+                    <p className="text-sm font-semibold mb-2 text-green-900">📄 Download Compliance Report</p>
+                    <p className="text-xs text-gray-700 mb-3">Save this calculation for your records and Traffic Commissioner audit trails.</p>
+                    <button
+                      onClick={downloadPDF}
+                      className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download Report
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
-        )}
 
-        <div className="mt-12 pt-12 border-t border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Understanding STGO Regulations</h2>
+          <div className="lg:col-span-1">
+            <div className="bg-blue-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
+              <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <HelpCircle className="w-5 h-5 text-blue-600" />
+                Quick Tips
+              </h3>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>• <strong>Category 1:</strong> Up to 50,000kg, 2 days notice</li>
+                <li>• <strong>Category 2:</strong> 50,001-80,000kg, 5 days notice</li>
+                <li>• <strong>Category 3:</strong> 80,001-150,000kg, extensive planning</li>
+                <li>• Always verify at weighbridge before movement</li>
+                <li>• Submit ESDAL notifications with correct lead time</li>
+              </ul>
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <Info className="w-5 h-5 text-orange-600" />
+                Penalties
+              </h3>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li><strong>Fixed:</strong> £50-300 per violation</li>
+                <li><strong>Court:</strong> £10,000-40,000 typical</li>
+                <li><strong>Record:</strong> £759,000 (July 2025)</li>
+                <li><strong>TC Action:</strong> 93% enforcement rate</li>
+                <li><strong>License:</strong> Suspension or revocation possible</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Understanding STGO Regulations</h2>
           
-          <p className="text-gray-600 mb-6">
-            Special Types General Order (STGO) regulations allow vehicles carrying abnormal indivisible loads to operate on UK roads under specific conditions. Understanding compliance requirements is critical to avoid severe penalties.
-          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div>
+              <h3 className="font-bold text-gray-900 mb-3">STGO Categories</h3>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>✓ <strong>Category 1:</strong> Up to 50,000kg GVW - Requires 2 working days' notice to authorities</li>
+                <li>✓ <strong>Category 2:</strong> 50,001kg to 80,000kg GVW - Requires 5 working days' notice, stricter speed limits</li>
+                <li>✓ <strong>Category 3:</strong> 80,001kg to 150,000kg GVW - Requires 5 working days' notice, extensive planning, multiple permits</li>
+              </ul>
+            </div>
 
-          <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-8">STGO Categories</h3>
-          <ul className="space-y-2 text-gray-600 ml-6 list-disc">
-            <li><strong>Category 1:</strong> Up to 50,000kg GVW - Requires 2 working days' notice to authorities</li>
-            <li><strong>Category 2:</strong> 50,001kg to 80,000kg GVW - Requires 5 working days' notice, stricter speed limits</li>
-            <li><strong>Category 3:</strong> 80,001kg to 150,000kg GVW - Requires 5 working days' notice, extensive planning, multiple permits</li>
-          </ul>
+            <div>
+              <h3 className="font-bold text-gray-900 mb-3">Notice Period Requirements</h3>
+              <p className="text-gray-700 text-sm mb-4">
+                Notice periods are calculated in working days (excludes Sundays and bank holidays). Notices must be submitted to National Highways via the ESDAL system. Insufficient notice periods are a common violation resulting in prohibitions.
+              </p>
+            </div>
+          </div>
 
-          <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-8">Notice Period Requirements</h3>
-          <p className="text-gray-600 mb-4">
-            Notice periods are calculated in working days (excludes Sundays and bank holidays). Notices must be submitted to National Highways via the ESDAL system. Insufficient notice periods are a common violation resulting in prohibitions.
-          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-bold text-gray-900 mb-3">Common Violations</h3>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>• Overloading beyond declared category limits (most frequent)</li>
+                <li>• Missing STGO plates/markings (removes legal protection)</li>
+                <li>• Insufficient notice period to authorities</li>
+                <li>• Transporting divisible loads that should be split</li>
+                <li>• False movement declarations with incorrect weights</li>
+              </ul>
+            </div>
 
-          <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-8">Common Violations</h3>
-          <ul className="space-y-2 text-gray-600 ml-6 list-disc">
-            <li>Overloading beyond declared category limits (most frequent)</li>
-            <li>Missing STGO plates/markings (removes legal protection)</li>
-            <li>Insufficient notice period to authorities</li>
-            <li>Transporting divisible loads that should be split</li>
-            <li>False movement declarations with incorrect weights</li>
-          </ul>
+            <div>
+              <h3 className="font-bold text-gray-900 mb-3">Best Practices</h3>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>• Always verify weights at certified weighbridges</li>
+                <li>• Calculate compliance margins - don't operate at limits</li>
+                <li>• Submit ESDAL notifications with correct lead time</li>
+                <li>• Ensure proper STGO plates displayed</li>
+                <li>• Document all compliance checks</li>
+                <li>• Never "take a chance" - penalties exceed delay costs</li>
+              </ul>
+            </div>
+          </div>
 
-          <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-8">Penalties for Non-Compliance</h3>
-          <p className="text-gray-600 mb-2">Recent enforcement has intensified dramatically:</p>
-          <ul className="space-y-2 text-gray-600 ml-6 list-disc">
-            <li>Fixed penalties: £50-300 per violation</li>
-            <li>Court prosecutions: £10,000-40,000 typical fines</li>
-            <li>Record penalty: £759,000 (July 2025)</li>
-            <li>Traffic Commissioner investigations: 93% result in enforcement action</li>
-            <li>Operator license revocation or suspension</li>
-            <li>Transport manager disqualification (up to 3 years)</li>
-          </ul>
-
-          <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-8">Best Practices</h3>
-          <ul className="space-y-2 text-gray-600 ml-6 list-disc">
-            <li>Always verify weights at certified weighbridges before movement</li>
-            <li>Calculate compliance margins - don't operate at maximum limits</li>
-            <li>Submit ESDAL notifications with correct lead time</li>
-            <li>Ensure proper STGO plates are displayed on vehicle front</li>
-            <li>Document all compliance checks for audit trails</li>
-            <li>Train transport managers on STGO requirements</li>
-            <li>Never "take a chance" - penalties far exceed delay costs</li>
-          </ul>
-
-          <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-8">When to Seek Professional Advice</h3>
-          <p className="text-gray-600 mb-2">Consult with transport compliance specialists or solicitors for:</p>
-          <ul className="space-y-2 text-gray-600 ml-6 list-disc">
-            <li>Complex multi-axle configurations</li>
-            <li>Loads exceeding Category 2 limits</li>
-            <li>International movements</li>
-            <li>Bridge and structure strike risks</li>
-            <li>Traffic Commissioner investigations</li>
-            <li>Operator license applications or variations</li>
-          </ul>
+          <div className="bg-yellow-50 border-l-4 border-yellow-600 p-6 rounded mt-8">
+            <h3 className="font-bold text-gray-900 mb-2">Professional Quality Assurance</h3>
+            <p className="text-sm text-gray-700">
+              This calculator provides professional estimates for UK STGO compliance. Always verify with DVSA guidance before movement. Recent enforcement has intensified with record penalties of £759,000 and Traffic Commissioner investigations resulting in 93% enforcement action. Operator license revocation, suspension, and transport manager disqualification are real risks.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
+
 
