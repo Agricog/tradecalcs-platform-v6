@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Wrench, Info, CheckCircle2 } from 'lucide-react'
+import QuoteGenerator from './QuoteGenerator'
 
 export default function BSPThreadFinder() {
   const [mode, setMode] = useState<'diameter' | 'tpi'>('diameter')
@@ -7,6 +8,7 @@ export default function BSPThreadFinder() {
   const [tolerance, setTolerance] = useState('0.5')
   const [tpi, setTPI] = useState('')
   const [result, setResult] = useState<any>(null)
+  const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
   const bspData = [
     { size: '1/8"', outerDia: 9.73, tpi: 28, pitch: 0.907 },
@@ -197,30 +199,59 @@ export default function BSPThreadFinder() {
 
           {/* RESULTS */}
           {result && result.mode === 'diameter' && (
-            <div className="bg-orange-50 border-2 border-orange-300 rounded-lg p-6 mt-6">
-              <div className="flex items-center gap-2 mb-4">
-                <CheckCircle2 className="w-6 h-6 text-orange-600" />
-                <h3 className="text-xl font-bold text-orange-900">Match Found ✓</h3>
+            <>
+              <div className="bg-orange-50 border-2 border-orange-300 rounded-lg p-6 mt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <CheckCircle2 className="w-6 h-6 text-orange-600" />
+                  <h3 className="text-xl font-bold text-orange-900">Match Found ✓</h3>
+                </div>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="bg-white p-3 rounded border border-orange-200">
+                    <p className="text-xs text-gray-600">BSP Size</p>
+                    <p className="text-2xl font-bold text-orange-800">{result.size}</p>
+                  </div>
+                  <div className="bg-white p-3 rounded border border-orange-200">
+                    <p className="text-xs text-gray-600">Threads Per Inch</p>
+                    <p className="text-2xl font-bold text-orange-800">{result.tpi} TPI</p>
+                  </div>
+                  <div className="bg-white p-3 rounded border border-orange-200">
+                    <p className="text-xs text-gray-600">Pitch (mm)</p>
+                    <p className="text-2xl font-bold text-orange-800">{result.pitch}</p>
+                  </div>
+                  <div className="bg-white p-3 rounded border border-orange-200">
+                    <p className="text-xs text-gray-600">Outer Diameter</p>
+                    <p className="text-2xl font-bold text-orange-800">{result.outerDia}mm</p>
+                  </div>
+                </div>
               </div>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-white p-3 rounded border border-orange-200">
-                  <p className="text-xs text-gray-600">BSP Size</p>
-                  <p className="text-2xl font-bold text-orange-800">{result.size}</p>
+
+              {/* QUOTE GENERATOR CTA */}
+              <div className="mt-6 p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
+                    <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
+                  </div>
                 </div>
-                <div className="bg-white p-3 rounded border border-orange-200">
-                  <p className="text-xs text-gray-600">Threads Per Inch</p>
-                  <p className="text-2xl font-bold text-orange-800">{result.tpi} TPI</p>
-                </div>
-                <div className="bg-white p-3 rounded border border-orange-200">
-                  <p className="text-xs text-gray-600">Pitch (mm)</p>
-                  <p className="text-2xl font-bold text-orange-800">{result.pitch}</p>
-                </div>
-                <div className="bg-white p-3 rounded border border-orange-200">
-                  <p className="text-xs text-gray-600">Outer Diameter</p>
-                  <p className="text-2xl font-bold text-orange-800">{result.outerDia}mm</p>
-                </div>
+                <button
+                  onClick={() => setShowQuoteGenerator(true)}
+                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  Generate Free Quote
+                </button>
+                <p className="text-xs text-center text-gray-500 mt-2">
+                  Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
+                </p>
               </div>
-            </div>
+            </>
           )}
 
           {result && result.mode === 'tpi' && (
@@ -355,9 +386,24 @@ export default function BSPThreadFinder() {
           </a>
         </div>
       </div>
+
+      {/* QUOTE GENERATOR MODAL */}
+      {showQuoteGenerator && result && result.mode === 'diameter' && (
+        <QuoteGenerator
+          calculationResults={{
+            materials: [
+              { item: `${result.size} BSP Fitting`, quantity: '1', unit: 'unit' },
+              { item: 'PTFE Tape & Installation', quantity: '1', unit: 'job' }
+            ],
+            summary: `${result.size} BSP thread identified (${result.outerDia}mm OD, ${result.tpi} TPI, ${result.pitch}mm pitch)`
+          }}
+          onClose={() => setShowQuoteGenerator(false)}
+        />
+      )}
     </div>
   )
 }
+
 
 
 
