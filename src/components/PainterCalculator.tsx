@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CheckCircle2, HelpCircle, Palette } from 'lucide-react'
+import QuoteGenerator from './QuoteGenerator'
 
 export default function PainterCalculator() {
   const [width, setWidth] = useState('')
@@ -8,6 +9,7 @@ export default function PainterCalculator() {
   const [surfaceType, setSurfaceType] = useState<'smooth' | 'textured'>('smooth')
   const [coats, setCoats] = useState('2')
   const [results, setResults] = useState<any>(null)
+  const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
   const calculate = () => {
     if (!width || !height) return
@@ -145,53 +147,82 @@ export default function PainterCalculator() {
             </div>
 
             {results && (
-              <div className="bg-white rounded-lg shadow-lg p-8">
-                <div className="flex items-center gap-2 mb-6">
-                  <CheckCircle2 className="w-6 h-6 text-green-600" />
-                  <h2 className="text-xl font-bold text-gray-900">Paint Required</h2>
-                </div>
+              <>
+                <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
+                  <div className="flex items-center gap-2 mb-6">
+                    <CheckCircle2 className="w-6 h-6 text-green-600" />
+                    <h2 className="text-xl font-bold text-gray-900">Paint Required</h2>
+                  </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
-                      <p className="text-sm text-gray-600">Total Wall Area</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.totalArea} m²</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
+                        <p className="text-sm text-gray-600">Total Wall Area</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.totalArea} m²</p>
+                      </div>
+
+                      <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
+                        <p className="text-sm text-gray-600">Topcoat Paint</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.paintLitres} litres</p>
+                        <p className="text-xs text-gray-500 mt-1">{results.paintTins} × 5L tins</p>
+                      </div>
+
+                      <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
+                        <p className="text-sm text-gray-600">Primer Needed</p>
+                        <p className="text-2xl font-bold text-gray-900">{results.primeLitres} litres</p>
+                        <p className="text-xs text-gray-500 mt-1">{results.primeTins} × 5L tins</p>
+                      </div>
+
+                      <div className="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-600">
+                        <p className="text-sm text-gray-600">Configuration</p>
+                        <p className="text-lg font-bold text-gray-900">{results.coats} coats • {results.surfaceType === 'smooth' ? 'Smooth' : 'Textured'}</p>
+                      </div>
                     </div>
 
-                    <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
-                      <p className="text-sm text-gray-600">Topcoat Paint</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.paintLitres} litres</p>
-                      <p className="text-xs text-gray-500 mt-1">{results.paintTins} × 5L tins</p>
-                    </div>
-
-                    <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
-                      <p className="text-sm text-gray-600">Primer Needed</p>
-                      <p className="text-2xl font-bold text-gray-900">{results.primeLitres} litres</p>
-                      <p className="text-xs text-gray-500 mt-1">{results.primeTins} × 5L tins</p>
-                    </div>
-
-                    <div className="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-600">
-                      <p className="text-sm text-gray-600">Configuration</p>
-                      <p className="text-lg font-bold text-gray-900">{results.coats} coats • {results.surfaceType === 'smooth' ? 'Smooth' : 'Textured'}</p>
+                    <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-lg p-6">
+                      <h3 className="font-bold text-gray-900 mb-4">💡 Pro Tips</h3>
+                      <ul className="text-sm text-gray-700 space-y-3">
+                        <li><strong>Always buy extra:</strong> Add 10-15% for waste and touch-ups</li>
+                        <li><strong>Primer first:</strong> Use primer on all new or patched areas</li>
+                        <li><strong>Storage:</strong> Keep paint in cool, dry place for 2+ years</li>
+                        <li><strong>Multiple coats:</strong> Lighter shades often need 3+ coats</li>
+                        <li><strong>Drying time:</strong> Allow 4-8 hours between coats minimum</li>
+                      </ul>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-lg p-6">
-                    <h3 className="font-bold text-gray-900 mb-4">💡 Pro Tips</h3>
-                    <ul className="text-sm text-gray-700 space-y-3">
-                      <li><strong>Always buy extra:</strong> Add 10-15% for waste and touch-ups</li>
-                      <li><strong>Primer first:</strong> Use primer on all new or patched areas</li>
-                      <li><strong>Storage:</strong> Keep paint in cool, dry place for 2+ years</li>
-                      <li><strong>Multiple coats:</strong> Lighter shades often need 3+ coats</li>
-                      <li><strong>Drying time:</strong> Allow 4-8 hours between coats minimum</li>
-                    </ul>
-                  </div>
+                  <p className="text-xs text-gray-500 mt-6 text-center">
+                    ✓ Coverage calculated at {surfaceType === 'smooth' ? '12m²' : '10m²'} per litre • {results.coats} coat{results.coats !== 1 ? 's' : ''} included
+                  </p>
                 </div>
 
-                <p className="text-xs text-gray-500 mt-6 text-center">
-                  ✓ Coverage calculated at {surfaceType === 'smooth' ? '12m²' : '10m²'} per litre • {results.coats} coat{results.coats !== 1 ? 's' : ''} included
-                </p>
-              </div>
+                {/* QUOTE GENERATOR CTA */}
+                <div className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg mb-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
+                      <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowQuoteGenerator(true)}
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Generate Free Quote
+                  </button>
+                  <p className="text-xs text-center text-gray-500 mt-2">
+                    Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
+                  </p>
+                </div>
+              </>
             )}
           </div>
 
@@ -292,6 +323,23 @@ export default function PainterCalculator() {
           </div>
         </div>
       </div>
+
+      {/* QUOTE GENERATOR MODAL */}
+      {showQuoteGenerator && results && (
+        <QuoteGenerator
+          calculationResults={{
+            materials: [
+              { item: `Emulsion Paint (${results.surfaceType})`, quantity: `${results.paintTins}`, unit: '5L tins' },
+              { item: 'Primer/Sealer', quantity: `${results.primeTins}`, unit: '5L tins' },
+              { item: 'Preparation Materials (filler, sandpaper, tape)', quantity: '1', unit: 'job' },
+              { item: 'Professional Painting Labour', quantity: '1', unit: 'job' }
+            ],
+            summary: `${results.totalArea}m² painting project - ${results.coats} coat${results.coats !== 1 ? 's' : ''} on ${results.surfaceType} surface`
+          }}
+          onClose={() => setShowQuoteGenerator(false)}
+        />
+      )}
     </div>
   )
 }
+
