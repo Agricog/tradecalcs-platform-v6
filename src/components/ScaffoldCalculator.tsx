@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Info, CheckCircle2, HelpCircle, Layers, AlertTriangle } from 'lucide-react'
+import { CheckCircle2, HelpCircle, Layers, AlertTriangle } from 'lucide-react'
 
 export default function ScaffoldCalculator() {
   const [scaffoldType, setScaffoldType] = useState<'independent' | 'putlog'>('independent')
@@ -22,7 +22,6 @@ export default function ScaffoldCalculator() {
 
     // Standards spacing
     const standardSpacing = 2.5 // Standard bay width
-    const liftHeight = 2 // Standard lift height
     
     // Calculate tubes
     const standardsPerBay = scaffoldType === 'independent' ? 4 : 2
