@@ -38,7 +38,7 @@ export default function QuoteGenerator({ calculationType, calculationResults, on
 
   const calculateTotal = () => {
     const labour = parseFloat(labourRate) * parseFloat(estimatedHours)
-    const materialsBase = calculationResults.materials.reduce((sum, item) => {
+    const materialsBase = calculationResults.materials.reduce((sum) => {
       // Simplified - you'd add pricing logic here
       return sum + 100 // Placeholder
     }, 0)
