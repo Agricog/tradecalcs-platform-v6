@@ -322,6 +322,31 @@ export default function PainterCalculator() {
             </p>
           </div>
         </div>
+
+        {/* CONTACT FORM SECTION */}
+        <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
+          <div className="text-center mb-6">
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Need Help or Have Questions?</h3>
+            <p className="text-gray-700">
+              Got a specific calculation requirement or want a custom tool for your trade? Fill out the form below.
+            </p>
+          </div>
+          
+          <div className="max-w-3xl mx-auto">
+            <iframe 
+              src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" 
+              width="100%" 
+              height="650px" 
+              frameBorder="0"
+              title="Contact Form"
+              className="rounded-lg"
+            />
+          </div>
+          
+          <p className="text-center text-sm text-gray-600 mt-4">
+            Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 font-semibold hover:underline">mick@tradecalcs.co.uk</a>
+          </p>
+        </div>
       </div>
 
       {/* QUOTE GENERATOR MODAL */}
@@ -342,4 +367,5 @@ export default function PainterCalculator() {
     </div>
   )
 }
+
 
