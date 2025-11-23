@@ -224,7 +224,7 @@ export default function Home() {
     </div>
   </a>
 
-  <a href="/plasterer" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+  <a href="/plasterer-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
     <div className="p-6">
       <div className="text-xs font-bold text-amber-600 mb-3 uppercase tracking-wider">For Plasterers</div>
       <div className="w-12 h-12 bg-amber-500 rounded-lg flex items-center justify-center text-white mb-4"><Palette className="w-6 h-6" /></div>
@@ -254,7 +254,7 @@ export default function Home() {
     </div>
   </a>
 
-  <a href="/tiling" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+  <a href="/tiling-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
     <div className="p-6">
       <div className="text-xs font-bold text-amber-600 mb-3 uppercase tracking-wider">For Tilers</div>
       <div className="w-12 h-12 bg-amber-500 rounded-lg flex items-center justify-center text-white mb-4"><Droplet className="w-6 h-6" /></div>
@@ -264,7 +264,7 @@ export default function Home() {
     </div>
   </a>
 
-  <a href="/paint" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+  <a href="/paint-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
     <div className="p-6">
       <div className="text-xs font-bold text-red-600 mb-3 uppercase tracking-wider">For Painters & Decorators</div>
       <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center text-white mb-4"><Palette className="w-6 h-6" /></div>
