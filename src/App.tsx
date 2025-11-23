@@ -16,6 +16,7 @@ import TermsOfService from './pages/TermsOfService'
 import CookiePolicy from './pages/CookiePolicy'
 import CISCalculatorPage from './pages/CISCalculatorPage'
 import STGOCalculatorPage from './pages/STGOCalculatorPage'
+import ScaffoldCalculatorPage from './pages/ScaffoldCalculatorPage'
 
 
 function App() {
@@ -60,6 +61,8 @@ function App() {
         <Route path="/calculators/cis-calculator" element={<CISCalculatorPage />} />
         <Route path="/calculators/stgo-calculator" element={<STGOCalculatorPage />} />
         <Route path="/stgo-calculator" element={<STGOCalculatorPage />} />
+        <Route path="/calculators/scaffold-calculator" element={<ScaffoldCalculatorPage />} />
+        <Route path="/scaffold-calculator" element={<ScaffoldCalculatorPage />} />
         <Route path="/leadfortress" element={<LeadFortressPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
@@ -116,6 +119,7 @@ function App() {
 }
 
 export default App
+
 
 
 
