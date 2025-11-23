@@ -172,7 +172,7 @@ export default function Home() {
           <p className="text-center text-gray-600 mb-12">Choose your calculator and start working smarter</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-  <a href="/cable-sizing" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+  <a href="/cable-sizing-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
     <div className="p-6">
       <div className="text-xs font-bold text-blue-600 mb-3 uppercase tracking-wider">For Electricians</div>
       <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white mb-4">
@@ -184,7 +184,7 @@ export default function Home() {
     </div>
   </a>
 
-  <a href="/voltage-drop" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+  <a href="/voltage-drop-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
     <div className="p-6">
       <div className="text-xs font-bold text-cyan-600 mb-3 uppercase tracking-wider">For Electricians</div>
       <div className="w-12 h-12 bg-cyan-500 rounded-lg flex items-center justify-center text-white mb-4"><Zap className="w-6 h-6" /></div>
@@ -194,7 +194,7 @@ export default function Home() {
     </div>
   </a>
 
-  <a href="/bsp-thread" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+  <a href="/bsp-thread-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
     <div className="p-6">
       <div className="text-xs font-bold text-orange-600 mb-3 uppercase tracking-wider">For Plumbers</div>
       <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center text-white mb-4"><Lightbulb className="w-6 h-6" /></div>
@@ -204,7 +204,7 @@ export default function Home() {
     </div>
   </a>
 
-  <a href="/roofing" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+  <a href="/roofing-insurance-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
     <div className="p-6">
       <div className="text-xs font-bold text-green-600 mb-3 uppercase tracking-wider">For Roofers</div>
       <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4"><PoundSterling className="w-6 h-6" /></div>
@@ -214,7 +214,7 @@ export default function Home() {
     </div>
   </a>
 
-  <a href="/concrete" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+  <a href="/concrete-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
     <div className="p-6">
       <div className="text-xs font-bold text-green-600 mb-3 uppercase tracking-wider">For Builders</div>
       <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4"><Package className="w-6 h-6" /></div>
@@ -234,7 +234,7 @@ export default function Home() {
     </div>
   </a>
 
-  <a href="/joinery" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+  <a href="/joinery-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
     <div className="p-6">
       <div className="text-xs font-bold text-amber-700 mb-3 uppercase tracking-wider">For Joiners</div>
       <div className="w-12 h-12 bg-amber-600 rounded-lg flex items-center justify-center text-white mb-4"><Hammer className="w-6 h-6" /></div>
@@ -244,7 +244,7 @@ export default function Home() {
     </div>
   </a>
 
-  <a href="/brick-block" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+  <a href="/brick-block-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
     <div className="p-6">
       <div className="text-xs font-bold text-red-600 mb-3 uppercase tracking-wider">For Bricklayers</div>
       <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center text-white mb-4"><HomeIcon className="w-6 h-6" /></div>
