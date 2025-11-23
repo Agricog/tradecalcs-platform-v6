@@ -143,9 +143,21 @@ function App() {
           </div>
         </div>
 
-        <div className="border-t border-gray-700 pt-8 text-center text-xs max-w-5xl mx-auto">
-          <p>TradeCalcs is committed to providing accurate, BS-compliant calculations for UK tradespeople.</p>
-          <p className="mt-2">Built by Tradespeople, for Tradespeople</p>
+        <div className="border-t border-gray-700 pt-8 max-w-5xl mx-auto">
+          <div className="text-center mb-4">
+            <p className="text-sm mb-2">Need help or have questions?</p>
+            <a 
+              href="mailto:mick@tradecalcs.co.uk" 
+              className="text-purple-400 hover:text-purple-300 transition font-semibold text-sm"
+            >
+              mick@tradecalcs.co.uk
+            </a>
+          </div>
+          
+          <div className="text-center text-xs">
+            <p>TradeCalcs is committed to providing accurate, BS-compliant calculations for UK tradespeople.</p>
+            <p className="mt-2">Built by Tradespeople, for Tradespeople</p>
+          </div>
         </div>
       </footer>
     </Router>
@@ -153,6 +165,7 @@ function App() {
 }
 
 export default App
+
 
 
 
