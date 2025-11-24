@@ -1,8 +1,33 @@
 import { Phone, MessageSquare, Mail, CheckCircle2, ArrowRight, Zap, Lock, Clock, BarChart3 } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 
 export default function LeadFortressPage() {
   return (
     <>
+      <Helmet>
+        {/* Primary Meta Tags */}
+        <title>LeadFortress - Never Lose Another Lead | UK Trade Lead Capture System</title>
+        <meta 
+          name="description" 
+          content="Capture EVERY lead across 6 channels automatically. Phone, SMS, WhatsApp, email, forms - all in one CRM. £99/month founding rate. Live in 48 hours guaranteed." 
+        />
+        <meta name="keywords" content="lead capture system UK, trade CRM, plumber lead management, electrician CRM, missed call recovery, SMS lead capture, WhatsApp business" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="LeadFortress - Never Lose Another Lead | UK Trade Lead Capture" />
+        <meta property="og:description" content="Capture EVERY lead across 6 channels. Phone, SMS, WhatsApp, email - all automatic. £99/month founding rate." />
+        <meta property="og:url" content="https://tradecalcs.co.uk/leadfortress" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="LeadFortress - Never Lose Another Lead" />
+        <meta name="twitter:description" content="Capture EVERY lead automatically. 6 channels, 1 system, zero missed opportunities." />
+
+        {/* Additional SEO */}
+        <link rel="canonical" href="https://tradecalcs.co.uk/leadfortress" />
+      </Helmet>
+
       {/* HERO */}
       <div className="bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-500 text-white py-24 px-4">
         <div className="max-w-5xl mx-auto text-center">
