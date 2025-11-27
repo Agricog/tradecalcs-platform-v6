@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Info, CheckCircle2, Layers, AlertCircle } from 'lucide-react'
+import { CheckCircle2, Layers, AlertCircle } from 'lucide-react'
 import QuoteGenerator from './QuoteGenerator'
 
 export default function TilerCalculator() {
