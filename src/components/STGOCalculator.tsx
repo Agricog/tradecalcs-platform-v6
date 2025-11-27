@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { TruckIcon, AlertTriangle, CheckCircle, XCircle, Download, Info, HelpCircle, AlertCircle } from 'lucide-react'
+import { TruckIcon, AlertTriangle, CheckCircle, XCircle, Download, HelpCircle, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 interface CalculationData {
