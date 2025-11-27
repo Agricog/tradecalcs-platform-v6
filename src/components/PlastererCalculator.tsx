@@ -44,13 +44,13 @@ export default function PlastererCalculator() {
           name="description" 
           content="Free plaster calculator for UK plasterers. Calculate coverage, material quantities, and cost estimates instantly. Professional tool with waste factors and drying times." 
         />
-        <meta name="keywords" content="plaster calculator, plastering calculator, UK plasterer tools, plaster coverage calculator, skim coat calculator, gypsum plaster calculator, finishing plaster, plasterboard calculator, Thistle plaster" />
+        <meta name="keywords" content="plaster calculator, plastering calculator, UK plasterer tools, plaster coverage calculator, skim coat calculator, gypsum plaster calculator, finishing plaster, plasterboard calculator, Thistle plaster, plaster estimator" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Plaster Calculator UK | Coverage & Material Estimator for Plasterers" />
-        <meta property="og:description" content="Calculate plaster coverage and materials instantly. Free professional tool for UK plasterers with waste factors." />
+        <meta property="og:description" content="Calculate plaster coverage and materials instantly. Free professional tool for UK plasterers with waste factors and drying times." />
         <meta property="og:url" content="https://tradecalcs.co.uk/plaster-calculator" />
         <meta property="og:image" content="https://tradecalcs.co.uk/images/plaster-calculator-og.jpg" />
         <meta property="og:site_name" content="TradeCalcs" />
@@ -62,7 +62,7 @@ export default function PlastererCalculator() {
 
         <link rel="canonical" href="https://tradecalcs.co.uk/plaster-calculator" />
         <meta name="author" content="TradeCalcs" />
-        <meta name="theme-color" content="#b45309" />
+        <meta name="theme-color" content="#0891b2" />
 
         <script type="application/ld+json">
           {JSON.stringify({
@@ -170,378 +170,396 @@ export default function PlastererCalculator() {
         </script>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
-        {/* HEADER */}
-        <div className="bg-gradient-to-r from-amber-600 to-orange-600 py-4 px-6">
-          <div className="max-w-4xl mx-auto">
-            <a href="/" className="text-white font-semibold flex items-center gap-2 hover:opacity-90 transition w-fit">
-              ← Back to All Calculators
-            </a>
+      <div className="bg-gray-50 min-h-screen">
+        <div className="max-w-5xl mx-auto px-4 py-4">
+          <a href="/" className="text-purple-600 hover:text-purple-800 font-semibold text-sm">
+            ← Back to All Calculators
+          </a>
+        </div>
+
+        <div className="bg-gradient-to-r from-slate-600 to-slate-500 text-white py-12 px-4">
+          <div className="max-w-5xl mx-auto text-center">
+            <Palette className="w-12 h-12 mx-auto mb-3" />
+            <h1 className="text-4xl font-bold mb-2">Plaster Calculator UK</h1>
+            <p className="text-lg opacity-95">Calculate plaster coverage, materials & project costs instantly</p>
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto p-6">
-          {/* HERO SECTION */}
-          <div className="mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Professional Plaster Coverage Calculator for UK Plasterers
-            </h1>
-            <p className="text-xl text-gray-700 mb-4">
-              Calculate plaster coverage, materials, and project costs instantly
-            </p>
-            <p className="text-gray-600 mb-6">
-              Industry-trusted calculator for professional plasterers and decorators across the UK. Instantly calculate exact material quantities for all plasterwork types including skim coats, gypsum plaster, finishing plaster, bonding plaster, and textured finishes. Includes waste factors, drying times, and current UK material costs.
-            </p>
-          </div>
+        <div className="max-w-5xl mx-auto px-4 py-8">
+          <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <div className="bg-slate-600 text-white rounded-lg p-4 mb-6">
+              <div className="flex items-center gap-2 mb-1">
+                <Palette className="w-5 h-5" />
+                <h2 className="text-lg font-bold">Plaster Coverage Calculator</h2>
+              </div>
+              <p className="text-sm opacity-90">Professional estimation for UK plasterers and decorators</p>
+            </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* MAIN CALCULATOR */}
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Calculate Plaster Needed</h2>
-                
-                <div className="space-y-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Wall/Ceiling Length (m)</label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={length}
-                        onChange={(e) => setLength(e.target.value)}
-                        placeholder="e.g. 4.5"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-amber-600 focus:outline-none"
-                        aria-label="Wall or ceiling length in meters"
-                      />
-                      <p className="text-xs text-gray-500 mt-1">Measure floor to ceiling height</p>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Wall/Ceiling Width (m)</label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={width}
-                        onChange={(e) => setWidth(e.target.value)}
-                        placeholder="e.g. 3.2"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-amber-600 focus:outline-none"
-                        aria-label="Wall or ceiling width in meters"
-                      />
-                      <p className="text-xs text-gray-500 mt-1">Subtract 20% for doors/windows</p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Number of Coats</label>
-                      <select
-                        value={coats}
-                        onChange={(e) => setCoats(e.target.value)}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-amber-600 focus:outline-none font-semibold"
-                        aria-label="Number of plaster coats"
-                      >
-                        <option value="1">1 Coat (Bonding)</option>
-                        <option value="2">2 Coats (Standard)</option>
-                        <option value="3">3 Coats (Full Coverage)</option>
-                      </select>
-                      <p className="text-xs text-gray-500 mt-1">Bonding + finish typical</p>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Coverage Rate (kg/m²)</label>
-                      <select
-                        value={coverage}
-                        onChange={(e) => setCoverage(e.target.value)}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-amber-600 focus:outline-none font-semibold"
-                        aria-label="Plaster coverage rate"
-                      >
-                        <option value="1.2">1.2 (Light Skim)</option>
-                        <option value="1.5">1.5 (Skim Coat)</option>
-                        <option value="2.0">2.0 (Standard)</option>
-                        <option value="2.5">2.5 (Heavy Coverage)</option>
-                        <option value="3.0">3.0 (Base Coat)</option>
-                      </select>
-                      <p className="text-xs text-gray-500 mt-1">Per coat application</p>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Waste Factor (%)</label>
-                      <select
-                        value={wasteFactor}
-                        onChange={(e) => setWasteFactor(e.target.value)}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-amber-600 focus:outline-none font-semibold"
-                        aria-label="Waste factor percentage"
-                      >
-                        <option value="5">5% (Minimal)</option>
-                        <option value="10">10% (Standard)</option>
-                        <option value="15">15% (Liberal)</option>
-                        <option value="20">20% (Complex)</option>
-                      </select>
-                      <p className="text-xs text-gray-500 mt-1">Spillage &amp; breakage</p>
-                    </div>
-                  </div>
-
+            <div className="mb-6">
+              <label className="block font-bold text-gray-800 mb-2">1. Wall/Ceiling Length (meters)</label>
+              <input
+                type="number"
+                step="0.1"
+                value={length}
+                onChange={e => setLength(e.target.value)}
+                placeholder="e.g. 4.5"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-600 mb-2"
+                aria-label="Wall or ceiling length in meters"
+              />
+              <div className="flex gap-2 flex-wrap">
+                {['2.4', '3.0', '4.5', '5.5', '6.0'].map(len => (
                   <button
-                    onClick={calculate}
-                    className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white py-3 rounded-lg font-bold transition"
-                    aria-label="Calculate plaster needed"
+                    key={len}
+                    onClick={() => setLength(len)}
+                    className="px-3 py-1 bg-slate-100 text-slate-700 rounded font-semibold text-sm hover:bg-slate-200"
+                    aria-label={`Set length to ${len}m`}
                   >
-                    📊 Calculate Plaster Needed
+                    {len}m
                   </button>
-                </div>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 mt-1">Measure floor to ceiling height</p>
+            </div>
+
+            <div className="mb-6">
+              <label className="block font-bold text-gray-800 mb-2">2. Wall/Ceiling Width (meters)</label>
+              <input
+                type="number"
+                step="0.1"
+                value={width}
+                onChange={e => setWidth(e.target.value)}
+                placeholder="e.g. 3.2"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-600 mb-2"
+                aria-label="Wall or ceiling width in meters"
+              />
+              <div className="flex gap-2 flex-wrap">
+                {['2.0', '3.0', '4.0', '5.0', '6.0'].map(wid => (
+                  <button
+                    key={wid}
+                    onClick={() => setWidth(wid)}
+                    className="px-3 py-1 bg-slate-100 text-slate-700 rounded font-semibold text-sm hover:bg-slate-200"
+                    aria-label={`Set width to ${wid}m`}
+                  >
+                    {wid}m
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 mt-1">Subtract 20% for doors and windows</p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">3. Number of Coats</label>
+                <select
+                  value={coats}
+                  onChange={e => setCoats(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-600"
+                  aria-label="Number of plaster coats"
+                >
+                  <option value="1">1 Coat (Bonding)</option>
+                  <option value="2">2 Coats (Standard)</option>
+                  <option value="3">3 Coats (Full Coverage)</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">Bonding + finish typical</p>
               </div>
 
-              {/* RESULTS */}
-              {result && (
-                <>
-                  <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
-                    <div className="flex items-center gap-2 mb-6">
-                      <CheckCircle2 className="w-6 h-6 text-green-600" />
-                      <h2 className="text-xl font-bold text-gray-900">Plaster Required</h2>
-                    </div>
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">4. Coverage Rate (kg/m²)</label>
+                <select
+                  value={coverage}
+                  onChange={e => setCoverage(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-600"
+                  aria-label="Plaster coverage rate"
+                >
+                  <option value="1.2">1.2 (Light Skim)</option>
+                  <option value="1.5">1.5 (Skim Coat)</option>
+                  <option value="2.0">2.0 (Standard)</option>
+                  <option value="2.5">2.5 (Heavy)</option>
+                  <option value="3.0">3.0 (Base Coat)</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">Per coat application</p>
+              </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-4">
-                        <div className="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-600">
-                          <p className="text-sm text-gray-600">Total Wall Area</p>
-                          <p className="text-2xl font-bold text-gray-900">{result.area} m²</p>
-                          <p className="text-xs text-gray-500 mt-1">Length × Width (net after openings)</p>
-                        </div>
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">5. Waste Factor (%)</label>
+                <select
+                  value={wasteFactor}
+                  onChange={e => setWasteFactor(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-600"
+                  aria-label="Waste factor percentage"
+                >
+                  <option value="5">5% (Minimal)</option>
+                  <option value="10">10% (Standard)</option>
+                  <option value="15">15% (Liberal)</option>
+                  <option value="20">20% (Complex)</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">Spillage & breakage</p>
+              </div>
+            </div>
 
-                        <div className="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-600">
-                          <p className="text-sm text-gray-600">Base Plaster Needed</p>
-                          <p className="text-2xl font-bold text-gray-900">{result.basePlaster} kg</p>
-                          <p className="text-xs text-gray-500 mt-1">Without waste factor ({result.coats} coat{result.coats !== '1' ? 's' : ''})</p>
-                        </div>
+            <button
+              onClick={calculate}
+              className="w-full bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 rounded-lg text-lg transition"
+              aria-label="Calculate plaster needed"
+            >
+              📊 Calculate Plaster Needed
+            </button>
 
-                        <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
-                          <p className="text-sm text-gray-600">With Waste Factor ({result.waste}%)</p>
-                          <p className="text-2xl font-bold text-gray-900">{result.withWaste} kg</p>
-                          <p className="text-xs text-gray-500 mt-1">Includes spillage, breakage &amp; imperfections</p>
-                        </div>
-
-                        <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
-                          <p className="text-sm text-gray-600">Order (25kg bags)</p>
-                          <p className="text-2xl font-bold text-gray-900">{result.bags} bags</p>
-                          <p className="text-xs text-gray-500 mt-1">Material cost: approx. £{result.materialCost}</p>
-                        </div>
-                      </div>
-
-                      <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
-                        <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                          💡 Quick Reference
-                        </h3>
-                        <ul className="text-sm text-gray-700 space-y-3">
-                          <li><strong>📦 Order:</strong> {result.bags} bags × 25kg</li>
-                          <li><strong>💷 Materials:</strong> ~£{result.materialCost}</li>
-                          <li><strong>👷 Labour Est:</strong> ~£{result.labourCost} (£25/m²)</li>
-                          <li><strong>📐 Coverage:</strong> {result.coverage}kg/m² × {result.coats} coat(s)</li>
-                          <li><strong>⚠️ Waste:</strong> {result.waste}% buffer included</li>
-                          <li><strong>💾 Storage:</strong> Keep dry, use within 6 months</li>
-                          <li><strong>⏱️ Drying:</strong> 24 hours between coats minimum</li>
-                          <li><strong>🎨 Before painting:</strong> Allow 14 days minimum</li>
-                        </ul>
-                      </div>
-                    </div>
-
-                    <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded mt-6">
-                      <div className="flex items-start gap-3">
-                        <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="font-semibold text-blue-900 mb-1">✓ Coverage Summary</p>
-                          <p className="text-sm text-blue-800">
-                            <strong>{result.area}m²</strong> surface area × <strong>{result.coverage}kg/m²</strong> coverage × <strong>{result.coats}</strong> coat(s) = <strong>{result.basePlaster}kg</strong> base + <strong>{result.waste}%</strong> waste = <strong>{result.withWaste}kg</strong> total needed = <strong>{result.bags} × 25kg bags</strong>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+            {result && (
+              <>
+                <div className={`mt-8 rounded-lg p-6 bg-slate-50 border-2 border-slate-300`}>
+                  <div className="flex items-center gap-2 mb-4">
+                    <CheckCircle2 className="w-6 h-6 text-slate-600" />
+                    <h3 className={`text-xl font-bold text-slate-900`}>
+                      ✓ Plaster Coverage Breakdown
+                    </h3>
                   </div>
 
-                  {/* QUOTE GENERATOR CTA */}
-                  <div className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg mb-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
+                  <div className="bg-white p-4 rounded border-t-2 border-b-2 border-slate-300">
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">Total Wall Area</p>
+                        <p className="text-2xl font-bold text-gray-900">{result.area} m²</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
-                        <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
+                        <p className="text-xs text-gray-600 mb-1">Base Plaster Needed</p>
+                        <p className="text-2xl font-bold text-slate-600">{result.basePlaster} kg</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">With Waste ({result.waste}%)</p>
+                        <p className="text-2xl font-bold text-slate-600">{result.withWaste} kg</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">25kg Bags to Order</p>
+                        <p className="text-2xl font-bold text-green-600">{result.bags} bags</p>
                       </div>
                     </div>
-                    <button
-                      onClick={() => setShowQuoteGenerator(true)}
-                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
-                      aria-label="Generate quote from calculation"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                    <div className="border-t pt-4">
+                      <div className="flex justify-between mb-3">
+                        <p className="font-semibold">Material Cost (£8.50/bag)</p>
+                        <p className="font-bold text-lg">£{result.materialCost}</p>
+                      </div>
+                      <div className="flex justify-between mb-3 p-2 rounded bg-gray-50">
+                        <p className="font-semibold">Labour Estimate (£25/m²)</p>
+                        <p className="font-bold text-lg text-slate-600">£{result.labourCost}</p>
+                      </div>
+                      <div className="flex justify-between p-3 rounded bg-green-100 border border-green-300">
+                        <p className="font-semibold text-green-900">Total Project Estimate</p>
+                        <p className="font-bold text-lg text-green-700">£{(parseFloat(result.materialCost) + parseFloat(result.labourCost)).toFixed(2)}</p>
+                      </div>
+                    </div>
+
+                    <div className="text-xs text-gray-700 bg-gray-50 p-3 rounded border-l-2 border-gray-400 mt-4">
+                      <p className="font-semibold mb-1">Summary:</p>
+                      <p className="font-mono">
+                        {result.area}m² × {result.coverage}kg/m² × {result.coats} coat(s) = {result.basePlaster}kg + {result.waste}% waste = {result.withWaste}kg = {result.bags} × 25kg bags
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                       </svg>
-                      Generate Free Quote
-                    </button>
-                    <p className="text-xs text-center text-gray-500 mt-2">
-                      Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
-                    </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
+                      <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
+                    </div>
                   </div>
-                </>
-              )}
-            </div>
-
-            {/* SIDEBAR */}
-            <div className="lg:col-span-1">
-              <div className="bg-blue-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
-                <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <HelpCircle className="w-5 h-5 text-blue-600" />
-                  Quick Tips
-                </h3>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>✓ Measure exact wall height</li>
-                  <li>✓ Subtract 20% for doors</li>
-                  <li>✓ Account for windows too</li>
-                  <li>✓ Skim coats use less plaster</li>
-                  <li>✓ Order extra for repairs</li>
-                  <li>✓ Check for damp patches first</li>
-                  <li>✓ Always prime plasterboard</li>
-                  <li>✓ Avoid working in cold (&lt;10°C)</li>
-                </ul>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <Palette className="w-5 h-5 text-amber-600" />
-                  Plaster Types
-                </h3>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li><strong>Skim:</strong> Smooth 2mm finish</li>
-                  <li><strong>Gypsum:</strong> Standard plasterboard</li>
-                  <li><strong>Bonding:</strong> First coat on blocks</li>
-                  <li><strong>Finishing:</strong> Top coat 2mm</li>
-                  <li><strong>Thistle:</strong> UK standard brand</li>
-                  <li><strong>Lime:</strong> Traditional/period homes</li>
-                  <li><strong>Artex:</strong> Textured decorative</li>
-                </ul>
-              </div>
-
-              <div className="bg-amber-50 rounded-lg p-6 border-l-4 border-amber-600">
-                <h3 className="font-bold text-gray-900 mb-2">💷 Current UK Prices</h3>
-                <ul className="text-sm text-gray-700 space-y-1">
-                  <li><strong>25kg bag:</strong> ~£8.50</li>
-                  <li><strong>Labour:</strong> £25-35/m²</li>
-                  <li><strong>Professional:</strong> £30-50/m²</li>
-                  <li className="text-xs text-gray-500 mt-2"><em>Prices Q4 2025</em></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* COMPREHENSIVE GUIDE */}
-          <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Complete Plastering Guide for UK Professionals</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-              <div>
-                <h3 className="font-bold text-gray-900 mb-3">✓ Plaster Coverage Rates by Type</h3>
-                <p className="text-gray-700 text-sm mb-4">
-                  Coverage rates vary by plaster type, substrate condition, and application method. These are industry standard rates per coat:
-                </p>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• <strong>Light skim coat:</strong> 1.2 kg/m² (minimal application)</li>
-                  <li>• <strong>Standard skim coat:</strong> 1.5 kg/m² (typical finish layer)</li>
-                  <li>• <strong>Gypsum plaster:</strong> 2.0 kg/m² (standard plasterboard base)</li>
-                  <li>• <strong>Finishing plaster:</strong> 1.5 kg/m² (smooth top coat)</li>
-                  <li>• <strong>Bonding plaster:</strong> 2.5 kg/m² (first coat on blocks)</li>
-                  <li>• <strong>Heavy coverage:</strong> 2.5-3.0 kg/m² (thick coats, poor substrate)</li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-gray-900 mb-3">⏱️ Drying &amp; Curing Times (Critical)</h3>
-                <p className="text-gray-700 text-sm mb-4">
-                  Proper drying time ensures professional results and prevents defects, cracks, and failure:
-                </p>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• <strong>Between coats:</strong> 24 hours minimum (critical)</li>
-                  <li>• <strong>Full structural cure:</strong> 5-7 days minimum</li>
-                  <li>• <strong>Before painting:</strong> 14 days recommended (30 days optimal)</li>
-                  <li>• <strong>Before wallpaper:</strong> 14 days minimum (ensure full cure)</li>
-                  <li>• <strong>Cold temp:</strong> +10°C minimum (below 10°C drying fails)</li>
-                  <li>• <strong>Humidity:</strong> Below 70% (high humidity dramatically slows drying)</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-              <div>
-                <h3 className="font-bold text-gray-900 mb-3">📦 Material Types &amp; Applications</h3>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• <strong>Plasterboard:</strong> Drywall for internal walls, requires finish coat</li>
-                  <li>• <strong>Bonding plaster:</strong> First coat on brick/block, 2-3mm thick</li>
-                  <li>• <strong>Finish plaster:</strong> Smooth top coat for painting, 2mm</li>
-                  <li>• <strong>Thistle Universal:</strong> One-coat product, popular UK brand</li>
-                  <li>• <strong>Multi-finish:</strong> One-coat ready-finished plaster</li>
-                  <li>• <strong>Lime plaster:</strong> Period/traditional homes, breathable</li>
-                  <li>• <strong>Artex texture:</strong> Textured decorative finishes (1-2mm)</li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-gray-900 mb-3">🎯 Professional Best Practice</h3>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>✓ Always prime new plasterboard first (primer or diluted PVA)</li>
-                  <li>✓ Use correct water-to-powder ratio (follow manufacturer specs)</li>
-                  <li>✓ Mix thoroughly to consistent smooth paste (no lumps)</li>
-                  <li>✓ Apply thin, even coats (2-3mm maximum per coat)</li>
-                  <li>✓ Maintain 24-hour drying between coats (non-negotiable)</li>
-                  <li>✓ Sand lightly between coats for adhesion (120-150 grit)</li>
-                  <li>✓ Store plaster in dry conditions (protect from moisture)</li>
-                  <li>✓ Use within 6 months of purchase (older plaster loses strength)</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-              <div>
-                <h3 className="font-bold text-gray-900 mb-3">💷 Cost Breakdown Example</h3>
-                <div className="bg-gray-50 rounded p-4 text-sm text-gray-700 space-y-2">
-                  <p><strong>100m² project (2 coats skim, 1.5kg/m²):</strong></p>
-                  <p>• Base plaster needed: 300kg</p>
-                  <p>• Plus 10% waste: 330kg</p>
-                  <p>• Bags required: 14 × 25kg bags</p>
-                  <p>• Material cost: ~£119 (14 bags × £8.50)</p>
-                  <p>• Labour cost (£25/m²): ~£2,500</p>
-                  <p>• Total project estimate: ~£2,619</p>
-                  <p className="text-xs text-gray-500 mt-3"><em>Note: Prices Q4 2025, may vary by region and supplier</em></p>
+                  <button
+                    onClick={() => setShowQuoteGenerator(true)}
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+                    aria-label="Generate quote from calculation"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Generate Free Quote
+                  </button>
+                  <p className="text-xs text-center text-gray-500 mt-2">
+                    Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
+                  </p>
                 </div>
-              </div>
+              </>
+            )}
+          </div>
 
+          <div className="bg-slate-50 border-l-4 border-slate-600 rounded-lg p-6 mb-8">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-6 h-6 text-slate-600 mt-1 flex-shrink-0" />
               <div>
-                <h3 className="font-bold text-gray-900 mb-3">⚠️ Common Mistakes to Avoid</h3>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>❌ Don't skip priming plasterboard (causes poor adhesion)</li>
-                  <li>❌ Don't rush drying time between coats (causes cracking)</li>
-                  <li>❌ Don't apply thick coats (causes sagging and failure)</li>
-                  <li>❌ Don't plaster over damp (efflorescence and failure)</li>
-                  <li>❌ Don't ignore waste factors (always run short)</li>
-                  <li>❌ Don't use old plaster &gt;6 months (loses strength and workability)</li>
-                  <li>❌ Don't work in cold (&lt;10°C) or damp (&gt;70% humidity)</li>
-                  <li>❌ Don't paint too early (minimum 14 days, 30 days optimal)</li>
+                <h3 className="font-bold text-slate-900 mb-3">📋 Professional Plaster Coverage</h3>
+                <ul className="space-y-2 text-sm text-slate-900">
+                  <li>• <strong>Coverage rates:</strong> 1.2-3.0 kg/m² depending on plaster type and application</li>
+                  <li>• <strong>Drying times:</strong> 24 hours between coats, 14 days before painting</li>
+                  <li>• <strong>Waste factors:</strong> 5-20% depending on surface condition and complexity</li>
+                  <li>• <strong>Material cost:</strong> ~£8.50 per 25kg bag (Q4 2025 UK rates)</li>
+                  <li>• <strong>Labour cost:</strong> £25-35/m² standard, £35-50/m² skim coating, £50+/m² specialist</li>
+                  <li>• <strong>Plaster types:</strong> Bonding, Finishing, Thistle, Lime, Artex textured</li>
+                  <li>• <strong>Temperature:</strong> Don't plaster below 10°C or above 70% humidity</li>
                 </ul>
               </div>
             </div>
+          </div>
 
-            <div className="bg-yellow-50 border-l-4 border-yellow-600 p-6 rounded">
-              <h3 className="font-bold text-gray-900 mb-2">✓ Professional Quality Assurance</h3>
-              <p className="text-sm text-gray-700 mb-3">
-                This calculator provides professional estimates based on UK industry standards and manufacturer specifications. Coverage rates are typical but vary based on surface condition, application technique, plaster type, temperature, and humidity. Always account for waste and keep extra material for touch-ups and repairs.
-              </p>
-              <p className="text-sm text-gray-700">
-                <strong>For best results:</strong> Follow manufacturer guidelines precisely, allow adequate curing time before finishing or painting, and maintain proper ventilation. Weather and environmental conditions significantly affect drying times - allow additional time in cold and damp conditions. Professional plasterers typically add 10-15% extra to their material estimates to prevent job delays.
-              </p>
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Understanding Plaster Coverage & Costs</h2>
+            <p className="text-gray-700 mb-4">
+              Professional plaster coverage depends on plaster type, substrate condition, application method, and environmental factors. This calculator helps you estimate materials and costs accurately based on industry-standard coverage rates. Understanding waste factors, drying times, and project costs is essential for accurate quoting.
+            </p>
+            <div className="bg-gray-50 p-4 rounded border-l-4 border-slate-600">
+              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Light skim coats (1.2-1.5 kg/m²) use less material but require skilled technique, while heavy coverage (2.5-3.0 kg/m²) covers poor substrates but uses significantly more material. Professional plasterers add 10-15% waste to prevent job delays and callbacks.</p>
+            </div>
+          </section>
+
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Plaster Types & Coverage Rates (Q4 2025)</h2>
+            <p className="text-gray-700 mb-4">
+              Different plaster types have different coverage rates and applications. Choose the correct type for your substrate and finish requirements:
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-gray-700">
+                <thead>
+                  <tr className="bg-slate-100 border-b">
+                    <th className="px-4 py-2 text-left font-semibold">Plaster Type</th>
+                    <th className="px-4 py-2 text-left font-semibold">Coverage (kg/m²)</th>
+                    <th className="px-4 py-2 text-left font-semibold">Application</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-2 font-semibold">Light Skim</td>
+                    <td className="px-4 py-2">1.2</td>
+                    <td className="px-4 py-2">Minimal, smooth surfaces</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 bg-gray-50">
+                    <td className="px-4 py-2 font-semibold">Skim Coat</td>
+                    <td className="px-4 py-2">1.5</td>
+                    <td className="px-4 py-2">Standard finish layer</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-2 font-semibold">Finishing Plaster</td>
+                    <td className="px-4 py-2">1.5-2.0</td>
+                    <td className="px-4 py-2">Top coat, paintable</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 bg-gray-50">
+                    <td className="px-4 py-2 font-semibold">Gypsum Standard</td>
+                    <td className="px-4 py-2">2.0</td>
+                    <td className="px-4 py-2">Plasterboard base coat</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-2 font-semibold">Bonding Plaster</td>
+                    <td className="px-4 py-2">2.5</td>
+                    <td className="px-4 py-2">First coat on blocks</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 bg-gray-50">
+                    <td className="px-4 py-2 font-semibold">Heavy Coverage</td>
+                    <td className="px-4 py-2">2.5-3.0</td>
+                    <td className="px-4 py-2">Poor substrates, thick coats</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-gray-500 mt-4">Note: Prices and coverage rates Q4 2025. Always confirm with supplier and check manufacturer specifications for specific products.</p>
+          </section>
+
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Drying Times & Environmental Factors</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="border-l-4 border-green-600 bg-green-50 p-4 rounded">
+                <h4 className="font-bold text-gray-900 mb-2">Drying Schedule</h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• <strong>Between coats:</strong> 24 hours minimum</li>
+                  <li>• <strong>Full cure:</strong> 5-7 days</li>
+                  <li>• <strong>Before painting:</strong> 14 days minimum</li>
+                  <li>• <strong>Before wallpaper:</strong> 14 days</li>
+                  <li>• <strong>Optimal:</strong> 28-30 days</li>
+                </ul>
+              </div>
+              <div className="border-l-4 border-orange-600 bg-orange-50 p-4 rounded">
+                <h4 className="font-bold text-gray-900 mb-2">Environmental Conditions</h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• <strong>Temperature:</strong> 10-25°C ideal</li>
+                  <li>• <strong>Avoid below:</strong> 10°C (fails to dry)</li>
+                  <li>• <strong>Humidity:</strong> Below 70% (above slows drying)</li>
+                  <li>• <strong>Ventilation:</strong> Critical for drying</li>
+                  <li>• <strong>Cold:</strong> Add 50% extra drying time</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Waste Factors & Best Practice</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="border-l-4 border-blue-600 bg-blue-50 p-4 rounded">
+                <h4 className="font-bold text-gray-900 mb-2">When to Use Each Waste Factor</h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• <strong>5%:</strong> Simple, smooth applications</li>
+                  <li>• <strong>10%:</strong> Standard typical work</li>
+                  <li>• <strong>15%:</strong> Complex surfaces, first-time</li>
+                  <li>• <strong>20%:</strong> Poor substrate, damaged walls</li>
+                </ul>
+              </div>
+              <div className="border-l-4 border-purple-600 bg-purple-50 p-4 rounded">
+                <h4 className="font-bold text-gray-900 mb-2">Professional Tips</h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>✓ Prime plasterboard before plastering</li>
+                  <li>✓ Mix to consistent smooth paste</li>
+                  <li>✓ Apply 2-3mm maximum per coat</li>
+                  <li>✓ Order 10-15% extra for safety</li>
+                  <li>✓ Store plaster dry (use within 6 months)</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How do I calculate the area after subtracting doors and windows?</h4>
+                <p className="text-sm text-gray-700">Subtract approximately 20% from your total wall area, or calculate specific openings: Standard door (1.9m × 0.9m = 1.7m²), Window (1.5m × 1m = 1.5m²). Enter your net area into the calculator for accurate estimates.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: What's the difference between bonding and finishing plaster?</h4>
+                <p className="text-sm text-gray-700">Bonding plaster (2.5 kg/m²) is the first coat applied to brick/block - it provides mechanical grip. Finishing plaster (1.5 kg/m²) is the smooth top coat for painting. Typical: bonding first, then finishing. For plasterboard, apply finish coat directly.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: Why shouldn't I plaster in cold weather?</h4>
+                <p className="text-sm text-gray-700">Below 10°C, plaster won't cure properly - it dries too slowly or not at all. High humidity (above 70%) also dramatically slows drying. Maintain 10-25°C temperature and ventilate properly for optimal results and 24-hour drying between coats.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How long before I can paint after plastering?</h4>
+                <p className="text-sm text-gray-700">Wait minimum 14 days before painting. For new plasterboard with finish coats, allow 14-30 days optimal drying to prevent paint failure, peeling, or dampness issues. Proper curing ensures paint adhesion and professional finish.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: What waste percentage should I use for my job?</h4>
+                <p className="text-sm text-gray-700">Use 10% as standard baseline. Use 5% for simple smooth work, 15% for complex surfaces or poor substrate, 20% for heavily damaged areas. Professional plasterers typically add 10-15% extra to prevent job delays and have materials for callbacks.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How does this calculator compare to other tools?</h4>
+                <p className="text-sm text-gray-700">This calculator uses industry-standard coverage rates and Q4 2025 UK market pricing. For detailed comparisons, see our <a href="/joinery-calculator" className="text-purple-600 font-semibold hover:underline">Joinery Calculator</a> (wood/labour estimator) and <a href="/voltage-drop-calculator" className="text-purple-600 font-semibold hover:underline">Voltage Drop Calculator</a> (electrical compliance tool) for other trade-specific estimates.</p>
+              </div>
+            </div>
+          </section>
+
+          <div className="bg-yellow-50 border-l-4 border-yellow-600 rounded-lg p-6 mb-8">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-6 h-6 text-yellow-600 mt-1 flex-shrink-0" />
+              <div>
+                <p className="font-bold text-yellow-900 mb-2">✓ Professional Quality Assurance</p>
+                <p className="text-sm text-yellow-800">This calculator provides professional estimates based on UK industry standards and manufacturer specifications. Coverage rates are typical but vary based on surface condition, application technique, plaster type, temperature, and humidity. Always account for waste and keep extra material for touch-ups and repairs. For best results, follow manufacturer guidelines precisely and allow adequate curing time before finishing or painting.</p>
+              </div>
             </div>
           </div>
 
-          {/* CONTACT FORM SECTION */}
-          <div className="mt-12 bg-white rounded-lg shadow-lg p-8 mb-16">
+          <div className="mt-12 bg-white rounded-lg shadow-lg p-8 mb-8">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Need Help or Have Questions?</h3>
               <p className="text-gray-700">
@@ -564,9 +582,16 @@ export default function PlastererCalculator() {
               Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 font-semibold hover:underline">mick@tradecalcs.co.uk</a>
             </p>
           </div>
+
+          <div className="bg-slate-600 text-white rounded-lg p-8 text-center mb-8">
+            <h2 className="text-2xl font-bold mb-3">Complete Your Trade Calculations</h2>
+            <p className="mb-6">Use our <a href="/joinery-calculator" className="underline hover:opacity-90">joinery calculator</a> for wood costs and labour, <a href="/voltage-drop-calculator" className="underline hover:opacity-90">voltage drop calculator</a> for electrical compliance, and other professional tools to estimate accurately and quote confidently.</p>
+            <a href="/" className="bg-white text-slate-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
+              View All Calculators
+            </a>
+          </div>
         </div>
 
-        {/* QUOTE GENERATOR MODAL */}
         {showQuoteGenerator && result && (
           <QuoteGenerator
             calculationResults={{
