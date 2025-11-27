@@ -1,7 +1,33 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { CheckCircle2, HelpCircle, Layers, AlertTriangle, AlertCircle } from 'lucide-react'
+import { CheckCircle2, HelpCircle, Layers, AlertCircle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import QuoteGenerator from './QuoteGenerator'
+
+interface ScaffoldResults {
+  scaffoldType: string;
+  height: number;
+  length: number;
+  width: number;
+  bayCount: number;
+  liftCount: number;
+  totalTubes: number;
+  standardTubes: number;
+  ledgerTubes: number;
+  transomTubes: number;
+  braceTubes: number;
+  rightAngleFittings: number;
+  swivelFittings: number;
+  basePlates: number;
+  boardClips: number;
+  totalFittings: number;
+  totalBoards: number;
+  toeBoards: number;
+  totalTies: number;
+  maxLoad: number;
+  totalWeeklyCost: number;
+  warnings: string[];
+}
 
 export default function ScaffoldCalculator() {
   const [scaffoldType, setScaffoldType] = useState<'independent' | 'putlog'>('independent')
@@ -11,7 +37,7 @@ export default function ScaffoldCalculator() {
   const [bays, setBays] = useState('')
   const [lifts, setLifts] = useState('')
   const [boardType, setBoardType] = useState('standard')
-  const [results, setResults] = useState<any>(null)
+  const [results, setResults] = useState<ScaffoldResults | null>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
   const calculate = () => {
@@ -23,49 +49,41 @@ export default function ScaffoldCalculator() {
     const bayCount = bays ? parseInt(bays) : Math.ceil(lengthM / 2.5)
     const liftCount = lifts ? parseInt(lifts) : Math.ceil(heightM / 2)
 
-    // Standards spacing
-    const standardSpacing = 2.5 // Standard bay width
+    const standardSpacing = 2.5
     
-    // Calculate tubes
     const standardsPerBay = scaffoldType === 'independent' ? 4 : 2
     const totalStandards = bayCount * standardsPerBay
-    const ledgersPerLift = bayCount * 2 // Front and back
+    const ledgersPerLift = bayCount * 2
     const totalLedgers = ledgersPerLift * liftCount
     const transoms = bayCount * liftCount * (scaffoldType === 'independent' ? 2 : 1)
-    const braces = Math.ceil(bayCount / 3) * liftCount * 2 // Diagonal braces every 3 bays
+    const braces = Math.ceil(bayCount / 3) * liftCount * 2
     
-    // Tube lengths (6.3m = 21ft standard UK tube)
     const tubeLength = 6.3
     const standardTubes = Math.ceil(totalStandards * heightM / tubeLength)
     const ledgerTubes = Math.ceil(totalLedgers * standardSpacing / tubeLength)
     const transomTubes = Math.ceil(transoms * widthM / tubeLength)
-    const braceTubes = Math.ceil(braces * 3 / tubeLength) // Approx 3m per diagonal
+    const braceTubes = Math.ceil(braces * 3 / tubeLength)
     
     const totalTubes = standardTubes + ledgerTubes + transomTubes + braceTubes
 
-    // Calculate fittings
-    const rightAngleFittings = (totalStandards * liftCount * 2) + (transoms * 2) // Standards to ledgers + transoms
-    const swivelFittings = braces * 2 // Each brace needs 2 swivels
+    const rightAngleFittings = (totalStandards * liftCount * 2) + (transoms * 2)
+    const swivelFittings = braces * 2
     const basePlates = totalStandards
-    const boardClips = transoms * 4 // 4 clips per transom typically
+    const boardClips = transoms * 4
     
     const totalFittings = rightAngleFittings + swivelFittings + basePlates + boardClips
 
-    // Calculate boards
-    const boardsPerLift = bayCount * 4 // 4 boards per standard bay (width coverage)
+    const boardsPerLift = bayCount * 4
     const totalBoards = boardsPerLift * liftCount
 
-    // Toe boards
-    const toeBoards = (lengthM * 2 + widthM * 2) * liftCount / 3.9 // 3.9m toe boards
+    const toeBoards = (lengthM * 2 + widthM * 2) * liftCount / 3.9
 
-    // Ties - Building Regs requirement
-    const tieSpacing = 4 // Horizontal spacing
-    const tieHeight = 4 // Vertical spacing
+    const tieSpacing = 4
+    const tieHeight = 4
     const tiesHorizontal = Math.ceil(lengthM / tieSpacing)
     const tiesVertical = Math.ceil(heightM / tieHeight)
     const totalTies = tiesHorizontal * tiesVertical
 
-    // Safety checks
     const warnings = []
     if (heightM > 50) {
       warnings.push('⚠️ Scaffold exceeds 50m - specialist engineering required (TG20 max)')
@@ -83,14 +101,12 @@ export default function ScaffoldCalculator() {
       warnings.push('⚠️ Independent scaffold over 30m with narrow base - verify stability calculations required')
     }
 
-    // Weight capacity (simplified - 2.4 kN/m² = approx 244kg/m² for Class 3)
     const workingArea = lengthM * widthM
-    const maxLoad = Math.floor(workingArea * 244) // Class 3 light duty
+    const maxLoad = Math.floor(workingArea * 244)
 
-    // Approximate costs (UK 2024/2025 averages for hire)
-    const tubeCost = totalTubes * 1.5 // £1.50 per tube per week typical
-    const fittingCost = totalFittings * 0.8 // £0.80 per fitting per week
-    const boardCost = totalBoards * 2.5 // £2.50 per board per week
+    const tubeCost = totalTubes * 1.5
+    const fittingCost = totalFittings * 0.8
+    const boardCost = totalBoards * 2.5
     const totalWeeklyCost = Math.ceil(tubeCost + fittingCost + boardCost)
 
     setResults({
@@ -119,20 +135,29 @@ export default function ScaffoldCalculator() {
     })
   }
 
+  const resetCalculator = () => {
+    setHeight('')
+    setLength('')
+    setWidth('')
+    setBays('')
+    setLifts('')
+    setScaffoldType('independent')
+    setBoardType('standard')
+    setResults(null)
+  }
+
   return (
     <>
       <Helmet>
-        {/* Primary Meta Tags */}
         <title>Scaffold Calculator UK | Material Estimator for Scaffolders | TradeCalcs</title>
         <meta 
           name="description" 
           content="Free scaffold calculator for UK scaffolders. Calculate tubes, fittings, boards, and ties instantly. Professional tool with safety checks and Building Regs compliance. TG20 compliant." 
         />
-        <meta name="keywords" content="scaffold calculator, scaffolding calculator, UK scaffold estimator, tube calculator, scaffold materials calculator, scaffolder tools, TG20 calculator, BS EN 12811, Building Regs scaffolding" />
+        <meta name="keywords" content="scaffold calculator, scaffolding calculator, UK scaffold estimator, tube calculator, scaffold materials calculator, scaffolder tools, TG20 calculator, BS EN 12811, Building Regs scaffolding, tie requirements" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Scaffold Calculator UK | Material Estimator for Scaffolders" />
         <meta property="og:description" content="Calculate scaffold materials instantly. Free professional tool for UK scaffolders with safety checks." />
@@ -140,18 +165,15 @@ export default function ScaffoldCalculator() {
         <meta property="og:image" content="https://tradecalcs.co.uk/images/scaffold-calculator-og.jpg" />
         <meta property="og:site_name" content="TradeCalcs" />
 
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Scaffold Calculator UK | TradeCalcs" />
         <meta name="twitter:description" content="Free scaffold calculator. Calculate tubes, fittings, and boards instantly." />
         <meta name="twitter:image" content="https://tradecalcs.co.uk/images/scaffold-calculator-og.jpg" />
 
-        {/* Additional SEO */}
         <link rel="canonical" href="https://tradecalcs.co.uk/scaffold-calculator" />
         <meta name="author" content="TradeCalcs" />
         <meta name="theme-color" content="#0284c7" />
 
-        {/* Schema Markup */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -205,7 +227,7 @@ export default function ScaffoldCalculator() {
                     'name': 'How much weight can a Class 3 scaffold support?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Class 3 (light duty) scaffolding supports 244 kg/m² (2.4 kN/m²) uniformly distributed load. This is typical working platform for general construction and painting. Class 1-2 are heavier duty (75-244 kg/m²), Class 4-6 support higher loads (300-600 kg/m²). Load class must be tagged on scaffold.'
+                      'text': 'Class 3 (light duty) scaffolding supports 244 kg/m² (2.4 kN/m²) uniformly distributed load. This is typical working platform for general construction and painting. Class 1-2 are lighter duty (75-153 kg/m²), Class 4-6 support higher loads (305-600 kg/m²). Load class must be tagged on scaffold.'
                     }
                   },
                   {
@@ -222,6 +244,22 @@ export default function ScaffoldCalculator() {
                     'acceptedAnswer': {
                       '@type': 'Answer',
                       'text': 'Scaffolding must be inspected before first use by competent person, then every 7 days during use, and after adverse weather or modifications. WAHR 2005 (Work at Height Regulations) requires written inspection reports retained on site. Inspection by trained person is legal requirement - non-compliance can result in prosecution and fines.'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'Can I compare scaffold calculator with other trade tools?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'TradeCalcs provides comprehensive professional estimators for multiple trades. Use our <a href="https://tradecalcs.co.uk/paint-calculator">Paint Calculator</a> for decorator costs, <a href="https://tradecalcs.co.uk/brick-block-calculator">Brick & Block Calculator</a> for masonry, <a href="https://tradecalcs.co.uk/plaster-calculator">Plaster Calculator</a> for surface work, or <a href="https://tradecalcs.co.uk/cis-calculator">CIS Calculator</a> for construction tax. All tools are free with UK rates and linked for complete project estimates.'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'What is the height to base ratio rule for scaffold stability?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'The height to base width ratio must not exceed 3.5:1 for standard independent scaffolding. For example, a 35m high scaffold must have minimum 10m base width. Narrower bases exceeding this ratio require additional bracing, enhanced tying, or specialist engineering. Always verify stability calculations for high narrow scaffolds.'
                     }
                   }
                 ]
@@ -242,402 +280,372 @@ export default function ScaffoldCalculator() {
         </script>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50">
-        <div className="bg-gradient-to-r from-blue-600 to-cyan-600 py-4 px-6">
-          <div className="max-w-5xl mx-auto">
-            <a href="/" className="text-white font-semibold flex items-center gap-2 hover:opacity-90 transition w-fit">
-              ← Back to All Calculators
-            </a>
+      <div className="bg-gray-50 min-h-screen">
+        <div className="max-w-5xl mx-auto px-4 py-4">
+          <Link to="/" className="text-blue-600 hover:text-blue-800 font-semibold text-sm">
+            ← Back to All Calculators
+          </Link>
+        </div>
+
+        <div className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-12 px-4">
+          <div className="max-w-5xl mx-auto text-center">
+            <Layers className="w-12 h-12 mx-auto mb-3" />
+            <h1 className="text-4xl font-bold mb-2">Scaffold Calculator UK</h1>
+            <p className="text-lg opacity-95">Calculate tubes, fittings & materials for scaffolding instantly</p>
           </div>
         </div>
 
-        <div className="max-w-5xl mx-auto p-6">
-          <div className="mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Professional Scaffold Calculator for UK Scaffolders
-            </h1>
-            <p className="text-xl text-gray-700 mb-4">
-              Calculate exact tube, fitting, and board quantities for scaffold erection instantly
-            </p>
-            <p className="text-gray-600 mb-6">
-              Industry-trusted scaffold estimator for professional scaffolders across the UK. Compliant with TG20:13, BS EN 12811, and Work at Height Regulations 2005. Includes tie requirements, safety checks, and Building Regs compliance verification.
-            </p>
-          </div>
+        <div className="max-w-5xl mx-auto px-4 py-8">
+          <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <div className="bg-blue-600 text-white rounded-lg p-4 mb-6">
+              <div className="flex items-center gap-2 mb-1">
+                <Layers className="w-5 h-5" />
+                <h2 className="text-lg font-bold">Professional Scaffold Calculator</h2>
+              </div>
+              <p className="text-sm opacity-90">Estimation tool for UK scaffolders and contractors</p>
+            </div>
 
-          <div className="bg-amber-50 rounded-lg p-4 mb-8 border-l-4 border-amber-600">
-            <div className="flex gap-3">
-              <AlertTriangle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" />
+            <div className="mb-6">
+              <label className="block font-bold text-gray-800 mb-2">1. Scaffold Type</label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => setScaffoldType('independent')}
+                  className={`py-2 px-4 rounded-lg font-semibold transition ${
+                    scaffoldType === 'independent'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                  aria-label="Select independent scaffold type"
+                >
+                  Independent
+                </button>
+                <button
+                  onClick={() => setScaffoldType('putlog')}
+                  className={`py-2 px-4 rounded-lg font-semibold transition ${
+                    scaffoldType === 'putlog'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                  aria-label="Select putlog scaffold type"
+                >
+                  Putlog
+                </button>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">Independent = freestanding • Putlog = building-supported</p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4 mb-6">
               <div>
-                <h3 className="font-semibold text-amber-900 mb-1">⚠️ Safety Notice - Competent Person Required</h3>
-                <p className="text-sm text-amber-800">
-                  This calculator provides material estimates only. All scaffold designs must be checked by a competent person (WAHR 2005 compliant). Complex or high scaffolds require professional engineering design by qualified scaffold engineer. Never erect scaffold exceeding TG20:13 parameters without specialist design.
-                </p>
+                <label className="block font-bold text-gray-800 mb-2">2. Height (metres)</label>
+                <input
+                  type="number"
+                  step="0.5"
+                  value={height}
+                  onChange={e => setHeight(e.target.value)}
+                  placeholder="e.g. 12"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 mb-2"
+                  aria-label="Scaffold total height in metres"
+                />
+                <p className="text-xs text-gray-500 mt-1">Floor to top platform</p>
+              </div>
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">3. Length (metres)</label>
+                <input
+                  type="number"
+                  step="0.5"
+                  value={length}
+                  onChange={e => setLength(e.target.value)}
+                  placeholder="e.g. 20"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 mb-2"
+                  aria-label="Scaffold length in metres"
+                />
+                <p className="text-xs text-gray-500 mt-1">Building face length</p>
+              </div>
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">4. Width (metres)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={width}
+                  onChange={e => setWidth(e.target.value)}
+                  placeholder="e.g. 1.2"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 mb-2"
+                  aria-label="Scaffold width in metres"
+                />
+                <p className="text-xs text-gray-500 mt-1">Working platform width</p>
               </div>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Calculate Materials</h2>
-                
-                <div className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Scaffold Type</label>
-                    <div className="grid grid-cols-2 gap-3">
-                      <button
-                        onClick={() => setScaffoldType('independent')}
-                        className={`py-2 px-4 rounded-lg font-semibold transition ${
-                          scaffoldType === 'independent'
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                        aria-label="Select independent scaffold type"
-                      >
-                        Independent
-                      </button>
-                      <button
-                        onClick={() => setScaffoldType('putlog')}
-                        className={`py-2 px-4 rounded-lg font-semibold transition ${
-                          scaffoldType === 'putlog'
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                        aria-label="Select putlog scaffold type"
-                      >
-                        Putlog
-                      </button>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-1">Independent = freestanding (double standards) • Putlog = building-supported (single row)</p>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Height (metres)</label>
-                      <input
-                        type="number"
-                        step="0.5"
-                        value={height}
-                        onChange={(e) => setHeight(e.target.value)}
-                        placeholder="e.g. 12"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:outline-none"
-                        aria-label="Scaffold total height in metres"
-                      />
-                      <p className="text-xs text-gray-500 mt-1">Floor to top platform</p>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Length (metres)</label>
-                      <input
-                        type="number"
-                        step="0.5"
-                        value={length}
-                        onChange={(e) => setLength(e.target.value)}
-                        placeholder="e.g. 20"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:outline-none"
-                        aria-label="Scaffold length in metres"
-                      />
-                      <p className="text-xs text-gray-500 mt-1">Building face length</p>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Width (metres)</label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={width}
-                        onChange={(e) => setWidth(e.target.value)}
-                        placeholder="e.g. 1.2"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:outline-none"
-                        aria-label="Scaffold width in metres"
-                      />
-                      <p className="text-xs text-gray-500 mt-1">Working platform width</p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Number of Bays (Optional)</label>
-                      <input
-                        type="number"
-                        value={bays}
-                        onChange={(e) => setBays(e.target.value)}
-                        placeholder="Auto-calculated"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:outline-none"
-                        aria-label="Number of scaffold bays"
-                      />
-                      <p className="text-xs text-gray-500 mt-1">Leave blank to auto-calculate (2.5m standard bays)</p>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Number of Lifts (Optional)</label>
-                      <input
-                        type="number"
-                        value={lifts}
-                        onChange={(e) => setLifts(e.target.value)}
-                        placeholder="Auto-calculated"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:outline-none"
-                        aria-label="Number of scaffold lifts or levels"
-                      />
-                      <p className="text-xs text-gray-500 mt-1">Leave blank to auto-calculate (2m standard lifts)</p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Board Type</label>
-                    <select
-                      value={boardType}
-                      onChange={(e) => setBoardType(e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:outline-none font-semibold"
-                      aria-label="Type of working platform boards"
-                    >
-                      <option value="standard">Standard Timber (225mm × 38mm × 3.9m)</option>
-                      <option value="lightweight">Lightweight Aluminium (easier handling)</option>
-                      <option value="hop-up">Hop-Up Boards (1.2m mobile platforms)</option>
-                    </select>
-                    <p className="text-xs text-gray-500 mt-1">BS 2482 timber or BS EN 12811 aluminium compliant</p>
-                  </div>
-
-                  <button
-                    onClick={calculate}
-                    className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
-                    aria-label="Calculate scaffold materials"
-                  >
-                    📐 Calculate Materials
-                  </button>
-                </div>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">5. Number of Bays (Optional)</label>
+                <input
+                  type="number"
+                  value={bays}
+                  onChange={e => setBays(e.target.value)}
+                  placeholder="Auto-calculated"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  aria-label="Number of scaffold bays"
+                />
+                <p className="text-xs text-gray-500 mt-1">Leave blank to auto-calculate (2.5m standard bays)</p>
               </div>
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">6. Number of Lifts (Optional)</label>
+                <input
+                  type="number"
+                  value={lifts}
+                  onChange={e => setLifts(e.target.value)}
+                  placeholder="Auto-calculated"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  aria-label="Number of scaffold lifts or levels"
+                />
+                <p className="text-xs text-gray-500 mt-1">Leave blank to auto-calculate (2m standard lifts)</p>
+              </div>
+            </div>
 
-              {results && (
-                <>
-                  <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
-                    <div className="flex items-center gap-2 mb-6">
+            <div className="mb-6">
+              <label className="block font-bold text-gray-800 mb-2">7. Board Type</label>
+              <select
+                value={boardType}
+                onChange={e => setBoardType(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                aria-label="Type of working platform boards"
+              >
+                <option value="standard">Standard Timber (225mm × 38mm × 3.9m)</option>
+                <option value="lightweight">Lightweight Aluminium (easier handling)</option>
+                <option value="hop-up">Hop-Up Boards (1.2m mobile platforms)</option>
+              </select>
+              <p className="text-xs text-gray-500 mt-1">BS 2482 timber or BS EN 12811 aluminium compliant</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={resetCalculator}
+                className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 rounded-lg transition"
+                aria-label="Reset calculator"
+              >
+                🔄 Reset
+              </button>
+              <button
+                onClick={calculate}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition"
+                aria-label="Calculate scaffold materials"
+              >
+                📐 Calculate Materials
+              </button>
+            </div>
+
+            {results && (
+              <>
+                <div className={`mt-8 rounded-lg p-6 ${results.warnings.length > 0 ? 'bg-amber-50 border-2 border-amber-300' : 'bg-green-50 border-2 border-green-300'}`}>
+                  <div className="flex items-center gap-2 mb-4">
+                    {results.warnings.length > 0 ? (
+                      <AlertCircle className="w-6 h-6 text-amber-600" />
+                    ) : (
                       <CheckCircle2 className="w-6 h-6 text-green-600" />
-                      <h2 className="text-xl font-bold text-gray-900">Materials Required</h2>
+                    )}
+                    <h3 className={`text-xl font-bold ${results.warnings.length > 0 ? 'text-amber-900' : 'text-green-900'}`}>
+                      ✓ Scaffold Breakdown
+                    </h3>
+                  </div>
+
+                  <div className="bg-white p-4 rounded border-t-2 border-b-2" style={{ borderTopColor: results.warnings.length > 0 ? '#b45309' : '#22c55e', borderBottomColor: results.warnings.length > 0 ? '#b45309' : '#22c55e' }}>
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">Scaffold Type</p>
+                        <p className="text-lg font-bold text-gray-900">{results.scaffoldType === 'independent' ? 'Independent' : 'Putlog'}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">Dimensions</p>
+                        <p className="text-lg font-bold text-gray-900">{results.height}m × {results.length}m × {results.width}m</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">Bays × Lifts</p>
+                        <p className="text-lg font-bold text-gray-900">{results.bayCount} × {results.liftCount}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">Max Load Capacity</p>
+                        <p className="text-lg font-bold text-gray-900">{results.maxLoad.toLocaleString()} kg</p>
+                      </div>
+                    </div>
+
+                    <div className="border-t pt-4">
+                      <div className="flex justify-between mb-3">
+                        <p className="font-semibold">Total Tubes (6.3m)</p>
+                        <p className="font-bold text-lg">{results.totalTubes}</p>
+                      </div>
+                      <div className="flex justify-between mb-3 text-sm text-gray-600">
+                        <span>↳ Standards: {results.standardTubes} • Ledgers: {results.ledgerTubes}</span>
+                      </div>
+                      <div className="flex justify-between mb-3 text-sm text-gray-600">
+                        <span>↳ Transoms: {results.transomTubes} • Braces: {results.braceTubes}</span>
+                      </div>
+
+                      <div className="flex justify-between mb-3 p-2 rounded bg-gray-50">
+                        <p className="font-semibold">Total Fittings (BS EN 74)</p>
+                        <p className="font-bold text-lg">{results.totalFittings}</p>
+                      </div>
+                      <div className="flex justify-between mb-3 text-sm text-gray-600">
+                        <span>↳ Right angle: {results.rightAngleFittings} • Swivel: {results.swivelFittings}</span>
+                      </div>
+                      <div className="flex justify-between mb-3 p-2 rounded bg-gray-50">
+                        <p className="font-semibold">Scaffold Boards (3.9m)</p>
+                        <p className="font-bold text-lg">{results.totalBoards}</p>
+                      </div>
+                      <div className="flex justify-between mb-3 p-2 rounded bg-gray-50">
+                        <p className="font-semibold">Toe Boards (150mm)</p>
+                        <p className="font-bold text-lg">{results.toeBoards}</p>
+                      </div>
+                      <div className="flex justify-between p-3 rounded bg-green-100 border border-green-300">
+                        <p className="font-semibold text-green-900">Wall Ties Required (TG20:13)</p>
+                        <p className="font-bold text-lg text-green-700">{results.totalTies}</p>
+                      </div>
                     </div>
 
                     {results.warnings.length > 0 && (
-                      <div className="bg-amber-50 rounded-lg p-4 mb-6 border-l-4 border-amber-600">
-                        <h4 className="font-semibold text-amber-900 mb-2 flex items-center gap-2">
-                          <AlertCircle className="w-5 h-5" />
-                          Safety Warnings & Compliance Checks
-                        </h4>
-                        {results.warnings.map((warning: string, index: number) => (
-                          <p key={index} className="text-sm text-amber-800 mb-1">• {warning}</p>
-                        ))}
+                      <div className="mt-4 p-3 bg-amber-100 rounded border-l-2 border-amber-600">
+                        <p className="font-semibold text-amber-900 mb-2">⚠️ Safety Warnings:</p>
+                        <ul className="text-sm text-amber-800 space-y-1">
+                          {results.warnings.map((warning, idx) => (
+                            <li key={idx}>• {warning}</li>
+                          ))}
+                        </ul>
                       </div>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                      <div className="space-y-4">
-                        <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
-                          <p className="text-sm text-gray-600">Scaffold Dimensions</p>
-                          <p className="text-2xl font-bold text-gray-900">{results.height}m × {results.length}m × {results.width}m</p>
-                          <p className="text-xs text-gray-500 mt-1">{results.bayCount} bays (2.5m) × {results.liftCount} lifts (2m)</p>
-                        </div>
-
-                        <div className="bg-cyan-50 rounded-lg p-4 border-l-4 border-cyan-600">
-                          <p className="text-sm text-gray-600">Total Tubes (6.3m length)</p>
-                          <p className="text-2xl font-bold text-gray-900">{results.totalTubes}</p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Standards: {results.standardTubes} • Ledgers: {results.ledgerTubes}<br/>
-                            Transoms: {results.transomTubes} • Braces: {results.braceTubes}
-                          </p>
-                        </div>
-
-                        <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
-                          <p className="text-sm text-gray-600">Total Fittings (BS EN 74)</p>
-                          <p className="text-2xl font-bold text-gray-900">{results.totalFittings}</p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Right angle: {results.rightAngleFittings} • Swivel: {results.swivelFittings}<br/>
-                            Base plates: {results.basePlates} • Board clips: {results.boardClips}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="space-y-4">
-                        <div className="bg-cyan-50 rounded-lg p-4 border-l-4 border-cyan-600">
-                          <p className="text-sm text-gray-600">Scaffold Boards (3.9m)</p>
-                          <p className="text-2xl font-bold text-gray-900">{results.totalBoards}</p>
-                          <p className="text-xs text-gray-500 mt-1">Working platforms (BS 2482 compliant)</p>
-                        </div>
-
-                        <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
-                          <p className="text-sm text-gray-600">Toe Boards (150mm minimum)</p>
-                          <p className="text-2xl font-bold text-gray-900">{results.toeBoards}</p>
-                          <p className="text-xs text-gray-500 mt-1">All working levels (WAHR 2005 requirement)</p>
-                        </div>
-
-                        <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
-                          <p className="text-sm text-gray-600">Wall Ties Required (TG20:13)</p>
-                          <p className="text-2xl font-bold text-gray-900">{results.totalTies}</p>
-                          <p className="text-xs text-gray-500 mt-1">Every 4m horizontal and vertical (critical for stability)</p>
-                        </div>
-
-                        <div className="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-600">
-                          <p className="text-sm text-gray-600">Max Load Capacity (Class 3)</p>
-                          <p className="text-2xl font-bold text-gray-900">{results.maxLoad.toLocaleString()} kg</p>
-                          <p className="text-xs text-gray-500 mt-1">244 kg/m² light duty (tag scaffold with load class)</p>
-                        </div>
-                      </div>
+                    <div className="mt-4 p-3 bg-blue-100 rounded border-l-2 border-blue-600">
+                      <p className="font-semibold text-blue-900 mb-1">💷 Estimated Weekly Hire Cost</p>
+                      <p className="text-2xl font-bold text-blue-700">£{results.totalWeeklyCost.toLocaleString()}</p>
+                      <p className="text-xs text-blue-800 mt-1">UK 2024/2025 average hire rates (tubes £1.50, fittings £0.80, boards £2.50 per week)</p>
                     </div>
-
-                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-6 border-l-4 border-green-600">
-                      <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                        💷 Estimated Weekly Hire Cost
-                      </h3>
-                      <p className="text-3xl font-bold text-green-700 mb-2">£{results.totalWeeklyCost.toLocaleString()}</p>
-                      <p className="text-sm text-gray-600">
-                        Based on UK 2024/2025 average hire rates (tubes £1.50, fittings £0.80, boards £2.50 per week). Actual costs vary by supplier, location, and hire duration.
-                      </p>
-                    </div>
-
-                    <p className="text-xs text-gray-500 mt-6 text-center">
-                      ✓ {results.scaffoldType === 'independent' ? 'Independent (freestanding)' : 'Putlog (building-supported)'} scaffold • {results.height}m height • TG20:13 & Building Regs compliant • Class 3 light duty
-                    </p>
                   </div>
+                </div>
 
-                  {/* QUOTE GENERATOR CTA */}
-                  <div className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg mb-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
-                        <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => setShowQuoteGenerator(true)}
-                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
-                      aria-label="Generate quote from scaffold calculation"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* QUOTE GENERATOR CTA */}
+                <div className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg mt-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                       </svg>
-                      Generate Free Quote
-                    </button>
-                    <p className="text-xs text-center text-gray-500 mt-2">
-                      Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
-                    </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">Turn This Into a Quote</h3>
+                      <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
+                    </div>
                   </div>
-                </>
-              )}
-            </div>
+                  <button
+                    onClick={() => setShowQuoteGenerator(true)}
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+                    aria-label="Generate quote from scaffold calculation"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Generate Free Quote
+                  </button>
+                  <p className="text-xs text-center text-gray-500 mt-2">
+                    Want branded quotes with your logo? <a href="/pro" className="text-purple-600 font-semibold hover:underline">Upgrade to Pro - £99/year</a>
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
 
-            <div className="lg:col-span-1">
-              <div className="bg-blue-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
-                <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <HelpCircle className="w-5 h-5 text-blue-600" />
-                  Quick Tips
-                </h3>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• <strong>Independent:</strong> Freestanding with 4 standards per bay</li>
-                  <li>• <strong>Putlog:</strong> Supported by building with 2 standards per bay</li>
-                  <li>• <strong>Standard bay:</strong> 2.5m width (can vary)</li>
-                  <li>• <strong>Standard lift:</strong> 2m height per platform level</li>
-                  <li>• Always add 10-15% extra for cuts and waste</li>
-                  <li>• Use certified weighbridge for materials</li>
+          <div className="bg-amber-50 border-l-4 border-amber-600 rounded-lg p-6 mb-8">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-6 h-6 text-amber-600 mt-1 flex-shrink-0" />
+              <div>
+                <h3 className="font-bold text-amber-900 mb-3">🎯 Professional Scaffold Standards</h3>
+                <ul className="space-y-2 text-sm text-amber-900">
+                  <li>• <strong>Material standards:</strong> BS EN 12811 (design), BS EN 39 (tubes), BS EN 74 (fittings), BS 2482 (boards)</li>
+                  <li>• <strong>Tie requirements:</strong> Every 4m horizontal and vertical (Building Regs mandatory)</li>
+                  <li>• <strong>Max height:</strong> 50m standard (TG20:13) - exceeding requires specialist engineering</li>
+                  <li>• <strong>Load class:</strong> Class 3 = 244 kg/m² light duty (must be tagged on scaffold)</li>
+                  <li>• <strong>Height to base ratio:</strong> Maximum 3.5:1 for stability</li>
+                  <li>• <strong>Inspection:</strong> Before first use, every 7 days, and after weather events (WAHR 2005)</li>
                 </ul>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <Layers className="w-5 h-5 text-cyan-600" />
-                  Safety Requirements
-                </h3>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li><strong>Ties:</strong> Every 4m horiz. &amp; vert. (mandatory)</li>
-                  <li><strong>Toe boards:</strong> 150mm minimum height</li>
-                  <li><strong>Guard rails:</strong> Top 950mm, mid 470mm</li>
-                  <li><strong>Base plates:</strong> On all standards (level ground)</li>
-                  <li><strong>Inspection:</strong> Every 7 days + weather events</li>
-                  <li><strong>Competent person:</strong> Required for design check</li>
-                </ul>
-              </div>
-
-              <div className="bg-red-50 rounded-lg p-6 border-l-4 border-red-600">
-                <h3 className="font-bold text-gray-900 mb-2">⚠️ Common Defects</h3>
-                <p className="text-xs text-gray-700">
-                  Under-tying, insufficient bracing, missing toe boards, loose fittings, damaged tubes, poor base support - all lead to failures and prosecution.
-                </p>
               </div>
             </div>
           </div>
 
-          <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Complete Scaffold Guide for UK Professionals</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-              <div>
-                <h3 className="font-bold text-gray-900 mb-3">Material Standards &amp; Compliance</h3>
-                <p className="text-gray-700 text-sm mb-4">
-                  All scaffold materials must comply with BS EN 12811 (temporary works equipment design), BS EN 39 (tubes), BS EN 74 (fittings), and BS 2482 (timber boards). Tubes are typically 48.3mm outer diameter, 4mm wall thickness, 6.3m (21ft) standard UK length.
-                </p>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>✓ <strong>Tubes:</strong> BS EN 39 galvanised steel, 6.3m standard (max 21ft)</li>
-                  <li>✓ <strong>Fittings:</strong> BS EN 74 drop forged or pressed steel</li>
-                  <li>✓ <strong>Boards:</strong> BS 2482 timber (225mm × 38mm × 3.9m) or BS EN 12811 aluminium</li>
-                  <li>✓ <strong>Load capacity:</strong> Class 1-6 (75-600kg/m²) - must be tagged</li>
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Understanding Scaffold Types & Materials</h2>
+            <p className="text-gray-700 mb-4">
+              Scaffolding is temporary structure for accessing building facades safely. Two main types serve different applications: independent (freestanding) and putlog (building-supported). Materials must comply with strict British Standards including BS EN 12811 for design, BS EN 39 for tubes (48.3mm OD standard), and BS EN 74 for fittings (drop forged or pressed steel).
+            </p>
+            <div className="bg-gray-50 p-4 rounded border-l-4 border-blue-600">
+              <p className="text-sm text-gray-700"><strong>Key principle:</strong> All scaffold materials must be inspected before use and tagged with load class. Under-tying and insufficient bracing are leading causes of scaffold collapse and HSE prosecutions. Always install ties as work progresses, not retrospectively.</p>
+            </div>
+          </section>
+
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Scaffold Type Breakdown & Applications</h2>
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div className="border-l-4 border-green-600 bg-green-50 p-4 rounded">
+                <h4 className="font-bold text-gray-900 mb-2">Independent Scaffolding</h4>
+                <p className="text-sm text-gray-700 mb-2">Freestanding with double rows of standards (4 per bay). No building support required.</p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>✓ Most versatile and common type</li>
+                  <li>✓ Works on any building style</li>
+                  <li>✓ Requires more materials</li>
+                  <li>✓ Greater cost and setup time</li>
+                  <li>✓ Up to 50m height (with specialist design)</li>
                 </ul>
               </div>
 
-              <div>
-                <h3 className="font-bold text-gray-900 mb-3">Building Regs &amp; Legal Compliance</h3>
-                <p className="text-gray-700 text-sm mb-4">
-                  Work at Height Regulations 2005 (WAHR 2005) requires competent person design and inspection. TG20:13 provides guidance for standard configurations up to 50m height. Complex or non-standard designs require professional engineering by qualified scaffold engineer.
-                </p>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>✓ Inspection by competent person before first use</li>
-                  <li>✓ Re-inspection every 7 days and after modifications</li>
-                  <li>✓ Inspection after adverse weather conditions</li>
-                  <li>✓ Written inspection reports retained on site minimum 3 months</li>
-                  <li>✓ Erected by trained scaffolders only (NVQ/apprentices)</li>
+              <div className="border-l-4 border-blue-600 bg-blue-50 p-4 rounded">
+                <h4 className="font-bold text-gray-900 mb-2">Putlog Scaffolding</h4>
+                <p className="text-sm text-gray-700 mb-2">Single row of standards supported by building via putlog arms through openings or onto walls.</p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>✓ More economical option</li>
+                  <li>✓ Requires fewer materials</li>
+                  <li>✓ Faster erection/dismantling</li>
+                  <li>✓ Limited to suitable buildings</li>
+                  <li>✓ Putlog arm anchor points needed</li>
                 </ul>
               </div>
             </div>
+          </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <div className="space-y-4">
               <div>
-                <h3 className="font-bold text-gray-900 mb-3">Erection Best Practices</h3>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• Check ground is level, firm, and adequately supported</li>
-                  <li>• Use base plates and sole boards on all standards</li>
-                  <li>• Install ties as work progresses (not retrospectively)</li>
-                  <li>• Maintain vertical and horizontal alignment throughout</li>
-                  <li>• Install guardrails and toe boards before any use</li>
-                  <li>• Ensure adequate bracing and ties at each level</li>
-                  <li>• Tag scaffold with inspection status and load class</li>
-                  <li>• Remove broken/damaged materials immediately</li>
-                </ul>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How are scaffold bays and lifts calculated?</h4>
+                <p className="text-sm text-gray-700">Standard bay width is 2.5m (can vary by specification). Standard lift height is 2m (vertical distance between platforms). Calculator auto-determines bays and lifts from your dimensions. Override with custom values if needed.</p>
               </div>
-
               <div>
-                <h3 className="font-bold text-gray-900 mb-3">Common Scaffold Types</h3>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• <strong>Independent:</strong> Two rows of standards, freestanding (most versatile)</li>
-                  <li>• <strong>Putlog:</strong> Single row, supported by building structure</li>
-                  <li>• <strong>Birdcage:</strong> Multiple standards for large flat areas</li>
-                  <li>• <strong>Mobile tower:</strong> Castor wheels, max 12m height working</li>
-                  <li>• <strong>Cantilever:</strong> Projecting beyond main supports</li>
-                  <li>• <strong>Suspended:</strong> Hung from structure above (specialist)</li>
-                </ul>
+                <h4 className="font-bold text-gray-800 mb-1">Q: What is the height to base width ratio requirement?</h4>
+                <p className="text-sm text-gray-700">Independent scaffolding height must not exceed 3.5 times base width. Example: 35m high scaffold needs minimum 10m base width. Narrower bases exceeding this ratio require specialist engineering, enhanced bracing, or additional ties.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How often must scaffold be inspected?</h4>
+                <p className="text-sm text-gray-700">Inspections required: Before first use (competent person), every 7 days during use, and after adverse weather or modifications. WAHR 2005 requires written inspection reports retained on site for minimum 3 months. Inspection by trained person is legal requirement.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: Can I compare scaffold calculator with other trade tools?</h4>
+                <p className="text-sm text-gray-700">TradeCalcs provides comprehensive professional estimators for multiple trades. Use our <a href="/paint-calculator" className="text-blue-600 font-semibold hover:underline">Paint Calculator</a> for decorator costs, <a href="/brick-block-calculator" className="text-blue-600 font-semibold hover:underline">Brick & Block Calculator</a> for masonry, or <a href="/cis-calculator" className="text-blue-600 font-semibold hover:underline">CIS Calculator</a> for construction tax. All tools are free with UK rates and linked for complete project estimates.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: What are minimum working platform width requirements?</h4>
+                <p className="text-sm text-gray-700">WAHR 2005 requires minimum 600mm (0.6m) working platform width. Narrower than 600mm is non-compliant and creates fall risks. Standard scaffold widths are 0.6m (minimum), 1.2m (common), or 1.8m (wide platforms).</p>
               </div>
             </div>
+          </section>
 
-            <div className="bg-yellow-50 border-l-4 border-yellow-600 p-6 rounded">
-              <h3 className="font-bold text-gray-900 mb-2">🔧 Professional Engineering Required</h3>
-              <p className="text-sm text-gray-700 mb-3">
-                This calculator provides estimates for standard configurations covered by TG20:13. Complex scaffolds, loads exceeding Class 3 (244kg/m²), heights over 50m, cantilevers, bridges, non-standard designs, or installations with difficult site conditions require professional scaffold design by chartered engineer. Always refer to TG20:13, manufacturer specifications, and site-specific engineering.
-              </p>
-              <p className="text-sm text-gray-700">
-                Non-compliance with scaffold standards can result in HSE prosecution, unlimited fines, and criminal liability. Falls from height remain leading cause of workplace fatalities in UK construction.
-              </p>
+          <div className="bg-yellow-50 border-l-4 border-yellow-600 rounded-lg p-6 mb-8">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-6 h-6 text-yellow-600 mt-1 flex-shrink-0" />
+              <div>
+                <p className="font-bold text-yellow-900 mb-2">✓ For Guidance Only - Professional Engineering Required</p>
+                <p className="text-sm text-yellow-800 mb-2">This calculator provides estimates for standard configurations covered by TG20:13. Complex scaffolds, loads exceeding Class 3 (244kg/m²), heights over 50m, cantilevers, bridges, non-standard designs, or installations with difficult site conditions require professional scaffold design by chartered engineer.</p>
+                <p className="text-sm text-yellow-800">Non-compliance with scaffold standards can result in HSE prosecution, unlimited fines, and criminal liability. Falls from height remain leading cause of workplace fatalities in UK construction.</p>
+              </div>
             </div>
           </div>
 
-          {/* CONTACT FORM SECTION */}
-          <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
+          <div className="mt-12 bg-white rounded-lg shadow-lg p-8 mb-8">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Need Help or Have Questions?</h3>
               <p className="text-gray-700">
@@ -657,8 +665,16 @@ export default function ScaffoldCalculator() {
             </div>
             
             <p className="text-center text-sm text-gray-600 mt-4">
-              Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 font-semibold hover:underline">mick@tradecalcs.co.uk</a>
+              Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" className="text-blue-600 font-semibold hover:underline">mick@tradecalcs.co.uk</a>
             </p>
+          </div>
+
+          <div className="bg-blue-600 text-white rounded-lg p-8 text-center mb-8">
+            <h2 className="text-2xl font-bold mb-3">Complete Your Trade Calculations</h2>
+            <p className="mb-6">Use our comprehensive suite of professional estimators: <a href="/paint-calculator" className="underline hover:opacity-90">Paint Calculator</a> for decorator costs, <a href="/brick-block-calculator" className="underline hover:opacity-90">Brick & Block Calculator</a> for masonry, <a href="/cis-calculator" className="underline hover:opacity-90">CIS Calculator</a> for construction tax, and <a href="/" className="underline hover:opacity-90">view all calculators</a> to build complete project estimates.</p>
+            <a href="/" className="bg-white text-blue-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
+              View All Calculators
+            </a>
           </div>
         </div>
 
@@ -668,14 +684,14 @@ export default function ScaffoldCalculator() {
             calculationResults={{
               materials: [
                 { item: 'Scaffold Tubes (6.3m, BS EN 39)', quantity: results.totalTubes.toString(), unit: 'tubes' },
-                { item: 'Fittings - Right Angle &amp; Swivel (BS EN 74)', quantity: results.totalFittings.toString(), unit: 'pieces' },
+                { item: 'Fittings - Right Angle & Swivel (BS EN 74)', quantity: results.totalFittings.toString(), unit: 'pieces' },
                 { item: 'Scaffold Boards (3.9m, BS 2482)', quantity: results.totalBoards.toString(), unit: 'boards' },
-                { item: 'Wall Ties &amp; Anchors (TG20 compliant)', quantity: results.totalTies.toString(), unit: 'pieces' },
+                { item: 'Wall Ties & Anchors (TG20 compliant)', quantity: results.totalTies.toString(), unit: 'pieces' },
                 { item: 'Toe Boards (150mm minimum)', quantity: results.toeBoards.toString(), unit: 'pieces' },
-                { item: 'Erection &amp; Dismantling Labour', quantity: '1', unit: 'job' },
-                { item: 'Competent Person Inspection', quantity: '1', unit: 'survey' }
+                { item: 'Erection & Dismantling Labour', quantity: '1', unit: 'job' },
+                { item: 'Competent Person Inspection (WAHR 2005)', quantity: '1', unit: 'survey' }
               ],
-              summary: `${results.scaffoldType === 'independent' ? 'Independent (freestanding)' : 'Putlog (building-supported)'} scaffold ${results.height}m × ${results.length}m × ${results.width}m (${results.bayCount} bays × ${results.liftCount} lifts) - Class 3 light duty max load ${results.maxLoad.toLocaleString()}kg - TG20:13 &amp; Building Regs compliant`
+              summary: `${results.scaffoldType === 'independent' ? 'Independent (freestanding)' : 'Putlog (building-supported)'} scaffold ${results.height}m × ${results.length}m × ${results.width}m (${results.bayCount} bays × ${results.liftCount} lifts) - Class 3 light duty max load ${results.maxLoad.toLocaleString()}kg - TG20:13 & Building Regs compliant`
             }}
             onClose={() => setShowQuoteGenerator(false)}
           />
@@ -684,6 +700,8 @@ export default function ScaffoldCalculator() {
     </>
   )
 }
+
+
 
 
 
