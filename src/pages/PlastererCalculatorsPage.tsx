@@ -96,7 +96,7 @@ export default function PlastererCalculatorsPage() {
                     'name': 'How much plaster do I need?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Use this calculator to enter your wall or ceiling dimensions (length and width in meters), select the number of coats, choose your coverage rate (1.5kg/m² for skim coats, 2.0kg/m² standard, 2.5kg/m² heavy coverage), and set your waste factor (10% typical). The calculator instantly shows plaster needed in kg and bags.'
+                      'text': 'Use this calculator to enter your wall or ceiling dimensions (length and width in meters), select the number of coats, choose your coverage rate (1.5kg/m2 for skim coats, 2.0kg/m2 standard, 2.5kg/m2 heavy coverage), and set your waste factor (10% typical). The calculator instantly shows plaster needed in kg and bags.'
                     }
                   },
                   {
@@ -104,7 +104,7 @@ export default function PlastererCalculatorsPage() {
                     'name': 'What is the standard plaster coverage rate?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Standard coverage is 1.5-2.0 kg/m² depending on plaster type and application. Skim coats require 1.2-1.5 kg/m², finishing plaster 1.0-1.5 kg/m², gypsum plaster 1.5-2.0 kg/m², and heavy coverage 2.0-2.5 kg/m². Actual coverage depends on substrate condition and application technique.'
+                      'text': 'Standard coverage is 1.5-2.0 kg/m2 depending on plaster type and application. Skim coats require 1.2-1.5 kg/m2, finishing plaster 1.0-1.5 kg/m2, gypsum plaster 1.5-2.0 kg/m2, and heavy coverage 2.0-2.5 kg/m2. Actual coverage depends on substrate condition and application technique.'
                     }
                   },
                   {
@@ -136,7 +136,7 @@ export default function PlastererCalculatorsPage() {
                     'name': 'How do I estimate project cost?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'This calculator provides material cost estimates. 25kg bags of plaster cost approximately £8.50 retail. Professional labour rates average £25-35/m² for plastering. Total project cost = materials + labour. Always obtain quotes from local plasterers for accurate pricing.'
+                      'text': 'This calculator provides material cost estimates. 25kg bags of plaster cost approximately £8.50 retail. Professional labour rates average £25-35/m2 for plastering. Total project cost equals materials plus labour. Always obtain quotes from local plasterers for accurate pricing.'
                     }
                   }
                 ]
@@ -300,7 +300,7 @@ export default function PlastererCalculatorsPage() {
                         <div className="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
                           <p className="text-sm text-gray-600">With Waste Factor ({result.waste}%)</p>
                           <p className="text-2xl font-bold text-gray-900">{result.withWaste} kg</p>
-                          <p className="text-xs text-gray-500 mt-1">Includes spillage & breakage</p>
+                          <p className="text-xs text-gray-500 mt-1">Includes spillage &amp; breakage</p>
                         </div>
 
                         <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
@@ -317,7 +317,7 @@ export default function PlastererCalculatorsPage() {
                           <li><strong>Cost (materials):</strong> Approx. £{result.materialCost}</li>
                           <li><strong>Cost (labour):</strong> Approx. £{result.labourCost}</li>
                           <li><strong>Coverage:</strong> {result.coverage}kg/m² × {result.coats} coat(s)</li>
-                          <li><strong>Waste:</strong> {result.waste}% for spillage & imperfections</li>
+                          <li><strong>Waste:</strong> {result.waste}% for spillage &amp; imperfections</li>
                           <li><strong>Storage:</strong> Keep dry, use within 3-6 months</li>
                           <li><strong>Drying:</strong> 24 hours between coats minimum</li>
                         </ul>
@@ -433,7 +433,7 @@ export default function PlastererCalculatorsPage() {
               </div>
 
               <div>
-                <h3 className="font-bold text-gray-900 mb-3">⏱️ Drying & Curing Times</h3>
+                <h3 className="font-bold text-gray-900 mb-3">⏱️ Drying &amp; Curing Times</h3>
                 <p className="text-gray-700 text-sm mb-4">
                   Proper drying time ensures professional results and prevents defects:
                 </p>
@@ -450,7 +450,7 @@ export default function PlastererCalculatorsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
               <div>
-                <h3 className="font-bold text-gray-900 mb-3">📦 Material Types & Applications</h3>
+                <h3 className="font-bold text-gray-900 mb-3">📦 Material Types &amp; Applications</h3>
                 <ul className="text-sm text-gray-700 space-y-2">
                   <li>• <strong>Plasterboard:</strong> Drywall for internal walls</li>
                   <li>• <strong>Bonding plaster:</strong> First coat on brick/block</li>
@@ -499,7 +499,7 @@ export default function PlastererCalculatorsPage() {
                   <li>• Don't apply thick coats</li>
                   <li>• Don't plaster over damp</li>
                   <li>• Don't ignore waste factors</li>
-                  <li>• Don't use old plaster (>6 months)</li>
+                  <li>• Don't use old plaster ({String.fromCharCode(62)}6 months)</li>
                   <li>• Don't work in cold/damp conditions</li>
                 </ul>
               </div>
@@ -559,6 +559,7 @@ export default function PlastererCalculatorsPage() {
     </>
   )
 }
+
 
 
 
