@@ -121,17 +121,15 @@ export default function CISCalculator() {
   return (
     <>
       <Helmet>
-        {/* Primary Meta Tags */}
         <title>CIS Tax Calculator UK | Construction Industry Scheme Calculator | TradeCalcs</title>
         <meta 
           name="description" 
           content="Free CIS tax calculator for UK construction professionals. Calculate CIS deductions, gross to net payments, and invoice amounts. HMRC compliant with 20% and 30% rates." 
         />
-        <meta name="keywords" content="CIS calculator, CIS tax calculator, construction industry scheme, CIS deductions, UK subcontractor tax, HMRC CIS, gross to net calculator, subcontractor payments, construction tax" />
+        <meta name="keywords" content="CIS calculator, CIS tax calculator, construction industry scheme, CIS deductions, UK subcontractor tax, HMRC CIS, gross to net calculator, subcontractor payments, construction tax, CIS rates, CIS registration" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="CIS Tax Calculator UK | Construction Industry Scheme Calculator" />
         <meta property="og:description" content="Calculate CIS deductions, gross to net payments, and invoice amounts. Free HMRC compliant calculator for UK construction." />
@@ -139,18 +137,15 @@ export default function CISCalculator() {
         <meta property="og:image" content="https://tradecalcs.co.uk/images/cis-calculator-og.jpg" />
         <meta property="og:site_name" content="TradeCalcs" />
 
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="CIS Tax Calculator UK | TradeCalcs" />
         <meta name="twitter:description" content="Free CIS tax calculator for UK construction. HMRC compliant with instant results." />
         <meta name="twitter:image" content="https://tradecalcs.co.uk/images/cis-calculator-og.jpg" />
 
-        {/* Additional SEO */}
         <link rel="canonical" href="https://tradecalcs.co.uk/cis-calculator" />
         <meta name="author" content="TradeCalcs" />
         <meta name="theme-color" content="#10b981" />
 
-        {/* Schema Markup */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -180,7 +175,7 @@ export default function CISCalculator() {
                     'name': 'What is CIS and how does it work?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'CIS (Construction Industry Scheme) is a tax system for UK construction. Contractors must deduct 20% (or 30% for unregistered subcontractors) from payments to subcontractors and pass it to HMRC as advance tax payment. Materials are not subject to CIS - only labour costs.'
+                      'text': 'CIS (Construction Industry Scheme) is a mandatory tax system for UK construction projects. Contractors must deduct 20% (or 30% for unregistered subcontractors) from payments to subcontractors and pass it to HMRC as advance tax payment. Materials are not subject to CIS - only labour costs. CIS applies whether work is on-site or off-site.'
                     }
                   },
                   {
@@ -188,7 +183,7 @@ export default function CISCalculator() {
                     'name': 'What is the difference between 20% and 30% CIS rates?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': '20% rate applies to registered subcontractors verified with HMRC. 30% rate applies to unregistered subcontractors or those without valid CIS status. Registering for CIS reduces your rate from 30% to 20%, saving money on each job.'
+                      'text': '20% rate applies to subcontractors registered and verified with HMRC - they have a valid CIS verification certificate. 30% rate applies to unregistered subcontractors or those without valid CIS verification status. Registering for CIS reduces your rate from 30% to 20%, saving significant money on each job. Always maintain your CIS registration and renewal.'
                     }
                   },
                   {
@@ -196,7 +191,7 @@ export default function CISCalculator() {
                     'name': 'Are materials subject to CIS deduction?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'No. CIS only applies to labour costs. Materials including bricks, cement, timber, tools, equipment, and plant hire are NOT subject to CIS deduction. Contractors must pay the full materials amount - only labour is reduced by CIS.'
+                      'text': 'No. CIS only applies to labour costs. Materials including bricks, cement, timber, stone, tools, equipment, plant hire, and supplies are NOT subject to CIS deduction. Contractors must pay the full materials amount - only labour is reduced by CIS. Materials must be separately invoiced from labour.'
                     }
                   },
                   {
@@ -204,7 +199,7 @@ export default function CISCalculator() {
                     'name': 'How do I claim back CIS deductions?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'CIS deductions are advance payments of your tax and National Insurance. You claim them back when filing your Self Assessment tax return. The amount deducted reduces your tax bill. If you overpay, you receive a refund from HMRC.'
+                      'text': 'CIS deductions are advance payments of your tax and National Insurance. You claim them back when filing your Self Assessment tax return. The amount deducted reduces your tax bill. If you overpay, you receive a refund from HMRC. Keep all CIS payment statements from contractors for your tax return records.'
                     }
                   },
                   {
@@ -212,7 +207,7 @@ export default function CISCalculator() {
                     'name': 'When do contractors need to file CIS returns?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Contractors must file monthly CIS returns to HMRC by the 19th of each month following the tax month end (6th to 5th). Late filing incurs automatic penalties starting at £100 per month. Accurate record-keeping is essential for 3+ years.'
+                      'text': 'Contractors must file monthly CIS returns to HMRC by the 19th of each month following the tax month end (6th to 5th). Returns are mandatory whether payments were made or not. Late filing incurs automatic penalties starting at £100 per month, increasing for repeated failures. Accurate record-keeping is essential for 6+ years minimum.'
                     }
                   },
                   {
@@ -220,7 +215,23 @@ export default function CISCalculator() {
                     'name': 'What is gross payment status for CIS?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Gross payment status (0% CIS) is available to established CIS-registered businesses meeting strict criteria. You receive payment without CIS deduction, making cash flow easier. Requires application to HMRC and must be renewed annually. Limited availability.'
+                      'text': 'Gross payment status (0% CIS) is available to established CIS-registered businesses meeting strict criteria. You receive payment without CIS deduction, making cash flow easier. Requires application to HMRC and must be renewed annually. Limited availability - only for businesses with proven track record and compliance.'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'How do I verify if a subcontractor is registered for CIS?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'Check the HMRC CIS register online at: https://www.gov.uk/guidance/check-a-subcontractors-cis-status. Always verify before making first payment. Using wrong CIS rate = penalties up to £3,000+. Request their CIS verification certificate. Contractors must keep verification records for 6+ years.'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'What happens if I don\'t register for CIS?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'Without CIS registration, contractors will deduct 30% from your payments instead of 20%. This costs you significantly more money per job. You can still claim the deductions back via Self Assessment tax return, but cash flow is worse. Register with HMRC to reduce to 20% rate and improve business cash flow.'
                     }
                   }
                 ]
@@ -511,22 +522,22 @@ export default function CISCalculator() {
           <div className="info-section">
             <h3 className="info-title">
               <Info size={22} style={{ color: '#3b82f6' }} />
-              Understanding CIS Rates &amp; Status
+              Understanding CIS Rates & Status
             </h3>
             
             <div className="info-card">
               <div className="info-card-title">✓ 20% Standard Rate</div>
-              <p className="info-card-text">For registered subcontractors with valid CIS verification. Must have proof of registration with HMRC. Most common rate used in UK construction.</p>
+              <p className="info-card-text">For registered subcontractors with valid CIS verification. Must have proof of registration with HMRC. Most common rate used in UK construction. Check <a href="https://www.gov.uk/guidance/check-a-subcontractors-cis-status" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', fontWeight: '600' }}>HMRC CIS register</a> before paying.</p>
             </div>
 
             <div className="info-card">
               <div className="info-card-title">⚠️ 30% Higher Rate</div>
-              <p className="info-card-text">For subcontractors not registered for CIS with HMRC. Register to reduce to 20%. Costs less money compared to 30% deductions on large projects.</p>
+              <p className="info-card-text">For subcontractors not registered for CIS with HMRC. Register to reduce to 20%. Costs significantly more money compared to 20% deductions on large projects. Unregistered status = higher deduction rate.</p>
             </div>
 
             <div className="info-card">
               <div className="info-card-title">🏆 0% Gross Payment</div>
-              <p className="info-card-text">For CIS-registered businesses with approved gross payment status. Rare and requires application. Must renew annually. Best cash flow option for established businesses.</p>
+              <p className="info-card-text">For CIS-registered businesses with approved gross payment status. Rare and requires application. Must renew annually. Best cash flow option for established businesses with proven compliance.</p>
             </div>
           </div>
 
@@ -537,7 +548,7 @@ export default function CISCalculator() {
               <div>
                 <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#1e293b', marginBottom: '15px' }}>Understanding CIS Deductions</h3>
                 <p style={{ color: '#64748b', marginBottom: '12px', lineHeight: '1.6' }}>
-                  The Construction Industry Scheme (CIS) is mandatory for UK construction projects. Contractors (main builders) must deduct money from payments to subcontractors and pass it to HMRC as advance payment of the subcontractor's tax and National Insurance. This applies whether work is on-site or off-site.
+                  The Construction Industry Scheme (CIS) is mandatory for UK construction projects. Contractors (main builders) must deduct money from payments to subcontractors and pass it to HMRC as advance payment of the subcontractor's tax and National Insurance. This applies whether work is on-site or off-site, domestic or commercial.
                 </p>
                 <ul style={{ color: '#64748b', lineHeight: '1.8' }}>
                   <li><strong style={{ color: '#475569' }}>20% rate:</strong> Verified registered subcontractors (most common)</li>
@@ -568,7 +579,7 @@ export default function CISCalculator() {
             <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '2px solid #3b82f6', borderRadius: '12px', padding: '30px', marginBottom: '30px' }}>
               <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#3b82f6', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <AlertCircle size={22} />
-                💡 CIS Monthly Returns &amp; Important Deadlines
+                💡 CIS Monthly Returns & Important Deadlines
               </h3>
               <p style={{ color: '#1e40af', lineHeight: '1.6', marginBottom: '12px' }}>
                 <strong>Contractors must file monthly CIS returns to HMRC by the 19th of each month</strong> following the tax month end (6th to 5th). Returns are mandatory whether payments were made or not.
@@ -577,36 +588,36 @@ export default function CISCalculator() {
                 Late returns incur automatic penalties: £100 first month, increasing for repeated failures. Second failure same year: £500. Persistent failure can stop contractor working.
               </p>
               <p style={{ color: '#1e40af', lineHeight: '1.6' }}>
-                <strong>Subcontractors must provide invoices, CIS statements, and proof of verification to contractors.</strong> Keep all payment records, CIS statements, and correspondence for 6+ years minimum.
+                <strong>Subcontractors must provide invoices, CIS statements, and proof of verification to contractors.</strong> Keep all payment records, CIS statements, and correspondence for 6+ years minimum for tax compliance.
               </p>
             </div>
 
             <div style={{ marginBottom: '40px' }}>
-              <h3 style={{ fontSize: '24px', fontWeight: '600', color: '#1e293b', marginBottom: '20px' }}>Common CIS Mistakes to Avoid</h3>
+              <h3 style={{ fontSize: '24px', fontWeight: '600', color: '#1e293b', marginBottom: '20px' }}>Frequently Asked Questions</h3>
               <div style={{ display: 'grid', gap: '15px' }}>
-                <div style={{ padding: '20px', background: '#fef3c7', borderLeft: '4px solid #f59e0b', borderRadius: '8px' }}>
-                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#92400e' }}>❌ Not verifying subcontractors before payment</h4>
-                  <p style={{ color: '#78350f', fontSize: '14px', margin: 0 }}>Always verify subcontractors with HMRC CIS register before making first payment. Using wrong rate = penalties up to £3,000+.</p>
+                <div style={{ padding: '20px', background: '#f0f9ff', borderLeft: '4px solid #0284c7', borderRadius: '8px' }}>
+                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#0c4a6e' }}>Q: How do I verify if a subcontractor is registered for CIS?</h4>
+                  <p style={{ color: '#164e63', fontSize: '14px', margin: 0 }}>Check the <a href="https://www.gov.uk/guidance/check-a-subcontractors-cis-status" target="_blank" rel="noopener noreferrer" style={{ color: '#0284c7', fontWeight: '600' }}>HMRC CIS register online</a> before making first payment. Always verify before payment. Using wrong CIS rate = penalties up to £3,000+. Request their CIS verification certificate and keep records for 6+ years.</p>
                 </div>
                 
-                <div style={{ padding: '20px', background: '#fef3c7', borderLeft: '4px solid #f59e0b', borderRadius: '8px' }}>
-                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#92400e' }}>❌ Deducting CIS from materials</h4>
-                  <p style={{ color: '#78350f', fontSize: '14px', margin: 0 }}>Only labour is subject to CIS. Materials must be separately invoiced and paid in full. Mixed invoices = penalties.</p>
+                <div style={{ padding: '20px', background: '#f0f9ff', borderLeft: '4px solid #0284c7', borderRadius: '8px' }}>
+                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#0c4a6e' }}>Q: What if I deduct CIS from materials by mistake?</h4>
+                  <p style={{ color: '#164e63', fontSize: '14px', margin: 0 }}>This is incorrect and can result in penalties. Only labour is subject to CIS. Materials must be separately invoiced and paid in full. Mixed invoices = penalties from HMRC. Always separate labour and materials clearly on invoices and deduct CIS from labour only.</p>
                 </div>
                 
-                <div style={{ padding: '20px', background: '#fef3c7', borderLeft: '4px solid #f59e0b', borderRadius: '8px' }}>
-                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#92400e' }}>❌ Missing monthly return deadlines</h4>
-                  <p style={{ color: '#78350f', fontSize: '14px', margin: 0 }}>File by the 19th every month. Late filing = automatic £100+ penalties. Repeated failure can lose contractor status.</p>
+                <div style={{ padding: '20px', background: '#f0f9ff', borderLeft: '4px solid #0284c7', borderRadius: '8px' }}>
+                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#0c4a6e' }}>Q: What happens if I don't register for CIS as a subcontractor?</h4>
+                  <p style={{ color: '#164e63', fontSize: '14px', margin: 0 }}>Without CIS registration, contractors will deduct 30% instead of 20%. This costs you significantly more money per job. You can claim deductions back via Self Assessment but cash flow suffers. Register with HMRC to reduce to 20% and improve business cash flow immediately.</p>
                 </div>
                 
-                <div style={{ padding: '20px', background: '#fef3c7', borderLeft: '4px solid #f59e0b', borderRadius: '8px' }}>
-                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#92400e' }}>❌ Poor record keeping</h4>
-                  <p style={{ color: '#78350f', fontSize: '14px', margin: 0 }}>HMRC requires 6+ years of CIS records. Keep payment statements, verification records, returns, and subcontractor details.</p>
+                <div style={{ padding: '20px', background: '#f0f9ff', borderLeft: '4px solid #0284c7', borderRadius: '8px' }}>
+                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#0c4a6e' }}>Q: How do I claim back CIS deductions on my tax return?</h4>
+                  <p style={{ color: '#164e63', fontSize: '14px', margin: 0 }}>CIS deductions are advance payments of your tax and National Insurance. Claim them back when filing your Self Assessment tax return. The amount deducted reduces your tax bill. If you overpay, you receive a refund from HMRC. Keep all CIS payment statements for records.</p>
                 </div>
 
-                <div style={{ padding: '20px', background: '#fef3c7', borderLeft: '4px solid #f59e0b', borderRadius: '8px' }}>
-                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#92400e' }}>❌ Not issuing CIS payment statements</h4>
-                  <p style={{ color: '#78350f', fontSize: '14px', margin: 0 }}>Contractors must issue monthly CIS payment statements to subcontractors showing gross amount, CIS deduction, and net paid.</p>
+                <div style={{ padding: '20px', background: '#f0f9ff', borderLeft: '4px solid #0284c7', borderRadius: '8px' }}>
+                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#0c4a6e' }}>Q: Can I compare CIS calculator with other trade calculators?</h4>
+                  <p style={{ color: '#164e63', fontSize: '14px', margin: 0 }}>TradeCalcs provides comprehensive professional estimators for multiple trades. Use our <a href="/paint-calculator" style={{ color: '#0284c7', fontWeight: '600' }}>Paint Calculator</a> for decorator costs, <a href="/brick-block-calculator" style={{ color: '#0284c7', fontWeight: '600' }}>Brick & Block Calculator</a> for masonry, or <a href="/plaster-calculator" style={{ color: '#0284c7', fontWeight: '600' }}>Plaster Calculator</a> for surface work. All tools are free with UK rates and linked for complete project estimates.</p>
                 </div>
               </div>
             </div>
@@ -644,7 +655,6 @@ export default function CISCalculator() {
             </div>
           </div>
 
-          {/* CONTACT FORM SECTION */}
           <div style={{ background: 'white', borderRadius: '16px', padding: '40px', marginTop: '40px', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
             <div style={{ textAlign: 'center', marginBottom: '30px' }}>
               <h3 style={{ fontSize: '28px', fontWeight: '700', color: '#1e293b', marginBottom: '12px' }}>Need Help or Have Questions?</h3>
@@ -675,6 +685,8 @@ export default function CISCalculator() {
     </>
   );
 }
+
+
 
 
 
