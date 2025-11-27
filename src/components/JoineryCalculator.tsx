@@ -87,17 +87,15 @@ export default function JoineryCalculator() {
   return (
     <>
       <Helmet>
-        {/* Primary Meta Tags */}
         <title>Joinery Calculator UK | Wood Cost & Labour Calculator for Joiners | TradeCalcs</title>
         <meta 
           name="description" 
           content="Free joinery calculator for UK joiners and carpenters. Calculate wood costs, labour hours, and project pricing instantly. Professional tool for bespoke joinery, fitted kitchens, and custom furniture." 
         />
-        <meta name="keywords" content="joinery calculator, wood cost calculator, carpenter calculator, UK joiner tools, timber cost calculator, bespoke joinery pricing, labour calculator, fitted kitchen cost, custom furniture pricing" />
+        <meta name="keywords" content="joinery calculator, wood cost calculator, carpenter calculator, UK joiner tools, timber cost calculator, bespoke joinery pricing, labour calculator, fitted kitchen cost, custom furniture pricing, woodworking estimator" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Joinery Calculator UK | Wood Cost & Labour Calculator for Joiners" />
         <meta property="og:description" content="Calculate wood costs, labour hours, and project pricing for joinery. Free professional tool for UK joiners and carpenters." />
@@ -105,18 +103,15 @@ export default function JoineryCalculator() {
         <meta property="og:image" content="https://tradecalcs.co.uk/images/joinery-calculator-og.jpg" />
         <meta property="og:site_name" content="TradeCalcs" />
 
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Joinery Calculator UK | TradeCalcs" />
         <meta name="twitter:description" content="Free joinery calculator. Calculate wood costs and labour hours instantly." />
         <meta name="twitter:image" content="https://tradecalcs.co.uk/images/joinery-calculator-og.jpg" />
 
-        {/* Additional SEO */}
         <link rel="canonical" href="https://tradecalcs.co.uk/joinery-calculator" />
         <meta name="author" content="TradeCalcs" />
         <meta name="theme-color" content="#b45309" />
 
-        {/* Schema Markup */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -146,15 +141,15 @@ export default function JoineryCalculator() {
                     'name': 'How do I calculate joinery project costs?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Use this calculator to enter project dimensions (length, width, height in mm), select wood type, choose project type (built-in storage, fitted kitchen, staircase, etc.), select finish (natural, stain, paint, varnish), and enter your hourly rate. The calculator instantly shows material cost, labour hours, labour cost, and total project cost with contingency.'
+                      'text': 'Use this calculator to enter project dimensions (length, width, height in mm), select wood type (pine, oak, walnut, MDF, plywood), choose project type (built-in storage, fitted kitchen, staircase, custom doors, shelving, bespoke furniture), select finish (natural, stain, paint, varnish), and enter your hourly rate (£/hour). The calculator instantly shows material cost, labour hours, labour cost, and total project cost with 15% contingency recommendation.'
                     }
                   },
                   {
                     '@type': 'Question',
-                    'name': 'What are current UK wood prices?',
+                    'name': 'What are current UK wood prices (Q4 2025)?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Q4 2025 UK market rates: Pine £450/m³, Oak £850/m³, Walnut £1200/m³, MDF £320/m³, Plywood £380/m³. Prices vary by supplier and grade. Always confirm current prices with your timber merchant before quoting.'
+                      'text': 'Q4 2025 UK market rates: Pine £450/m³ (softwood, budget-friendly), Oak £850/m³ (hardwood, premium), Walnut £1200/m³ (high-end projects), MDF £320/m³ (engineered, paintable), Plywood £380/m³ (structural, hidden work). Prices vary by supplier, grade, and local market. Always confirm current prices with your timber merchant before preparing quotes - prices fluctuate monthly.'
                     }
                   },
                   {
@@ -162,7 +157,7 @@ export default function JoineryCalculator() {
                     'name': 'How much waste should I account for in joinery?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Waste factors vary by project type: Built-in storage 18%, Fitted kitchen 20%, Staircase 22%, Custom doors 15%, Shelving 12%, Bespoke furniture 25%. Waste accounts for cutting losses, breakage, and material quality control.'
+                      'text': 'Waste factors by project type: Shelving 12%, Custom doors 15%, Built-in storage 18%, Fitted kitchen 20%, Staircase 22%, Bespoke furniture 25%. Waste accounts for cutting losses, breakage, material quality control, and site variations. More complex projects with custom cuts require higher waste factors.'
                     }
                   },
                   {
@@ -170,23 +165,39 @@ export default function JoineryCalculator() {
                     'name': 'How much does finish type affect labour time?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Natural finish = base labour. Stain adds 15% labour time (surface prep, staining, sanding). Paint adds 25% labour time (priming, multiple coats). Varnish adds 35% labour time (multiple coats, sanding between coats). Quality finishes require significantly more time.'
+                      'text': 'Natural finish = base labour (no extra time). Stain adds 15% labour time (surface prep, staining, intermediate sanding). Paint adds 25% labour time (priming, multiple coats, sanding between coats). Varnish adds 35% labour time (multiple coats, sanding between coats, final polish). Quality finishes require significantly more time and skilled application.'
                     }
                   },
                   {
                     '@type': 'Question',
-                    'name': 'What hourly rate should I use?',
+                    'name': 'What hourly rate should I use for joinery?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'UK joinery labour rates: Apprentice £15-20/hour, Semi-skilled £25-35/hour, Experienced joiner £40-55/hour, Specialist/Master £60-85/hour. Adjust based on your experience, location, and project complexity.'
+                      'text': 'UK joinery labour rates vary by experience: Apprentice £15-20/hour, Semi-skilled £25-35/hour, Experienced joiner £40-55/hour, Specialist/Master £60-85/hour. Adjust rates based on your experience, location (London/Southeast higher), project complexity, and whether you\'re running a business with overheads. Premium rates justified for complex/bespoke work.'
                     }
                   },
                   {
                     '@type': 'Question',
-                    'name': 'Should I add contingency to project quotes?',
+                    'name': 'Should I add contingency to joinery quotes?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Yes. Always add 10-15% contingency buffer to account for: unexpected structural issues, site complications, material variances, design changes, and rework. This ensures profitable projects and protects against cost overruns.'
+                      'text': 'Yes, always add 10-15% contingency buffer to account for: unexpected structural issues, site access complications, material quality variances, design changes mid-project, rework due to measurement errors, and hidden costs. This ensures profitable projects and protects against cost overruns from unknowns.'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'How do I estimate labour hours for bespoke joinery?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'Labour hours per m³ vary by project type: Shelving 5hrs/m³ (straightforward), Custom doors 8hrs/m³ (standard cuts), Built-in storage 12hrs/m³ (multiple components), Fitted kitchen 15hrs/m³ (complex, site fitting), Staircase 20hrs/m³ (complex joinery), Bespoke furniture 25hrs/m³ (highly custom). Multiply by actual volume and finish type multiplier for accurate estimates.'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'What hidden costs should I account for in joinery projects?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'Hidden costs include: Site access & parking complications, Existing structure issues requiring adaptation, Material quality variations from supplier, Design changes mid-project, Rework due to measurement errors, Travel time & fuel costs, Equipment rental or specialist tools, Additional finish coats for quality, and Scaffolding/access equipment for high work. Always factor these into contingency calculations.'
                     }
                   }
                 ]
@@ -208,7 +219,6 @@ export default function JoineryCalculator() {
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
-        {/* HEADER */}
         <div className="bg-gradient-to-r from-amber-600 to-orange-600 py-4 px-6">
           <div className="max-w-4xl mx-auto">
             <a href="/" className="text-white font-semibold flex items-center gap-2 hover:opacity-90 transition w-fit">
@@ -218,7 +228,6 @@ export default function JoineryCalculator() {
         </div>
 
         <div className="max-w-4xl mx-auto p-6">
-          {/* HERO SECTION */}
           <div className="mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Professional Joinery Cost Calculator for UK Joiners
@@ -232,7 +241,6 @@ export default function JoineryCalculator() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* MAIN CALCULATOR */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Calculate Project Cost</h2>
@@ -253,6 +261,7 @@ export default function JoineryCalculator() {
                       <option value="shelving">Shelving/Bookcases (5 hrs/m³)</option>
                       <option value="bespoke">Bespoke Furniture (25 hrs/m³)</option>
                     </select>
+                    <p className="text-xs text-gray-500 mt-1">Hours per cubic meter base estimate</p>
                   </div>
 
                   <div>
@@ -269,6 +278,7 @@ export default function JoineryCalculator() {
                       <option value="mdf">MDF - £320/m³ (engineered, paintable)</option>
                       <option value="plywood">Plywood - £380/m³ (structural, hidden work)</option>
                     </select>
+                    <p className="text-xs text-gray-500 mt-1">Q4 2025 UK market rates - confirm with merchant</p>
                   </div>
 
                   <div className="grid grid-cols-3 gap-4">
@@ -320,6 +330,7 @@ export default function JoineryCalculator() {
                       <option value="paint">Paint (+25% labour time)</option>
                       <option value="varnish">Varnish (+35% labour time)</option>
                     </select>
+                    <p className="text-xs text-gray-500 mt-1">Quality finishes require significantly more time</p>
                   </div>
 
                   <div>
@@ -332,7 +343,7 @@ export default function JoineryCalculator() {
                       className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-amber-600 focus:outline-none"
                       aria-label="Hourly rate in pounds"
                     />
-                    <p className="text-xs text-gray-500 mt-1">UK average: £35-55/hour depending on experience</p>
+                    <p className="text-xs text-gray-500 mt-1">Apprentice £15-20, Semi-skilled £25-35, Experienced £40-55, Specialist £60-85</p>
                   </div>
 
                   <button
@@ -340,12 +351,11 @@ export default function JoineryCalculator() {
                     className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white py-3 rounded-lg font-bold transition"
                     aria-label="Calculate project cost"
                   >
-                    Calculate Project Cost
+                    💰 Calculate Project Cost
                   </button>
                 </div>
               </div>
 
-              {/* RESULTS */}
               {result && (
                 <>
                   <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
@@ -365,7 +375,7 @@ export default function JoineryCalculator() {
                         <div className="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-600">
                           <p className="text-sm text-gray-600">Total Volume (inc. waste {result.wastePercentage}%)</p>
                           <p className="text-2xl font-bold text-gray-900">{result.totalVolume} m³</p>
-                          <p className="text-xs text-gray-500 mt-1">Includes spillage & cutting losses</p>
+                          <p className="text-xs text-gray-500 mt-1">Includes cutting losses & breakage</p>
                         </div>
 
                         <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
@@ -422,16 +432,15 @@ export default function JoineryCalculator() {
                       <div className="flex items-start gap-3">
                         <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                         <div>
-                          <p className="font-semibold text-blue-900 mb-1">Summary</p>
+                          <p className="font-semibold text-blue-900 mb-1">✓ Summary</p>
                           <p className="text-sm text-blue-800">
-                            {result.totalVolume}m³ of {result.woodType} (waste: {result.wastePercentage}%) + {result.estimatedHours} hours labour at £{result.hourlyRate}/hr with {result.finish} finish = £{result.totalCost} materials + labour. Add 15% contingency for £{result.recommendedPrice} recommended quote.
+                            {result.totalVolume}m³ of {result.woodType} (waste: {result.wastePercentage}%) + {result.estimatedHours} hours labour at £{result.hourlyRate}/hr with {result.finish} finish = £{result.totalCost} materials + labour. Add 15% contingency for £{result.recommendedPrice} recommended quote price.
                           </p>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* QUOTE GENERATOR CTA */}
                   <div className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg mb-6">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
@@ -461,7 +470,6 @@ export default function JoineryCalculator() {
               )}
             </div>
 
-            {/* SIDEBAR */}
             <div className="lg:col-span-1">
               <div className="bg-blue-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
                 <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
@@ -469,13 +477,14 @@ export default function JoineryCalculator() {
                   Quick Tips
                 </h3>
                 <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• Measure all dimensions accurately in mm</li>
-                  <li>• Add extra waste for complex cuts</li>
-                  <li>• Quality wood costs more upfront</li>
-                  <li>• Finish type affects labour time significantly</li>
-                  <li>• Always add 15% contingency buffer</li>
-                  <li>• Confirm supplier prices before quoting</li>
-                  <li>• Account for site access complications</li>
+                  <li>✓ Measure all dimensions accurately in mm</li>
+                  <li>✓ Add extra waste for complex cuts</li>
+                  <li>✓ Quality wood costs more upfront</li>
+                  <li>✓ Finish type affects labour time significantly</li>
+                  <li>✓ Always add 15% contingency buffer</li>
+                  <li>✓ Confirm supplier prices before quoting</li>
+                  <li>✓ Account for site access complications</li>
+                  <li>✓ Travel time = billable cost</li>
                 </ul>
               </div>
 
@@ -490,22 +499,23 @@ export default function JoineryCalculator() {
                   <li><strong>Walnut:</strong> £1200/m³ high-end</li>
                   <li><strong>MDF:</strong> £320/m³ paint</li>
                   <li><strong>Plywood:</strong> £380/m³ structural</li>
+                  <li className="text-xs text-gray-500 mt-2"><em>Prices vary by supplier</em></li>
                 </ul>
               </div>
 
               <div className="bg-amber-50 rounded-lg p-6 border-l-4 border-amber-600">
-                <h3 className="font-bold text-gray-900 mb-2">Labour Rates</h3>
+                <h3 className="font-bold text-gray-900 mb-2">💷 Labour Rates</h3>
                 <ul className="text-sm text-gray-700 space-y-1">
                   <li>Apprentice: £15-20/hr</li>
                   <li>Semi-skilled: £25-35/hr</li>
                   <li>Experienced: £40-55/hr</li>
                   <li>Specialist: £60-85/hr</li>
+                  <li className="text-xs text-gray-500 mt-2"><em>UK Q4 2025 rates</em></li>
                 </ul>
               </div>
             </div>
           </div>
 
-          {/* COMPREHENSIVE GUIDE */}
           <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Complete Joinery Guide for UK Professionals</h2>
             
@@ -513,29 +523,29 @@ export default function JoineryCalculator() {
               <div>
                 <h3 className="font-bold text-gray-900 mb-3">✓ Wood Types & Pricing (Q4 2025)</h3>
                 <p className="text-gray-700 text-sm mb-4">
-                  Wood pricing varies by species, grade, and market conditions. Always confirm prices with your supplier:
+                  Wood pricing varies by species, grade, and market conditions. Always confirm current prices with your timber merchant:
                 </p>
                 <ul className="text-sm text-gray-700 space-y-2">
                   <li>• <strong>Pine:</strong> £450/m³ (softwood, budget-friendly, visible work acceptable)</li>
-                  <li>• <strong>Oak:</strong> £850/m³ (hardwood, premium work, visible finishes)</li>
-                  <li>• <strong>Walnut:</strong> £1200/m³ (premium hardwood, high-end projects)</li>
-                  <li>• <strong>MDF:</strong> £320/m³ (engineered, paintable, interior use)</li>
-                  <li>• <strong>Plywood:</strong> £380/m³ (structural, hidden work, economical)</li>
+                  <li>• <strong>Oak:</strong> £850/m³ (hardwood, premium work, premium finishes)</li>
+                  <li>• <strong>Walnut:</strong> £1200/m³ (premium hardwood, high-end exclusive projects)</li>
+                  <li>• <strong>MDF:</strong> £320/m³ (engineered, paintable, interior use only)</li>
+                  <li>• <strong>Plywood:</strong> £380/m³ (structural, hidden work, economical base)</li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-bold text-gray-900 mb-3">⏱️ Project Labour Estimates</h3>
                 <p className="text-gray-700 text-sm mb-4">
-                  Labour hours vary significantly by project complexity and type:
+                  Labour hours vary significantly by project complexity and site conditions:
                 </p>
                 <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• <strong>Built-in storage:</strong> 12 hrs/m³ (wardrobes, fitted cupboards)</li>
-                  <li>• <strong>Fitted kitchen:</strong> 15 hrs/m³ (cabinets, counters, installation)</li>
-                  <li>• <strong>Staircase:</strong> 20 hrs/m³ (complex joinery, premium work)</li>
-                  <li>• <strong>Custom doors:</strong> 8 hrs/m³ (simpler project, faster completion)</li>
                   <li>• <strong>Shelving:</strong> 5 hrs/m³ (straightforward, basic joinery)</li>
-                  <li>• <strong>Bespoke furniture:</strong> 25 hrs/m³ (highly complex, premium craftsmanship)</li>
+                  <li>• <strong>Custom doors:</strong> 8 hrs/m³ (standard cuts, faster completion)</li>
+                  <li>• <strong>Built-in storage:</strong> 12 hrs/m³ (wardrobes, multiple components)</li>
+                  <li>• <strong>Fitted kitchen:</strong> 15 hrs/m³ (complex, site fitting, installation)</li>
+                  <li>• <strong>Staircase:</strong> 20 hrs/m³ (complex joinery, premium work)</li>
+                  <li>• <strong>Bespoke furniture:</strong> 25 hrs/m³ (highly custom, premium craftsmanship)</li>
                 </ul>
               </div>
             </div>
@@ -547,22 +557,22 @@ export default function JoineryCalculator() {
                   <li>• <strong>Natural:</strong> Base labour (no extra time)</li>
                   <li>• <strong>Stain:</strong> +15% labour time (surface prep, staining, sanding)</li>
                   <li>• <strong>Paint:</strong> +25% labour time (priming, multiple coats, sanding)</li>
-                  <li>• <strong>Varnish:</strong> +35% labour time (multiple coats, sanding between coats)</li>
-                  <li>• Quality finishes require significant time investment</li>
-                  <li>• Environmental conditions affect drying times</li>
-                  <li>• Proper surface preparation is critical</li>
+                  <li>• <strong>Varnish:</strong> +35% labour time (multiple coats, sanding between)</li>
+                  <li>• Quality finishes require significantly more skilled time</li>
+                  <li>• Environmental conditions (temp/humidity) affect drying</li>
+                  <li>• Proper surface preparation is critical for finishes</li>
                 </ul>
               </div>
 
               <div>
-                <h3 className="font-bold text-gray-900 mb-3">💷 Waste Factors by Project Type</h3>
+                <h3 className="font-bold text-gray-900 mb-3">💷 Waste Factors by Type</h3>
                 <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• <strong>Shelving:</strong> 12% waste (straight cuts, minimal complexity)</li>
-                  <li>• <strong>Custom doors:</strong> 15% waste (standard cuts, moderate complexity)</li>
-                  <li>• <strong>Built-in storage:</strong> 18% waste (multiple components, fitting adjustments)</li>
-                  <li>• <strong>Fitted kitchen:</strong> 20% waste (custom cuts, site variations)</li>
-                  <li>• <strong>Staircase:</strong> 22% waste (complex cuts, high precision required)</li>
-                  <li>• <strong>Bespoke furniture:</strong> 25% waste (complex joinery, custom design)</li>
+                  <li>• <strong>Shelving:</strong> 12% (straight cuts, minimal complexity)</li>
+                  <li>• <strong>Custom doors:</strong> 15% (standard cuts, moderate complexity)</li>
+                  <li>• <strong>Built-in storage:</strong> 18% (multiple components, fitting adjustments)</li>
+                  <li>• <strong>Fitted kitchen:</strong> 20% (custom cuts, site variations)</li>
+                  <li>• <strong>Staircase:</strong> 22% (complex cuts, precision required)</li>
+                  <li>• <strong>Bespoke furniture:</strong> 25% (complex joinery, custom design)</li>
                 </ul>
               </div>
             </div>
@@ -571,13 +581,13 @@ export default function JoineryCalculator() {
               <div>
                 <h3 className="font-bold text-gray-900 mb-3">🎯 Pricing Strategy & Quotation</h3>
                 <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• <strong>Hourly rate range:</strong> £35-85/hour UK average</li>
-                  <li>• Apprentice/trainee: £15-20/hour</li>
-                  <li>• Semi-skilled: £25-35/hour</li>
-                  <li>• Experienced joiner: £40-55/hour</li>
-                  <li>• Specialist/master: £60-85/hour</li>
+                  <li>• <strong>Hourly range:</strong> £35-85/hour UK average (Q4 2025)</li>
+                  <li>• Apprentice/trainee: £15-20/hour (learning curve)</li>
+                  <li>• Semi-skilled: £25-35/hour (standard tradespeople)</li>
+                  <li>• Experienced joiner: £40-55/hour (professional standard)</li>
+                  <li>• Specialist/master: £60-85/hour (complex/bespoke)</li>
                   <li>• Add premium for complexity, experience, location</li>
-                  <li>• Always include 10-15% contingency buffer</li>
+                  <li>• Always include 10-15% contingency buffer minimum</li>
                 </ul>
               </div>
 
@@ -587,25 +597,27 @@ export default function JoineryCalculator() {
                   <li>• Site access & parking complications</li>
                   <li>• Existing structure issues requiring adaptation</li>
                   <li>• Material quality variations from supplier</li>
-                  <li>• Design changes mid-project</li>
+                  <li>• Design changes mid-project (always costly)</li>
                   <li>• Rework due to measurement errors</li>
-                  <li>• Travel time & fuel costs</li>
+                  <li>• Travel time & fuel costs (billable)</li>
                   <li>• Equipment rental or specialist tools</li>
-                  <li>• Additional finish coats for quality</li>
+                  <li>• Additional finish coats for quality control</li>
                 </ul>
               </div>
             </div>
 
             <div className="bg-yellow-50 border-l-4 border-yellow-600 p-6 rounded">
               <h3 className="font-bold text-gray-900 mb-2">Professional Quality Assurance</h3>
+              <p className="text-sm text-gray-700 mb-3">
+                This calculator provides professional estimates for UK joinery projects based on Q4 2025 market rates. Labour hours follow industry standards for different project types and complexities. Always confirm current wood prices with your timber merchant before preparing quotes - prices fluctuate monthly based on market conditions and supplier stock.
+              </p>
               <p className="text-sm text-gray-700">
-                This calculator provides professional estimates for UK joinery projects based on Q4 2025 market rates. Labour hours follow industry standards for different project types. Always confirm current wood prices with your timber merchant before preparing quotes - prices fluctuate monthly based on market conditions. Account for project-specific factors: site access difficulties, existing structure complexity, finish requirements, material variances, and design complexity. Add 15% contingency buffer to all quotes to ensure profitability and protect against cost overruns. Different timber merchants may have varying prices - shop around for best value while maintaining quality.
+                Account for project-specific factors: site access difficulties, existing structure complexity, finish requirements, material variances, design complexity, and travel/access costs. Add 15% contingency buffer to all quotes to ensure profitability and protect against cost overruns from unknowns and site complications. Different timber merchants may have varying prices and delivery charges - shop around while maintaining quality standards.
               </p>
             </div>
           </div>
 
-          {/* CONTACT FORM SECTION */}
-          <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
+          <div className="mt-12 bg-white rounded-lg shadow-lg p-8 mb-16">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Need Help or Have Questions?</h3>
               <p className="text-gray-700">
@@ -630,7 +642,6 @@ export default function JoineryCalculator() {
           </div>
         </div>
 
-        {/* QUOTE GENERATOR MODAL */}
         {showQuoteGenerator && result && (
           <QuoteGenerator
             calculationResults={{
@@ -640,7 +651,7 @@ export default function JoineryCalculator() {
                 { item: 'Fixings, Hardware & Screws', quantity: '1', unit: 'job' },
                 { item: 'Professional Labour', quantity: result.estimatedHours, unit: 'hours' }
               ],
-              summary: `${result.projectType} project - ${result.woodType} timber with ${result.finish} finish (${result.wastePercentage}% waste factor included) - Total cost: £${result.totalCost} - Recommended quote: £${result.recommendedPrice} (with 15% contingency)`
+              summary: `${result.projectType} project - ${result.woodType} timber with ${result.finish} finish (${result.wastePercentage}% waste included) - Material cost: £${result.materialCost} - Labour: £${result.labourCost} - Total: £${result.totalCost} - Recommended quote with 15% contingency: £${result.recommendedPrice}`
             }}
             onClose={() => setShowQuoteGenerator(false)}
           />
@@ -649,6 +660,7 @@ export default function JoineryCalculator() {
     </>
   )
 }
+
 
 
 
