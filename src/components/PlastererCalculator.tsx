@@ -543,8 +543,8 @@ export default function PlastererCalculator() {
                 <p className="text-sm text-gray-700">Use 10% as standard baseline. Use 5% for simple smooth work, 15% for complex surfaces or poor substrate, 20% for heavily damaged areas. Professional plasterers typically add 10-15% extra to prevent job delays and have materials for callbacks.</p>
               </div>
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: How does this calculator compare to other tools?</h4>
-                <p className="text-sm text-gray-700">This calculator uses industry-standard coverage rates and Q4 2025 UK market pricing. For detailed comparisons, see our <a href="/joinery-calculator" className="text-purple-600 font-semibold hover:underline">Joinery Calculator</a> (wood/labour estimator) and <a href="/voltage-drop-calculator" className="text-purple-600 font-semibold hover:underline">Voltage Drop Calculator</a> (electrical compliance tool) for other trade-specific estimates.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How does this compare to other trade calculators?</h4>
+                <p className="text-sm text-gray-700">TradeCalcs offers a complete suite of professional estimators. For wood and labour costs, use our <a href="/joinery-calculator" className="text-purple-600 font-semibold hover:underline">Joinery Calculator</a>. For electrical compliance work, use our <a href="/voltage-drop-calculator" className="text-purple-600 font-semibold hover:underline">Voltage Drop Calculator</a>. All tools are free and provide UK market rates with internal linking to help you build complete project estimates.</p>
               </div>
             </div>
           </section>
@@ -585,7 +585,7 @@ export default function PlastererCalculator() {
 
           <div className="bg-slate-600 text-white rounded-lg p-8 text-center mb-8">
             <h2 className="text-2xl font-bold mb-3">Complete Your Trade Calculations</h2>
-            <p className="mb-6">Use our <a href="/joinery-calculator" className="underline hover:opacity-90">joinery calculator</a> for wood costs and labour, <a href="/voltage-drop-calculator" className="underline hover:opacity-90">voltage drop calculator</a> for electrical compliance, and other professional tools to estimate accurately and quote confidently.</p>
+            <p className="mb-6">Use our comprehensive suite of professional estimators: <a href="/joinery-calculator" className="underline hover:opacity-90">Joinery Calculator</a> for wood costs and labour, <a href="/voltage-drop-calculator" className="underline hover:opacity-90">Voltage Drop Calculator</a> for electrical compliance, and <a href="/" className="underline hover:opacity-90">view all calculators</a> to build complete project estimates and quote confidently.</p>
             <a href="/" className="bg-white text-slate-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
               View All Calculators
             </a>
@@ -612,3 +612,4 @@ export default function PlastererCalculator() {
     </>
   )
 }
+
