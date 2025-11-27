@@ -1,4 +1,4 @@
-import { CheckCircle2, HelpCircle, Palette, AlertCircle } from 'lucide-react'
+import { CheckCircle2, Palette, AlertCircle } from 'lucide-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import QuoteGenerator from './QuoteGenerator'
