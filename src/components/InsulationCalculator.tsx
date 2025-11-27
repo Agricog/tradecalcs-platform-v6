@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Info, CheckCircle2, HelpCircle, Layers, AlertCircle } from 'lucide-react'
+import { Info, CheckCircle2, Layers, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import QuoteGenerator from './QuoteGenerator'
 
