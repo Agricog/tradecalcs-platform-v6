@@ -655,13 +655,13 @@ export default function CableCalculator() {
             
             <div className="max-w-3xl mx-auto">
               <iframe 
-  src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false&Prefill_Registration+Source=CableCalculator" 
-  width="100%" 
-  height="650px" 
-  frameBorder="0"
-  title="Contact Form"
-  className="rounded-lg"
-/>
+                src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false"
+                width="100%" 
+                height="600px" 
+                frameBorder="0"
+                title="SmartSuite Cable Sizing Calculator Inquiry Form"
+                className="rounded-lg"
+              />
             </div>
             
             <p className="text-center text-sm text-gray-600 mt-4">
@@ -696,6 +696,8 @@ export default function CableCalculator() {
     </>
   )
 }
+
+
 
 
 
