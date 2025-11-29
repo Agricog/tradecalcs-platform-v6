@@ -7,7 +7,6 @@ export default function PlastererCalculator() {
   const [length, setLength] = useState('')
   const [width, setWidth] = useState('')
   const [coats, setCoats] = useState('2')
-  const [coverage, setCoverage] = useState('1.5')
   const [wasteFactor, setWasteFactor] = useState('10')
   const [result, setResult] = useState<any>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
@@ -16,22 +15,25 @@ export default function PlastererCalculator() {
     if (!length || !width) return
     
     const area = (parseFloat(length) || 0) * (parseFloat(width) || 0)
-    const coverageRate = parseFloat(coverage) || 1.5
     const numCoats = parseFloat(coats) || 1
     const waste = parseFloat(wasteFactor) || 10
 
-    const needed = (area * numCoats) / coverageRate
-    const withWaste = needed * (1 + waste / 100)
+    // 1 bag (20kg) covers 10m² per coat
+    const bagsPerCoat = area / 10
+    const bagsNeeded = bagsPerCoat * numCoats
+    const bagsWithWaste = bagsNeeded * (1 + waste / 100)
+    const totalKg = bagsWithWaste * 20
 
     setResult({
       area: area.toFixed(2),
-      basePlaster: needed.toFixed(2),
-      withWaste: withWaste.toFixed(2),
-      bags: Math.ceil(withWaste / 25),
-      coverage: coverage,
+      bagsPerCoat: bagsPerCoat.toFixed(2),
+      bagsForCoats: bagsNeeded.toFixed(2),
+      bagsWithWaste: bagsWithWaste.toFixed(2),
+      totalKg: totalKg.toFixed(2),
+      bags: Math.ceil(bagsWithWaste),
       waste: waste,
       coats: coats,
-      materialCost: (Math.ceil(withWaste / 25) * 8.50).toFixed(2),
+      materialCost: (Math.ceil(bagsWithWaste) * 8.50).toFixed(2),
       labourCost: (area * 25).toFixed(2)
     })
   }
@@ -93,7 +95,7 @@ export default function PlastererCalculator() {
                     'name': 'How much plaster do I need?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Use this calculator to enter your wall or ceiling dimensions (length and width in meters), select the number of coats, choose your coverage rate (1.2kg/m² for light skim, 1.5kg/m² for standard skim coats, 2.0kg/m² standard, 2.5kg/m² heavy coverage), and set your waste factor (10% typical for standard work). The calculator instantly shows plaster needed in kg and number of 25kg bags to order.'
+                      'text': 'Use this calculator to enter your wall or ceiling dimensions (length and width in meters), select the number of coats, and set your waste factor (10% typical for standard work). The calculator instantly shows plaster needed in bags and kilograms. Standard: 1 bag (20kg) covers 10m² per coat.'
                     }
                   },
                   {
@@ -101,7 +103,7 @@ export default function PlastererCalculator() {
                     'name': 'What is the standard plaster coverage rate?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Standard coverage is 1.5-2.0 kg/m² depending on plaster type and application. Skim coats require 1.2-1.5 kg/m² (light application), finishing plaster 1.0-1.5 kg/m² (smooth top coat), gypsum plaster 1.5-2.0 kg/m² (standard plasterboard), and heavy coverage 2.0-2.5 kg/m² (thick coats on poor substrates). Actual coverage depends on substrate condition, surface irregularities, and application technique.'
+                      'text': 'Standard coverage is 1 bag (20kg) per 10m² per coat. This is the industry standard for UK plasterwork. Actual coverage may vary slightly based on substrate condition, surface irregularities, and application technique, but 10m² per bag is the professional baseline.'
                     }
                   },
                   {
@@ -125,7 +127,7 @@ export default function PlastererCalculator() {
                     'name': 'What are the different types of plaster?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Common UK plaster types: Plasterboard (drywall base), Bonding Plaster (first coat on brick/block, 2-3mm), Finish Plaster (smooth top coat, 2mm finish layer), Thistle Plaster (standard UK brand products like Thistle Universal One-Coat and Multi-Finish), Lime Plaster (traditional homes and period properties, breathable), and Artex (textured decorative finish). Each has different coverage rates, drying times, and specific applications.'
+                      'text': 'Common UK plaster types: Plasterboard (drywall base), Bonding Plaster (first coat on brick/block, 2-3mm), Finish Plaster (smooth top coat, 2mm finish layer), Thistle Plaster (standard UK brand products like Thistle Universal One-Coat and Multi-Finish), Lime Plaster (traditional homes and period properties, breathable), and Artex (textured decorative finish). Each has similar coverage rates but different specific applications.'
                     }
                   },
                   {
@@ -133,7 +135,7 @@ export default function PlastererCalculator() {
                     'name': 'How do I estimate project cost?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'This calculator provides material cost estimates based on Q4 2025 UK pricing. Standard 25kg bags of plaster cost approximately £8.50 retail (£7-9 range depending on supplier and brand). Professional labour rates average £25-35/m² for standard plastering, £35-50/m² for skim coat finishing, and £50+/m² for specialist work. Total project cost equals materials plus labour. Always obtain detailed quotes from local plasterers for accurate pricing specific to your region and project complexity.'
+                      'text': 'This calculator provides material cost estimates based on Q4 2025 UK pricing. Standard 20kg bags of plaster cost approximately £8.50 retail (£7-9 range depending on supplier and brand). Professional labour rates average £25-35/m² for standard plastering, £35-50/m² for skim coat finishing, and £50+/m² for specialist work. Total project cost equals materials plus labour. Always obtain detailed quotes from local plasterers for accurate pricing specific to your region and project complexity.'
                     }
                   },
                   {
@@ -149,7 +151,7 @@ export default function PlastererCalculator() {
                     'name': 'What is the difference between bonding and finishing plaster?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Bonding plaster is the first coat (2-3mm) applied directly to brick or concrete blocks - it has grip and bonds mechanically to the substrate. Finishing plaster (or finish coat) is the final smooth top coat (2mm) applied over bonding plaster - it provides the smooth, paintable surface. Typical application: bonding plaster first (2.5 kg/m²), then finishing plaster (1.5 kg/m²). For plasterboard, you skip bonding and apply finish coat directly to the board.'
+                      'text': 'Bonding plaster is the first coat (2-3mm) applied directly to brick or concrete blocks - it has grip and bonds mechanically to the substrate. Finishing plaster (or finish coat) is the final smooth top coat (2mm) applied over bonding plaster - it provides the smooth, paintable surface. Typical application: bonding plaster first, then finishing plaster. For plasterboard, you skip bonding and apply finish coat directly to the board. Use this calculator for both - enter total coats needed.'
                     }
                   }
                 ]
@@ -247,7 +249,7 @@ export default function PlastererCalculator() {
               <p className="text-xs text-gray-500 mt-1">Subtract 20% for doors and windows</p>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
                 <label className="block font-bold text-gray-800 mb-2">3. Number of Coats</label>
                 <select
@@ -264,24 +266,7 @@ export default function PlastererCalculator() {
               </div>
 
               <div>
-                <label className="block font-bold text-gray-800 mb-2">4. Coverage Rate (kg/m²)</label>
-                <select
-                  value={coverage}
-                  onChange={e => setCoverage(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-600"
-                  aria-label="Plaster coverage rate"
-                >
-                  <option value="1.2">1.2 (Light Skim)</option>
-                  <option value="1.5">1.5 (Skim Coat)</option>
-                  <option value="2.0">2.0 (Standard)</option>
-                  <option value="2.5">2.5 (Heavy)</option>
-                  <option value="3.0">3.0 (Base Coat)</option>
-                </select>
-                <p className="text-xs text-gray-500 mt-1">Per coat application</p>
-              </div>
-
-              <div>
-                <label className="block font-bold text-gray-800 mb-2">5. Waste Factor (%)</label>
+                <label className="block font-bold text-gray-800 mb-2">4. Waste Factor (%)</label>
                 <select
                   value={wasteFactor}
                   onChange={e => setWasteFactor(e.target.value)}
@@ -322,16 +307,24 @@ export default function PlastererCalculator() {
                         <p className="text-2xl font-bold text-gray-900">{result.area} m²</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600 mb-1">Base Plaster Needed</p>
-                        <p className="text-2xl font-bold text-slate-600">{result.basePlaster} kg</p>
+                        <p className="text-xs text-gray-600 mb-1">Bags Per Coat</p>
+                        <p className="text-2xl font-bold text-slate-600">{result.bagsPerCoat}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">Total Bags ({result.coats} coats)</p>
+                        <p className="text-2xl font-bold text-slate-600">{result.bagsForCoats}</p>
                       </div>
                       <div>
                         <p className="text-xs text-gray-600 mb-1">With Waste ({result.waste}%)</p>
-                        <p className="text-2xl font-bold text-slate-600">{result.withWaste} kg</p>
+                        <p className="text-2xl font-bold text-slate-600">{result.bagsWithWaste}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600 mb-1">25kg Bags to Order</p>
+                        <p className="text-xs text-gray-600 mb-1">Bags to Order</p>
                         <p className="text-2xl font-bold text-green-600">{result.bags} bags</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">Total Weight</p>
+                        <p className="text-2xl font-bold text-slate-600">{result.totalKg} kg</p>
                       </div>
                     </div>
 
@@ -353,7 +346,7 @@ export default function PlastererCalculator() {
                     <div className="text-xs text-gray-700 bg-gray-50 p-3 rounded border-l-2 border-gray-400 mt-4">
                       <p className="font-semibold mb-1">Summary:</p>
                       <p className="font-mono">
-                        {result.area}m² × {result.coverage}kg/m² × {result.coats} coat(s) = {result.basePlaster}kg + {result.waste}% waste = {result.withWaste}kg = {result.bags} × 25kg bags
+                        {result.area}m² ÷ 10m² per bag × {result.coats} coat(s) = {result.bagsForCoats} bags + {result.waste}% waste = {result.bagsWithWaste} bags = {result.bags} × 20kg bags = {result.totalKg}kg
                       </p>
                     </div>
                   </div>
@@ -395,10 +388,10 @@ export default function PlastererCalculator() {
               <div>
                 <h3 className="font-bold text-slate-900 mb-3">📋 Professional Plaster Coverage</h3>
                 <ul className="space-y-2 text-sm text-slate-900">
-                  <li>• <strong>Coverage rates:</strong> 1.2-3.0 kg/m² depending on plaster type and application</li>
+                  <li>• <strong>Standard coverage:</strong> 1 bag (20kg) covers 10m² per coat</li>
                   <li>• <strong>Drying times:</strong> 24 hours between coats, 14 days before painting</li>
                   <li>• <strong>Waste factors:</strong> 5-20% depending on surface condition and complexity</li>
-                  <li>• <strong>Material cost:</strong> ~£8.50 per 25kg bag (Q4 2025 UK rates)</li>
+                  <li>• <strong>Material cost:</strong> ~£8.50 per 20kg bag (Q4 2025 UK rates)</li>
                   <li>• <strong>Labour cost:</strong> £25-35/m² standard, £35-50/m² skim coating, £50+/m² specialist</li>
                   <li>• <strong>Plaster types:</strong> Bonding, Finishing, Thistle, Lime, Artex textured</li>
                   <li>• <strong>Temperature:</strong> Don't plaster below 10°C or above 70% humidity</li>
@@ -410,62 +403,62 @@ export default function PlastererCalculator() {
           <section className="bg-white rounded-lg shadow p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Understanding Plaster Coverage & Costs</h2>
             <p className="text-gray-700 mb-4">
-              Professional plaster coverage depends on plaster type, substrate condition, application method, and environmental factors. This calculator helps you estimate materials and costs accurately based on industry-standard coverage rates. Understanding waste factors, drying times, and project costs is essential for accurate quoting.
+              Professional plaster coverage is standardised at 1 bag (20kg) per 10m² per coat. This is the industry standard for UK plasterwork. This calculator helps you estimate materials and costs accurately based on standard coverage rates. Understanding waste factors, drying times, and project costs is essential for accurate quoting.
             </p>
             <div className="bg-gray-50 p-4 rounded border-l-4 border-slate-600">
-              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Light skim coats (1.2-1.5 kg/m²) use less material but require skilled technique, while heavy coverage (2.5-3.0 kg/m²) covers poor substrates but uses significantly more material. Professional plasterers add 10-15% waste to prevent job delays and callbacks.</p>
+              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Standard coverage is 1 bag per 10m² per coat. Add 10-15% waste to prevent job delays and callbacks. Professional plasterers always order extra material for touch-ups and repairs.</p>
             </div>
           </section>
 
           <section className="bg-white rounded-lg shadow p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Plaster Types & Coverage Rates (Q4 2025)</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Plaster Types & Typical Applications (Q4 2025)</h2>
             <p className="text-gray-700 mb-4">
-              Different plaster types have different coverage rates and applications. Choose the correct type for your substrate and finish requirements:
+              Different plaster types have different applications. All use standard 20kg bags with 10m² coverage per coat:
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-gray-700">
                 <thead>
                   <tr className="bg-slate-100 border-b">
                     <th className="px-4 py-2 text-left font-semibold">Plaster Type</th>
-                    <th className="px-4 py-2 text-left font-semibold">Coverage (kg/m²)</th>
+                    <th className="px-4 py-2 text-left font-semibold">Bag Size</th>
                     <th className="px-4 py-2 text-left font-semibold">Application</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
                   <tr className="hover:bg-gray-50">
-                    <td className="px-4 py-2 font-semibold">Light Skim</td>
-                    <td className="px-4 py-2">1.2</td>
-                    <td className="px-4 py-2">Minimal, smooth surfaces</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50 bg-gray-50">
-                    <td className="px-4 py-2 font-semibold">Skim Coat</td>
-                    <td className="px-4 py-2">1.5</td>
-                    <td className="px-4 py-2">Standard finish layer</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50">
-                    <td className="px-4 py-2 font-semibold">Finishing Plaster</td>
-                    <td className="px-4 py-2">1.5-2.0</td>
-                    <td className="px-4 py-2">Top coat, paintable</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50 bg-gray-50">
-                    <td className="px-4 py-2 font-semibold">Gypsum Standard</td>
-                    <td className="px-4 py-2">2.0</td>
-                    <td className="px-4 py-2">Plasterboard base coat</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50">
                     <td className="px-4 py-2 font-semibold">Bonding Plaster</td>
-                    <td className="px-4 py-2">2.5</td>
-                    <td className="px-4 py-2">First coat on blocks</td>
+                    <td className="px-4 py-2">20kg</td>
+                    <td className="px-4 py-2">First coat on blocks/brick - 10m² coverage</td>
                   </tr>
                   <tr className="hover:bg-gray-50 bg-gray-50">
-                    <td className="px-4 py-2 font-semibold">Heavy Coverage</td>
-                    <td className="px-4 py-2">2.5-3.0</td>
-                    <td className="px-4 py-2">Poor substrates, thick coats</td>
+                    <td className="px-4 py-2 font-semibold">Finishing Plaster</td>
+                    <td className="px-4 py-2">20kg</td>
+                    <td className="px-4 py-2">Top coat, smooth paintable - 10m² coverage</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-2 font-semibold">Thistle Standard</td>
+                    <td className="px-4 py-2">20kg</td>
+                    <td className="px-4 py-2">General purpose plasterboard - 10m² coverage</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 bg-gray-50">
+                    <td className="px-4 py-2 font-semibold">Thistle Multi-Finish</td>
+                    <td className="px-4 py-2">20kg</td>
+                    <td className="px-4 py-2">Premium finish coat - 10m² coverage</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-2 font-semibold">Lime Plaster</td>
+                    <td className="px-4 py-2">20kg</td>
+                    <td className="px-4 py-2">Period properties, breathable - 10m² coverage</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 bg-gray-50">
+                    <td className="px-4 py-2 font-semibold">Artex Textured</td>
+                    <td className="px-4 py-2">20kg</td>
+                    <td className="px-4 py-2">Decorative textured finish - 10m² coverage</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-gray-500 mt-4">Note: Prices and coverage rates Q4 2025. Always confirm with supplier and check manufacturer specifications for specific products.</p>
+            <p className="text-xs text-gray-500 mt-4">Note: All plasters use standard 20kg bags with 10m² coverage per coat. Check manufacturer specifications for any variations.</p>
           </section>
 
           <section className="bg-white rounded-lg shadow p-6 mb-8">
@@ -523,12 +516,12 @@ export default function PlastererCalculator() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
             <div className="space-y-4">
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: How do I calculate the area after subtracting doors and windows?</h4>
-                <p className="text-sm text-gray-700">Subtract approximately 20% from your total wall area, or calculate specific openings: Standard door (1.9m × 0.9m = 1.7m²), Window (1.5m × 1m = 1.5m²). Enter your net area into the calculator for accurate estimates.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How much plaster do I need?</h4>
+                <p className="text-sm text-gray-700">Use this calculator to enter your wall/ceiling dimensions (length and width in meters), select the number of coats, and set your waste factor (10% typical). The calculator instantly shows bags and weight needed. Standard: 1 bag (20kg) per 10m² per coat.</p>
               </div>
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: What's the difference between bonding and finishing plaster?</h4>
-                <p className="text-sm text-gray-700">Bonding plaster (2.5 kg/m²) is the first coat applied to brick/block - it provides mechanical grip. Finishing plaster (1.5 kg/m²) is the smooth top coat for painting. Typical: bonding first, then finishing. For plasterboard, apply finish coat directly.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Q: What's the standard coverage rate?</h4>
+                <p className="text-sm text-gray-700">Standard UK coverage is 1 bag (20kg) per 10m² per coat. This is the industry baseline for all plaster types and applications. Actual coverage may vary slightly based on substrate, technique, and conditions.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Why shouldn't I plaster in cold weather?</h4>
@@ -554,7 +547,7 @@ export default function PlastererCalculator() {
               <AlertCircle className="w-6 h-6 text-yellow-600 mt-1 flex-shrink-0" />
               <div>
                 <p className="font-bold text-yellow-900 mb-2">✓ Professional Quality Assurance</p>
-                <p className="text-sm text-yellow-800">This calculator provides professional estimates based on UK industry standards and manufacturer specifications. Coverage rates are typical but vary based on surface condition, application technique, plaster type, temperature, and humidity. Always account for waste and keep extra material for touch-ups and repairs. For best results, follow manufacturer guidelines precisely and allow adequate curing time before finishing or painting.</p>
+                <p className="text-sm text-yellow-800">This calculator provides professional estimates based on UK industry standards. Standard coverage is 1 bag (20kg) per 10m² per coat. Always account for waste and keep extra material for touch-ups and repairs. Follow manufacturer guidelines precisely and allow adequate curing time before finishing or painting.</p>
               </div>
             </div>
           </div>
@@ -596,14 +589,14 @@ export default function PlastererCalculator() {
           <QuoteGenerator
             calculationResults={{
               materials: [
-                { item: 'Plaster (25kg bags)', quantity: result.bags.toString(), unit: 'bags' },
-                { item: 'Total Plaster Weight', quantity: result.withWaste, unit: 'kg' },
-                { item: 'Coverage Rate', quantity: result.coverage, unit: 'kg/m²' },
+                { item: 'Plaster (20kg bags)', quantity: result.bags.toString(), unit: 'bags' },
+                { item: 'Total Plaster Weight', quantity: result.totalKg, unit: 'kg' },
+                { item: 'Coverage Rate', quantity: '10', unit: 'm² per bag' },
                 { item: 'Number of Coats', quantity: result.coats, unit: 'coats' },
                 { item: 'Wall/Ceiling Area', quantity: result.area, unit: 'm²' },
                 { item: 'Waste Factor Included', quantity: result.waste, unit: '%' }
               ],
-              summary: `Plastering project - ${result.area}m² surface with ${result.coats} coat(s) at ${result.coverage}kg/m² coverage rate (${result.waste}% waste factor = ${result.withWaste}kg total plaster required = ${result.bags} × 25kg bags) - Material cost: £${result.materialCost} - Labour estimate: £${result.labourCost}`
+              summary: `Plastering project - ${result.area}m² surface with ${result.coats} coat(s) at 10m² per bag coverage (${result.waste}% waste factor = ${result.bagsWithWaste} bags = ${result.totalKg}kg total plaster required = ${result.bags} × 20kg bags to order) - Material cost: £${result.materialCost} - Labour estimate: £${result.labourCost}`
             }}
             onClose={() => setShowQuoteGenerator(false)}
           />
@@ -612,4 +605,5 @@ export default function PlastererCalculator() {
     </>
   )
 }
+
 
