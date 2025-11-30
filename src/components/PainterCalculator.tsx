@@ -1,54 +1,275 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { CheckCircle2, Palette, AlertCircle } from 'lucide-react'
-import QuoteGenerator from './QuoteGenerator'
+import jsPDF from 'jspdf'
 
+// QUOTE GENERATOR COMPONENT
+type MaterialItem = {
+  item: string
+  quantity: string
+  unit: string
+}
+
+type CalculationResults = {
+  materials: MaterialItem[]
+  summary: string
+}
+
+function QuoteGenerator({ calculationResults, onClose }: { calculationResults: CalculationResults; onClose: () => void }) {
+  const [clientName, setClientName] = useState('John Smith')
+  const [clientAddress, setClientAddress] = useState('123 High Street, London, SW1A 1AA')
+  const [labourRate, setLabourRate] = useState('20')
+  const [additionalNotes, setAdditionalNotes] = useState('Work includes… Materials to be sourced from…')
+
+  const parseNumber = (value: string, fallback: number) => {
+    const n = parseFloat(value)
+    return isNaN(n) ? fallback : n
+  }
+
+  const handleDownloadPdf = () => {
+    const rate = parseNumber(labourRate, 0)
+
+    const doc = new jsPDF()
+
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(16)
+    doc.text('Professional Painting Quote', 20, 20)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text(`Client: ${clientName}`, 20, 32)
+    doc.text(`Address: ${clientAddress}`, 20, 38)
+
+    doc.text(`Labour rate: £${rate.toFixed(2)}/m²`, 20, 50)
+
+    let y = 62
+    doc.setFont('helvetica', 'bold')
+    doc.text('Materials:', 20, y)
+    y += 6
+    doc.setFont('helvetica', 'normal')
+
+    calculationResults.materials.forEach((m) => {
+      const line = `• ${m.item}: ${m.quantity} ${m.unit}`
+      const wrapped = doc.splitTextToSize(line, 170)
+      doc.text(wrapped, 24, y)
+      y += wrapped.length * 6
+    })
+
+    y += 4
+    doc.setFont('helvetica', 'bold')
+    doc.text('Summary:', 20, y)
+    y += 6
+    doc.setFont('helvetica', 'normal')
+    const summaryWrapped = doc.splitTextToSize(calculationResults.summary, 170)
+    doc.text(summaryWrapped, 20, y)
+    y += summaryWrapped.length * 6 + 4
+
+    if (additionalNotes.trim()) {
+      doc.setFont('helvetica', 'bold')
+      doc.text('Additional notes:', 20, y)
+      y += 6
+      doc.setFont('helvetica', 'normal')
+      const notesWrapped = doc.splitTextToSize(additionalNotes, 170)
+      doc.text(notesWrapped, 20, y)
+    }
+
+    doc.save('painting-quote.pdf')
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      <div className="bg-white rounded-xl shadow-xl max-w-xl w-full mx-4">
+        <div className="flex items-center justify-between border-b px-6 py-4">
+          <h2 className="text-lg font-bold text-gray-900">Generate Professional Quote</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+            aria-label="Close quote generator"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="px-6 pt-4 pb-6 space-y-4 max-h-[80vh] overflow-y-auto">
+          <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-3 text-xs text-indigo-900">
+            <strong>FREE Quote Generator</strong> – Turn your calculation into a professional quote in 2 minutes.
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Name *</label>
+            <input
+              type="text"
+              value={clientName}
+              onChange={e => setClientName(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Address *</label>
+            <textarea
+              value={clientAddress}
+              onChange={e => setClientAddress(e.target.value)}
+              rows={2}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Labour Rate (£/m²) *</label>
+            <input
+              type="number"
+              value={labourRate}
+              onChange={e => setLabourRate(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <p className="text-[10px] text-gray-500">Typical range: £15–£25/m²</p>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Additional Notes (Optional)</label>
+            <textarea
+              value={additionalNotes}
+              onChange={e => setAdditionalNotes(e.target.value)}
+              rows={3}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Work includes… Materials to be sourced from…"
+            />
+          </div>
+        </div>
+
+        <div className="border-t px-6 py-4 flex items-center justify-between gap-3 bg-gray-50 rounded-b-xl">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-white"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold hover:from-purple-700 hover:to-blue-700 text-center"
+          >
+            Download Quote (PDF)
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// MAIN CALCULATOR COMPONENT
 export default function PainterCalculator() {
   const [width, setWidth] = useState('')
   const [height, setHeight] = useState('')
   const [numWalls, setNumWalls] = useState('4')
+  const [doorsWindows, setDoorsWindows] = useState('20')
   const [surfaceType, setSurfaceType] = useState<'smooth' | 'textured'>('smooth')
   const [coats, setCoats] = useState('2')
+  const [hourlyRate, setHourlyRate] = useState('20')
+  const [overhead, setOverhead] = useState('15')
+  const [profitMargin, setProfitMargin] = useState('35')
   const [results, setResults] = useState<any>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
+
+  // Paint coverage rates (m²/litre)
+  const coverageRates: Record<string, number> = {
+    'smooth': 12,
+    'textured': 10
+  }
+
+  // Paint and primer costs per 5L tin
+  const paintCostPer5L = 35
+  const primerCostPer5L = 28
 
   const calculate = () => {
     if (!width || !height) return
 
-    const w = parseFloat(width)
-    const h = parseFloat(height)
+    // Convert feet to metres and calculate area
+    const w = (parseFloat(width) * 0.3048)
+    const h = (parseFloat(height) * 0.3048)
     const walls = parseInt(numWalls)
     const numCoats = parseInt(coats)
+    const doorsWindowsPercent = parseFloat(doorsWindows) / 100
 
-    const areaPerWall = (w * h) / 10.764
-    const totalArea = areaPerWall * walls
+    // Calculate total wall area in m²
+    let totalWallArea = (w * h) * walls
 
-    let coverage = 12
-    if (surfaceType === 'textured') coverage = 10
+    // Subtract doors and windows
+    const exclusionArea = totalWallArea * doorsWindowsPercent
+    const paintableArea = totalWallArea - exclusionArea
 
-    let paintNeeded = Math.ceil((totalArea * numCoats) / coverage)
-    let primeNeeded = Math.ceil(totalArea / 14)
+    // Get coverage rate
+    const coverage = coverageRates[surfaceType]
 
-    const paintTins = Math.ceil(paintNeeded / 5)
-    const primeTins = Math.ceil(primeNeeded / 5)
-    
-    const paintCost = (paintTins * 35).toFixed(2)
-    const primeCost = (primeTins * 28).toFixed(2)
-    const labourCost = (totalArea * 15).toFixed(2)
+    // Calculate paint needed with wastage factor (10% wastage)
+    const wasteFactor = 1.10
+    const paintLitresNeeded = ((paintableArea * numCoats) / coverage) * wasteFactor
+
+    // Calculate primer needed (1 coat, ~14 m²/litre coverage)
+    const primerCoverage = 14
+    const primerLitresNeeded = (paintableArea / primerCoverage) * wasteFactor
+
+    // Round up to nearest 5L tin
+    const paintTins = Math.ceil(paintLitresNeeded / 5)
+    const primerTins = Math.ceil(primerLitresNeeded / 5)
+
+    // Calculate material costs
+    const paintCost = paintTins * paintCostPer5L
+    const primerCost = primerTins * primerCostPer5L
+    const totalMaterialCost = paintCost + primerCost
+
+    // Calculate labour cost
+    const labourRatePerM2 = parseFloat(hourlyRate)
+    const labourCost = paintableArea * labourRatePerM2
+
+    // Calculate overhead (% of labour cost)
+    const overheadPercent = parseFloat(overhead) / 100
+    const overheadCost = labourCost * overheadPercent
+
+    // Calculate total job cost (break-even)
+    const totalJobCost = totalMaterialCost + labourCost + overheadCost
+
+    // Calculate client price with profit margin
+    const profitMarginPercent = parseFloat(profitMargin) / 100
+    const clientPrice = totalJobCost * (1 + profitMarginPercent)
 
     setResults({
-      totalArea: totalArea.toFixed(2),
-      paintLitres: paintNeeded,
-      primeLitres: primeNeeded,
+      totalWallArea: totalWallArea.toFixed(2),
+      paintableArea: paintableArea.toFixed(2),
+      exclusionArea: exclusionArea.toFixed(2),
+      paintLitres: paintLitresNeeded.toFixed(1),
+      primerLitres: primerLitresNeeded.toFixed(1),
       paintTins,
-      primeTins,
+      primerTins,
       coats: numCoats,
       surfaceType,
-      paintCost,
-      primeCost,
-      labourCost,
-      totalCost: (parseFloat(paintCost) + parseFloat(primeCost) + parseFloat(labourCost)).toFixed(2)
+      coverage,
+      paintCost: paintCost.toFixed(2),
+      primerCost: primerCost.toFixed(2),
+      totalMaterialCost: totalMaterialCost.toFixed(2),
+      labourCost: labourCost.toFixed(2),
+      overheadCost: overheadCost.toFixed(2),
+      totalJobCost: totalJobCost.toFixed(2),
+      profitMargin: (profitMarginPercent * 100).toFixed(0),
+      clientPrice: clientPrice.toFixed(2),
+      labourRatePerM2: labourRatePerM2.toFixed(2),
+      wasteFactor: '10%'
     })
+  }
+
+  const resetCalculator = () => {
+    setWidth('')
+    setHeight('')
+    setNumWalls('4')
+    setDoorsWindows('20')
+    setSurfaceType('smooth')
+    setCoats('2')
+    setHourlyRate('20')
+    setOverhead('15')
+    setProfitMargin('35')
+    setResults(null)
   }
 
   return (
@@ -108,7 +329,7 @@ export default function PainterCalculator() {
                     'name': 'How much paint do I need?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Calculate total wall area (length × height × number of walls in m²). Divide by coverage rate (12 m²/litre for smooth surfaces, 10 m²/litre for textured). Multiply by number of coats required. Add primer at approximately 14 m²/litre. This calculator automatically determines exact quantities.'
+                      'text': 'Calculate total wall area (length × height × number of walls in m²). Subtract doors/windows (typically 20%). Divide by coverage rate (12 m²/litre for smooth surfaces, 10 m²/litre for textured). Multiply by number of coats required. Add 10% wastage factor. Add primer at approximately 14 m²/litre. This calculator automatically determines exact quantities.'
                     }
                   },
                   {
@@ -207,7 +428,7 @@ export default function PainterCalculator() {
                 <Palette className="w-5 h-5" />
                 <h2 className="text-lg font-bold">Professional Painting Calculator</h2>
               </div>
-              <p className="text-sm opacity-90">Estimation tool for UK decorators and painters</p>
+              <p className="text-sm opacity-90">Calculate paint quantities, labour costs & quotes for UK decorators and painters</p>
             </div>
 
             <div className="mb-6">
@@ -278,11 +499,26 @@ export default function PainterCalculator() {
                   <option value="5">5 Walls (Extra wall)</option>
                   <option value="6">6 Walls (Multiple rooms)</option>
                 </select>
-                <p className="text-xs text-gray-500 mt-1">Subtract 20% for doors/windows</p>
+                <p className="text-xs text-gray-500 mt-1">For multiple surfaces</p>
               </div>
 
               <div>
-                <label className="block font-bold text-gray-800 mb-2">4. Surface Type</label>
+                <label className="block font-bold text-gray-800 mb-2">4. Doors & Windows (%)</label>
+                <input
+                  type="number"
+                  value={doorsWindows}
+                  onChange={e => setDoorsWindows(e.target.value)}
+                  placeholder="e.g. 20"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+                  aria-label="Percentage of area for doors and windows"
+                />
+                <p className="text-xs text-gray-500 mt-1">Typical: 15-25%</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">5. Surface Type</label>
                 <select
                   value={surfaceType}
                   onChange={e => setSurfaceType(e.target.value as 'smooth' | 'textured')}
@@ -294,31 +530,81 @@ export default function PainterCalculator() {
                 </select>
                 <p className="text-xs text-gray-500 mt-1">Textured needs more paint</p>
               </div>
+
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">6. Number of Coats</label>
+                <select
+                  value={coats}
+                  onChange={e => setCoats(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+                  aria-label="Number of paint coats"
+                >
+                  <option value="1">1 Coat (Primer or topcoat only)</option>
+                  <option value="2">2 Coats (Standard - primer + topcoat)</option>
+                  <option value="3">3 Coats (Full coverage with undercoat)</option>
+                  <option value="4">4 Coats (Dark to light colour change)</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">Light colours need fewer coats</p>
+              </div>
             </div>
 
-            <div className="mb-6">
-              <label className="block font-bold text-gray-800 mb-2">5. Number of Coats</label>
-              <select
-                value={coats}
-                onChange={e => setCoats(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
-                aria-label="Number of paint coats"
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">7. Labour Rate (£/m²)</label>
+                <input
+                  type="number"
+                  value={hourlyRate}
+                  onChange={e => setHourlyRate(e.target.value)}
+                  placeholder="e.g. 20"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+                  aria-label="Labour rate per square metre"
+                />
+                <p className="text-xs text-gray-500 mt-1">£15-25/m² typical</p>
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">8. Overhead (%)</label>
+                <input
+                  type="number"
+                  value={overhead}
+                  onChange={e => setOverhead(e.target.value)}
+                  placeholder="e.g. 15"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+                  aria-label="Overhead as percentage of labour"
+                />
+                <p className="text-xs text-gray-500 mt-1">Insurance, fuel, etc</p>
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">9. Profit Margin (%)</label>
+                <input
+                  type="number"
+                  value={profitMargin}
+                  onChange={e => setProfitMargin(e.target.value)}
+                  placeholder="e.g. 35"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+                  aria-label="Profit margin percentage"
+                />
+                <p className="text-xs text-gray-500 mt-1">30-50% typical</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={resetCalculator}
+                className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 rounded-lg transition"
+                aria-label="Reset calculator"
               >
-                <option value="1">1 Coat (Primer or topcoat only)</option>
-                <option value="2">2 Coats (Standard - primer + topcoat)</option>
-                <option value="3">3 Coats (Full coverage with undercoat)</option>
-                <option value="4">4 Coats (Dark to light colour change)</option>
-              </select>
-              <p className="text-xs text-gray-500 mt-1">Light colours need fewer coats</p>
+                🔄 Reset
+              </button>
+              <button
+                onClick={calculate}
+                className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition"
+                aria-label="Calculate paint required"
+              >
+                🎨 Calculate Paint & Quote
+              </button>
             </div>
-
-            <button
-              onClick={calculate}
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg text-lg transition"
-              aria-label="Calculate paint required"
-            >
-              🎨 Calculate Paint Required
-            </button>
 
             {results && (
               <>
@@ -326,7 +612,7 @@ export default function PainterCalculator() {
                   <div className="flex items-center gap-2 mb-4">
                     <CheckCircle2 className="w-6 h-6 text-red-600" />
                     <h3 className={`text-xl font-bold text-red-900`}>
-                      ✓ Paint Breakdown
+                      ✓ Paint & Cost Breakdown
                     </h3>
                   </div>
 
@@ -334,49 +620,68 @@ export default function PainterCalculator() {
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div>
                         <p className="text-xs text-gray-600 mb-1">Total Wall Area</p>
-                        <p className="text-2xl font-bold text-gray-900">{results.totalArea} m²</p>
+                        <p className="text-lg font-bold text-gray-900">{results.totalWallArea} m²</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600 mb-1">Topcoat Paint</p>
-                        <p className="text-2xl font-bold text-red-600">{results.paintTins} tins</p>
+                        <p className="text-xs text-gray-600 mb-1">After Exclusions</p>
+                        <p className="text-lg font-bold text-gray-900">{results.paintableArea} m²</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">Paint Needed</p>
+                        <p className="text-lg font-bold text-red-600">{results.paintTins} tins</p>
                       </div>
                       <div>
                         <p className="text-xs text-gray-600 mb-1">Primer Needed</p>
-                        <p className="text-2xl font-bold text-red-600">{results.primeTins} tins</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-600 mb-1">Number of Coats</p>
-                        <p className="text-2xl font-bold text-red-600">{results.coats}</p>
+                        <p className="text-lg font-bold text-red-600">{results.primerTins} tins</p>
                       </div>
                     </div>
 
-                    <div className="border-t pt-4">
-                      <div className="flex justify-between mb-3">
-                        <p className="font-semibold">Paint Needed (Litres)</p>
-                        <p className="font-bold text-lg">{results.paintLitres}L</p>
+                    <div className="border-t pt-4 space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <p className="text-gray-600">Calculation: {results.paintableArea}m² ÷ {results.coverage}m²/L × {results.coats} coats × {results.wasteFactor} wastage</p>
+                        <p className="font-semibold">{results.paintLitres}L paint</p>
                       </div>
-                      <div className="flex justify-between mb-3">
-                        <p className="font-semibold">Primer Needed (Litres)</p>
-                        <p className="font-bold text-lg">{results.primeLitres}L</p>
-                      </div>
-                      <div className="flex justify-between mb-3 p-2 rounded bg-gray-50">
-                        <p className="font-semibold">Paint Cost (5L tins @ £35)</p>
+
+                      <div className="flex justify-between">
+                        <p className="font-semibold">Paint Cost ({results.paintTins} × 5L @ £35)</p>
                         <p className="font-bold text-lg text-red-600">£{results.paintCost}</p>
                       </div>
-                      <div className="flex justify-between mb-3 p-2 rounded bg-gray-50">
-                        <p className="font-semibold">Primer Cost (5L tins @ £28)</p>
-                        <p className="font-bold text-lg text-red-600">£{results.primeCost}</p>
+
+                      <div className="flex justify-between">
+                        <p className="font-semibold">Primer Cost ({results.primerTins} × 5L @ £28)</p>
+                        <p className="font-bold text-lg text-red-600">£{results.primerCost}</p>
                       </div>
+
+                      <div className="border-t pt-2 flex justify-between p-2 rounded bg-gray-50">
+                        <p className="font-semibold">Total Material Cost</p>
+                        <p className="font-bold text-lg text-red-600">£{results.totalMaterialCost}</p>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <p className="font-semibold">Labour Cost ({results.paintableArea}m² @ £{results.labourRatePerM2}/m²)</p>
+                        <p className="font-bold text-lg">£{results.labourCost}</p>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <p className="font-semibold">Overhead (15% of labour)</p>
+                        <p className="font-bold">£{results.overheadCost}</p>
+                      </div>
+
+                      <div className="border-t pt-2 flex justify-between p-2 rounded bg-yellow-50">
+                        <p className="font-semibold">Total Job Cost (Break-even)</p>
+                        <p className="font-bold text-lg">£{results.totalJobCost}</p>
+                      </div>
+
                       <div className="flex justify-between p-3 rounded bg-green-100 border border-green-300">
-                        <p className="font-semibold text-green-900">Labour Cost Est. (£15/m²)</p>
-                        <p className="font-bold text-lg text-green-700">£{results.labourCost}</p>
+                        <p className="font-semibold text-green-900">Client Quote ({results.profitMargin}% profit margin)</p>
+                        <p className="font-bold text-lg text-green-700">£{results.clientPrice}</p>
                       </div>
                     </div>
 
                     <div className="text-xs text-gray-700 bg-gray-50 p-3 rounded border-l-2 border-gray-400 mt-4">
                       <p className="font-semibold mb-1">Summary:</p>
                       <p className="font-mono">
-                        {results.totalArea}m² × {results.surfaceType === 'smooth' ? '12' : '10'}m²/L coverage × {results.coats} coat(s) = {results.paintLitres}L paint ({results.paintTins} × 5L tins) + {results.primeLitres}L primer ({results.primeTins} × 5L tins)
+                        Materials: £{results.totalMaterialCost} + Labour: £{results.labourCost} + Overhead: £{results.overheadCost} = £{results.totalJobCost} + {results.profitMargin}% profit = £{results.clientPrice}
                       </p>
                     </div>
                   </div>
@@ -421,13 +726,35 @@ export default function PainterCalculator() {
                   <li>• <strong>Coverage rates:</strong> Smooth 12 m²/L, Textured 10 m²/L, Masonry 6-8 m²/L, Gloss 16-18 m²/L</li>
                   <li>• <strong>Coat requirements:</strong> Light colours 1-2 coats, Mid-tone 2-3 coats, Dark 3-4 coats minimum</li>
                   <li>• <strong>Always prime:</strong> New plasterboard, patched areas, glossy surfaces, colour changes</li>
-                  <li>• <strong>Drying time:</strong> 4-8 hours between coats, 24 hours before heavy use</li>
+                  <li>• <strong>Wastage factor:</strong> Standard 10% for errors and obstacles</li>
                   <li>• <strong>Labour rates:</strong> £15-25/m² UK average (varies by experience)</li>
-                  <li>• <strong>Surface prep:</strong> Clean, fill holes, sand rough areas, prime all new work</li>
+                  <li>• <strong>Drying time:</strong> 4-8 hours between coats, 24 hours before heavy use</li>
+                  <li>• <strong>Overhead:</strong> Budget 10-15% for insurance, fuel, marketing, equipment</li>
+                  <li>• <strong>Profit margin:</strong> 30-50% typical for profitable jobs</li>
                 </ul>
               </div>
             </div>
           </div>
+
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Paint Quantity & Cost Calculation Formula</h2>
+            <p className="text-gray-700 mb-4">
+              Professional painting calculations require accurate surface area measurement, coverage rate selection, wastage accounting, and comprehensive cost estimation including materials, labour, overhead, and profit margins.
+            </p>
+            <div className="bg-gray-50 p-4 rounded border-l-4 border-red-600 mb-4">
+              <p className="text-sm text-gray-700 font-mono mb-3"><strong>Paint Calculation:</strong></p>
+              <p className="text-sm text-gray-700 font-mono mb-4">
+                Total Paint = (Paintable Area × Number of Coats ÷ Coverage Rate) × (1 + 10% Wastage)
+              </p>
+              <p className="text-sm text-gray-700 font-mono mb-3"><strong>Job Cost Estimation:</strong></p>
+              <p className="text-sm text-gray-700 font-mono">
+                Client Price = (Materials + Labour + Overhead) × (1 + Profit Margin)
+              </p>
+            </div>
+            <p className="text-sm text-gray-700">
+              This calculator automatically includes surface area calculations (subtracting doors/windows), applies correct coverage rates by surface type, factors in wastage (10%), calculates primer requirements separately, determines labour costs per m², adds overhead costs (insurance, fuel, marketing), and applies your desired profit margin for accurate professional quoting.
+            </p>
+          </section>
 
           <section className="bg-white rounded-lg shadow p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Understanding Paint Coverage & Calculations</h2>
@@ -435,7 +762,7 @@ export default function PainterCalculator() {
               Professional painting requires accurate material estimation based on wall area, surface type, colour intensity, and number of coats. This calculator helps you calculate exact quantities of paint, primer, and labour costs based on UK industry standards. Understanding the relationship between coverage rates, surface conditions, and colour depth is essential for accurate quoting and preventing project shortages.
             </p>
             <div className="bg-gray-50 p-4 rounded border-l-4 border-red-600">
-              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Smooth surfaces (12 m²/L) require less paint than textured surfaces (10 m²/L). Dark colours need 3-4 coats minimum for uniform coverage, while light colours typically need only 1-2 coats. Always prime new plasterboard and patched areas to seal porosity and prevent premature topcoat drying, which ensures better coverage and finish quality.</p>
+              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Smooth surfaces (12 m²/L) require less paint than textured surfaces (10 m²/L). Dark colours need 3-4 coats minimum for uniform coverage, while light colours typically need only 1-2 coats. Always prime new plasterboard and patched areas to seal porosity and prevent premature topcoat drying, which ensures better coverage and finish quality. Wastage factor (10%) accounts for overspray, brush waste, and obstacles.</p>
             </div>
           </section>
 
@@ -550,8 +877,12 @@ export default function PainterCalculator() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
             <div className="space-y-4">
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: How do I subtract doors and windows from calculations?</h4>
-                <p className="text-sm text-gray-700">Subtract approximately 20% from total wall area. For precise calculations: standard door (1.9m × 0.9m = 1.7m²), window (1.5m × 1m = 1.5m²). Enter your net wall area after subtracting openings into the calculator.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How do I calculate exact surface area with doors and windows?</h4>
+                <p className="text-sm text-gray-700">Subtract approximately 20% from total wall area. For precise calculations: standard door (1.9m × 0.9m = 1.7m²), window (1.5m × 1m = 1.5m²). Enter your percentage in the calculator to automatically subtract openings from paintable area.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: Why is the 10% wastage factor included?</h4>
+                <p className="text-sm text-gray-700">Wastage accounts for: overspray on walls, paint remaining in brushes/rollers, obstacles requiring repainting, natural coating variations, and safety margin to prevent shortages mid-project. Industry standard is 10-15% wastage for indoor painting.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Why do dark colours need more coats?</h4>
@@ -562,8 +893,8 @@ export default function PainterCalculator() {
                 <p className="text-sm text-gray-700">Yes. Always use primer on: new plasterboard (very porous), patched areas (filler is porous), glossy/previously painted surfaces (poor adhesion), and when making dramatic colour changes. Primer seals porosity, prevents staining, and ensures topcoat adhesion.</p>
               </div>
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: How does this calculator compare to other painting tools?</h4>
-                <p className="text-sm text-gray-700">TradeCalcs provides comprehensive professional estimators for multiple trades. Use our <a href="/plaster-calculator" className="text-purple-600 font-semibold hover:underline">Plaster Calculator</a> for surface preparation, <a href="/brick-block-calculator" className="text-purple-600 font-semibold hover:underline">Brick & Block Calculator</a> for masonry projects, or <a href="/tiling-calculator" className="text-purple-600 font-semibold hover:underline">Tiling Calculator</a> for finish work. All tools are free with UK market rates and internal linking to build complete project estimates.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How should I budget for overhead and profit?</h4>
+                <p className="text-sm text-gray-700">Overhead (10-15% of labour) covers: insurance, fuel, vehicle maintenance, marketing, admin. Profit margin (30-50%) covers: business growth, contingencies, weather delays, emergency repairs. Total client price = (Materials + Labour + Overhead) × (1 + Profit Margin).</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: What drying times should I allow between coats?</h4>
@@ -577,7 +908,7 @@ export default function PainterCalculator() {
               <AlertCircle className="w-6 h-6 text-yellow-600 mt-1 flex-shrink-0" />
               <div>
                 <p className="font-bold text-yellow-900 mb-2">✓ Professional Quality Assurance</p>
-                <p className="text-sm text-yellow-800">This calculator provides professional estimates based on UK paint manufacturer specifications and industry standards. Coverage rates vary by paint brand, substrate condition, application technique, and environmental factors - always confirm specifications with your paint supplier. Proper surface preparation and environmental conditions (10-25°C, 35-65% humidity) are critical for professional results. For best quality, use premium paints from reputable UK manufacturers. Always order extra paint (10-15%) for waste and future touch-ups. Keep notes on paint batch numbers for consistent colour matching.</p>
+                <p className="text-sm text-yellow-800">This calculator provides professional estimates based on UK paint manufacturer specifications, industry-standard coverage rates, and proven cost calculation methodologies. Coverage rates vary by paint brand, substrate condition, application technique, and environmental factors - always confirm specifications with your paint supplier. Proper surface preparation and environmental conditions (10-25°C, 35-65% humidity) are critical for professional results. For best quality, use premium paints from reputable UK manufacturers. Always order extra paint (10-15%) for waste and future touch-ups. Keep detailed notes on paint batch numbers for consistent colour matching on future projects.</p>
               </div>
             </div>
           </div>
@@ -620,11 +951,11 @@ export default function PainterCalculator() {
             calculationResults={{
               materials: [
                 { item: `Emulsion Paint (${results.surfaceType})`, quantity: `${results.paintTins}`, unit: '5L tins' },
-                { item: 'Primer/Sealer', quantity: `${results.primeTins}`, unit: '5L tins' },
+                { item: 'Primer/Sealer', quantity: `${results.primerTins}`, unit: '5L tins' },
                 { item: 'Preparation Materials (filler, sandpaper, tape)', quantity: '1', unit: 'job' },
-                { item: 'Professional Painting Labour', quantity: results.totalArea, unit: 'm²' }
+                { item: 'Professional Painting Labour', quantity: results.paintableArea, unit: 'm²' }
               ],
-              summary: `${results.totalArea}m² painting project - ${results.coats} coat${results.coats !== 1 ? 's' : ''} on ${results.surfaceType} surface - Paint: £${results.paintCost} - Primer: £${results.primeCost} - Labour: £${results.labourCost} - Total: £${results.totalCost}`
+              summary: `${results.paintableArea}m² painting project - ${results.coats} coat${results.coats !== 1 ? 's' : ''} on ${results.surfaceType} surface (10% wastage) - Paint: £${results.paintCost} + Primer: £${results.primeCost} = £${results.totalMaterialCost} materials - Labour: £${results.labourCost} + Overhead: £${results.overheadCost} = £${results.totalJobCost} total cost - Client quote with ${results.profitMargin}% profit margin: £${results.clientPrice}`
             }}
             onClose={() => setShowQuoteGenerator(false)}
           />
@@ -633,6 +964,7 @@ export default function PainterCalculator() {
     </>
   )
 }
+
 
 
 
