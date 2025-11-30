@@ -430,18 +430,6 @@ export default function PlastererCalculator() {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-600 mb-2"
                 aria-label="Wall or ceiling length in meters"
               />
-              <div className="flex gap-2 flex-wrap">
-                {['2.4', '3.0', '4.5', '5.5', '6.0'].map(len => (
-                  <button
-                    key={len}
-                    onClick={() => setLength(len)}
-                    className="px-3 py-1 bg-slate-100 text-slate-700 rounded font-semibold text-sm hover:bg-slate-200"
-                    aria-label={`Set length to ${len}m`}
-                  >
-                    {len}m
-                  </button>
-                ))}
-              </div>
               <p className="text-xs text-gray-500 mt-1">Measure floor to ceiling height</p>
             </div>
 
@@ -456,18 +444,6 @@ export default function PlastererCalculator() {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-600 mb-2"
                 aria-label="Wall or ceiling width in meters"
               />
-              <div className="flex gap-2 flex-wrap">
-                {['2.0', '3.0', '4.0', '5.0', '6.0'].map(wid => (
-                  <button
-                    key={wid}
-                    onClick={() => setWidth(wid)}
-                    className="px-3 py-1 bg-slate-100 text-slate-700 rounded font-semibold text-sm hover:bg-slate-200"
-                    aria-label={`Set width to ${wid}m`}
-                  >
-                    {wid}m
-                  </button>
-                ))}
-              </div>
               <p className="text-xs text-gray-500 mt-1">Subtract 20% for doors and windows</p>
             </div>
 
@@ -823,6 +799,7 @@ export default function PlastererCalculator() {
     </>
   )
 }
+
 
 
 
