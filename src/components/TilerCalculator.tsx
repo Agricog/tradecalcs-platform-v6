@@ -171,19 +171,60 @@ export default function TilerCalculator() {
   const [results, setResults] = useState<any>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
-  // Grout coverage rates by joint width (kg/m²) - CORRECTED
-  const groutCoverageRates: Record<string, number> = {
-    '1.5': 0.25,
-    '3': 0.45,
-    '5': 0.75,
-    '8': 1.2
-  }
-
   // Adhesive coverage rate (kg/m²)
   const adhesiveCoverageRate = 4.5
 
   // Waste/allowance factor (10%)
   const allowancePercent = 0.10
+
+  // Calculate grout coverage based on tile size AND joint width
+  const getGroutCoverageRate = (tileSizeMm: number, jointWidthMm: string): number => {
+    // Grout consumption varies by tile size and joint width
+    // Smaller tiles = more joints = more grout
+    // Larger tiles = fewer joints = less grout
+    
+    if (tileSizeMm <= 200) {
+      // Small tiles (200mm): higher grout consumption
+      return {
+        '1.5': 0.35,
+        '3': 0.65,
+        '5': 1.0,
+        '8': 1.5
+      }[jointWidthMm] || 0.65
+    } else if (tileSizeMm <= 300) {
+      // Standard tiles (300mm): medium grout consumption
+      return {
+        '1.5': 0.28,
+        '3': 0.45,
+        '5': 0.75,
+        '8': 1.2
+      }[jointWidthMm] || 0.45
+    } else if (tileSizeMm <= 400) {
+      // Medium tiles (400mm): medium-low grout consumption
+      return {
+        '1.5': 0.25,
+        '3': 0.40,
+        '5': 0.65,
+        '8': 1.0
+      }[jointWidthMm] || 0.40
+    } else if (tileSizeMm <= 600) {
+      // Large tiles (600mm): low grout consumption
+      return {
+        '1.5': 0.22,
+        '3': 0.35,
+        '5': 0.55,
+        '8': 0.85
+      }[jointWidthMm] || 0.35
+    } else {
+      // Extra large tiles (800mm+): minimal grout consumption
+      return {
+        '1.5': 0.20,
+        '3': 0.25,
+        '5': 0.40,
+        '8': 0.60
+      }[jointWidthMm] || 0.25
+    }
+  }
 
   const calculate = () => {
     if (!length || !width) return
@@ -214,9 +255,10 @@ export default function TilerCalculator() {
     // STEP 3: Calculate adhesive needed
     const adhesiveNeededKg = (totalArea * adhesiveCoverageRate) * (1 + allowancePercent)
 
-        // STEP 4: Calculate grout needed (CORRECTED FORMULA)
-    const groutCoverageRate = groutCoverageRates[groutWidth] || 0.45
+    // STEP 4: Calculate grout needed (varies by tile size)
+    const groutCoverageRate = getGroutCoverageRate(tileSizeMm, groutWidth)
     const groutNeededKg = (totalArea * groutCoverageRate) * (1 + allowancePercent)
+
     // Primers for walls
     const primers = surfaceType === 'wall' ? Math.ceil(totalArea / 10) : 0
 
@@ -327,7 +369,7 @@ export default function TilerCalculator() {
                     'name': 'How much grout do I need?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Grout consumption depends on tile size and joint width. Narrow joints (1.5mm) use 0.25 kg/m², standard joints (3mm) use 0.45 kg/m², wide joints (5mm) use 0.75 kg/m², extra wide (8mm) use 1.2 kg/m². This calculator determines exact quantities for your joint width.'
+                      'text': 'Grout consumption depends on tile size and joint width. Small tiles (200mm) use 0.65 kg/m², standard tiles (300mm) use 0.45 kg/m², large tiles (600mm) use 0.35 kg/m², extra large tiles (800mm) use 0.25 kg/m² (all at 3mm joints). This calculator determines exact quantities based on your tile size and joint width.'
                     }
                   },
                   {
@@ -536,10 +578,10 @@ export default function TilerCalculator() {
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-600"
                   aria-label="Grout joint width in millimetres"
                 >
-                  <option value="1.5">1.5mm (Narrow) - 0.25 kg/m²</option>
-                  <option value="3">3mm (Standard) - 0.45 kg/m²</option>
-                  <option value="5">5mm (Wide) - 0.75 kg/m²</option>
-                  <option value="8">8mm (Extra Wide) - 1.2 kg/m²</option>
+                  <option value="1.5">1.5mm (Narrow)</option>
+                  <option value="3">3mm (Standard)</option>
+                  <option value="5">5mm (Wide)</option>
+                  <option value="8">8mm (Extra Wide)</option>
                 </select>
                 <p className="text-xs text-gray-500 mt-1">Affects grout consumption</p>
               </div>
@@ -654,7 +696,7 @@ export default function TilerCalculator() {
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                       </svg>
                     </div>
                     <div>
@@ -668,7 +710,7 @@ export default function TilerCalculator() {
                     aria-label="Generate quote from calculation"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                     </svg>
                     Generate Free Quote
                   </button>
@@ -687,7 +729,7 @@ export default function TilerCalculator() {
                 <h3 className="font-bold text-amber-900 mb-3">📋 Professional Tiling Standards</h3>
                 <ul className="space-y-2 text-sm text-amber-900">
                   <li>• <strong>Adhesive coverage:</strong> 4-5 kg/m² (standard rate 4.5 kg/m²)</li>
-                  <li>• <strong>Grout consumption:</strong> 0.25-1.2 kg/m² depending on joint width</li>
+                  <li>• <strong>Grout consumption:</strong> Varies by tile size - 200mm tiles: 0.65 kg/m², 300mm: 0.45 kg/m², 600mm: 0.35 kg/m², 800mm: 0.25 kg/m² (at 3mm joints)</li>
                   <li>• <strong>Waste factors:</strong> Grid 10-12%, Diagonal 15-18%, Herringbone 20-22%</li>
                   <li>• <strong>Pattern complexity:</strong> Larger waste for intricate cuts and layouts</li>
                   <li>• <strong>Drying time:</strong> 24 hours adhesive, 48-72 hours grout before water use</li>
@@ -704,7 +746,7 @@ export default function TilerCalculator() {
               Professional tiling requires accurate material estimation based on surface area, tile size, pattern complexity, joint width, and waste factors. This calculator helps you calculate exact quantities of tiles, adhesive, grout, and labour costs based on UK industry standards. Understanding the relationship between tile patterns, grout consumption, and waste factors is essential for accurate quoting and preventing project delays.
             </p>
             <div className="bg-gray-50 p-4 rounded border-l-4 border-amber-600">
-              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Grid patterns (straight layouts) waste least material (10-12%) and install fastest. Diagonal patterns waste 15-18% due to edge cuts. Herringbone patterns waste 20-25% as each tile requires angled cuts. More complex patterns require higher waste factors and longer installation times, affecting both material and labour costs. Grout consumption is precisely calculated based on joint width using industry-standard coverage rates.</p>
+              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Grid patterns (straight layouts) waste least material (10-12%) and install fastest. Diagonal patterns waste 15-18% due to edge cuts. Herringbone patterns waste 20-25% as each tile requires angled cuts. More complex patterns require higher waste factors and longer installation times, affecting both material and labour costs. Grout consumption varies by tile size - larger tiles have fewer joints and require less grout.</p>
             </div>
           </section>
 
@@ -762,12 +804,12 @@ export default function TilerCalculator() {
               </div>
 
               <div className="border-l-4 border-orange-600 bg-orange-50 p-4 rounded">
-                <h4 className="font-bold text-gray-900 mb-2">Grout Consumption by Joint Width</h4>
+                <h4 className="font-bold text-gray-900 mb-2">Grout Consumption by Tile Size</h4>
                 <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• <strong>1.5mm joints:</strong> 0.25 kg/m²</li>
-                  <li>• <strong>3mm joints:</strong> 0.45 kg/m² (standard)</li>
-                  <li>• <strong>5mm joints:</strong> 0.75 kg/m²</li>
-                  <li>• <strong>8mm joints:</strong> 1.2 kg/m²</li>
+                  <li>• <strong>200mm tiles:</strong> 0.65 kg/m² (3mm joints)</li>
+                  <li>• <strong>300mm tiles:</strong> 0.45 kg/m² (standard)</li>
+                  <li>• <strong>600mm tiles:</strong> 0.35 kg/m²</li>
+                  <li>• <strong>800mm tiles:</strong> 0.25 kg/m²</li>
                   <li>• Add 10% allowance for waste</li>
                   <li>• Use grout sealer for natural stone</li>
                 </ul>
@@ -784,7 +826,7 @@ export default function TilerCalculator() {
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: How is grout consumption calculated?</h4>
-                <p className="text-sm text-gray-700">Grout consumption depends on joint width: 1.5mm = 0.25 kg/m², 3mm = 0.45 kg/m², 5mm = 0.75 kg/m², 8mm = 1.2 kg/m². This calculator multiplies your surface area by the appropriate rate and adds 10% for waste. Result is then rounded up for bag purchase.</p>
+                <p className="text-sm text-gray-700">Grout consumption depends on BOTH tile size AND joint width. Smaller tiles (200mm) use more grout due to more joints (~0.65 kg/m² at 3mm). Standard tiles (300mm) use ~0.45 kg/m². Large tiles (600mm) use ~0.35 kg/m². Extra large tiles (800mm) use minimal grout (~0.25 kg/m²). The calculator multiplies your surface area by the appropriate rate and adds 10% for waste. Result is then rounded up for bag purchase.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Should I wait before grouting after laying tiles?</h4>
@@ -802,7 +844,7 @@ export default function TilerCalculator() {
               <AlertCircle className="w-6 h-6 text-yellow-600 mt-1 flex-shrink-0" />
               <div>
                 <p className="font-bold text-yellow-900 mb-2">✓ Professional Quality Assurance</p>
-                <p className="text-sm text-yellow-800">This calculator provides professional estimates based on UK construction standards (BS 3321) and manufacturer specifications. Adhesive and grout consumption rates vary by manufacturer, substrate type, ambient humidity, and temperature - confirm specifications with your supplier. Proper surface preparation and environmental conditions are critical for durable tile installations. Always allow adequate curing time before water exposure. For complex installations or large commercial projects, consider on-site material assessment and specialist consultation. Grout coverage rates used: 1.5mm=0.25kg/m², 3mm=0.45kg/m², 5mm=0.75kg/m², 8mm=1.2kg/m².</p>
+                <p className="text-sm text-yellow-800">This calculator provides professional estimates based on UK construction standards (BS 3321) and manufacturer specifications. Adhesive and grout consumption rates vary by manufacturer, substrate type, ambient humidity, and temperature - confirm specifications with your supplier. Proper surface preparation and environmental conditions are critical for durable tile installations. Always allow adequate curing time before water exposure. For complex installations or large commercial projects, consider on-site material assessment and specialist consultation.</p>
               </div>
             </div>
           </div>
@@ -835,6 +877,7 @@ export default function TilerCalculator() {
     </>
   )
 }
+
 
 
 
