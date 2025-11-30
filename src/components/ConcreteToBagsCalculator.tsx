@@ -9,33 +9,17 @@ export default function ConcreteToBagsCalculator() {
   const [length, setLength] = useState('')
   const [width, setWidth] = useState('')
   const [depth, setDepth] = useState('')
-  const [applicationType, setApplicationType] = useState('foundation')
-  const [merchant, setMerchant] = useState('jewson')
+  const [concreteStrength, setConcreteStrength] = useState('c20')
   const [email, setEmail] = useState('')
   const [showResults, setShowResults] = useState(false)
   const [emailSubmitted, setEmailSubmitted] = useState(false)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
-  const mixRatios: Record<string, { ratio: string; strength: string; cementParts: number; sandParts: number; gravelParts: number }> = {
-    foundation: { ratio: '1:2:4', strength: 'C20', cementParts: 1, sandParts: 2, gravelParts: 4 },
-    slab: { ratio: '1:2:4', strength: 'C25', cementParts: 1, sandParts: 2, gravelParts: 4 },
-    driveway: { ratio: '1:2:4', strength: 'C25', cementParts: 1, sandParts: 2, gravelParts: 4 },
-    postholes: { ratio: '1:2:3', strength: 'C25', cementParts: 1, sandParts: 2, gravelParts: 3 }
+  const strengthOptions: Record<string, { label: string; ratio: string; cementBagsPerM3: number; cementParts: number; sandParts: number; gravelParts: number }> = {
+    c20: { label: 'C20 (20 MPa)', ratio: '1:2:4', cementBagsPerM3: 12, cementParts: 1, sandParts: 2, gravelParts: 4 },
+    c25: { label: 'C25 (25 MPa)', ratio: '1:2:4', cementBagsPerM3: 13, cementParts: 1, sandParts: 2, gravelParts: 4 },
+    c30: { label: 'C30 (30 MPa)', ratio: '1:1.5:3', cementBagsPerM3: 15, cementParts: 1, sandParts: 1.5, gravelParts: 3 }
   }
-
-  const applications = [
-    { value: 'foundation', label: 'Foundation', desc: 'House footings, extensions' },
-    { value: 'slab', label: 'Concrete Slab', desc: 'Garage floors, sheds' },
-    { value: 'driveway', label: 'Driveway', desc: 'Heavy-duty vehicle access' },
-    { value: 'postholes', label: 'Post Holes', desc: 'Fence posts, small pours' }
-  ]
-
-  const merchants = [
-    { value: 'jewson', label: 'Jewson', bulkBagSize: 850 },
-    { value: 'travis', label: 'Travis Perkins', bulkBagSize: 850 },
-    { value: 'screwfix', label: 'Screwfix', bulkBagSize: 750 },
-    { value: 'wickes', label: 'Wickes', bulkBagSize: 800 }
-  ]
 
   const calculate = () => {
     const l = parseFloat(length)
@@ -46,19 +30,14 @@ export default function ConcreteToBagsCalculator() {
 
     const volumeM3 = (l * w * d) / 1000
     const volumeWithWaste = volumeM3 * 1.10
-    const mix = mixRatios[applicationType]
+    const strength = strengthOptions[concreteStrength]
 
-    let cementBagsPerM3 = 12
-    if (applicationType === 'slab' || applicationType === 'driveway' || applicationType === 'postholes') {
-      cementBagsPerM3 = 13
-    }
-    
-    const cementBags = Math.ceil(volumeWithWaste * cementBagsPerM3)
+    const cementBags = Math.ceil(volumeWithWaste * strength.cementBagsPerM3)
 
-    const selectedMerchant = merchants.find(m => m.value === merchant)!
     const ballastKgPerM3 = 1950
     const totalBallastKg = volumeWithWaste * ballastKgPerM3
-    const bulkBags = Math.ceil(totalBallastKg / selectedMerchant.bulkBagSize)
+    const bulkBagSize = 850
+    const bulkBags = Math.ceil(totalBallastKg / bulkBagSize)
 
     const cementCostPerBag = 6.50
     const bulkBagCost = 85.00
@@ -68,9 +47,8 @@ export default function ConcreteToBagsCalculator() {
       volumeM3: volumeWithWaste.toFixed(2),
       cementBags,
       bulkBags,
-      mix,
+      strength,
       totalCost: totalCost.toFixed(2),
-      merchantName: selectedMerchant.label,
       baseVolume: volumeM3.toFixed(2),
       wastePercentage: '10%'
     }
@@ -98,9 +76,9 @@ export default function ConcreteToBagsCalculator() {
         <title>Concrete Calculator UK | Cement & Ballast Bags Calculator | TradeCalcs</title>
         <meta 
           name="description" 
-          content="Free concrete calculator for UK builders and roofers. Calculate exact cement bags and ballast needed instantly. Foundation, slab, driveway, and postholes calculator." 
+          content="Free concrete calculator for UK builders and roofers. Calculate exact cement bags and ballast needed instantly. C20, C25, C30 concrete strength calculator." 
         />
-        <meta name="keywords" content="concrete calculator, cement calculator, ballast calculator, UK concrete mix, building materials calculator, foundation calculator, concrete bags calculator, mix ratio calculator" />
+        <meta name="keywords" content="concrete calculator, cement calculator, ballast calculator, UK concrete mix, building materials calculator, foundation calculator, concrete bags calculator, mix ratio calculator, c20 c25 c30" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -139,7 +117,7 @@ export default function ConcreteToBagsCalculator() {
               {
                 '@type': 'SoftwareApplication',
                 'name': 'Concrete-to-Bags Calculator UK',
-                'description': 'Professional concrete calculator for UK builders. Calculate exact cement bags and ballast needed for any concrete pour - foundations, slabs, driveways, and postholes.',
+                'description': 'Professional concrete calculator for UK builders. Calculate exact cement bags and ballast needed for any concrete pour - C20, C25, C30 strengths with 20mm max diameter stone ballast.',
                 'applicationCategory': 'Utility',
                 'url': 'https://tradecalcs.co.uk/concrete-calculator',
                 'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'GBP' },
@@ -153,7 +131,7 @@ export default function ConcreteToBagsCalculator() {
                     'name': 'How many concrete bags do I need?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Use this calculator to enter your dimensions (length, width, depth), select your application type, and choose your preferred merchant. The calculator instantly shows exactly how many 25kg cement bags and bulk ballast bags you need to order. Include 10% waste factor.'
+                      'text': 'Use this calculator to enter your dimensions (length, width, depth), select your concrete strength (C20, C25, or C30), and get exact quantities instantly. The calculator shows exactly how many 25kg cement bags and bulk ballast bags you need to order. Include 10% waste factor.'
                     }
                   },
                   {
@@ -161,15 +139,15 @@ export default function ConcreteToBagsCalculator() {
                     'name': 'What is concrete mix ratio 1:2:4?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': '1:2:4 means 1 part cement, 2 parts sand, 4 parts gravel. This is the standard foundation and general-purpose concrete mix in the UK. It produces C20 strength concrete suitable for most residential and commercial applications.'
+                      'text': '1:2:4 means 1 part cement, 2 parts sand, 4 parts gravel (20mm max diameter). This is the standard foundation and general-purpose concrete mix in the UK. It produces C20 strength concrete suitable for most residential and commercial applications.'
                     }
                   },
                   {
                     '@type': 'Question',
-                    'name': 'What is the difference between C20 and C25 concrete?',
+                    'name': 'What is the difference between C20, C25, and C30 concrete?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'C20 is concrete with 20 MPa compressive strength (used for foundations and general work). C25 is 25 MPa (used for slabs, driveways, and heavy-duty applications). C25 requires slightly more cement (13 bags/m³ vs 12 bags/m³) and is more durable for weathering.'
+                      'text': 'C20 is concrete with 20 MPa compressive strength (12 bags cement/m³, used for general work). C25 is 25 MPa (13 bags/m³, used for slabs and heavy-duty applications). C30 is 30 MPa (15 bags/m³, used for high-strength applications). All use 20mm max diameter stone ballast.'
                     }
                   },
                   {
@@ -177,7 +155,7 @@ export default function ConcreteToBagsCalculator() {
                     'name': 'What is a bulk bag of ballast?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'A bulk bag (or Handy Bag) contains all-in ballast - a pre-mixed combination of sand and gravel. UK bulk bags typically weigh 750-900kg depending on the merchant. This saves time because you don\'t need to mix sand and gravel separately.'
+                      'text': 'A bulk bag (or Handy Bag) contains all-in ballast - a pre-mixed combination of sand and gravel (20mm max diameter). UK bulk bags typically weigh 750-900kg. This saves time because you don\'t need to mix sand and gravel separately.'
                     }
                   },
                   {
@@ -190,10 +168,10 @@ export default function ConcreteToBagsCalculator() {
                   },
                   {
                     '@type': 'Question',
-                    'name': 'How do I order concrete bags from different merchants?',
+                    'name': 'What stone size does this calculator use?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'This calculator provides results for major UK merchants (Jewson, Travis Perkins, Screwfix, Wickes). Each has slightly different bulk bag sizes. Select your preferred merchant and order the quantities shown. Always verify actual bulk bag weights with your specific merchant before ordering.'
+                      'text': 'This calculator uses 20mm maximum diameter stone in the ballast mix, which is the standard for most UK construction applications. All concrete strength options (C20, C25, C30) are based on 20mm stone ballast.'
                     }
                   }
                 ]
@@ -235,7 +213,7 @@ export default function ConcreteToBagsCalculator() {
               <Package className="w-8 h-8" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Concrete-to-Bags Calculator UK</h1>
-            <p className="text-xl text-green-50 mb-2">Calculate exactly how many bags to buy from your merchant</p>
+            <p className="text-xl text-green-50 mb-2">Calculate exactly how many bags to buy</p>
             <p className="text-green-100">No confusion. No waste. Get accurate quantities in 30 seconds.</p>
           </div>
         </div>
@@ -253,20 +231,20 @@ export default function ConcreteToBagsCalculator() {
 
             <div className="p-8">
               <div className="mb-8">
-                <label className="block text-sm font-bold text-gray-900 mb-3">1. What are you pouring?</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {applications.map(app => (
+                <label className="block text-sm font-bold text-gray-900 mb-3">1. Concrete Strength</label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {['c20', 'c25', 'c30'].map(strength => (
                     <button
-                      key={app.value}
-                      onClick={() => setApplicationType(app.value)}
-                      className={`p-4 rounded-lg border-2 text-left transition ${
-                        applicationType === app.value
+                      key={strength}
+                      onClick={() => setConcreteStrength(strength)}
+                      className={`p-4 rounded-lg border-2 text-center transition ${
+                        concreteStrength === strength
                           ? 'border-green-600 bg-green-50'
                           : 'border-gray-200 hover:border-green-300'
                       }`}
                     >
-                      <div className="font-bold text-gray-900">{app.label}</div>
-                      <div className="text-sm text-gray-600">{app.desc}</div>
+                      <div className="font-bold text-gray-900">{strengthOptions[strength].label}</div>
+                      <div className="text-sm text-gray-600">Mix ratio {strengthOptions[strength].ratio}</div>
                     </button>
                   ))}
                 </div>
@@ -310,25 +288,6 @@ export default function ConcreteToBagsCalculator() {
                 </div>
               </div>
 
-              <div className="mb-8">
-                <label className="block text-sm font-bold text-gray-900 mb-3">5. Your Preferred Merchant</label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {merchants.map(m => (
-                    <button
-                      key={m.value}
-                      onClick={() => setMerchant(m.value)}
-                      className={`p-3 rounded-lg border-2 font-semibold transition ${
-                        merchant === m.value
-                          ? 'border-green-600 bg-green-50 text-green-700'
-                          : 'border-gray-200 hover:border-green-300 text-gray-700'
-                      }`}
-                    >
-                      {m.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               <button
                 onClick={handleCalculate}
                 disabled={!results}
@@ -350,7 +309,7 @@ export default function ConcreteToBagsCalculator() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900">Your Shopping List</h3>
-                    <p className="text-gray-600">Buy these from {results.merchantName}</p>
+                    <p className="text-gray-600">{results.strength.label} concrete (20mm ballast)</p>
                   </div>
                 </div>
 
@@ -386,7 +345,7 @@ export default function ConcreteToBagsCalculator() {
                     </div>
                     <div>
                       <div className="text-sm text-gray-600 mb-1">Mix Ratio</div>
-                      <div className="font-bold text-gray-900">{results.mix.ratio}</div>
+                      <div className="font-bold text-gray-900">{results.strength.ratio}</div>
                     </div>
                     <div>
                       <div className="text-sm text-gray-600 mb-1">Est. Total Cost</div>
@@ -399,8 +358,8 @@ export default function ConcreteToBagsCalculator() {
                   <div className="flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-semibold text-blue-900 mb-1">Mix Ratio: {results.mix.ratio} ({results.mix.strength})</p>
-                      <p className="text-sm text-blue-800">{results.mix.cementParts} part cement, {results.mix.sandParts} parts sand, {results.mix.gravelParts} parts gravel. Add water gradually until workable consistency. Always include 10% waste factor (already included in quantities above).</p>
+                      <p className="font-semibold text-blue-900 mb-1">Mix Ratio: {results.strength.ratio} ({results.strength.label})</p>
+                      <p className="text-sm text-blue-800">{results.strength.cementParts} part cement, {results.strength.sandParts} parts sand, {results.strength.gravelParts} parts gravel (20mm max diameter). Add water gradually until workable consistency. Always include 10% waste factor (already included in quantities above).</p>
                     </div>
                   </div>
                 </div>
@@ -478,7 +437,8 @@ export default function ConcreteToBagsCalculator() {
               <ul className="space-y-2 text-gray-700 ml-9">
                 <li>• <strong>Pricing based on Q4 2025 UK market rates</strong> (validated with major suppliers)</li>
                 <li>• <strong>10% waste factor included</strong> for typical pours (spillage, imperfect pours, broken bags)</li>
-                <li>• <strong>Bulk bag sizes vary by merchant</strong> (750-900kg) - always verify with your supplier</li>
+                <li>• <strong>20mm maximum diameter stone ballast</strong> - standard for all concrete strengths (C20, C25, C30)</li>
+                <li>• <strong>All bulk bags ~850kg</strong> - standard size across major UK merchants</li>
                 <li>• <strong>Weather affects material moisture</strong> - wet ballast weighs more, adjust if necessary</li>
                 <li>• <strong>Always order extra bags</strong> to avoid shortfalls during pouring</li>
                 <li>• <strong>This calculator covers standard applications</strong> - consult engineer for specialized projects</li>
@@ -489,10 +449,10 @@ export default function ConcreteToBagsCalculator() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">How to Use the Concrete-to-Bags Calculator</h2>
               <p className="text-gray-700 mb-4">
-                UK builders have struggled with concrete calculations for over a decade. Forum after forum shows the same confusion: "I need to fill X cubic meters—how many bags do I actually buy from my merchant?" This calculator solves that problem instantly in 30 seconds.
+                UK builders have struggled with concrete calculations for over a decade. Forum after forum shows the same confusion: "I need to fill X cubic meters—how many bags do I actually buy?" This calculator solves that problem instantly in 30 seconds.
               </p>
               <p className="text-gray-700 mb-4">
-                Simply enter your dimensions (length, width, depth in meters/millimeters), select your application type (foundation, slab, driveway, or post holes), choose your preferred merchant (Jewson, Travis Perkins, Screwfix, Wickes), and get exact bag quantities. No more converting cubic meters to bags, no more guessing mix ratios, no more over-ordering or emergency runs to the merchant.
+                Simply enter your dimensions (length, width, depth in meters/millimeters), select your concrete strength (C20, C25, or C30), and get exact bag quantities. All calculations use 20mm maximum diameter stone ballast, which is the standard for UK construction. No more converting cubic meters to bags, no more guessing mix ratios, no more over-ordering or emergency runs.
               </p>
               <div className="bg-green-50 border-l-4 border-green-600 p-4 rounded mt-4">
                 <p className="text-sm text-green-800"><strong>The 10% waste factor:</strong> Professional builders always add waste factor to account for spillage, broken bags, imperfect pours, and material sticking to equipment. This prevents costly delays when you run short mid-pour.</p>
@@ -503,7 +463,7 @@ export default function ConcreteToBagsCalculator() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Concrete Calculations Are Confusing</h2>
               <p className="text-gray-700 mb-4">
-                Cement is sold by weight (25kg bags), but ballast is often called a "Handy Bag" or "Bulk Bag" with no clear weight indicated. Different merchants use different bulk bag sizes (750-900kg), and moisture content in winter can add 15-20% to actual weight. Plus, the conversion between cubic meters and bags requires complicated calculations that most builders don't remember.
+                Cement is sold by weight (25kg bags), but ballast is often called a "Handy Bag" or "Bulk Bag" with no clear weight indicated. Different moisture content in winter can add 15-20% to actual weight. Plus, the conversion between cubic meters and bags requires complicated calculations that most builders don't remember.
               </p>
               
               <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -524,52 +484,41 @@ export default function ConcreteToBagsCalculator() {
 
             {/* Concrete Mix Ratios */}
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">UK Concrete Mix Ratios Explained</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">UK Concrete Mix Ratios Explained (20mm Stone)</h2>
               <p className="text-gray-700 mb-4">
-                Different applications require different concrete strengths. The mix ratio (cement:sand:gravel) determines the final strength. Here are the standard UK ratios:
+                Different applications require different concrete strengths. The mix ratio (cement:sand:gravel) and cement bag quantity determine the final strength. All ratios here use 20mm maximum diameter stone ballast, the UK standard:
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="border-2 border-gray-200 rounded-lg p-6">
-                  <h3 className="font-bold text-lg text-gray-900 mb-2">Foundation (1:2:4) - C20</h3>
-                  <p className="text-sm text-gray-600 mb-3">House footings, extensions, load-bearing structures</p>
+                  <h3 className="font-bold text-lg text-gray-900 mb-2">C20 (20 MPa)</h3>
+                  <p className="text-sm text-gray-600 mb-3">General-purpose, foundations</p>
                   <ul className="text-sm text-gray-700 space-y-1">
-                    <li>• <strong>Strength:</strong> 20 MPa compressive</li>
-                    <li>• <strong>Cement bags per m³:</strong> 12 bags</li>
-                    <li>• <strong>Best for:</strong> Standard foundations</li>
-                    <li>• <strong>Durability:</strong> Suitable for most soil conditions</li>
+                    <li>• <strong>Mix Ratio:</strong> 1:2:4</li>
+                    <li>• <strong>Cement bags/m³:</strong> 12 bags</li>
+                    <li>• <strong>Compressive Strength:</strong> 20 MPa</li>
+                    <li>• <strong>Stone size:</strong> 20mm max diameter</li>
                   </ul>
                 </div>
 
                 <div className="border-2 border-gray-200 rounded-lg p-6">
-                  <h3 className="font-bold text-lg text-gray-900 mb-2">Slabs & Driveways (1:2:4) - C25</h3>
-                  <p className="text-sm text-gray-600 mb-3">Garage floors, pads, heavy vehicle access</p>
+                  <h3 className="font-bold text-lg text-gray-900 mb-2">C25 (25 MPa)</h3>
+                  <p className="text-sm text-gray-600 mb-3">Slabs, driveways, heavy-use</p>
                   <ul className="text-sm text-gray-700 space-y-1">
-                    <li>• <strong>Strength:</strong> 25 MPa compressive</li>
-                    <li>• <strong>Cement bags per m³:</strong> 13 bags</li>
-                    <li>• <strong>Best for:</strong> Surface exposure</li>
-                    <li>• <strong>Durability:</strong> Excellent frost/weather resistance</li>
+                    <li>• <strong>Mix Ratio:</strong> 1:2:4</li>
+                    <li>• <strong>Cement bags/m³:</strong> 13 bags</li>
+                    <li>• <strong>Compressive Strength:</strong> 25 MPa</li>
+                    <li>• <strong>Stone size:</strong> 20mm max diameter</li>
                   </ul>
                 </div>
 
                 <div className="border-2 border-gray-200 rounded-lg p-6">
-                  <h3 className="font-bold text-lg text-gray-900 mb-2">Post Holes (1:2:3)</h3>
-                  <p className="text-sm text-gray-600 mb-3">Fence posts, small pours, non-structural</p>
+                  <h3 className="font-bold text-lg text-gray-900 mb-2">C30 (30 MPa)</h3>
+                  <p className="text-sm text-gray-600 mb-3">High-strength, structural</p>
                   <ul className="text-sm text-gray-700 space-y-1">
-                    <li>• <strong>Strength:</strong> Adequate for lateral loads</li>
-                    <li>• <strong>Cement bags per m³:</strong> 13 bags</li>
-                    <li>• <strong>Best for:</strong> Non-load-bearing</li>
-                    <li>• <strong>Economy:</strong> Slightly less cement than general purpose</li>
-                  </ul>
-                </div>
-
-                <div className="border-2 border-gray-200 rounded-lg p-6">
-                  <h3 className="font-bold text-lg text-gray-900 mb-2">All-in Ballast vs Separate</h3>
-                  <p className="text-sm text-gray-600 mb-3">Understanding ballast options</p>
-                  <ul className="text-sm text-gray-700 space-y-1">
-                    <li>• <strong>All-in ballast:</strong> Pre-mixed sand + gravel (convenient)</li>
-                    <li>• <strong>Separate sand/gravel:</strong> More control over ratio</li>
-                    <li>• <strong>Bulk bags:</strong> 750-900kg typical size</li>
-                    <li>• <strong>Cost:</strong> Bulk bags ~£85 at major merchants</li>
+                    <li>• <strong>Mix Ratio:</strong> 1:1.5:3</li>
+                    <li>• <strong>Cement bags/m³:</strong> 15 bags</li>
+                    <li>• <strong>Compressive Strength:</strong> 30 MPa</li>
+                    <li>• <strong>Stone size:</strong> 20mm max diameter</li>
                   </ul>
                 </div>
               </div>
@@ -586,11 +535,11 @@ export default function ConcreteToBagsCalculator() {
                     <p className="font-semibold text-gray-900">£6.50</p>
                   </div>
                   <div className="flex justify-between pb-2 border-b">
-                    <p className="font-semibold text-gray-900">All-in Ballast (bulk bag ~850kg)</p>
+                    <p className="font-semibold text-gray-900">All-in Ballast (bulk bag ~850kg, 20mm stone)</p>
                     <p className="font-semibold text-gray-900">£85.00</p>
                   </div>
                   <div className="flex justify-between pb-2 border-b">
-                    <p className="text-gray-700">Typical 1m³ pour (with 10% waste)</p>
+                    <p className="text-gray-700">Typical 1m³ pour (with 10% waste) - C20</p>
                     <p className="font-semibold text-gray-700">~£155 materials</p>
                   </div>
                   <div className="flex justify-between bg-green-100 p-2 rounded border border-green-300">
@@ -612,8 +561,8 @@ export default function ConcreteToBagsCalculator() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">Q: What if I need a different mix ratio?</h3>
-                  <p className="text-gray-700">If you require a custom mix (e.g., decorative concrete, rapid-set, or specialized applications), contact your concrete supplier directly for custom mix designs. The ratios here cover 95% of standard UK construction applications.</p>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">Q: What if I need a different stone size?</h3>
+                  <p className="text-gray-700">This calculator uses 20mm maximum diameter stone, which is the UK standard for most construction applications. If you require a different stone size (10mm or 14mm), contact your concrete supplier directly for custom mix designs.</p>
                 </div>
 
                 <div>
@@ -623,7 +572,7 @@ export default function ConcreteToBagsCalculator() {
 
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Q: Do all merchants stock the same bulk bag sizes?</h3>
-                  <p className="text-gray-700">Bulk bags vary by merchant (750-900kg). This calculator uses standard sizes for major UK suppliers. Always verify exact bulk bag weights with your specific merchant before ordering to ensure accuracy.</p>
+                  <p className="text-gray-700">Most UK merchants use ~850kg bulk bags for 20mm ballast. However, sizes can vary slightly (750-900kg). Always verify exact bulk bag weights with your specific merchant before ordering to ensure accuracy.</p>
                 </div>
 
                 <div>
@@ -634,6 +583,11 @@ export default function ConcreteToBagsCalculator() {
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Q: Can I use ready-mix concrete instead?</h3>
                   <p className="text-gray-700">Yes, ready-mix concrete is often more convenient for larger pours. This calculator helps you understand quantities - whether buying bags or ordering ready-mix, you need to know the volume required (shown in m³).</p>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">Q: What concrete strength should I choose?</h3>
+                  <p className="text-gray-700">C20 (12 bags/m³) is suitable for most foundations and general work. C25 (13 bags/m³) is recommended for slabs and driveways with vehicle traffic. C30 (15 bags/m³) is for high-strength structural applications. All use 20mm max diameter stone.</p>
                 </div>
               </div>
             </div>
@@ -687,11 +641,11 @@ export default function ConcreteToBagsCalculator() {
             calculationResults={{
               materials: [
                 { item: `Cement (25kg bags)`, quantity: results.cementBags.toString(), unit: 'bags' },
-                { item: `All-in Ballast (bulk bags)`, quantity: results.bulkBags.toString(), unit: 'bags' },
-                { item: `${applications.find(a => a.value === applicationType)?.label} - ${results.mix.ratio} Mix (${results.mix.strength})`, quantity: results.volumeM3, unit: 'm³' },
+                { item: `All-in Ballast (bulk bags, 20mm stone)`, quantity: results.bulkBags.toString(), unit: 'bags' },
+                { item: `${results.strength.label} - ${results.strength.ratio} Mix`, quantity: results.volumeM3, unit: 'm³' },
                 { item: 'Mixing & Pouring Labour', quantity: '1', unit: 'job' }
               ],
-              summary: `${results.volumeM3}m³ concrete ${results.mix.strength} (${results.mix.ratio} mix ratio) - includes 10% waste factor - From ${results.merchantName}`
+              summary: `${results.volumeM3}m³ concrete ${results.strength.label} (${results.strength.ratio} mix ratio with 20mm stone ballast) - includes 10% waste factor`
             }}
             onClose={() => setShowQuoteGenerator(false)}
           />
@@ -700,6 +654,7 @@ export default function ConcreteToBagsCalculator() {
     </>
   )
 }
+
 
 
 
