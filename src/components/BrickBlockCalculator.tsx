@@ -198,7 +198,8 @@ function QuoteGenerator({ calculationResults, onClose }: { calculationResults: C
 // MAIN CALCULATOR COMPONENT
 export default function BrickBlockCalculator() {
   const [materialType, setMaterialType] = useState<'brick' | 'block140' | 'block100'>('brick')
-  const [wallArea, setWallArea] = useState('')
+  const [length, setLength] = useState('')
+  const [height, setHeight] = useState('')
   const [wasteFactor, setWasteFactor] = useState(10)
   const [results, setResults] = useState<any>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
@@ -225,15 +226,17 @@ export default function BrickBlockCalculator() {
   }
 
   const calculate = () => {
-    if (!wallArea) return
+    if (!length || !height) return
 
-    const area = parseFloat(wallArea)
+    const lengthM = parseFloat(length)
+    const heightM = parseFloat(height)
+    const wallArea = lengthM * heightM
     const specs = materialSpecs[materialType]
     
     // Calculate quantities without waste first
-    const itemsNeeded = Math.ceil(area * specs.bricksPerM2)
-    const sandKgBase = area * specs.sandPerM2
-    const cementKgBase = area * specs.cementPerM2
+    const itemsNeeded = Math.ceil(wallArea * specs.bricksPerM2)
+    const sandKgBase = wallArea * specs.sandPerM2
+    const cementKgBase = wallArea * specs.cementPerM2
 
     // Apply waste factor
     const itemsWithWaste = Math.ceil(itemsNeeded * (1 + wasteFactor / 100))
@@ -253,7 +256,9 @@ export default function BrickBlockCalculator() {
       materialName: specs.name,
       itemsNeeded: itemsNeeded.toLocaleString(),
       itemsWithWaste: itemsWithWaste.toLocaleString(),
-      wallArea: area.toFixed(2),
+      wallArea: wallArea.toFixed(2),
+      length: lengthM.toFixed(2),
+      height: heightM.toFixed(2),
       sandTonnes: sandTonnesRounded.toFixed(2),
       cementBags,
       cementKgBase: cementKgBase.toFixed(1),
@@ -432,34 +437,61 @@ export default function BrickBlockCalculator() {
               <p className="text-xs text-gray-500 mt-1">Select material type and quantity per m²</p>
             </div>
 
-            <div className="mb-6">
-              <label className="block font-bold text-gray-800 mb-2">2. Wall Area (m²)</label>
-              <input
-                type="number"
-                step="0.5"
-                value={wallArea}
-                onChange={e => setWallArea(e.target.value)}
-                placeholder="e.g. 20"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 mb-2"
-                aria-label="Wall area in square metres"
-              />
-              <div className="flex gap-2 flex-wrap">
-                {['5', '10', '15', '20', '25'].map(area => (
-                  <button
-                    key={area}
-                    onClick={() => setWallArea(area)}
-                    className="px-3 py-1 bg-red-100 text-red-700 rounded font-semibold text-sm hover:bg-red-200"
-                    aria-label={`Set wall area to ${area}m²`}
-                  >
-                    {area}m²
-                  </button>
-                ))}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">2. Wall Length (metres)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={length}
+                  onChange={e => setLength(e.target.value)}
+                  placeholder="e.g. 10"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 mb-2"
+                  aria-label="Wall length in metres"
+                />
+                <div className="flex gap-2 flex-wrap">
+                  {['5', '10', '15', '20'].map(len => (
+                    <button
+                      key={len}
+                      onClick={() => setLength(len)}
+                      className="px-3 py-1 bg-red-100 text-red-700 rounded font-semibold text-sm hover:bg-red-200"
+                      aria-label={`Set length to ${len}m`}
+                    >
+                      {len}m
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-800 mb-2">3. Wall Height (metres)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={height}
+                  onChange={e => setHeight(e.target.value)}
+                  placeholder="e.g. 2.5"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 mb-2"
+                  aria-label="Wall height in metres"
+                />
+                <div className="flex gap-2 flex-wrap">
+                  {['1.8', '2.4', '2.7', '3.0'].map(hgt => (
+                    <button
+                      key={hgt}
+                      onClick={() => setHeight(hgt)}
+                      className="px-3 py-1 bg-red-100 text-red-700 rounded font-semibold text-sm hover:bg-red-200"
+                      aria-label={`Set height to ${hgt}m`}
+                    >
+                      {hgt}m
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
-                <label className="block font-bold text-gray-800">3. Waste Factor: {wasteFactor}%</label>
+                <label className="block font-bold text-gray-800">4. Waste Factor: {wasteFactor}%</label>
               </div>
               <input
                 type="range"
@@ -494,9 +526,9 @@ export default function BrickBlockCalculator() {
                   <div className="bg-white p-4 rounded border-t-2 border-b-2 border-red-300">
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div>
-                        <p className="text-xs text-gray-600 mb-1">Wall Area</p>
-                        <p className="text-2xl font-bold text-gray-900">{results.wallArea}</p>
-                        <p className="text-xs text-gray-500">m²</p>
+                        <p className="text-xs text-gray-600 mb-1">Wall Dimensions</p>
+                        <p className="text-lg font-bold text-gray-900">{results.length}m × {results.height}m</p>
+                        <p className="text-xs text-gray-500">{results.wallArea}m² area</p>
                       </div>
                       <div>
                         <p className="text-xs text-gray-600 mb-1">{results.materialName}</p>
@@ -545,7 +577,7 @@ export default function BrickBlockCalculator() {
                     <div className="text-xs text-gray-700 bg-gray-50 p-3 rounded border-l-2 border-gray-400 mt-4">
                       <p className="font-semibold mb-1">Summary:</p>
                       <p className="font-mono">
-                        {results.wallArea}m² wall: {results.itemsWithWaste} {results.materialName} + {results.sandTonnes}t sand + {results.cementBags} cement bags (4:1 ratio) = £{results.totalMaterialCost}
+                        {results.length}m × {results.height}m ({results.wallArea}m²): {results.itemsWithWaste} {results.materialName} + {results.sandTonnes}t sand + {results.cementBags} cement bags (4:1 ratio) = £{results.totalMaterialCost}
                       </p>
                     </div>
                   </div>
@@ -607,13 +639,13 @@ export default function BrickBlockCalculator() {
             
             <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded mb-4">
               <p className="text-sm text-blue-800 mb-3"><strong>Example Calculation (Standard Bricks):</strong></p>
-              <p className="text-sm text-blue-800">For 20m² wall:</p>
+              <p className="text-sm text-blue-800">For 10m long × 2.5m high wall (25m²):</p>
               <ul className="text-sm text-blue-800 space-y-1 ml-4 mt-2">
-                <li>• Bricks needed: 20 × 60 = 1,200 bricks</li>
-                <li>• Sand needed: 20 × 40kg = 800kg = 0.8 tonnes</li>
-                <li>• Cement needed: 20 × 8kg = 160kg = 6.4 bags (round to 7 bags)</li>
-                <li>• With 10% waste: 1,320 bricks + 0.9t sand + 7 bags cement</li>
-                <li>• Material cost: (7 × £6.50) + (1 × £45) = £45.50 + £45 = £90.50</li>
+                <li>• Bricks needed: 25 × 60 = 1,500 bricks</li>
+                <li>• Sand needed: 25 × 40kg = 1,000kg = 1 tonne</li>
+                <li>• Cement needed: 25 × 8kg = 200kg = 8 bags (25kg each)</li>
+                <li>• With 10% waste: 1,650 bricks + 1 tonne sand + 8 bags cement</li>
+                <li>• Material cost: (8 × £6.50) + (1 × £45) = £52 + £45 = £97</li>
               </ul>
             </div>
 
@@ -660,10 +692,10 @@ export default function BrickBlockCalculator() {
             </p>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="border-l-4 border-red-600 bg-red-50 p-4 rounded">
-                <h4 className="font-bold text-gray-900 mb-2">Why Calculate by Wall Area?</h4>
+                <h4 className="font-bold text-gray-900 mb-2">Why Length & Height?</h4>
                 <ul className="text-sm text-gray-700 space-y-1">
-                  <li>✓ Simpler than counting individual units</li>
                   <li>✓ Easier to measure on site</li>
+                  <li>✓ Simple multiplication: L × H = Area</li>
                   <li>✓ Easy to deduct openings</li>
                   <li>✓ Professional standard method</li>
                   <li>✓ Works for all material types</li>
@@ -691,10 +723,10 @@ export default function BrickBlockCalculator() {
             <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 mb-4">
               <p className="text-sm font-mono text-gray-800 mb-2"><strong>Example:</strong></p>
               <ul className="text-sm text-gray-700 space-y-1 ml-4">
-                <li>• Total wall area: 100m²</li>
-                <li>• Less: 2 doors @ 1.7m² each = 3.4m²</li>
-                <li>• Less: 6 windows @ 1.5m² each = 9m²</li>
-                <li>• <strong>Net wall area: 87.6m²</strong> ← Enter this into calculator</li>
+                <li>• Total: 10m long × 3m high = 30m²</li>
+                <li>• Less: 1 door @ 1.7m² = 1.7m²</li>
+                <li>• Less: 4 windows @ 1.5m² each = 6m²</li>
+                <li>• <strong>Net wall area: 22.3m²</strong> ← Enter this into calculator</li>
               </ul>
             </div>
             <div className="bg-yellow-50 border-l-4 border-yellow-600 p-4 rounded text-sm text-yellow-800">
@@ -731,12 +763,12 @@ export default function BrickBlockCalculator() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
             <div className="space-y-4">
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: How do I know my wall area if I only have length and height?</h4>
-                <p className="text-sm text-gray-700">Multiply length × height. For example: 10 metres long × 2.4 metres high = 24m² wall area. Deduct any door or window openings from this figure before entering into the calculator.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How do I measure my wall dimensions?</h4>
+                <p className="text-sm text-gray-700">Measure the total length of the wall along the base and the height from base to top (or soffit). For 10 metres long × 2.4 metres high wall, enter length=10 and height=2.4. The calculator will compute 24m² wall area. Always measure carefully and add 5% for sloping ceilings or irregular walls.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Can I use this for cavity walls?</h4>
-                <p className="text-sm text-gray-700">Yes, calculate each leaf separately. Typical cavity wall: outer leaf bricks (60/m²) + cavity gap + inner leaf blocks (10.76/m²). Calculate outer bricks, then inner blocks separately, or combine totals for complete ordering.</p>
+                <p className="text-sm text-gray-700">Yes, calculate each leaf separately. Typical cavity wall: outer leaf bricks (60/m²) + cavity gap + inner leaf blocks (10.76/m²). Calculate outer bricks with 10m × 2.4m, then inner blocks with same dimensions, or combine totals for complete ordering.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Why use 4:1 mortar ratio?</h4>
@@ -809,7 +841,7 @@ export default function BrickBlockCalculator() {
                 { item: 'Cement (25kg bags)', quantity: results.cementBags.toString(), unit: 'bags' },
                 { item: 'Wall Area', quantity: results.wallArea, unit: 'm²' }
               ],
-              summary: `${results.wallArea}m² wall (${results.materialName}) - ${results.itemsWithWaste} units + ${results.sandTonnes}t sand + ${results.cementBags} cement bags (4:1 mortar ratio) with ${results.wasteFactor}% waste factor included - Materials cost: £${results.totalMaterialCost}`
+              summary: `${results.length}m × ${results.height}m wall (${results.wallArea}m², ${results.materialName}) - ${results.itemsWithWaste} units + ${results.sandTonnes}t sand + ${results.cementBags} cement bags (4:1 mortar ratio) with ${results.wasteFactor}% waste factor included - Materials cost: £${results.totalMaterialCost}`
             }}
             onClose={() => setShowQuoteGenerator(false)}
           />
@@ -818,6 +850,7 @@ export default function BrickBlockCalculator() {
     </>
   )
 }
+
 
 
 
