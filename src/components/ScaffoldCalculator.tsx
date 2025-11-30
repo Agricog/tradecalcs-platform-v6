@@ -36,7 +36,6 @@ export default function ScaffoldCalculator() {
   const [width, setWidth] = useState('')
   const [bays, setBays] = useState('')
   const [lifts, setLifts] = useState('')
-  const [boardType, setBoardType] = useState('standard')
   const [results, setResults] = useState<ScaffoldResults | null>(null)
 
   const calculate = () => {
@@ -230,7 +229,6 @@ export default function ScaffoldCalculator() {
     setBays('')
     setLifts('')
     setScaffoldType('independent')
-    setBoardType('standard')
     setResults(null)
   }
 
@@ -370,7 +368,7 @@ export default function ScaffoldCalculator() {
 
       <div className="bg-gray-50 min-h-screen">
         <div className="max-w-5xl mx-auto px-4 py-4">
-          <Link to="/" className="text-green-600 hover:text-green-800 font-semibold text-sm">
+          <Link to="/" className="text-blue-600 hover:text-blue-800 font-semibold text-sm">
             ← Back to All Calculators
           </Link>
         </div>
@@ -590,7 +588,7 @@ export default function ScaffoldCalculator() {
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0v6m0-6h6m0 0h6M4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0z"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                       </svg>
                     </div>
                     <div>
@@ -689,6 +687,7 @@ export default function ScaffoldCalculator() {
     </>
   )
 }
+
 
 
 
