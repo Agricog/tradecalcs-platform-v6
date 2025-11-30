@@ -1,15 +1,214 @@
 import { CheckCircle2, Palette, AlertCircle } from 'lucide-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import QuoteGenerator from './QuoteGenerator'
+import jsPDF from 'jspdf'
+
+type PlasterType = 'board' | 'bonding' | 'multi'
+
+type MaterialItem = {
+  item: string
+  quantity: string
+  unit: string
+}
+
+type CalculationResults = {
+  materials: MaterialItem[]
+  summary: string
+}
+
+function QuoteGenerator({ calculationResults, onClose }: { calculationResults: CalculationResults; onClose: () => void }) {
+  const [clientName, setClientName] = useState('John Smith')
+  const [clientAddress, setClientAddress] = useState('123 High Street, London, SW1A 1AA')
+  const [labourRate, setLabourRate] = useState('50')
+  const [estimatedHours, setEstimatedHours] = useState('8')
+  const [materialMarkup, setMaterialMarkup] = useState('15')
+  const [additionalNotes, setAdditionalNotes] = useState('Work includes… Materials to be sourced from…')
+
+  const parseNumber = (value: string, fallback: number) => {
+    const n = parseFloat(value)
+    return isNaN(n) ? fallback : n
+  }
+
+  const handleDownloadPdf = () => {
+    const rate = parseNumber(labourRate, 0)
+    const hours = parseNumber(estimatedHours, 0)
+    const markup = parseNumber(materialMarkup, 0)
+
+    const labourTotal = rate * hours
+    const materialBase = 0
+    const materialTotal = materialBase * (1 + markup / 100)
+    const grandTotal = labourTotal + materialTotal
+
+    const doc = new jsPDF()
+
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(16)
+    doc.text('Professional Plastering Quote', 20, 20)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text(`Client: ${clientName}`, 20, 32)
+    doc.text(`Address: ${clientAddress}`, 20, 38)
+
+    doc.text(`Labour rate: £${rate.toFixed(2)}/hour`, 20, 50)
+    doc.text(`Estimated hours: ${hours}`, 20, 56)
+    doc.text(`Material markup: ${markup}%`, 20, 62)
+    doc.text(`Estimated labour total: £${labourTotal.toFixed(2)}`, 20, 68)
+    doc.text(`Estimated materials total: £${materialTotal.toFixed(2)} (see calculator)`, 20, 74)
+    doc.text(`Estimated project total: £${grandTotal.toFixed(2)}`, 20, 80)
+
+    let y = 92
+    doc.setFont('helvetica', 'bold')
+    doc.text('Materials:', 20, y)
+    y += 6
+    doc.setFont('helvetica', 'normal')
+
+    calculationResults.materials.forEach((m) => {
+      const line = `• ${m.item}: ${m.quantity} ${m.unit}`
+      const wrapped = doc.splitTextToSize(line, 170)
+      doc.text(wrapped, 24, y)
+      y += wrapped.length * 6
+    })
+
+    y += 4
+    doc.setFont('helvetica', 'bold')
+    doc.text('Summary:', 20, y)
+    y += 6
+    doc.setFont('helvetica', 'normal')
+    const summaryWrapped = doc.splitTextToSize(calculationResults.summary, 170)
+    doc.text(summaryWrapped, 20, y)
+    y += summaryWrapped.length * 6 + 4
+
+    if (additionalNotes.trim()) {
+      doc.setFont('helvetica', 'bold')
+      doc.text('Additional notes:', 20, y)
+      y += 6
+      doc.setFont('helvetica', 'normal')
+      const notesWrapped = doc.splitTextToSize(additionalNotes, 170)
+      doc.text(notesWrapped, 20, y)
+    }
+
+    doc.save('plaster-quote.pdf')
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      <div className="bg-white rounded-xl shadow-xl max-w-xl w-full mx-4">
+        <div className="flex items-center justify-between border-b px-6 py-4">
+          <h2 className="text-lg font-bold text-gray-900">Generate Professional Quote</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+            aria-label="Close quote generator"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="px-6 pt-4 pb-6 space-y-4 max-h-[80vh] overflow-y-auto">
+          <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-3 text-xs text-indigo-900">
+            <strong>FREE Quote Generator</strong> – Turn your calculation into a professional quote in 2 minutes.
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Name *</label>
+            <input
+              type="text"
+              value={clientName}
+              onChange={e => setClientName(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Address *</label>
+            <textarea
+              value={clientAddress}
+              onChange={e => setClientAddress(e.target.value)}
+              rows={2}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-gray-700">Labour Rate (£/hour) *</label>
+              <input
+                type="number"
+                value={labourRate}
+                onChange={e => setLabourRate(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <p className="text-[10px] text-gray-500">Typical range: £25–£50+</p>
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-gray-700">Estimated Hours *</label>
+              <input
+                type="number"
+                value={estimatedHours}
+                onChange={e => setEstimatedHours(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Material Markup (%)</label>
+            <input
+              type="number"
+              value={materialMarkup}
+              onChange={e => setMaterialMarkup(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <p className="text-[10px] text-gray-500">Typical range: 10–20%</p>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Additional Notes (Optional)</label>
+            <textarea
+              value={additionalNotes}
+              onChange={e => setAdditionalNotes(e.target.value)}
+              rows={3}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Work includes… Materials to be sourced from…"
+            />
+          </div>
+        </div>
+
+        <div className="border-t px-6 py-4 flex items-center justify-between gap-3 bg-gray-50 rounded-b-xl">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-white"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold hover:from-purple-700 hover:to-blue-700 text-center"
+          >
+            Download Quote (PDF)
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function PlastererCalculator() {
   const [length, setLength] = useState('')
   const [width, setWidth] = useState('')
   const [coats, setCoats] = useState('2')
   const [wasteFactor, setWasteFactor] = useState('10')
+  const [plasterType, setPlasterType] = useState<PlasterType>('board')
   const [result, setResult] = useState<any>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
+
+  // 25kg bags: Board/Multi = 10m² per bag; Bonding = 4x quantity = 2.5m² per bag
+  const BAG_SIZE_KG = 25
+  const BOARD_MULTI_COVERAGE = 10
+  const BONDING_COVERAGE = 2.5
 
   const calculate = () => {
     if (!length || !width) return
@@ -18,14 +217,15 @@ export default function PlastererCalculator() {
     const numCoats = parseFloat(coats) || 1
     const waste = parseFloat(wasteFactor) || 10
 
-    // 1 bag (20kg) covers 10m² per coat
-    const bagsPerCoat = area / 10
+    const coveragePerBag = plasterType === 'bonding' ? BONDING_COVERAGE : BOARD_MULTI_COVERAGE
+    const bagsPerCoat = area / coveragePerBag
     const bagsNeeded = bagsPerCoat * numCoats
     const bagsWithWaste = bagsNeeded * (1 + waste / 100)
-    const totalKg = bagsWithWaste * 20
+    const totalKg = bagsWithWaste * BAG_SIZE_KG
 
     setResult({
       area: area.toFixed(2),
+      coveragePerBag,
       bagsPerCoat: bagsPerCoat.toFixed(2),
       bagsForCoats: bagsNeeded.toFixed(2),
       bagsWithWaste: bagsWithWaste.toFixed(2),
@@ -33,9 +233,21 @@ export default function PlastererCalculator() {
       bags: Math.ceil(bagsWithWaste),
       waste: waste,
       coats: coats,
+      plasterType,
       materialCost: (Math.ceil(bagsWithWaste) * 8.50).toFixed(2),
       labourCost: (area * 25).toFixed(2)
     })
+  }
+
+  const plasterLabel = (type: PlasterType) => {
+    switch (type) {
+      case 'board':
+        return 'Board finish'
+      case 'bonding':
+        return 'Bonding coat'
+      case 'multi':
+        return 'Multi finish'
+    }
   }
 
   return (
@@ -198,6 +410,21 @@ export default function PlastererCalculator() {
             </div>
 
             <div className="mb-6">
+              <label className="block font-bold text-gray-800 mb-2">0. Plaster Type</label>
+              <select
+                value={plasterType}
+                onChange={e => setPlasterType(e.target.value as PlasterType)}
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-600"
+                aria-label="Plaster type"
+              >
+                <option value="board">Board finish</option>
+                <option value="bonding">Bonding coat</option>
+                <option value="multi">Multi finish</option>
+              </select>
+              <p className="text-xs text-gray-500 mt-1">Board finish and Multi finish use the same coverage. Bonding coat uses around four times the quantity for the same area.</p>
+            </div>
+
+            <div className="mb-6">
               <label className="block font-bold text-gray-800 mb-2">1. Wall/Ceiling Length (meters)</label>
               <input
                 type="number"
@@ -346,7 +573,7 @@ export default function PlastererCalculator() {
                     <div className="text-xs text-gray-700 bg-gray-50 p-3 rounded border-l-2 border-gray-400 mt-4">
                       <p className="font-semibold mb-1">Summary:</p>
                       <p className="font-mono">
-                        {result.area}m² ÷ 10m² per bag × {result.coats} coat(s) = {result.bagsForCoats} bags + {result.waste}% waste = {result.bagsWithWaste} bags = {result.bags} × 20kg bags = {result.totalKg}kg
+                        {result.area}m² ÷ {result.coveragePerBag}m² per bag × {result.coats} coat(s) = {result.bagsForCoats} bags + {result.waste}% waste = {result.bagsWithWaste} bags = {result.bags} × 25kg bags = {result.totalKg}kg
                       </p>
                     </div>
                   </div>
@@ -589,14 +816,14 @@ export default function PlastererCalculator() {
           <QuoteGenerator
             calculationResults={{
               materials: [
-                { item: 'Plaster (20kg bags)', quantity: result.bags.toString(), unit: 'bags' },
+                { item: `${plasterLabel(result.plasterType)} (25kg bags)`, quantity: result.bags.toString(), unit: 'bags' },
                 { item: 'Total Plaster Weight', quantity: result.totalKg, unit: 'kg' },
-                { item: 'Coverage Rate', quantity: '10', unit: 'm² per bag' },
+                { item: 'Coverage Rate', quantity: result.coveragePerBag.toString(), unit: 'm² per bag' },
                 { item: 'Number of Coats', quantity: result.coats, unit: 'coats' },
                 { item: 'Wall/Ceiling Area', quantity: result.area, unit: 'm²' },
                 { item: 'Waste Factor Included', quantity: result.waste, unit: '%' }
               ],
-              summary: `Plastering project - ${result.area}m² surface with ${result.coats} coat(s) at 10m² per bag coverage (${result.waste}% waste factor = ${result.bagsWithWaste} bags = ${result.totalKg}kg total plaster required = ${result.bags} × 20kg bags to order) - Material cost: £${result.materialCost} - Labour estimate: £${result.labourCost}`
+              summary: `Plastering project - ${result.area}m² surface with ${result.coats} coat(s) at ${result.coveragePerBag}m² per bag coverage (${result.waste}% waste factor = ${result.bagsWithWaste} bags = ${result.totalKg}kg total plaster required = ${result.bags} × 25kg bags to order) - Material cost: £${result.materialCost} - Labour estimate: £${result.labourCost}`
             }}
             onClose={() => setShowQuoteGenerator(false)}
           />
@@ -605,5 +832,6 @@ export default function PlastererCalculator() {
     </>
   )
 }
+
 
 
