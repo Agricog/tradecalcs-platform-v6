@@ -214,11 +214,9 @@ export default function TilerCalculator() {
     // STEP 3: Calculate adhesive needed
     const adhesiveNeededKg = (totalArea * adhesiveCoverageRate) * (1 + allowancePercent)
 
-    // STEP 4: Calculate grout needed (CORRECTED FORMULA)
-    const groutWidthMm = parseFloat(groutWidth)
+        // STEP 4: Calculate grout needed (CORRECTED FORMULA)
     const groutCoverageRate = groutCoverageRates[groutWidth] || 0.45
     const groutNeededKg = (totalArea * groutCoverageRate) * (1 + allowancePercent)
-
     // Primers for walls
     const primers = surfaceType === 'wall' ? Math.ceil(totalArea / 10) : 0
 
