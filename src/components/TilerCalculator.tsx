@@ -1,8 +1,165 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { CheckCircle2, Layers, AlertCircle } from 'lucide-react'
-import QuoteGenerator from './QuoteGenerator'
+import jsPDF from 'jspdf'
 
+// QUOTE GENERATOR COMPONENT
+type MaterialItem = {
+  item: string
+  quantity: string
+  unit: string
+}
+
+type CalculationResults = {
+  materials: MaterialItem[]
+  summary: string
+}
+
+function QuoteGenerator({ calculationResults, onClose }: { calculationResults: CalculationResults; onClose: () => void }) {
+  const [clientName, setClientName] = useState('John Smith')
+  const [clientAddress, setClientAddress] = useState('123 High Street, London, SW1A 1AA')
+  const [labourRate, setLabourRate] = useState('35')
+  const [additionalNotes, setAdditionalNotes] = useState('Work includes… Materials to be sourced from…')
+
+  const parseNumber = (value: string, fallback: number) => {
+    const n = parseFloat(value)
+    return isNaN(n) ? fallback : n
+  }
+
+  const handleDownloadPdf = () => {
+    const rate = parseNumber(labourRate, 0)
+
+    const doc = new jsPDF()
+
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(16)
+    doc.text('Professional Tiling Quote', 20, 20)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text(`Client: ${clientName}`, 20, 32)
+    doc.text(`Address: ${clientAddress}`, 20, 38)
+
+    doc.text(`Labour rate: £${rate.toFixed(2)}/m²`, 20, 50)
+
+    let y = 62
+    doc.setFont('helvetica', 'bold')
+    doc.text('Materials:', 20, y)
+    doc.setFont('helvetica', 'normal')
+    y += 7
+
+    calculationResults.materials.forEach((m) => {
+      const line = `• ${m.item}: ${m.quantity} ${m.unit}`
+      const wrapped = doc.splitTextToSize(line, 170)
+      doc.text(wrapped, 24, y)
+      y += wrapped.length * 6
+    })
+
+    y += 4
+    doc.setFont('helvetica', 'bold')
+    doc.text('Summary:', 20, y)
+    doc.setFont('helvetica', 'normal')
+    y += 7
+    const summaryWrapped = doc.splitTextToSize(calculationResults.summary, 170)
+    doc.text(summaryWrapped, 20, y)
+    y += summaryWrapped.length * 6 + 4
+
+    if (additionalNotes.trim()) {
+      doc.setFont('helvetica', 'bold')
+      doc.text('Additional notes:', 20, y)
+      doc.setFont('helvetica', 'normal')
+      y += 6
+      const notesWrapped = doc.splitTextToSize(additionalNotes, 170)
+      doc.text(notesWrapped, 20, y)
+    }
+
+    doc.save('tiling-quote.pdf')
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      <div className="bg-white rounded-xl shadow-xl max-w-xl w-full mx-4">
+        <div className="flex items-center justify-between border-b px-6 py-4">
+          <h2 className="text-lg font-bold text-gray-900">Generate Professional Quote</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+            aria-label="Close quote generator"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="px-6 pt-4 pb-6 space-y-4 max-h-[80vh] overflow-y-auto">
+          <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-3 text-xs text-indigo-900">
+            <strong>FREE Quote Generator</strong> – Turn your calculation into a professional quote in 2 minutes.
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Name *</label>
+            <input
+              type="text"
+              value={clientName}
+              onChange={e => setClientName(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Address *</label>
+            <textarea
+              value={clientAddress}
+              onChange={e => setClientAddress(e.target.value)}
+              rows={2}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Labour Rate (£/m²) *</label>
+            <input
+              type="number"
+              value={labourRate}
+              onChange={e => setLabourRate(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <p className="text-[10px] text-gray-500">Typical range: £30–£45/m²</p>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Additional Notes (Optional)</label>
+            <textarea
+              value={additionalNotes}
+              onChange={e => setAdditionalNotes(e.target.value)}
+              rows={3}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Work includes… Materials to be sourced from…"
+            />
+          </div>
+        </div>
+
+        <div className="border-t px-6 py-4 flex items-center justify-between gap-3 bg-gray-50 rounded-b-xl">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-white"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold hover:from-purple-700 hover:to-blue-700 text-center"
+          >
+            Download Quote (PDF)
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// MAIN CALCULATOR COMPONENT
 export default function TilerCalculator() {
   const [surfaceType, setSurfaceType] = useState<'floor' | 'wall'>('floor')
   const [tileSize, setTileSize] = useState('300')
@@ -14,47 +171,89 @@ export default function TilerCalculator() {
   const [results, setResults] = useState<any>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
+  // Grout coverage rates by joint width (kg/m²) - CORRECTED
+  const groutCoverageRates: Record<string, number> = {
+    '1.5': 0.25,
+    '3': 0.45,
+    '5': 0.75,
+    '8': 1.2
+  }
+
+  // Adhesive coverage rate (kg/m²)
+  const adhesiveCoverageRate = 4.5
+
+  // Waste/allowance factor (10%)
+  const allowancePercent = 0.10
+
   const calculate = () => {
     if (!length || !width) return
 
+    // STEP 1: Calculate total area
     const lengthM = parseFloat(length)
     const widthM = parseFloat(width)
-    const area = lengthM * widthM
-    const tileSizeM = parseFloat(tileSize) / 1000
+    const totalArea = lengthM * widthM
 
-    let tilesPerM2 = 1 / (tileSizeM * tileSizeM)
-    let patternWaste = 1
-    if (tilePattern === 'diagonal') patternWaste = 1.08
-    else if (tilePattern === 'herringbone') patternWaste = 1.12
+    // STEP 2: Calculate tiles needed
+    const tileSizeMm = parseFloat(tileSize)
+    const tileSizeM = tileSizeMm / 1000
+    const areaPerTile = tileSizeM * tileSizeM
 
-    const tilesNeeded = Math.ceil(area * tilesPerM2 * patternWaste * (1 + wasteFactor / 100))
-    
-    const groutWidthM = parseFloat(groutWidth) / 1000
-    const groutLength = (lengthM / tileSizeM + widthM / tileSizeM) * groutWidthM * 0.01
-    const groutKg = Math.ceil(groutLength * 1.6)
+    // Exact tiles needed
+    const exactTilesNeeded = totalArea / areaPerTile
 
-    const adhesiveM2 = area
-    const adhesiveKg = Math.ceil(adhesiveM2 * 4.5)
+    // Apply pattern waste multiplier
+    let patternWasteMultiplier = 1.0
+    if (tilePattern === 'diagonal') patternWasteMultiplier = 1.08
+    else if (tilePattern === 'herringbone') patternWasteMultiplier = 1.12
 
-    const primers = surfaceType === 'wall' ? Math.ceil(area / 10) : 0
-    
-    const labourCost = (area * 35).toFixed(2)
-    const materialCost = (adhesiveKg * 8.50 + groutKg * 12).toFixed(2)
+    // Apply combined waste + pattern + allowance
+    const finalTilesNeeded = Math.ceil(
+      exactTilesNeeded * patternWasteMultiplier * (1 + wasteFactor / 100)
+    )
+
+    // STEP 3: Calculate adhesive needed
+    const adhesiveNeededKg = (totalArea * adhesiveCoverageRate) * (1 + allowancePercent)
+
+    // STEP 4: Calculate grout needed (CORRECTED FORMULA)
+    const groutWidthMm = parseFloat(groutWidth)
+    const groutCoverageRate = groutCoverageRates[groutWidth] || 0.45
+    const groutNeededKg = (totalArea * groutCoverageRate) * (1 + allowancePercent)
+
+    // Primers for walls
+    const primers = surfaceType === 'wall' ? Math.ceil(totalArea / 10) : 0
+
+    // Cost calculations
+    const labourCost = (totalArea * 35).toFixed(2)
+    const materialCost = (Math.ceil(adhesiveNeededKg) * 8.50 + Math.ceil(groutNeededKg) * 12).toFixed(2)
 
     setResults({
-      tilesNeeded,
-      groutKg,
-      adhesiveKg,
+      tilesNeeded: finalTilesNeeded,
+      groutKg: Math.ceil(groutNeededKg),
+      adhesiveKg: Math.ceil(adhesiveNeededKg),
       primers,
-      area: area.toFixed(2),
+      area: totalArea.toFixed(2),
       pattern: tilePattern,
       surfaceType,
-      tileSize,
+      tileSize: tileSizeMm,
       groutWidth,
       labourCost,
       materialCost,
-      totalCost: (parseFloat(labourCost) + parseFloat(materialCost)).toFixed(2)
+      totalCost: (parseFloat(labourCost) + parseFloat(materialCost)).toFixed(2),
+      exactTiles: exactTilesNeeded.toFixed(0),
+      exactAdheisve: adhesiveNeededKg.toFixed(1),
+      exactGrout: groutNeededKg.toFixed(1)
     })
+  }
+
+  const resetCalculator = () => {
+    setLength('')
+    setWidth('')
+    setSurfaceType('floor')
+    setTileSize('300')
+    setTilePattern('grid')
+    setWasteFactor(10)
+    setGroutWidth('3')
+    setResults(null)
   }
 
   return (
@@ -130,7 +329,7 @@ export default function TilerCalculator() {
                     'name': 'How much grout do I need?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Grout consumption depends on tile size and joint width. Narrow joints (1.5mm) use less grout, wide joints (8mm) use more. Typical consumption is 1.5-2 kg per m². This calculator determines exact quantities for your joint width.'
+                      'text': 'Grout consumption depends on tile size and joint width. Narrow joints (1.5mm) use 0.25 kg/m², standard joints (3mm) use 0.45 kg/m², wide joints (5mm) use 0.75 kg/m², extra wide (8mm) use 1.2 kg/m². This calculator determines exact quantities for your joint width.'
                     }
                   },
                   {
@@ -154,7 +353,7 @@ export default function TilerCalculator() {
                     'name': 'What is the standard tile adhesive coverage rate?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Coverage varies by tile size: 3-4 kg per m² for small tiles (200mm), 4-5 kg per m² for standard tiles (300-400mm), 5-6 kg per m² for large tiles (600mm+). Use larger notched trowel for bigger tiles. This calculator automatically calculates correct quantities.'
+                      'text': 'Coverage is approximately 4-5 kg per m² for standard tiles. This calculator uses 4.5 kg/m² as the standard coverage rate with 10% allowance for waste. Larger tiles may require higher coverage - consult manufacturer specifications.'
                     }
                   },
                   {
@@ -339,10 +538,10 @@ export default function TilerCalculator() {
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-600"
                   aria-label="Grout joint width in millimetres"
                 >
-                  <option value="1.5">1.5mm (Narrow) - minimal grout</option>
-                  <option value="3">3mm (Standard) - most common</option>
-                  <option value="5">5mm (Wide) - more grout</option>
-                  <option value="8">8mm (Extra Wide) - premium</option>
+                  <option value="1.5">1.5mm (Narrow) - 0.25 kg/m²</option>
+                  <option value="3">3mm (Standard) - 0.45 kg/m²</option>
+                  <option value="5">5mm (Wide) - 0.75 kg/m²</option>
+                  <option value="8">8mm (Extra Wide) - 1.2 kg/m²</option>
                 </select>
                 <p className="text-xs text-gray-500 mt-1">Affects grout consumption</p>
               </div>
@@ -364,13 +563,22 @@ export default function TilerCalculator() {
               </div>
             </div>
 
-            <button
-              onClick={calculate}
-              className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-lg text-lg transition"
-              aria-label="Calculate materials needed"
-            >
-              📊 Calculate Materials
-            </button>
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={resetCalculator}
+                className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 rounded-lg transition"
+                aria-label="Reset calculator"
+              >
+                🔄 Reset
+              </button>
+              <button
+                onClick={calculate}
+                className="bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-lg transition"
+                aria-label="Calculate materials needed"
+              >
+                📊 Calculate Materials
+              </button>
+            </div>
 
             {results && (
               <>
@@ -434,6 +642,13 @@ export default function TilerCalculator() {
                         {results.tilesNeeded.toLocaleString()} {results.tileSize}mm tiles + {results.adhesiveKg}kg adhesive + {results.groutKg}kg grout ({results.groutWidth}mm joints) - {results.pattern === 'grid' ? 'Grid' : results.pattern === 'diagonal' ? 'Diagonal' : 'Herringbone'} pattern with {wasteFactor}% waste
                       </p>
                     </div>
+
+                    <div className="text-xs text-gray-600 bg-blue-50 p-3 rounded border-l-2 border-blue-400 mt-4">
+                      <p className="font-semibold mb-1">Calculation Details (for reference):</p>
+                      <p className="font-mono">
+                        Exact tiles: {results.exactTiles} | Adhesive: {results.exactAdheisve}kg | Grout: {results.exactGrout}kg (before rounding)
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -441,7 +656,7 @@ export default function TilerCalculator() {
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                       </svg>
                     </div>
                     <div>
@@ -473,8 +688,8 @@ export default function TilerCalculator() {
               <div>
                 <h3 className="font-bold text-amber-900 mb-3">📋 Professional Tiling Standards</h3>
                 <ul className="space-y-2 text-sm text-amber-900">
-                  <li>• <strong>Adhesive coverage:</strong> 3-6 kg/m² depending on tile size and substrate</li>
-                  <li>• <strong>Grout consumption:</strong> 1.5-5 kg/m² depending on joint width</li>
+                  <li>• <strong>Adhesive coverage:</strong> 4-5 kg/m² (standard rate 4.5 kg/m²)</li>
+                  <li>• <strong>Grout consumption:</strong> 0.25-1.2 kg/m² depending on joint width</li>
                   <li>• <strong>Waste factors:</strong> Grid 10-12%, Diagonal 15-18%, Herringbone 20-22%</li>
                   <li>• <strong>Pattern complexity:</strong> Larger waste for intricate cuts and layouts</li>
                   <li>• <strong>Drying time:</strong> 24 hours adhesive, 48-72 hours grout before water use</li>
@@ -491,7 +706,7 @@ export default function TilerCalculator() {
               Professional tiling requires accurate material estimation based on surface area, tile size, pattern complexity, joint width, and waste factors. This calculator helps you calculate exact quantities of tiles, adhesive, grout, and labour costs based on UK industry standards. Understanding the relationship between tile patterns, grout consumption, and waste factors is essential for accurate quoting and preventing project delays.
             </p>
             <div className="bg-gray-50 p-4 rounded border-l-4 border-amber-600">
-              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Grid patterns (straight layouts) waste least material (10-12%) and install fastest. Diagonal patterns waste 15-18% due to edge cuts. Herringbone patterns waste 20-25% as each tile requires angled cuts. More complex patterns require higher waste factors and longer installation times, affecting both material and labour costs.</p>
+              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Grid patterns (straight layouts) waste least material (10-12%) and install fastest. Diagonal patterns waste 15-18% due to edge cuts. Herringbone patterns waste 20-25% as each tile requires angled cuts. More complex patterns require higher waste factors and longer installation times, affecting both material and labour costs. Grout consumption is precisely calculated based on joint width using industry-standard coverage rates.</p>
             </div>
           </section>
 
@@ -537,55 +752,26 @@ export default function TilerCalculator() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Tile Adhesive & Grout Coverage</h2>
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div className="border-l-4 border-blue-600 bg-blue-50 p-4 rounded">
-                <h4 className="font-bold text-gray-900 mb-2">Tile Adhesive Coverage by Size</h4>
+                <h4 className="font-bold text-gray-900 mb-2">Tile Adhesive Coverage</h4>
                 <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• <strong>200mm tiles:</strong> 3-4 kg/m²</li>
-                  <li>• <strong>300-400mm tiles:</strong> 4-5 kg/m²</li>
-                  <li>• <strong>600mm tiles:</strong> 5-6 kg/m²</li>
-                  <li>• <strong>800mm+ tiles:</strong> 6-7 kg/m²</li>
-                  <li>• Use larger notched trowels for bigger tiles</li>
-                  <li>• Apply to both tile back and substrate (double-notch)</li>
+                  <li>• <strong>Standard rate:</strong> 4.5 kg/m²</li>
+                  <li>• <strong>Small tiles (200mm):</strong> 3-4 kg/m²</li>
+                  <li>• <strong>Standard tiles (300-400mm):</strong> 4-5 kg/m²</li>
+                  <li>• <strong>Large tiles (600mm):</strong> 5-6 kg/m²</li>
+                  <li>• <strong>Extra large (800mm+):</strong> 6-7 kg/m²</li>
+                  <li>• Add 10% allowance for waste</li>
                 </ul>
               </div>
 
               <div className="border-l-4 border-orange-600 bg-orange-50 p-4 rounded">
                 <h4 className="font-bold text-gray-900 mb-2">Grout Consumption by Joint Width</h4>
                 <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• <strong>1.5mm joints:</strong> ~0.8-1.2 kg/m²</li>
-                  <li>• <strong>3mm joints:</strong> ~1.5-2 kg/m²</li>
-                  <li>• <strong>5mm joints:</strong> ~2.5-3 kg/m²</li>
-                  <li>• <strong>8mm joints:</strong> ~4-5 kg/m²</li>
-                  <li>• Wider joints = more grout consumption</li>
+                  <li>• <strong>1.5mm joints:</strong> 0.25 kg/m²</li>
+                  <li>• <strong>3mm joints:</strong> 0.45 kg/m² (standard)</li>
+                  <li>• <strong>5mm joints:</strong> 0.75 kg/m²</li>
+                  <li>• <strong>8mm joints:</strong> 1.2 kg/m²</li>
+                  <li>• Add 10% allowance for waste</li>
                   <li>• Use grout sealer for natural stone</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section className="bg-white rounded-lg shadow p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Surface Preparation & Professional Tips</h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="border-l-4 border-green-600 bg-green-50 p-4 rounded">
-                <h4 className="font-bold text-gray-900 mb-2">Substrate Preparation</h4>
-                <ul className="text-sm text-gray-700 space-y-1">
-                  <li>✓ Surface flat within 3mm/2m</li>
-                  <li>✓ Clean all dust & contaminants</li>
-                  <li>✓ Prime porous surfaces (drywall, plaster)</li>
-                  <li>✓ Waterproof wet areas (bathrooms, kitchens)</li>
-                  <li>✓ Apply primer 24 hours before tiling</li>
-                  <li>✓ Use cement board or backer board</li>
-                </ul>
-              </div>
-
-              <div className="border-l-4 border-blue-600 bg-blue-50 p-4 rounded">
-                <h4 className="font-bold text-gray-900 mb-2">Installation Best Practice</h4>
-                <ul className="text-sm text-gray-700 space-y-1">
-                  <li>✓ Plan layout from center outward</li>
-                  <li>✓ Use spacers for consistent joints</li>
-                  <li>✓ Check level alignment diagonally</li>
-                  <li>✓ Clean excess adhesive within 15 minutes</li>
-                  <li>✓ Wait 24 hours before grouting</li>
-                  <li>✓ Avoid water 48-72 hours after grouting</li>
                 </ul>
               </div>
             </div>
@@ -599,20 +785,16 @@ export default function TilerCalculator() {
                 <p className="text-sm text-gray-700">Grid is fastest and most economical (10-12% waste). Diagonal provides premium appearance with moderate waste (15-18%). Herringbone creates complex luxury look but wastes 20-25% and takes longest to install. Consider budget, timeline, and desired appearance when selecting pattern.</p>
               </div>
               <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How is grout consumption calculated?</h4>
+                <p className="text-sm text-gray-700">Grout consumption depends on joint width: 1.5mm = 0.25 kg/m², 3mm = 0.45 kg/m², 5mm = 0.75 kg/m², 8mm = 1.2 kg/m². This calculator multiplies your surface area by the appropriate rate and adds 10% for waste. Result is then rounded up for bag purchase.</p>
+              </div>
+              <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Should I wait before grouting after laying tiles?</h4>
                 <p className="text-sm text-gray-700">Yes, allow minimum 24 hours for adhesive to set properly. Humidity and temperature affect curing - allow additional time in cold, damp conditions. Premature grouting can cause adhesive failure and tile movement. Check manufacturer specifications for your specific adhesive product.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Do I need to prime walls before tiling?</h4>
                 <p className="text-sm text-gray-700">Yes, always prime porous surfaces (drywall, plaster, new concrete) to prevent premature adhesive drying and ensure proper bonding. Use waterproofing membrane in wet areas (bathrooms, kitchens, showers). Apply primer 24 hours before tiling. This is essential for long-lasting tile installation.</p>
-              </div>
-              <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: How does this calculator help compared to other tiling tools?</h4>
-                <p className="text-sm text-gray-700">TradeCalcs provides comprehensive professional estimators for multiple trades. Use our <a href="/brick-block-calculator" className="text-purple-600 font-semibold hover:underline">Brick & Block Calculator</a> for masonry projects, <a href="/plaster-calculator" className="text-purple-600 font-semibold hover:underline">Plaster Calculator</a> for coverage estimates, or <a href="/joinery-calculator" className="text-purple-600 font-semibold hover:underline">Joinery Calculator</a> for carpentry work. All tools are free with UK market rates and internal linking to build complete project estimates.</p>
-              </div>
-              <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: Can I use this calculator for mosaic or specialty tiles?</h4>
-                <p className="text-sm text-gray-700">Yes, this calculator works for all tile types including ceramic, porcelain, natural stone, glass, and mosaic. For mosaic and specialty tiles, use higher waste factors (15-25%) due to intricate cutting. Consult manufacturer guidelines for specific adhesive and sealer requirements for each material type.</p>
               </div>
             </div>
           </section>
@@ -622,33 +804,9 @@ export default function TilerCalculator() {
               <AlertCircle className="w-6 h-6 text-yellow-600 mt-1 flex-shrink-0" />
               <div>
                 <p className="font-bold text-yellow-900 mb-2">✓ Professional Quality Assurance</p>
-                <p className="text-sm text-yellow-800">This calculator provides professional estimates based on UK construction standards (BS 3321). Adhesive and grout consumption rates vary by manufacturer, substrate type, ambient humidity, and temperature - confirm specifications with your supplier. Proper surface preparation and environmental conditions are critical for durable tile installations. Always allow adequate curing time before water exposure. For complex installations or large commercial projects, consider on-site material assessment and specialist consultation.</p>
+                <p className="text-sm text-yellow-800">This calculator provides professional estimates based on UK construction standards (BS 3321) and manufacturer specifications. Adhesive and grout consumption rates vary by manufacturer, substrate type, ambient humidity, and temperature - confirm specifications with your supplier. Proper surface preparation and environmental conditions are critical for durable tile installations. Always allow adequate curing time before water exposure. For complex installations or large commercial projects, consider on-site material assessment and specialist consultation. Grout coverage rates used: 1.5mm=0.25kg/m², 3mm=0.45kg/m², 5mm=0.75kg/m², 8mm=1.2kg/m².</p>
               </div>
             </div>
-          </div>
-
-          <div className="mt-12 bg-white rounded-lg shadow-lg p-8 mb-8">
-            <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Need Help or Have Questions?</h3>
-              <p className="text-gray-700">
-                Got a specific calculation requirement or want a custom tool for your trade? Fill out the form below.
-              </p>
-            </div>
-            
-            <div className="max-w-3xl mx-auto">
-              <iframe 
-                src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false&Prefill_Registration+Source=TilingCalculator" 
-                width="100%" 
-                height="650px" 
-                frameBorder="0"
-                title="SmartSuite Tiling Calculator Inquiry Form"
-                className="rounded-lg"
-              />
-            </div>
-            
-            <p className="text-center text-sm text-gray-600 mt-4">
-              Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 font-semibold hover:underline">mick@tradecalcs.co.uk</a>
-            </p>
           </div>
 
           <div className="bg-amber-600 text-white rounded-lg p-8 text-center mb-8">
@@ -679,6 +837,7 @@ export default function TilerCalculator() {
     </>
   )
 }
+
 
 
 
