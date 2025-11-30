@@ -1,8 +1,201 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Hammer, CheckCircle2, AlertCircle } from 'lucide-react'
-import QuoteGenerator from './QuoteGenerator'
+import jsPDF from 'jspdf'
 
+// QUOTE GENERATOR COMPONENT
+type MaterialItem = {
+  item: string
+  quantity: string
+  unit: string
+}
+
+type CalculationResults = {
+  materials: MaterialItem[]
+  summary: string
+}
+
+function QuoteGenerator({ calculationResults, onClose }: { calculationResults: CalculationResults; onClose: () => void }) {
+  const [clientName, setClientName] = useState('John Smith')
+  const [clientAddress, setClientAddress] = useState('123 High Street, London, SW1A 1AA')
+  const [labourRate, setLabourRate] = useState('50')
+  const [estimatedHours, setEstimatedHours] = useState('8')
+  const [materialMarkup, setMaterialMarkup] = useState('15')
+  const [additionalNotes, setAdditionalNotes] = useState('Work includes… Materials to be sourced from…')
+
+  const parseNumber = (value: string, fallback: number) => {
+    const n = parseFloat(value)
+    return isNaN(n) ? fallback : n
+  }
+
+  const handleDownloadPdf = () => {
+    const rate = parseNumber(labourRate, 0)
+    const hours = parseNumber(estimatedHours, 0)
+    const markup = parseNumber(materialMarkup, 0)
+
+    const labourTotal = rate * hours
+    const materialBase = 0
+    const materialTotal = materialBase * (1 + markup / 100)
+    const grandTotal = labourTotal + materialTotal
+
+    const doc = new jsPDF()
+
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(16)
+    doc.text('Professional Joinery Quote', 20, 20)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text(`Client: ${clientName}`, 20, 32)
+    doc.text(`Address: ${clientAddress}`, 20, 38)
+
+    doc.text(`Labour rate: £${rate.toFixed(2)}/hour`, 20, 50)
+    doc.text(`Estimated hours: ${hours}`, 20, 56)
+    doc.text(`Material markup: ${markup}%`, 20, 62)
+    doc.text(`Estimated labour total: £${labourTotal.toFixed(2)}`, 20, 68)
+    doc.text(`Estimated materials total: £${materialTotal.toFixed(2)} (see calculator)`, 20, 74)
+    doc.text(`Estimated project total: £${grandTotal.toFixed(2)}`, 20, 80)
+
+    let y = 92
+    doc.setFont('helvetica', 'bold')
+    doc.text('Materials:', 20, y)
+    y += 6
+    doc.setFont('helvetica', 'normal')
+
+    calculationResults.materials.forEach((m) => {
+      const line = `• ${m.item}: ${m.quantity} ${m.unit}`
+      const wrapped = doc.splitTextToSize(line, 170)
+      doc.text(wrapped, 24, y)
+      y += wrapped.length * 6
+    })
+
+    y += 4
+    doc.setFont('helvetica', 'bold')
+    doc.text('Summary:', 20, y)
+    y += 6
+    doc.setFont('helvetica', 'normal')
+    const summaryWrapped = doc.splitTextToSize(calculationResults.summary, 170)
+    doc.text(summaryWrapped, 20, y)
+    y += summaryWrapped.length * 6 + 4
+
+    if (additionalNotes.trim()) {
+      doc.setFont('helvetica', 'bold')
+      doc.text('Additional notes:', 20, y)
+      y += 6
+      doc.setFont('helvetica', 'normal')
+      const notesWrapped = doc.splitTextToSize(additionalNotes, 170)
+      doc.text(notesWrapped, 20, y)
+    }
+
+    doc.save('joinery-quote.pdf')
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      <div className="bg-white rounded-xl shadow-xl max-w-xl w-full mx-4">
+        <div className="flex items-center justify-between border-b px-6 py-4">
+          <h2 className="text-lg font-bold text-gray-900">Generate Professional Quote</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+            aria-label="Close quote generator"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="px-6 pt-4 pb-6 space-y-4 max-h-[80vh] overflow-y-auto">
+          <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-3 text-xs text-indigo-900">
+            <strong>FREE Quote Generator</strong> – Turn your calculation into a professional quote in 2 minutes.
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Name *</label>
+            <input
+              type="text"
+              value={clientName}
+              onChange={e => setClientName(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Address *</label>
+            <textarea
+              value={clientAddress}
+              onChange={e => setClientAddress(e.target.value)}
+              rows={2}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-gray-700">Labour Rate (£/hour) *</label>
+              <input
+                type="number"
+                value={labourRate}
+                onChange={e => setLabourRate(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <p className="text-[10px] text-gray-500">Typical range: £25–£50+</p>
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-gray-700">Estimated Hours *</label>
+              <input
+                type="number"
+                value={estimatedHours}
+                onChange={e => setEstimatedHours(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Material Markup (%)</label>
+            <input
+              type="number"
+              value={materialMarkup}
+              onChange={e => setMaterialMarkup(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <p className="text-[10px] text-gray-500">Typical range: 10–20%</p>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Additional Notes (Optional)</label>
+            <textarea
+              value={additionalNotes}
+              onChange={e => setAdditionalNotes(e.target.value)}
+              rows={3}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Work includes… Materials to be sourced from…"
+            />
+          </div>
+        </div>
+
+        <div className="border-t px-6 py-4 flex items-center justify-between gap-3 bg-gray-50 rounded-b-xl">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-white"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold hover:from-purple-700 hover:to-blue-700 text-center"
+          >
+            Download Quote (PDF)
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// MAIN CALCULATOR COMPONENT
 export default function JoineryCalculator() {
   const [projectType, setProjectType] = useState('built-in')
   const [woodType, setWoodType] = useState('pine')
@@ -14,24 +207,27 @@ export default function JoineryCalculator() {
   const [result, setResult] = useState<any>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
-  const woodPrices: { [key: string]: number } = {
+  // Wood prices per m³ (Q4 2025 UK market rates)
+  const woodPrices: Record<string, number> = {
+    'mdf': 320,
+    'plywood': 380,
     'pine': 450,
     'oak': 850,
-    'walnut': 1200,
-    'mdf': 320,
-    'plywood': 380
+    'walnut': 1200
   }
 
-  const labourEstimates: { [key: string]: { hours: number; waste: number } } = {
-    'built-in': { hours: 12, waste: 0.18 },
-    'kitchen': { hours: 15, waste: 0.20 },
-    'staircase': { hours: 20, waste: 0.22 },
-    'doors': { hours: 8, waste: 0.15 },
-    'shelving': { hours: 5, waste: 0.12 },
-    'bespoke': { hours: 25, waste: 0.25 }
+  // Labour estimates: hours per m³ and waste factor
+  const labourEstimates: Record<string, { hoursPerM3: number; waste: number }> = {
+    'shelving': { hoursPerM3: 5, waste: 0.12 },
+    'doors': { hoursPerM3: 8, waste: 0.15 },
+    'built-in': { hoursPerM3: 12, waste: 0.18 },
+    'kitchen': { hoursPerM3: 15, waste: 0.20 },
+    'staircase': { hoursPerM3: 20, waste: 0.22 },
+    'bespoke': { hoursPerM3: 25, waste: 0.25 }
   }
 
-  const finishMultipliers: { [key: string]: number } = {
+  // Finish multipliers (labour time increase)
+  const finishMultipliers: Record<string, number> = {
     'natural': 1.0,
     'stain': 1.15,
     'paint': 1.25,
@@ -44,41 +240,67 @@ export default function JoineryCalculator() {
       return
     }
 
-    const L = parseFloat(length) / 1000
-    const W = parseFloat(width) / 1000
-    const H = parseFloat(height) / 1000
-    const volumeM3 = L * W * H
+    // Convert mm to metres
+    const lengthM = parseFloat(length) / 1000
+    const widthM = parseFloat(width) / 1000
+    const heightM = parseFloat(height) / 1000
 
+    // Calculate base volume (m³)
+    const baseVolume = lengthM * widthM * heightM
+
+    // Get labour and waste data
     const labourData = labourEstimates[projectType]
     const finishMultiplier = finishMultipliers[finish]
-
     const woodPrice = woodPrices[woodType]
-    const wasteMultiplier = 1 + labourData.waste
-    const totalVolume = volumeM3 * wasteMultiplier
-    const materialCost = totalVolume * woodPrice
 
-    const baseHours = labourData.hours * (volumeM3 / 0.05)
-    const finishedHours = baseHours * finishMultiplier
+    // Calculate total volume with waste
+    const totalVolumeWithWaste = baseVolume * (1 + labourData.waste)
+
+    // Calculate material cost
+    const materialCost = totalVolumeWithWaste * woodPrice
+
+    // Calculate labour hours: (base volume in m³) × (hours per m³) × (finish multiplier)
+    const baseLabourHours = baseVolume * labourData.hoursPerM3
+    const finishedLabourHours = baseLabourHours * finishMultiplier
+
+    // Calculate labour cost
     const rate = parseFloat(hourlyRate)
-    const labourCost = finishedHours * rate
+    const labourCost = finishedLabourHours * rate
 
+    // Calculate total cost
     const totalCost = materialCost + labourCost
+
+    // Calculate recommended price with 15% buffer
+    const recommendedPrice = totalCost * 1.15
 
     setResult({
       projectType: projectType.charAt(0).toUpperCase() + projectType.slice(1),
       woodType: woodType.charAt(0).toUpperCase() + woodType.slice(1),
-      volumeM3: volumeM3.toFixed(3),
-      totalVolume: totalVolume.toFixed(3),
+      baseVolume: baseVolume.toFixed(4),
+      totalVolume: totalVolumeWithWaste.toFixed(4),
       wastePercentage: (labourData.waste * 100).toFixed(0),
       materialCost: materialCost.toFixed(2),
-      estimatedHours: finishedHours.toFixed(1),
+      estimatedHours: finishedLabourHours.toFixed(1),
       hourlyRate: rate.toFixed(2),
       labourCost: labourCost.toFixed(2),
       totalCost: totalCost.toFixed(2),
       finish: finish.charAt(0).toUpperCase() + finish.slice(1),
       contingency: (totalCost * 0.15).toFixed(2),
-      recommendedPrice: (totalCost * 1.15).toFixed(2)
+      recommendedPrice: recommendedPrice.toFixed(2),
+      hoursPerM3: labourData.hoursPerM3,
+      finishMultiplier: finishMultiplier.toFixed(2)
     })
+  }
+
+  const resetCalculator = () => {
+    setProjectType('built-in')
+    setWoodType('pine')
+    setLength('')
+    setWidth('')
+    setHeight('')
+    setFinish('natural')
+    setHourlyRate('45')
+    setResult(null)
   }
 
   return (
@@ -138,7 +360,7 @@ export default function JoineryCalculator() {
                     'name': 'How do I calculate joinery project costs?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Use this calculator to enter project dimensions (length, width, height in mm), select wood type (pine, oak, walnut, MDF, plywood), choose project type (built-in storage, fitted kitchen, staircase, custom doors, shelving, bespoke furniture), select finish (natural, stain, paint, varnish), and enter your hourly rate (£/hour). The calculator instantly shows material cost, labour hours, labour cost, and total project cost with 15% contingency recommendation.'
+                      'text': 'Use this calculator to enter project dimensions (length, width, height in mm), select wood type (MDF, plywood, pine, oak, walnut), choose project type (shelving, custom doors, built-in storage, fitted kitchen, staircase, bespoke), select finish (natural, stain, paint, varnish), and enter your hourly rate (£/hour). The calculator instantly shows material cost, labour hours, labour cost, and total project cost with 15% contingency recommendation.'
                     }
                   },
                   {
@@ -146,7 +368,7 @@ export default function JoineryCalculator() {
                     'name': 'What are current UK wood prices (Q4 2025)?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Q4 2025 UK market rates: Pine £450/m³ (softwood, budget-friendly), Oak £850/m³ (hardwood, premium), Walnut £1200/m³ (high-end projects), MDF £320/m³ (engineered, paintable), Plywood £380/m³ (structural, hidden work). Prices vary by supplier, grade, and local market. Always confirm current prices with your timber merchant before preparing quotes - prices fluctuate monthly.'
+                      'text': 'Q4 2025 UK market rates: MDF £320/m³ (engineered, paintable), Plywood £380/m³ (structural, hidden work), Pine £450/m³ (softwood, budget-friendly), Oak £850/m³ (hardwood, premium), Walnut £1200/m³ (high-end projects). Prices vary by supplier, grade, and local market. Always confirm current prices with your timber merchant before preparing quotes - prices fluctuate monthly.'
                     }
                   },
                   {
@@ -237,7 +459,7 @@ export default function JoineryCalculator() {
                 <Hammer className="w-5 h-5" />
                 <h2 className="text-lg font-bold">Joinery Cost Calculator</h2>
               </div>
-              <p className="text-sm opacity-90">Professional pricing for UK joiners and carpenters</p>
+              <p className="text-sm opacity-90">Professional pricing for UK joiners and carpenters using correct labour hours per m³ and waste factors</p>
             </div>
 
             <div className="mb-6">
@@ -248,12 +470,12 @@ export default function JoineryCalculator() {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-600 mb-2"
                 aria-label="Project type"
               >
-                <option value="shelving">Shelving/Bookcases (5 hrs/m³)</option>
-                <option value="doors">Custom Doors (8 hrs/m³)</option>
-                <option value="built-in">Built-in Wardrobe/Storage (12 hrs/m³)</option>
-                <option value="kitchen">Fitted Kitchen (15 hrs/m³)</option>
-                <option value="staircase">Staircase (20 hrs/m³)</option>
-                <option value="bespoke">Bespoke Furniture (25 hrs/m³)</option>
+                <option value="shelving">Shelving/Bookcases (5 hrs/m³, 12% waste)</option>
+                <option value="doors">Custom Doors (8 hrs/m³, 15% waste)</option>
+                <option value="built-in">Built-in Wardrobe/Storage (12 hrs/m³, 18% waste)</option>
+                <option value="kitchen">Fitted Kitchen (15 hrs/m³, 20% waste)</option>
+                <option value="staircase">Staircase (20 hrs/m³, 22% waste)</option>
+                <option value="bespoke">Bespoke Furniture (25 hrs/m³, 25% waste)</option>
               </select>
             </div>
 
@@ -271,7 +493,7 @@ export default function JoineryCalculator() {
                 <option value="oak">Oak - £850/m³ (hardwood, premium)</option>
                 <option value="walnut">Walnut - £1200/m³ (high-end projects)</option>
               </select>
-              <p className="text-xs text-gray-500 mt-1">Q4 2025 UK market rates - confirm with merchant</p>
+              <p className="text-xs text-gray-500 mt-1">Q4 2025 UK market rates - confirm with timber merchant</p>
             </div>
 
             <div className="grid grid-cols-3 gap-4 mb-6">
@@ -326,7 +548,7 @@ export default function JoineryCalculator() {
                   >
                     <p className="capitalize">{f}</p>
                     <p className="text-xs font-normal text-gray-600">
-                      {f === 'natural' ? 'Base labour' : `+${['stain', 'paint', 'varnish'].indexOf(f) * 10 + 15}% time`}
+                      {f === 'natural' ? 'Base labour' : f === 'stain' ? '+15% time' : f === 'paint' ? '+25% time' : '+35% time'}
                     </p>
                   </button>
                 ))}
@@ -358,13 +580,22 @@ export default function JoineryCalculator() {
               <p className="text-xs text-gray-500 mt-1">Apprentice £15-20, Semi-skilled £25-35, Experienced £40-55, Specialist £60-85</p>
             </div>
 
-            <button
-              onClick={calculate}
-              className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-lg text-lg transition"
-              aria-label="Calculate project cost"
-            >
-              💰 Calculate Project Cost
-            </button>
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={resetCalculator}
+                className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 rounded-lg transition"
+                aria-label="Reset calculator"
+              >
+                🔄 Reset
+              </button>
+              <button
+                onClick={calculate}
+                className="bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-lg transition"
+                aria-label="Calculate project cost"
+              >
+                💰 Calculate Project Cost
+              </button>
+            </div>
 
             {result && (
               <>
@@ -380,7 +611,7 @@ export default function JoineryCalculator() {
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div>
                         <p className="text-xs text-gray-600 mb-1">Base Volume</p>
-                        <p className="text-2xl font-bold text-gray-900">{result.volumeM3} m³</p>
+                        <p className="text-2xl font-bold text-gray-900">{result.baseVolume} m³</p>
                       </div>
                       <div>
                         <p className="text-xs text-gray-600 mb-1">With Waste ({result.wastePercentage}%)</p>
@@ -397,6 +628,10 @@ export default function JoineryCalculator() {
                     </div>
 
                     <div className="border-t pt-4">
+                      <div className="flex justify-between mb-3 pb-2 border-b">
+                        <p className="font-semibold">Calculation Method</p>
+                        <p className="text-xs text-gray-600">{result.hoursPerM3} hrs/m³ × {result.baseVolume}m³ × {result.finishMultiplier} (finish)</p>
+                      </div>
                       <div className="flex justify-between mb-3">
                         <p className="font-semibold">Labour Cost (£{result.hourlyRate}/hr)</p>
                         <p className="font-bold text-lg">£{result.labourCost}</p>
@@ -414,7 +649,7 @@ export default function JoineryCalculator() {
                     <div className="text-xs text-gray-700 bg-gray-50 p-3 rounded border-l-2 border-gray-400 mt-4">
                       <p className="font-semibold mb-1">Summary:</p>
                       <p className="font-mono">
-                        {result.totalVolume}m³ {result.woodType} + {result.estimatedHours}hrs @ £{result.hourlyRate}/hr = £{result.totalCost}
+                        {result.totalVolume}m³ {result.woodType} + {result.estimatedHours}hrs @ £{result.hourlyRate}/hr = £{result.totalCost} (Quote: £{result.recommendedPrice})
                       </p>
                     </div>
                   </div>
@@ -457,10 +692,11 @@ export default function JoineryCalculator() {
                 <h3 className="font-bold text-amber-900 mb-3">🔨 Professional Joinery Pricing</h3>
                 <ul className="space-y-2 text-sm text-amber-900">
                   <li>• <strong>Wood prices:</strong> Q4 2025 UK market rates - always confirm with timber merchant</li>
-                  <li>• <strong>Waste factors:</strong> 5-25% depending on project type and complexity</li>
+                  <li>• <strong>Labour calculation:</strong> Hours per m³ × volume × finish multiplier = total hours</li>
+                  <li>• <strong>Waste factors:</strong> 12-25% depending on project type and complexity</li>
                   <li>• <strong>Labour rates:</strong> £15-85/hour depending on experience and location</li>
                   <li>• <strong>Finish types:</strong> Natural (base), Stain (+15%), Paint (+25%), Varnish (+35%)</li>
-                  <li>• <strong>Project types:</strong> From simple shelving to complex bespoke furniture</li>
+                  <li>• <strong>Project types:</strong> From simple shelving (5 hrs/m³) to complex bespoke (25 hrs/m³)</li>
                   <li>• <strong>Contingency:</strong> Always add 10-15% buffer for unknowns and site issues</li>
                   <li>• <strong>Hidden costs:</strong> Site access, travel, material variations, design changes</li>
                 </ul>
@@ -471,10 +707,10 @@ export default function JoineryCalculator() {
           <section className="bg-white rounded-lg shadow p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Understanding Joinery Costs in the UK</h2>
             <p className="text-gray-700 mb-4">
-              Joinery project costs depend on wood type, project complexity, labour rates, finish quality, and waste factors. Professional pricing requires accurate estimation of materials, labour hours, contingencies, and hidden costs. This calculator helps you quote confidently based on current UK market rates and industry-standard labour estimates.
+              Joinery project costs depend on wood type, project complexity, labour rates, finish quality, and waste factors. Professional pricing requires accurate estimation of materials using labour hours per m³, accounting for finish multipliers, and including contingencies. This calculator helps you quote confidently based on current UK market rates and industry-standard labour estimates.
             </p>
             <div className="bg-gray-50 p-4 rounded border-l-4 border-amber-600">
-              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Complex projects with custom cuts, premium woods, and quality finishes require significantly more labour time. A simple shelving project (5 hrs/m³) might take 4-5 days, while bespoke furniture (25 hrs/m³) could require 3-4 weeks of skilled work.</p>
+              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Labour hours = (base volume in m³) × (hours per m³ for project type) × (finish multiplier). For example: 0.5m³ of built-in storage with varnish = 0.5 × 12 × 1.35 = 8.1 hours. Complex projects with custom cuts, premium woods, and quality finishes require significantly more labour time.</p>
             </div>
           </section>
 
@@ -496,7 +732,7 @@ export default function JoineryCalculator() {
                   <tr className="hover:bg-gray-50">
                     <td className="px-4 py-2 font-semibold">MDF</td>
                     <td className="px-4 py-2">£320/m³</td>
-                    <td className="px-4 py-2">Paintable, interior, budget-friendly</td>
+                    <td className="px-4 py-2">Engineered, paintable, interior, budget-friendly</td>
                   </tr>
                   <tr className="hover:bg-gray-50 bg-gray-50">
                     <td className="px-4 py-2 font-semibold">Plywood</td>
@@ -526,6 +762,7 @@ export default function JoineryCalculator() {
 
           <section className="bg-white rounded-lg shadow p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Labour Estimates by Project Type</h2>
+            <p className="text-gray-700 mb-4">Labour is calculated as: (hours per m³) × (base volume) × (finish multiplier). More complex projects require more hours per cubic metre:</p>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="border-l-4 border-amber-600 bg-amber-50 p-4 rounded">
                 <h4 className="font-bold text-gray-900 mb-2">Simple Projects</h4>
@@ -548,20 +785,20 @@ export default function JoineryCalculator() {
 
           <section className="bg-white rounded-lg shadow p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Finish Types & Labour Impact</h2>
-            <p className="text-gray-700 mb-4">Quality finishes require significantly more labour time and skilled application:</p>
+            <p className="text-gray-700 mb-4">Quality finishes require significantly more labour time and skilled application. The finish multiplier increases labour hours:</p>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="border-l-4 border-green-600 bg-green-50 p-4 rounded">
                 <h4 className="font-bold text-gray-900 mb-2">Natural & Stain</h4>
                 <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• <strong>Natural:</strong> Base labour (no extra time)</li>
-                  <li>• <strong>Stain:</strong> +15% labour (prep, staining, sanding)</li>
+                  <li>• <strong>Natural:</strong> 1.0× labour (no extra time)</li>
+                  <li>• <strong>Stain:</strong> 1.15× labour (+15% prep, staining, sanding)</li>
                 </ul>
               </div>
               <div className="border-l-4 border-blue-600 bg-blue-50 p-4 rounded">
                 <h4 className="font-bold text-gray-900 mb-2">Paint & Varnish</h4>
                 <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• <strong>Paint:</strong> +25% labour (priming, multiple coats)</li>
-                  <li>• <strong>Varnish:</strong> +35% labour (multiple coats, sanding between)</li>
+                  <li>• <strong>Paint:</strong> 1.25× labour (+25% priming, multiple coats)</li>
+                  <li>• <strong>Varnish:</strong> 1.35× labour (+35% multiple coats, sanding between)</li>
                 </ul>
               </div>
             </div>
@@ -589,23 +826,54 @@ export default function JoineryCalculator() {
           </section>
 
           <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Most Used Joinery Calculations</h2>
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-bold text-gray-800 mb-2">Length & Quantity Estimates</h4>
+                <p className="text-sm text-gray-700"><strong>Formula:</strong> Desired Length = Total Length - Waste</p>
+                <p className="text-xs text-gray-600">Calculate total material needed by subtracting waste percentage from total length.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-2">Squaring Corners/Frames</h4>
+                <p className="text-sm text-gray-700"><strong>Formula:</strong> The 3-4-5 rule (or multiples like 6-8-10)</p>
+                <p className="text-xs text-gray-600">If sides A and B measure 3 and 4 units from corner, diagonal must measure 5 for perfect 90° angle.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-2">Equal Spacing/Division</h4>
+                <p className="text-sm text-gray-700"><strong>Formula:</strong> Total Length ÷ Number of Spaces = Distance per Space</p>
+                <p className="text-xs text-gray-600">Use for laying out stair spindles, shelf supports, or stud work at equal intervals.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-2">Area Calculation</h4>
+                <p className="text-sm text-gray-700"><strong>Formula:</strong> Area = Width × Height (or Length)</p>
+                <p className="text-xs text-gray-600">Estimate materials like plywood sheets, flooring, or paint coverage.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-2">Stair Stringer Layout</h4>
+                <p className="text-sm text-gray-700"><strong>Formula:</strong> Diagonal² = Rise² + Run² (A² + B² = C²)</p>
+                <p className="text-xs text-gray-600">Calculate diagonal length of stringer based on total rise and run using Pythagorean theorem.</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
             <div className="space-y-4">
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: What hourly rate should I use?</h4>
-                <p className="text-sm text-gray-700">UK rates vary: Apprentice £15-20/hr, Semi-skilled £25-35/hr, Experienced £40-55/hr, Specialist £60-85/hr. Adjust for your experience, location (London higher), and overhead costs.</p>
+                <p className="text-sm text-gray-700">UK rates vary: Apprentice £15-20/hr, Semi-skilled £25-35/hr, Experienced £40-55/hr, Specialist £60-85/hr. Adjust for your experience, location (London higher), and overhead costs running a business.</p>
               </div>
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: How do I account for future load growth?</h4>
-                <p className="text-sm text-gray-700">Design for anticipated maximum future demand rather than current needs. This avoids costly upgrades later and ensures the project remains competitive.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How are labour hours calculated?</h4>
+                <p className="text-sm text-gray-700">Labour Hours = (Volume in m³) × (Hours per m³ for project type) × (Finish multiplier). For example: 0.5m³ shelving with paint finish = 0.5 × 5 × 1.25 = 3.125 hours.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: What hidden costs should I budget for?</h4>
-                <p className="text-sm text-gray-700">Site access issues, material variances, design changes, rework, travel time, equipment rental, and additional finish coats. Always add 10-15% contingency buffer.</p>
+                <p className="text-sm text-gray-700">Site access issues, material variances, design changes, rework, travel time, equipment rental, and additional finish coats. Always add 10-15% contingency buffer to quotes.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: How do I confirm wood prices?</h4>
-                <p className="text-sm text-gray-700">Contact your timber merchant directly for current prices - they vary monthly by supplier, grade, stock levels, and delivery location. Use their rates, not calculator estimates, for final quotes.</p>
+                <p className="text-sm text-gray-700">Contact your timber merchant directly for current prices - they vary monthly by supplier, grade, stock levels, and delivery location. Use their rates for final quotes, not calculator estimates.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Should I include a contingency buffer?</h4>
@@ -613,7 +881,7 @@ export default function JoineryCalculator() {
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: How accurate is this calculator?</h4>
-                <p className="text-sm text-gray-700">This calculator provides professional estimates based on Q4 2025 UK market data. Use it as a starting point - always confirm wood prices with merchants and adjust for your specific experience and project requirements.</p>
+                <p className="text-sm text-gray-700">This calculator provides professional estimates based on Q4 2025 UK market data and industry-standard labour hours per m³. Use it as a starting point - always confirm wood prices with merchants and adjust for your specific experience and project requirements.</p>
               </div>
             </div>
           </section>
@@ -623,7 +891,7 @@ export default function JoineryCalculator() {
               <AlertCircle className="w-6 h-6 text-yellow-600 mt-1 flex-shrink-0" />
               <div>
                 <p className="font-bold text-yellow-900 mb-2">✓ Professional Quality Assurance</p>
-                <p className="text-sm text-yellow-800">This calculator provides professional estimates for UK joinery projects based on Q4 2025 market rates. Always confirm current wood prices with your timber merchant before preparing quotes - prices fluctuate monthly. Account for project-specific factors, site complications, and add 15% contingency buffer to all quotes to ensure profitability and protect against cost overruns.</p>
+                <p className="text-sm text-yellow-800">This calculator provides professional estimates for UK joinery projects based on Q4 2025 market rates and industry-standard labour hours per m³. Always confirm current wood prices with your timber merchant before preparing quotes - prices fluctuate monthly. Account for project-specific factors, site complications, and add 15% contingency buffer to all quotes to ensure profitability and protect against cost overruns.</p>
               </div>
             </div>
           </div>
@@ -654,7 +922,7 @@ export default function JoineryCalculator() {
 
           <div className="bg-amber-600 text-white rounded-lg p-8 text-center mb-8">
             <h2 className="text-2xl font-bold mb-3">Complete Your Joinery Project Planning</h2>
-            <p className="mb-6">Use our joinery calculator, materials estimator, and other professional tools to quote accurately and manage projects profitably.</p>
+            <p className="mb-6">Use our joinery calculator and other professional tools to quote accurately and manage projects profitably using correct labour hours per m³ calculations.</p>
             <a href="/" className="bg-white text-amber-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
               View All Calculators
             </a>
@@ -670,7 +938,7 @@ export default function JoineryCalculator() {
                 { item: 'Fixings, Hardware & Screws', quantity: '1', unit: 'job' },
                 { item: 'Professional Labour', quantity: result.estimatedHours, unit: 'hours' }
               ],
-              summary: `${result.projectType} - ${result.woodType} with ${result.finish} finish (${result.wastePercentage}% waste) = £${result.materialCost} materials + £${result.labourCost} labour = £${result.totalCost}. Recommended quote: £${result.recommendedPrice} (with 15% buffer).`
+              summary: `${result.projectType} - ${result.woodType} with ${result.finish} finish (${result.wastePercentage}% waste) = £${result.materialCost} materials + £${result.labourCost} labour = £${result.totalCost}. Recommended quote: £${result.recommendedPrice} (with 15% buffer). Labour calculation: ${result.hoursPerM3} hrs/m³ × ${result.baseVolume}m³ × ${result.finishMultiplier} (finish) = ${result.estimatedHours}hrs.`
             }}
             onClose={() => setShowQuoteGenerator(false)}
           />
@@ -679,6 +947,7 @@ export default function JoineryCalculator() {
     </>
   )
 }
+
 
 
 
