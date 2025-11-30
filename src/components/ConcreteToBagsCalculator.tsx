@@ -2,8 +2,201 @@ import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Package, Calculator, AlertCircle, CheckCircle2, ShoppingCart, ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import QuoteGenerator from './QuoteGenerator'
+import jsPDF from 'jspdf'
 
+// QUOTE GENERATOR COMPONENT
+type MaterialItem = {
+  item: string
+  quantity: string
+  unit: string
+}
+
+type CalculationResults = {
+  materials: MaterialItem[]
+  summary: string
+}
+
+function QuoteGenerator({ calculationResults, onClose }: { calculationResults: CalculationResults; onClose: () => void }) {
+  const [clientName, setClientName] = useState('John Smith')
+  const [clientAddress, setClientAddress] = useState('123 High Street, London, SW1A 1AA')
+  const [labourRate, setLabourRate] = useState('50')
+  const [estimatedHours, setEstimatedHours] = useState('8')
+  const [materialMarkup, setMaterialMarkup] = useState('15')
+  const [additionalNotes, setAdditionalNotes] = useState('Work includes… Materials to be sourced from…')
+
+  const parseNumber = (value: string, fallback: number) => {
+    const n = parseFloat(value)
+    return isNaN(n) ? fallback : n
+  }
+
+  const handleDownloadPdf = () => {
+    const rate = parseNumber(labourRate, 0)
+    const hours = parseNumber(estimatedHours, 0)
+    const markup = parseNumber(materialMarkup, 0)
+
+    const labourTotal = rate * hours
+    const materialBase = 0
+    const materialTotal = materialBase * (1 + markup / 100)
+    const grandTotal = labourTotal + materialTotal
+
+    const doc = new jsPDF()
+
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(16)
+    doc.text('Professional Concrete Quote', 20, 20)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text(`Client: ${clientName}`, 20, 32)
+    doc.text(`Address: ${clientAddress}`, 20, 38)
+
+    doc.text(`Labour rate: £${rate.toFixed(2)}/hour`, 20, 50)
+    doc.text(`Estimated hours: ${hours}`, 20, 56)
+    doc.text(`Material markup: ${markup}%`, 20, 62)
+    doc.text(`Estimated labour total: £${labourTotal.toFixed(2)}`, 20, 68)
+    doc.text(`Estimated materials total: £${materialTotal.toFixed(2)} (see calculator)`, 20, 74)
+    doc.text(`Estimated project total: £${grandTotal.toFixed(2)}`, 20, 80)
+
+    let y = 92
+    doc.setFont('helvetica', 'bold')
+    doc.text('Materials:', 20, y)
+    y += 6
+    doc.setFont('helvetica', 'normal')
+
+    calculationResults.materials.forEach((m) => {
+      const line = `• ${m.item}: ${m.quantity} ${m.unit}`
+      const wrapped = doc.splitTextToSize(line, 170)
+      doc.text(wrapped, 24, y)
+      y += wrapped.length * 6
+    })
+
+    y += 4
+    doc.setFont('helvetica', 'bold')
+    doc.text('Summary:', 20, y)
+    y += 6
+    doc.setFont('helvetica', 'normal')
+    const summaryWrapped = doc.splitTextToSize(calculationResults.summary, 170)
+    doc.text(summaryWrapped, 20, y)
+    y += summaryWrapped.length * 6 + 4
+
+    if (additionalNotes.trim()) {
+      doc.setFont('helvetica', 'bold')
+      doc.text('Additional notes:', 20, y)
+      y += 6
+      doc.setFont('helvetica', 'normal')
+      const notesWrapped = doc.splitTextToSize(additionalNotes, 170)
+      doc.text(notesWrapped, 20, y)
+    }
+
+    doc.save('concrete-quote.pdf')
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      <div className="bg-white rounded-xl shadow-xl max-w-xl w-full mx-4">
+        <div className="flex items-center justify-between border-b px-6 py-4">
+          <h2 className="text-lg font-bold text-gray-900">Generate Professional Quote</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+            aria-label="Close quote generator"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="px-6 pt-4 pb-6 space-y-4 max-h-[80vh] overflow-y-auto">
+          <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-3 text-xs text-indigo-900">
+            <strong>FREE Quote Generator</strong> – Turn your calculation into a professional quote in 2 minutes.
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Name *</label>
+            <input
+              type="text"
+              value={clientName}
+              onChange={e => setClientName(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Address *</label>
+            <textarea
+              value={clientAddress}
+              onChange={e => setClientAddress(e.target.value)}
+              rows={2}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-gray-700">Labour Rate (£/hour) *</label>
+              <input
+                type="number"
+                value={labourRate}
+                onChange={e => setLabourRate(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <p className="text-[10px] text-gray-500">Typical range: £25–£50+</p>
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-gray-700">Estimated Hours *</label>
+              <input
+                type="number"
+                value={estimatedHours}
+                onChange={e => setEstimatedHours(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Material Markup (%)</label>
+            <input
+              type="number"
+              value={materialMarkup}
+              onChange={e => setMaterialMarkup(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <p className="text-[10px] text-gray-500">Typical range: 10–20%</p>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Additional Notes (Optional)</label>
+            <textarea
+              value={additionalNotes}
+              onChange={e => setAdditionalNotes(e.target.value)}
+              rows={3}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Work includes… Materials to be sourced from…"
+            />
+          </div>
+        </div>
+
+        <div className="border-t px-6 py-4 flex items-center justify-between gap-3 bg-gray-50 rounded-b-xl">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-white"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold hover:from-purple-700 hover:to-blue-700 text-center"
+          >
+            Download Quote (PDF)
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// MAIN CALCULATOR COMPONENT
 export default function ConcreteToBagsCalculator() {
   const navigate = useNavigate()
   const [length, setLength] = useState('')
