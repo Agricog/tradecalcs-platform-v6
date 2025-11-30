@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Info, CheckCircle2, Layers, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import QuoteGenerator from './QuoteGenerator'
+import jsPDF from 'jspdf'
 
 interface InsulationResults {
   calculatedUValue: string;
@@ -17,27 +17,250 @@ interface InsulationResults {
   insulationType: string;
   thickness: number;
   area: number;
+  constructionMaterial: string;
+  airGapType: string;
 }
 
+// QUOTE GENERATOR COMPONENT
+type MaterialItem = {
+  item: string
+  quantity: string
+  unit: string
+}
+
+type CalculationResults = {
+  materials: MaterialItem[]
+  summary: string
+}
+
+function QuoteGenerator({ calculationResults, onClose }: { calculationResults: CalculationResults; onClose: () => void }) {
+  const [clientName, setClientName] = useState('John Smith')
+  const [clientAddress, setClientAddress] = useState('123 High Street, London, SW1A 1AA')
+  const [labourRate, setLabourRate] = useState('50')
+  const [estimatedHours, setEstimatedHours] = useState('8')
+  const [materialMarkup, setMaterialMarkup] = useState('15')
+  const [additionalNotes, setAdditionalNotes] = useState('Work includes… Materials to be sourced from…')
+
+  const parseNumber = (value: string, fallback: number) => {
+    const n = parseFloat(value)
+    return isNaN(n) ? fallback : n
+  }
+
+  const handleDownloadPdf = () => {
+    const rate = parseNumber(labourRate, 0)
+    const hours = parseNumber(estimatedHours, 0)
+    const markup = parseNumber(materialMarkup, 0)
+
+    const labourTotal = rate * hours
+    const materialBase = 0
+    const materialTotal = materialBase * (1 + markup / 100)
+    const grandTotal = labourTotal + materialTotal
+
+    const doc = new jsPDF()
+
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(16)
+    doc.text('Professional Insulation Quote', 20, 20)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text(`Client: ${clientName}`, 20, 32)
+    doc.text(`Address: ${clientAddress}`, 20, 38)
+
+    doc.text(`Labour rate: £${rate.toFixed(2)}/hour`, 20, 50)
+    doc.text(`Estimated hours: ${hours}`, 20, 56)
+    doc.text(`Material markup: ${markup}%`, 20, 62)
+    doc.text(`Estimated labour total: £${labourTotal.toFixed(2)}`, 20, 68)
+    doc.text(`Estimated materials total: £${materialTotal.toFixed(2)} (see calculator)`, 20, 74)
+    doc.text(`Estimated project total: £${grandTotal.toFixed(2)}`, 20, 80)
+
+    let y = 92
+    doc.setFont('helvetica', 'bold')
+    doc.text('Materials:', 20, y)
+    y += 6
+    doc.setFont('helvetica', 'normal')
+
+    calculationResults.materials.forEach((m) => {
+      const line = `• ${m.item}: ${m.quantity} ${m.unit}`
+      const wrapped = doc.splitTextToSize(line, 170)
+      doc.text(wrapped, 24, y)
+      y += wrapped.length * 6
+    })
+
+    y += 4
+    doc.setFont('helvetica', 'bold')
+    doc.text('Summary:', 20, y)
+    y += 6
+    doc.setFont('helvetica', 'normal')
+    const summaryWrapped = doc.splitTextToSize(calculationResults.summary, 170)
+    doc.text(summaryWrapped, 20, y)
+    y += summaryWrapped.length * 6 + 4
+
+    if (additionalNotes.trim()) {
+      doc.setFont('helvetica', 'bold')
+      doc.text('Additional notes:', 20, y)
+      y += 6
+      doc.setFont('helvetica', 'normal')
+      const notesWrapped = doc.splitTextToSize(additionalNotes, 170)
+      doc.text(notesWrapped, 20, y)
+    }
+
+    doc.save('insulation-quote.pdf')
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      <div className="bg-white rounded-xl shadow-xl max-w-xl w-full mx-4">
+        <div className="flex items-center justify-between border-b px-6 py-4">
+          <h2 className="text-lg font-bold text-gray-900">Generate Professional Quote</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+            aria-label="Close quote generator"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="px-6 pt-4 pb-6 space-y-4 max-h-[80vh] overflow-y-auto">
+          <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-3 text-xs text-indigo-900">
+            <strong>FREE Quote Generator</strong> – Turn your calculation into a professional quote in 2 minutes.
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Name *</label>
+            <input
+              type="text"
+              value={clientName}
+              onChange={e => setClientName(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Client Address *</label>
+            <textarea
+              value={clientAddress}
+              onChange={e => setClientAddress(e.target.value)}
+              rows={2}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-gray-700">Labour Rate (£/hour) *</label>
+              <input
+                type="number"
+                value={labourRate}
+                onChange={e => setLabourRate(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <p className="text-[10px] text-gray-500">Typical range: £25–£50+</p>
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-gray-700">Estimated Hours *</label>
+              <input
+                type="number"
+                value={estimatedHours}
+                onChange={e => setEstimatedHours(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Material Markup (%)</label>
+            <input
+              type="number"
+              value={materialMarkup}
+              onChange={e => setMaterialMarkup(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <p className="text-[10px] text-gray-500">Typical range: 10–20%</p>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-700">Additional Notes (Optional)</label>
+            <textarea
+              value={additionalNotes}
+              onChange={e => setAdditionalNotes(e.target.value)}
+              rows={3}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Work includes… Materials to be sourced from…"
+            />
+          </div>
+        </div>
+
+        <div className="border-t px-6 py-4 flex items-center justify-between gap-3 bg-gray-50 rounded-b-xl">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-white"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold hover:from-purple-700 hover:to-blue-700 text-center"
+          >
+            Download Quote (PDF)
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// MAIN CALCULATOR COMPONENT
 export default function InsulationCalculator() {
   const [elementType, setElementType] = useState<'wall' | 'roof' | 'floor'>('wall')
   const [constructionType, setConstructionType] = useState('')
   const [insulationType, setInsulationType] = useState('')
+  const [constructionMaterial, setConstructionMaterial] = useState('brick')
+  const [airGapType, setAirGapType] = useState('unventilated')
   const [thickness, setThickness] = useState('')
   const [area, setArea] = useState('')
   const [results, setResults] = useState<InsulationResults | null>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
-  const materialRValues: Record<string, number> = {
-    'mineral-wool': 0.044,
-    'eps': 0.038,
-    'pir': 0.023,
+  // Lambda (thermal conductivity) values in W/mK
+  const materialLambdaValues: Record<string, number> = {
     'phenolic': 0.020,
+    'pir': 0.023,
+    'eps': 0.038,
     'wood-fibre': 0.038,
+    'cellulose': 0.040,
     'hemp': 0.040,
-    'cellulose': 0.040
+    'mineral-wool': 0.044
   }
 
+  // Surface resistances for different element types
+  const surfaceResistances: Record<string, { rsi: number; rso: number }> = {
+    'wall': { rsi: 0.13, rso: 0.04 },
+    'roof': { rsi: 0.10, rso: 0.04 },
+    'floor': { rsi: 0.17, rso: 0.04 }
+  }
+
+  // R-values for construction materials (m²K/W)
+  const constructionRValues: Record<string, number> = {
+    'brick-100': 0.13,      // 100mm brick @ λ 0.77
+    'brick-215': 0.28,      // 215mm brick @ λ 0.77
+    'block-100-aerated': 0.91,  // 100mm aerated concrete @ λ 0.11
+    'block-100-dense': 0.33,    // 100mm dense concrete @ λ 0.30
+    'plasterboard-12': 0.05,    // 12.5mm plasterboard @ λ 0.25
+    'plasterboard-25': 0.10,    // 25mm plasterboard @ λ 0.25
+    'timber-50': 0.15,          // 50mm timber @ λ 0.13
+  }
+
+  // Air gap R-values (m²K/W)
+  const airGapRValues: Record<string, number> = {
+    'unventilated': 0.18,
+    'ventilated': 0.00
+  }
+
+  // Building Regulations targets (W/m²K)
   const buildingRegsTargets: Record<string, number> = {
     'wall-new': 0.18,
     'wall-extension': 0.28,
@@ -51,35 +274,54 @@ export default function InsulationCalculator() {
     if (!constructionType || !insulationType || !thickness) return
 
     const thicknessM = parseFloat(thickness) / 1000
-    const lambda = materialRValues[insulationType]
-    const thermalResistance = thicknessM / lambda
+    const lambda = materialLambdaValues[insulationType]
+    const insulationR = thicknessM / lambda
 
-    const Rsi = elementType === 'floor' ? 0.17 : 0.13
-    const Rse = 0.04
-    const Rconstruction = 0.18
-    
-    const totalR = Rsi + Rconstruction + thermalResistance + Rse
+    // Get surface resistances
+    const surfaceRes = surfaceResistances[elementType]
+    const Rsi = surfaceRes.rsi
+    const Rso = surfaceRes.rso
+
+    // Get construction material R-value based on element type
+    let constructionR = 0.18 // default fallback
+    if (elementType === 'wall') {
+      constructionR = constructionRValues[constructionMaterial] || 0.28
+    } else if (elementType === 'roof') {
+      constructionR = constructionRValues['plasterboard-12'] // typical roof lining
+    } else if (elementType === 'floor') {
+      constructionR = constructionRValues['plasterboard-12'] // floor finish
+    }
+
+    // Get air gap R-value
+    const airGapR = airGapRValues[airGapType] || 0.18
+
+    // Calculate total thermal resistance
+    const totalR = Rsi + constructionR + insulationR + airGapR + Rso
     const calculatedUValue = 1 / totalR
 
-    const isNewBuild = constructionType.includes('new')
+    // Determine building regulations target
+    const isNewBuild = constructionType === 'new'
     const targetKey = `${elementType}-${isNewBuild ? 'new' : 'extension'}`
     const regulationTarget = buildingRegsTargets[targetKey]
     
     const isCompliant = calculatedUValue <= regulationTarget
     const difference = ((calculatedUValue - regulationTarget) / regulationTarget * 100).toFixed(1)
 
-    const requiredR = (1 / regulationTarget) - Rsi - Rse - Rconstruction
-    const recommendedThickness = Math.ceil((requiredR * lambda * 1000) / 10) * 10
+    // Calculate recommended thickness for compliance
+    const requiredTotalR = 1 / regulationTarget
+    const requiredInsulationR = requiredTotalR - Rsi - Rso - constructionR - airGapR
+    const recommendedThickness = Math.ceil((requiredInsulationR * lambda * 1000) / 10) * 10
 
+    // Calculate material cost
     const areaM2 = parseFloat(area) || 0
     const costPerM2: Record<string, number> = {
-      'mineral-wool': 8,
-      'eps': 12,
+      'phenolic': 25,
       'pir': 18,
-      'phenolic': 22,
+      'eps': 12,
       'wood-fibre': 25,
       'hemp': 30,
-      'cellulose': 15
+      'cellulose': 15,
+      'mineral-wool': 8
     }
     const materialCost = Math.ceil(areaM2 * costPerM2[insulationType])
 
@@ -88,14 +330,16 @@ export default function InsulationCalculator() {
       regulationTarget: regulationTarget.toFixed(2),
       isCompliant,
       difference,
-      recommendedThickness,
-      thermalResistance: thermalResistance.toFixed(3),
+      recommendedThickness: Math.max(recommendedThickness, 50),
+      thermalResistance: totalR.toFixed(3),
       materialCost,
       elementType,
       constructionType,
       insulationType,
       thickness: parseFloat(thickness),
-      area: areaM2
+      area: areaM2,
+      constructionMaterial,
+      airGapType
     })
   }
 
@@ -103,6 +347,8 @@ export default function InsulationCalculator() {
     setElementType('wall')
     setConstructionType('')
     setInsulationType('')
+    setConstructionMaterial('brick')
+    setAirGapType('unventilated')
     setThickness('')
     setArea('')
     setResults(null)
@@ -121,21 +367,34 @@ export default function InsulationCalculator() {
     return names[type] || type
   }
 
+  const getConstructionMaterialName = (type: string) => {
+    const names: Record<string, string> = {
+      'brick-100': '100mm Brick',
+      'brick-215': '215mm Brick (Half-brick)',
+      'block-100-aerated': '100mm Aerated Block',
+      'block-100-dense': '100mm Dense Block',
+      'plasterboard-12': '12.5mm Plasterboard',
+      'plasterboard-25': '25mm Plasterboard',
+      'timber-50': '50mm Timber'
+    }
+    return names[type] || type
+  }
+
   return (
     <>
       <Helmet>
         <title>U-Value Calculator UK | Insulation Part L Calculator | Building Regulations | TradeCalcs</title>
         <meta 
           name="description" 
-          content="Free U-value calculator for UK building regulations. Check Part L 2021 compliance for walls, roofs, and floors. Professional insulation thermal performance calculator." 
+          content="Free U-value calculator for UK building regulations. Check Part L 2021 compliance for walls, roofs, and floors. Professional insulation thermal performance calculator with accurate lambda values and surface resistances." 
         />
-        <meta name="keywords" content="U-value calculator, Part L calculator, insulation calculator, building regulations calculator, thermal performance, UK insulation, SAP calculator, thermal resistance, Part L 2021, Building Regs" />
+        <meta name="keywords" content="U-value calculator, Part L calculator, insulation calculator, building regulations calculator, thermal performance, UK insulation, SAP calculator, thermal resistance, Part L 2021, Building Regs, thermal conductivity, lambda values" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <meta property="og:type" content="website" />
         <meta property="og:title" content="U-Value Calculator UK | Insulation Part L Calculator" />
-        <meta property="og:description" content="Calculate U-values and check Part L 2021 compliance. Free professional insulation calculator for UK builders." />
+        <meta property="og:description" content="Calculate U-values and check Part L 2021 compliance. Free professional insulation calculator for UK builders with accurate thermal calculations." />
         <meta property="og:url" content="https://tradecalcs.co.uk/insulation-calculator" />
         <meta property="og:image" content="https://tradecalcs.co.uk/images/insulation-calculator-og.jpg" />
         <meta property="og:site_name" content="TradeCalcs" />
@@ -164,7 +423,7 @@ export default function InsulationCalculator() {
               {
                 '@type': 'SoftwareApplication',
                 'name': 'U-Value Calculator UK',
-                'description': 'Professional U-value calculator for UK building regulations. Calculate thermal performance for walls, roofs, and floors. Check Part L 2021 compliance with accurate calculations.',
+                'description': 'Professional U-value calculator for UK building regulations. Calculate thermal performance for walls, roofs, and floors. Check Part L 2021 compliance with accurate calculations using correct lambda values and surface resistances.',
                 'applicationCategory': 'Utility',
                 'url': 'https://tradecalcs.co.uk/insulation-calculator',
                 'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'GBP' },
@@ -223,18 +482,18 @@ export default function InsulationCalculator() {
                   },
                   {
                     '@type': 'Question',
-                    'name': 'Can I compare this with other building calculators?',
-                    'acceptedAnswer': {
-                      '@type': 'Answer',
-                      'text': 'TradeCalcs provides comprehensive professional estimators for multiple trades. Use our <a href="https://tradecalcs.co.uk/paint-calculator">Paint Calculator</a> for decorator costs, <a href="https://tradecalcs.co.uk/brick-block-calculator">Brick & Block Calculator</a> for masonry, <a href="https://tradecalcs.co.uk/scaffold-calculator">Scaffold Calculator</a> for structural work, or <a href="https://tradecalcs.co.uk/cis-calculator">CIS Calculator</a> for construction tax. All tools are free with UK standards.'
-                    }
-                  },
-                  {
-                    '@type': 'Question',
                     'name': 'What is thermal resistance (R-value)?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
                       'text': 'Thermal resistance (R-value) measures insulation effectiveness in m²K/W. Higher R-values = better insulation. Calculated as: R = thickness (m) / thermal conductivity (W/mK). Total R-value includes insulation plus air gaps, surfaces, and construction materials. U-value is inverse: U = 1/Total R. Building regulations use U-values; retrofits are specified by R-values.'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'How do surface resistances affect U-value?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'Surface resistances (Rsi and Rso) are fixed values that account for air film resistance on internal and external surfaces. Vary by heat flow direction: Walls Rsi=0.13, Rso=0.04; Roofs Rsi=0.10, Rso=0.04; Floors Rsi=0.17, Rso=0.04 m²K/W. These are included automatically in this calculator for accurate results.'
                     }
                   }
                 ]
@@ -277,7 +536,7 @@ export default function InsulationCalculator() {
                 <Layers className="w-5 h-5" />
                 <h2 className="text-lg font-bold">Professional U-Value Calculator</h2>
               </div>
-              <p className="text-sm opacity-90">Thermal performance estimator for UK building regulations</p>
+              <p className="text-sm opacity-90">Thermal performance estimator for UK building regulations with accurate lambda values and surface resistances</p>
             </div>
 
             <div className="mb-6">
@@ -330,13 +589,30 @@ export default function InsulationCalculator() {
                 <option value="">Select construction type</option>
                 <option value="new">New Build (Part L 2021 stricter targets)</option>
                 <option value="extension">Extension/Renovation (higher U-value allowed)</option>
-                <option value="retrofit">Retrofit/Upgrade (existing building work)</option>
               </select>
               <p className="text-xs text-gray-500 mt-1">New builds have stricter targets than extensions</p>
             </div>
 
+            {elementType === 'wall' && (
+              <div className="mb-6">
+                <label className="block font-bold text-gray-800 mb-2">3a. Wall Construction Material</label>
+                <select
+                  value={constructionMaterial}
+                  onChange={e => setConstructionMaterial(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600"
+                  aria-label="Select wall construction material"
+                >
+                  <option value="brick-100">100mm Brick (λ 0.77 W/mK)</option>
+                  <option value="brick-215">215mm Brick - Half-brick (λ 0.77 W/mK)</option>
+                  <option value="block-100-aerated">100mm Aerated Block (λ 0.11 W/mK)</option>
+                  <option value="block-100-dense">100mm Dense Block (λ 0.30 W/mK)</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">Material affects total thermal resistance calculation</p>
+              </div>
+            )}
+
             <div className="mb-6">
-              <label className="block font-bold text-gray-800 mb-2">3. Insulation Material</label>
+              <label className="block font-bold text-gray-800 mb-2">{elementType === 'wall' ? '3b' : '3'}. Insulation Material</label>
               <select
                 value={insulationType}
                 onChange={e => setInsulationType(e.target.value)}
@@ -352,12 +628,26 @@ export default function InsulationCalculator() {
                 <option value="hemp">Hemp Insulation - λ 0.040 (natural, breathable)</option>
                 <option value="wood-fibre">Wood Fibre - λ 0.038 (natural, sustainable)</option>
               </select>
-              <p className="text-xs text-gray-500 mt-1">λ (lambda) = thermal conductivity in W/mK • Lower = better</p>
+              <p className="text-xs text-gray-500 mt-1">λ (lambda) = thermal conductivity in W/mK • Lower = better insulation</p>
+            </div>
+
+            <div className="mb-6">
+              <label className="block font-bold text-gray-800 mb-2">{elementType === 'wall' ? '3c' : '4'}. Air Gap Type</label>
+              <select
+                value={airGapType}
+                onChange={e => setAirGapType(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600"
+                aria-label="Select air gap type"
+              >
+                <option value="unventilated">Unventilated (cavity) - R 0.18 m²K/W</option>
+                <option value="ventilated">Ventilated - R 0.00 m²K/W</option>
+              </select>
+              <p className="text-xs text-gray-500 mt-1">Affects thermal resistance calculation</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
-                <label className="block font-bold text-gray-800 mb-2">4. Thickness (mm)</label>
+                <label className="block font-bold text-gray-800 mb-2">{elementType === 'wall' ? '3d' : '5'}. Thickness (mm)</label>
                 <input
                   type="number"
                   value={thickness}
@@ -370,7 +660,7 @@ export default function InsulationCalculator() {
               </div>
 
               <div>
-                <label className="block font-bold text-gray-800 mb-2">5. Area (m²) Optional</label>
+                <label className="block font-bold text-gray-800 mb-2">{elementType === 'wall' ? '3e' : '6'}. Area (m²) Optional</label>
                 <input
                   type="number"
                   value={area}
@@ -423,14 +713,26 @@ export default function InsulationCalculator() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-3 bg-teal-100 rounded border-l-2 border-teal-600">
-                        <p className="text-xs text-gray-600">Thermal Resistance</p>
+                        <p className="text-xs text-gray-600">Total Thermal Resistance</p>
                         <p className="text-lg font-bold text-gray-900">{results.thermalResistance} m²K/W</p>
                       </div>
 
                       <div className="p-3 bg-green-100 rounded border-l-2 border-green-600">
-                        <p className="text-xs text-gray-600">Material & Thickness</p>
+                        <p className="text-xs text-gray-600">Insulation Material & Thickness</p>
                         <p className="text-lg font-bold text-gray-900">{getInsulationName(results.insulationType)}</p>
                         <p className="text-xs text-gray-600">{results.thickness}mm</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 mt-4">
+                      <div className="p-3 bg-blue-100 rounded border-l-2 border-blue-600">
+                        <p className="text-xs text-gray-600">Element Type</p>
+                        <p className="text-lg font-bold text-gray-900">{results.elementType.charAt(0).toUpperCase() + results.elementType.slice(1)}</p>
+                      </div>
+
+                      <div className="p-3 bg-purple-100 rounded border-l-2 border-purple-600">
+                        <p className="text-xs text-gray-600">Construction Type</p>
+                        <p className="text-lg font-bold text-gray-900">{results.constructionType}</p>
                       </div>
                     </div>
 
@@ -438,7 +740,7 @@ export default function InsulationCalculator() {
                       <div className="mt-4 p-3 bg-orange-100 rounded border-l-2 border-orange-600">
                         <p className="text-sm font-semibold text-orange-900 mb-1">📏 Recommended Thickness for Compliance</p>
                         <p className="text-lg font-bold text-orange-900">{results.recommendedThickness}mm</p>
-                        <p className="text-xs text-orange-800">Increase thickness to meet Part L requirements</p>
+                        <p className="text-xs text-orange-800">Increase thickness to meet Part L 2021 requirements</p>
                       </div>
                     )}
 
@@ -503,6 +805,7 @@ export default function InsulationCalculator() {
                   <li>• <strong>Floors:</strong> 0.18 W/m²K (new build) | 0.22 W/m²K (extension)</li>
                   <li>• <strong>Requirement:</strong> 31% CO₂ reduction vs 2013 standards</li>
                   <li>• <strong>Non-compliance:</strong> Failed Building Control inspection, remedial costs, warranty issues</li>
+                  <li>• <strong>Surface Resistances:</strong> Walls Rsi=0.13/Rso=0.04, Roofs Rsi=0.10/Rso=0.04, Floors Rsi=0.17/Rso=0.04</li>
                 </ul>
               </div>
             </div>
@@ -511,36 +814,69 @@ export default function InsulationCalculator() {
           <section className="bg-white rounded-lg shadow p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Understanding U-Values & Thermal Performance</h2>
             <p className="text-gray-700 mb-4">
-              U-value measures thermal transmittance in W/m²K - how much heat passes through a building element. Lower U-values mean better insulation and less heat loss. Building Regulations Part L 2021 sets maximum U-values for different construction types. Achieving compliance requires correct insulation thickness and material selection.
+              U-value measures thermal transmittance in W/m²K - how much heat passes through a building element. Lower U-values mean better insulation and less heat loss. The calculation includes surface film resistances (Rsi internal, Rso external), construction material layers, insulation layer, and any air gaps. Building Regulations Part L 2021 sets maximum U-values for different construction types.
             </p>
             <div className="bg-gray-50 p-4 rounded border-l-4 border-green-600 mb-4">
-              <p className="text-sm text-gray-700"><strong>Key principle:</strong> U-value is inverse of total thermal resistance. Thicker insulation or better materials reduce U-value. Every 50mm of premium insulation (PIR) saves more than 100mm basic material (mineral wool) in thickness.</p>
+              <p className="text-sm text-gray-700"><strong>Core Formula:</strong> U-value = 1 / (Rsi + R construction + R insulation + R air gap + Rso). Rsi and Rso vary by element type and heat flow direction. This calculator uses correct values for walls, roofs, and floors.</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h3 className="font-bold text-gray-900 mb-3">What is Thermal Resistance (R-value)?</h3>
                 <p className="text-sm text-gray-700 mb-3">
-                  R-value (m²K/W) measures insulation effectiveness. Higher R = better insulation. Calculated as thickness ÷ thermal conductivity (λ). Total R-value includes insulation plus air gaps, surfaces, and construction materials.
+                  R-value (m²K/W) measures insulation effectiveness. Higher R = better insulation. Calculated as thickness ÷ thermal conductivity (λ). Total R-value includes all layers: surface resistances, construction materials, insulation, and air gaps.
                 </p>
                 <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• U-value = 1 / Total R-value</li>
+                  <li>• U-value = 1 / Total R-value (inverse relationship)</li>
                   <li>• Building regulations use U-values</li>
-                  <li>• Retrofits often specified by R-values</li>
-                  <li>• SAP calculations require U-values</li>
+                  <li>• Each material layer contributes to total R</li>
+                  <li>• SAP calculations require accurate U-values</li>
                 </ul>
               </div>
 
               <div>
-                <h3 className="font-bold text-gray-900 mb-3">Insulation Material Performance</h3>
+                <h3 className="font-bold text-gray-900 mb-3">Insulation Material Lambda Values</h3>
                 <p className="text-sm text-gray-700 mb-3">
-                  Thermal conductivity (λ-value) determines how much heat flows through material. Lower λ = better insulation = thinner needed. Premium materials cost more but achieve targets with less thickness.
+                  Thermal conductivity (λ-value) in W/mK determines insulation quality. Lower λ = better insulation = thinner needed. Premium materials cost more but achieve targets with less thickness, saving space.
                 </p>
                 <ul className="text-sm text-gray-700 space-y-2">
                   <li>• <strong>Phenolic:</strong> λ 0.020 (best, thinnest)</li>
                   <li>• <strong>PIR:</strong> λ 0.023 (premium performance)</li>
                   <li>• <strong>EPS/Wood:</strong> λ 0.038 (good value)</li>
-                  <li>• <strong>Mineral Wool:</strong> λ 0.044 (most basic)</li>
+                  <li>• <strong>Cellulose/Hemp:</strong> λ 0.040 (natural)</li>
+                  <li>• <strong>Mineral Wool:</strong> λ 0.044 (basic cost)</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Construction Material & Air Gap Calculations</h2>
+            <p className="text-gray-700 mb-4">
+              U-value calculations account for all layers in the construction. Different construction materials (brick, block, plaster) have different R-values that affect total thermal resistance. Air gaps (cavities) also contribute to thermal resistance, with unventilated cavities having R=0.18 and ventilated cavities R=0.00.
+            </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-bold text-gray-900 mb-3">Construction Material R-Values</h3>
+                <ul className="text-sm text-gray-700 space-y-2">
+                  <li>• <strong>100mm Brick:</strong> R = 0.13 m²K/W (λ 0.77)</li>
+                  <li>• <strong>215mm Brick:</strong> R = 0.28 m²K/W (λ 0.77)</li>
+                  <li>• <strong>100mm Aerated Block:</strong> R = 0.91 m²K/W (λ 0.11)</li>
+                  <li>• <strong>100mm Dense Block:</strong> R = 0.33 m²K/W (λ 0.30)</li>
+                  <li>• <strong>12.5mm Plasterboard:</strong> R = 0.05 m²K/W</li>
+                  <li>• <strong>50mm Timber:</strong> R = 0.15 m²K/W (λ 0.13)</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-bold text-gray-900 mb-3">Surface Resistance Values (m²K/W)</h3>
+                <p className="text-sm text-gray-700 mb-3">Vary by element type and heat flow direction:</p>
+                <ul className="text-sm text-gray-700 space-y-2">
+                  <li>• <strong>Walls (Horizontal):</strong> Rsi 0.13, Rso 0.04</li>
+                  <li>• <strong>Roofs (Upward):</strong> Rsi 0.10, Rso 0.04</li>
+                  <li>• <strong>Floors (Downward):</strong> Rsi 0.17, Rso 0.04</li>
+                  <li>• <strong>Unventilated Air Gap:</strong> R = 0.18</li>
+                  <li>• <strong>Ventilated Air Gap:</strong> R = 0.00</li>
                 </ul>
               </div>
             </div>
@@ -561,9 +897,9 @@ export default function InsulationCalculator() {
               </div>
 
               <div>
-                <h3 className="font-bold text-gray-900 mb-3">Thickness Calculation</h3>
-                <p className="text-sm text-gray-700 mb-3">
-                  Formula: Required thickness (mm) = (Target R-value - existing R) × λ-value × 1000
+                <h3 className="font-bold text-gray-900 mb-3">Thickness Calculation Formula</h3>
+                <p className="text-sm text-gray-700 mb-3 font-mono bg-gray-50 p-3 rounded">
+                  Required thickness (mm) = (Target R-value - existing R) × λ-value × 1000
                 </p>
                 <p className="text-sm text-gray-700 mb-3">
                   This calculator automatically determines recommended thickness for your target U-value. Typical applications:
@@ -587,15 +923,15 @@ export default function InsulationCalculator() {
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: What is thermal bridging and does it affect U-values?</h4>
-                <p className="text-sm text-gray-700">Thermal bridging occurs where materials with poor insulation cross insulation layers (studs, joists, beams). Reduces overall U-value performance. Professional calculations use linear thermal transmittance (ψ-values) to account for thermal bridges. This simplified calculator doesn't account for bridging - actual performance may be worse than calculated.</p>
+                <p className="text-sm text-gray-700">Thermal bridging occurs where materials with poor insulation cross insulation layers (studs, joists, beams). Reduces overall U-value performance per BS EN ISO 6946. Professional calculations use linear thermal transmittance (ψ-values) and correction factors (ΔU) to account for thermal bridges. This simplified calculator doesn't account for bridging - actual performance may be worse than calculated.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Do I need SAP calculations for my project?</h4>
                 <p className="text-sm text-gray-700">Required for: New dwellings (Building Regulations compliance), EPC assessments, mortgage valuations, renewable energy grants. Recommended for: Extensions over 25% of wall area, major renovations. Simplified calculations sufficient for: Minor work, self-build planning, material selection. Obtain professional assessment if uncertain.</p>
               </div>
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: Can I compare insulation calculator with other building tools?</h4>
-                <p className="text-sm text-gray-700">TradeCalcs provides comprehensive professional estimators for multiple trades. Use our <a href="/paint-calculator" className="text-green-600 font-semibold hover:underline">Paint Calculator</a> for decorator costs, <a href="/brick-block-calculator" className="text-green-600 font-semibold hover:underline">Brick & Block Calculator</a> for masonry, <a href="/scaffold-calculator" className="text-green-600 font-semibold hover:underline">Scaffold Calculator</a> for structural work, or <a href="/cis-calculator" className="text-green-600 font-semibold hover:underline">CIS Calculator</a> for construction tax. All tools are free with UK standards.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Q: Why are surface resistances different for walls, roofs, and floors?</h4>
+                <p className="text-sm text-gray-700">Surface resistances (Rsi/Rso) depend on heat flow direction and exposure. Walls have horizontal heat flow (Rsi 0.13). Roofs have upward heat flow - internal resistance lower (Rsi 0.10) because warm air rises. Floors have downward heat flow - internal resistance higher (Rsi 0.17) because warm air doesn't support downward movement. These values are per BS EN ISO 6946.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: What's the difference between new build and extension targets?</h4>
@@ -609,7 +945,7 @@ export default function InsulationCalculator() {
               <AlertCircle className="w-6 h-6 text-yellow-600 mt-1 flex-shrink-0" />
               <div>
                 <p className="font-bold text-yellow-900 mb-2">✓ For Planning Purposes Only - Professional Assessment Recommended</p>
-                <p className="text-sm text-yellow-800 mb-2">This calculator provides simplified estimates. Complex constructions, thermal bridging, air tightness, and renewable energy systems require professional SAP calculations. Building Control submissions must include accredited energy assessor reports. Non-compliance with Part L can result in failed inspections, remedial work costs, warranty voidance, and prosecution.</p>
+                <p className="text-sm text-yellow-800 mb-2">This calculator provides simplified estimates using correct lambda values and surface resistances per BS EN ISO 6946. Complex constructions, thermal bridging corrections, air tightness, and renewable energy systems require professional SAP calculations. Building Control submissions must include accredited energy assessor reports. Non-compliance with Part L can result in failed inspections, remedial work costs, warranty voidance, and prosecution.</p>
               </div>
             </div>
           </div>
@@ -653,12 +989,12 @@ export default function InsulationCalculator() {
             calculationResults={{
               materials: [
                 { item: getInsulationName(results.insulationType), quantity: results.area.toString(), unit: 'm²' },
-                { item: `${results.thickness}mm Insulation Boards (Part L compliant)`, quantity: results.area.toString(), unit: 'm²' },
+                { item: `${results.thickness}mm Insulation Boards (Part L ${results.isCompliant ? 'compliant' : 'non-compliant'})`, quantity: results.area.toString(), unit: 'm²' },
                 { item: 'Fixings & Adhesive', quantity: '1', unit: 'job' },
                 { item: 'Installation Labour', quantity: '1', unit: 'job' },
                 { item: 'SAP Calculation (accredited assessor)', quantity: '1', unit: 'survey' }
               ],
-              summary: `${results.elementType.charAt(0).toUpperCase() + results.elementType.slice(1)} insulation - U-value: ${results.calculatedUValue} W/m²K ${results.isCompliant ? '(Part L 2021 compliant)' : `(Non-compliant - recommend ${results.recommendedThickness}mm)`} - ${results.area}m² @ ${results.thickness}mm - Est. cost £${results.materialCost}`
+              summary: `${results.elementType.charAt(0).toUpperCase() + results.elementType.slice(1)} insulation - U-value: ${results.calculatedUValue} W/m²K ${results.isCompliant ? '(Part L 2021 compliant)' : `(Non-compliant - recommend ${results.recommendedThickness}mm)`} - ${results.area}m² @ ${results.thickness}mm ${getInsulationName(results.insulationType)} - Surface resistances: ${results.elementType === 'wall' ? 'Rsi 0.13, Rso 0.04' : results.elementType === 'roof' ? 'Rsi 0.10, Rso 0.04' : 'Rsi 0.17, Rso 0.04'} - Est. cost £${results.materialCost}`
             }}
             onClose={() => setShowQuoteGenerator(false)}
           />
@@ -667,6 +1003,7 @@ export default function InsulationCalculator() {
     </>
   )
 }
+
 
 
 
