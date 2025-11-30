@@ -612,7 +612,7 @@ export default function PlastererCalculator() {
               Professional plaster coverage is standardised at 1 bag (25kg) per 10m² for standard finishes. Bonding coats require approximately 4 times the quantity. This calculator helps you estimate materials and costs accurately based on standard coverage rates. Understanding waste factors, drying times, and project costs is essential for accurate quoting.
             </p>
             <div className="bg-gray-50 p-4 rounded border-l-4 border-slate-600">
-              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Standard coverage is 1 bag per 10m². Add 10-15% waste to prevent job delays and callbacks. Professional plasterers always order extra material for touch-ups and repairs.</p>
+              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Standard coverage is 1 bag (25kg) per 10m². Add 10-15% waste to prevent job delays and callbacks. Professional plasterers always order extra material for touch-ups and repairs.</p>
             </div>
           </section>
 
@@ -665,7 +665,7 @@ export default function PlastererCalculator() {
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-gray-500 mt-4">Note: Coverage rates vary by plaster type. Board finish and Multi finish share standard 10m² coverage; Bonding coat uses 4x more material (2.5m² per bag). Check manufacturer specifications for exact values.</p>
+            <p className="text-xs text-gray-500 mt-4">Note: Coverage rates vary by plaster type. Board finish and Multi finish share standard 10m² coverage; Bonding coat uses 4x more material (2.5m² per 25kg bag). Check manufacturer specifications for exact values.</p>
           </section>
 
           <section className="bg-white rounded-lg shadow p-6 mb-8">
@@ -724,7 +724,7 @@ export default function PlastererCalculator() {
             <div className="space-y-4">
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: How much plaster do I need?</h4>
-                <p className="text-sm text-gray-700">Use this calculator to enter your wall/ceiling dimensions (length and width in meters), select the plaster type, and set your waste factor (10% typical). The calculator instantly shows bags and weight needed. Standard: 1 bag (25kg) covers 10m² for finish plasters; bonding uses 4x more material.</p>
+                <p className="text-sm text-gray-700">Use this calculator to enter your wall/ceiling dimensions (length and width in meters), select the plaster type, and set your waste factor (10% typical). The calculator instantly shows bags and weight needed. Standard: 1 bag (25kg) covers 10m² for finish plasters; bonding uses 4x more material (1 bag per 2.5m²).</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: What's the standard coverage rate?</h4>
@@ -743,6 +743,18 @@ export default function PlastererCalculator() {
                 <p className="text-sm text-gray-700">Use 10% as standard baseline. Use 5% for simple smooth work, 15% for complex surfaces or poor substrate, 20% for heavily damaged areas. Professional plasterers typically add 10-15% extra to prevent job delays and have materials for callbacks.</p>
               </div>
               <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: How do I estimate project cost?</h4>
+                <p className="text-sm text-gray-700">This calculator provides material cost estimates based on Q4 2025 UK pricing. Standard 25kg bags of plaster cost approximately £8.50 retail (£7-9 range depending on supplier and brand). Professional labour rates average £25-35/m² for standard plastering, £35-50/m² for skim coat finishing, and £50+/m² for specialist work. Always obtain detailed quotes from local plasterers for accurate regional pricing.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: Should I subtract openings like doors and windows?</h4>
+                <p className="text-sm text-gray-700">Yes, always subtract approximately 20% from total wall area for doors and windows. For detailed calculations, subtract: standard door (1.9m × 0.9m = 1.7m²), window (1.5m × 1m = 1.5m²). This prevents over-ordering. Enter your net wall area after subtracting openings for most accurate results.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: What is the difference between bonding and finishing plaster?</h4>
+                <p className="text-sm text-gray-700">Bonding coat is the first coat (2-3mm) applied directly to brick or concrete blocks and uses around four times the quantity of a skim finish coat for the same area (1 × 25kg bag covers 2.5m² for bonding vs 10m² for finish). Finishing plaster (board finish or multi finish) is the final smooth top coat (about 2mm) providing the paintable surface. For plasterboard, you normally apply finish directly to the board.</p>
+              </div>
+              <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: How does this compare to other trade calculators?</h4>
                 <p className="text-sm text-gray-700">TradeCalcs offers a complete suite of professional estimators. For wood and labour costs, use our <a href="/joinery-calculator" className="text-purple-600 font-semibold hover:underline">Joinery Calculator</a>. For electrical compliance work, use our <a href="/voltage-drop-calculator" className="text-purple-600 font-semibold hover:underline">Voltage Drop Calculator</a>. All tools are free and provide UK market rates with internal linking to help you build complete project estimates.</p>
               </div>
@@ -754,7 +766,7 @@ export default function PlastererCalculator() {
               <AlertCircle className="w-6 h-6 text-yellow-600 mt-1 flex-shrink-0" />
               <div>
                 <p className="font-bold text-yellow-900 mb-2">✓ Professional Quality Assurance</p>
-                <p className="text-sm text-yellow-800">This calculator provides professional estimates based on UK industry standards. Standard coverage is 1 bag (25kg) per 10m² for finish plasters. Always account for waste and keep extra material for touch-ups and repairs. Follow manufacturer guidelines precisely and allow adequate curing time before finishing or painting.</p>
+                <p className="text-sm text-yellow-800">This calculator provides professional estimates based on UK industry standards. Standard coverage is 1 bag (25kg) per 10m² for finish plasters and per 2.5m² for bonding coats. Always account for waste and keep extra material for touch-ups and repairs. Follow manufacturer guidelines precisely and allow adequate curing time before finishing or painting.</p>
               </div>
             </div>
           </div>
@@ -811,6 +823,7 @@ export default function PlastererCalculator() {
     </>
   )
 }
+
 
 
 
