@@ -354,7 +354,7 @@ export default function InsulationCalculator() {
     setResults(null)
   }
 
-  const getInsulationName = (type: string) => {
+    const getInsulationName = (type: string) => {
     const names: Record<string, string> = {
       'mineral-wool': 'Mineral Wool (Glass/Rock)',
       'eps': 'EPS (Expanded Polystyrene)',
@@ -363,19 +363,6 @@ export default function InsulationCalculator() {
       'wood-fibre': 'Wood Fibre',
       'hemp': 'Hemp Insulation',
       'cellulose': 'Cellulose'
-    }
-    return names[type] || type
-  }
-
-  const getConstructionMaterialName = (type: string) => {
-    const names: Record<string, string> = {
-      'brick-100': '100mm Brick',
-      'brick-215': '215mm Brick (Half-brick)',
-      'block-100-aerated': '100mm Aerated Block',
-      'block-100-dense': '100mm Dense Block',
-      'plasterboard-12': '12.5mm Plasterboard',
-      'plasterboard-25': '25mm Plasterboard',
-      'timber-50': '50mm Timber'
     }
     return names[type] || type
   }
