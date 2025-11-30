@@ -354,7 +354,7 @@ export default function InsulationCalculator() {
     setResults(null)
   }
 
-    const getInsulationName = (type: string) => {
+  const getInsulationName = (type: string) => {
     const names: Record<string, string> = {
       'mineral-wool': 'Mineral Wool (Glass/Rock)',
       'eps': 'EPS (Expanded Polystyrene)',
@@ -365,6 +365,114 @@ export default function InsulationCalculator() {
       'cellulose': 'Cellulose'
     }
     return names[type] || type
+  }
+
+  const getLambdaValue = (type: string): string => {
+    const values: Record<string, string> = {
+      'phenolic': '0.020',
+      'pir': '0.023',
+      'eps': '0.038',
+      'wood-fibre': '0.038',
+      'cellulose': '0.040',
+      'hemp': '0.040',
+      'mineral-wool': '0.044'
+    }
+    return values[type] || '0.040'
+  }
+
+  const downloadResultsPDF = () => {
+    if (!results) return
+
+    const doc = new jsPDF()
+    
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(16)
+    doc.text('U-Value Calculation Results', 20, 20)
+    
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    
+    let y = 35
+    
+    doc.text(`Calculated U-Value: ${results.calculatedUValue} W/m²K`, 20, y)
+    y += 7
+    doc.text(`Regulation Target: ${results.regulationTarget} W/m²K`, 20, y)
+    y += 7
+    doc.text(`Status: ${results.isCompliant ? 'COMPLIANT ✓' : 'NON-COMPLIANT ✗'}`, 20, y)
+    y += 10
+    
+    doc.setFont('helvetica', 'bold')
+    doc.text('Calculation Inputs:', 20, y)
+    doc.setFont('helvetica', 'normal')
+    y += 7
+    
+    doc.text(`Element Type: ${results.elementType.charAt(0).toUpperCase() + results.elementType.slice(1)}`, 20, y)
+    y += 6
+    doc.text(`Construction Type: ${results.constructionType}`, 20, y)
+    y += 6
+    doc.text(`Insulation Material: ${getInsulationName(results.insulationType)}`, 20, y)
+    y += 6
+    doc.text(`Thickness: ${results.thickness}mm`, 20, y)
+    y += 6
+    doc.text(`Thermal Resistance: ${results.thermalResistance} m²K/W`, 20, y)
+    y += 6
+    
+    if (results.area > 0) {
+      doc.text(`Wall Area: ${results.area}m²`, 20, y)
+      y += 6
+      doc.text(`Material Cost (est.): £${results.materialCost}`, 20, y)
+      y += 7
+    }
+    
+    if (!results.isCompliant) {
+      y += 3
+      doc.setFont('helvetica', 'bold')
+      doc.setTextColor(192, 21, 47)
+      doc.text(`RECOMMENDED THICKNESS: ${results.recommendedThickness}mm`, 20, y)
+      doc.setTextColor(0, 0, 0)
+      doc.setFont('helvetica', 'normal')
+      y += 7
+      doc.text(`Variance: ${results.difference}% above target`, 20, y)
+      y += 10
+      
+      doc.setFont('helvetica', 'bold')
+      doc.text('To achieve compliance, increase insulation thickness to:', 20, y)
+      doc.setFont('helvetica', 'normal')
+      y += 7
+      doc.text(`${results.recommendedThickness}mm of ${getInsulationName(results.insulationType)}`, 20, y)
+    }
+    
+    y += 15
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(10)
+    doc.text('Calculation Details:', 20, y)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(9)
+    y += 7
+    
+    const rsiValue = results.elementType === 'wall' ? '0.13' : results.elementType === 'roof' ? '0.10' : '0.17'
+    const details = [
+      `Surface Resistances (m²K/W):`,
+      `  • Internal (Rsi): ${rsiValue}`,
+      `  • External (Rso): 0.04`,
+      `Insulation Lambda (λ): ${getLambdaValue(results.insulationType)} W/mK`,
+      `Air Gap: ${results.airGapType === 'unventilated' ? 'Unventilated (0.18)' : 'Ventilated (0.00'} m²K/W`,
+      `Formula: U = 1 / (Rsi + R_construction + R_insulation + R_air_gap + Rso)`
+    ]
+    
+    details.forEach(detail => {
+      doc.text(detail, 20, y)
+      y += 5
+    })
+    
+    y += 10
+    doc.setFont('helvetica', 'italic')
+    doc.setFontSize(8)
+    doc.text('⚠️ This calculation is for planning purposes only. Building Control submissions require detailed SAP calculations', 20, y)
+    y += 4
+    doc.text('from accredited energy assessors. Professional calculations must account for thermal bridging and complex constructions.', 20, y)
+    
+    doc.save('u-value-calculation.pdf')
   }
 
   return (
@@ -745,6 +853,17 @@ export default function InsulationCalculator() {
                         <p className="text-xs text-red-800">Your U-value is {Math.abs(parseFloat(results.difference))}% higher than Building Regulations Part L requirements. Increasing thickness to {results.recommendedThickness}mm will achieve compliance.</p>
                       </div>
                     )}
+
+                    <button
+                      onClick={downloadResultsPDF}
+                      className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2"
+                      aria-label="Download calculation results as PDF"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                      </svg>
+                      Download Results (PDF)
+                    </button>
                   </div>
                 </div>
 
@@ -990,6 +1109,7 @@ export default function InsulationCalculator() {
     </>
   )
 }
+
 
 
 
