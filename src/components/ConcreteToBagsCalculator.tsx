@@ -210,7 +210,7 @@ export default function ConcreteToBagsCalculator() {
 
   const strengthOptions: Record<string, { label: string; ratio: string; cementBagsPerM3: number; cementParts: number; sandParts: number; gravelParts: number }> = {
     c20: { label: 'C20 (20 MPa)', ratio: '1:2:4', cementBagsPerM3: 12, cementParts: 1, sandParts: 2, gravelParts: 4 },
-    c25: { label: 'C25 (25 MPa)', ratio: '1:2:4', cementBagsPerM3: 13, cementParts: 1, sandParts: 2, gravelParts: 4 },
+    c25: { label: 'C25 (25 MPa)', ratio: '1:2:3', cementBagsPerM3: 13, cementParts: 1, sandParts: 2, gravelParts: 3 },
     c30: { label: 'C30 (30 MPa)', ratio: '1:1.5:3', cementBagsPerM3: 15, cementParts: 1, sandParts: 1.5, gravelParts: 3 }
   }
 
@@ -229,17 +229,17 @@ export default function ConcreteToBagsCalculator() {
 
     const ballastKgPerM3 = 1950
     const totalBallastKg = volumeWithWaste * ballastKgPerM3
-    const bulkBagSize = 850
-    const bulkBags = Math.ceil(totalBallastKg / bulkBagSize)
+    const dumpyBagSize = 800
+    const dumpyBags = Math.ceil(totalBallastKg / dumpyBagSize)
 
     const cementCostPerBag = 6.50
-    const bulkBagCost = 85.00
-    const totalCost = (cementBags * cementCostPerBag) + (bulkBags * bulkBagCost)
+    const dumpyBagCost = 80.00
+    const totalCost = (cementBags * cementCostPerBag) + (dumpyBags * dumpyBagCost)
 
     return {
       volumeM3: volumeWithWaste.toFixed(2),
       cementBags,
-      bulkBags,
+      dumpyBags,
       strength,
       totalCost: totalCost.toFixed(2),
       baseVolume: volumeM3.toFixed(2),
@@ -324,7 +324,7 @@ export default function ConcreteToBagsCalculator() {
                     'name': 'How many concrete bags do I need?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Use this calculator to enter your dimensions (length, width, depth), select your concrete strength (C20, C25, or C30), and get exact quantities instantly. The calculator shows exactly how many 25kg cement bags and bulk ballast bags you need to order. Include 10% waste factor.'
+                      'text': 'Use this calculator to enter your dimensions (length, width, depth), select your concrete strength (C20, C25, or C30), and get exact quantities instantly. The calculator shows exactly how many 25kg cement bags and 800kg dumpy bags you need to order. Include 10% waste factor.'
                     }
                   },
                   {
@@ -340,15 +340,15 @@ export default function ConcreteToBagsCalculator() {
                     'name': 'What is the difference between C20, C25, and C30 concrete?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'C20 is concrete with 20 MPa compressive strength (12 bags cement/m³, used for general work). C25 is 25 MPa (13 bags/m³, used for slabs and heavy-duty applications). C30 is 30 MPa (15 bags/m³, used for high-strength applications). All use 20mm max diameter stone ballast.'
+                      'text': 'C20 is concrete with 20 MPa compressive strength (12 bags cement/m³, 1:2:4 mix, used for general work). C25 is 25 MPa (13 bags/m³, 1:2:3 mix, used for slabs and heavy-duty applications). C30 is 30 MPa (15 bags/m³, 1:1.5:3 mix, used for high-strength applications). All use 20mm max diameter stone ballast.'
                     }
                   },
                   {
                     '@type': 'Question',
-                    'name': 'What is a bulk bag of ballast?',
+                    'name': 'What is a dumpy bag of ballast?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'A bulk bag (or Handy Bag) contains all-in ballast - a pre-mixed combination of sand and gravel (20mm max diameter). UK bulk bags typically weigh 750-900kg. This saves time because you don\'t need to mix sand and gravel separately.'
+                      'text': 'A dumpy bag (or Handy Bag) contains all-in ballast - a pre-mixed combination of sand and gravel (20mm max diameter). UK dumpy bags weigh 800kg. This saves time because you don\'t need to mix sand and gravel separately.'
                     }
                   },
                   {
@@ -516,9 +516,9 @@ export default function ConcreteToBagsCalculator() {
 
                   <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border-2 border-blue-200">
                     <div className="text-sm font-semibold text-blue-700 mb-1">BALLAST</div>
-                    <div className="text-4xl font-bold text-gray-900 mb-2">{results.bulkBags} bulk bags</div>
+                    <div className="text-4xl font-bold text-gray-900 mb-2">{results.dumpyBags} dumpy bags</div>
                     <div className="text-sm text-gray-600">All-in ballast (sand + gravel)</div>
-                    <div className="text-xs text-gray-500 mt-2">Cost: £{(results.bulkBags * 85.00).toFixed(2)}</div>
+                    <div className="text-xs text-gray-500 mt-2">Cost: £{(results.dumpyBags * 80.00).toFixed(2)}</div>
                   </div>
                 </div>
 
@@ -631,7 +631,7 @@ export default function ConcreteToBagsCalculator() {
                 <li>• <strong>Pricing based on Q4 2025 UK market rates</strong> (validated with major suppliers)</li>
                 <li>• <strong>10% waste factor included</strong> for typical pours (spillage, imperfect pours, broken bags)</li>
                 <li>• <strong>20mm maximum diameter stone ballast</strong> - standard for all concrete strengths (C20, C25, C30)</li>
-                <li>• <strong>All bulk bags ~850kg</strong> - standard size across major UK merchants</li>
+                <li>• <strong>800kg dumpy bags</strong> - standard size across major UK merchants</li>
                 <li>• <strong>Weather affects material moisture</strong> - wet ballast weighs more, adjust if necessary</li>
                 <li>• <strong>Always order extra bags</strong> to avoid shortfalls during pouring</li>
                 <li>• <strong>This calculator covers standard applications</strong> - consult engineer for specialized projects</li>
@@ -656,7 +656,7 @@ export default function ConcreteToBagsCalculator() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Concrete Calculations Are Confusing</h2>
               <p className="text-gray-700 mb-4">
-                Cement is sold by weight (25kg bags), but ballast is often called a "Handy Bag" or "Bulk Bag" with no clear weight indicated. Different moisture content in winter can add 15-20% to actual weight. Plus, the conversion between cubic meters and bags requires complicated calculations that most builders don't remember.
+                Cement is sold by weight (25kg bags), but ballast is often called a "Handy Bag", "Dumpy Bag" or "Bulk Bag" with no clear weight indicated. Different moisture content in winter can add 15-20% to actual weight. Plus, the conversion between cubic meters and bags requires complicated calculations that most builders don't remember.
               </p>
               
               <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -697,7 +697,7 @@ export default function ConcreteToBagsCalculator() {
                   <h3 className="font-bold text-lg text-gray-900 mb-2">C25 (25 MPa)</h3>
                   <p className="text-sm text-gray-600 mb-3">Slabs, driveways, heavy-use</p>
                   <ul className="text-sm text-gray-700 space-y-1">
-                    <li>• <strong>Mix Ratio:</strong> 1:2:4</li>
+                    <li>• <strong>Mix Ratio:</strong> 1:2:3</li>
                     <li>• <strong>Cement bags/m³:</strong> 13 bags</li>
                     <li>• <strong>Compressive Strength:</strong> 25 MPa</li>
                     <li>• <strong>Stone size:</strong> 20mm max diameter</li>
@@ -728,8 +728,8 @@ export default function ConcreteToBagsCalculator() {
                     <p className="font-semibold text-gray-900">£6.50</p>
                   </div>
                   <div className="flex justify-between pb-2 border-b">
-                    <p className="font-semibold text-gray-900">All-in Ballast (bulk bag ~850kg, 20mm stone)</p>
-                    <p className="font-semibold text-gray-900">£85.00</p>
+                    <p className="font-semibold text-gray-900">All-in Ballast (dumpy bag 800kg, 20mm stone)</p>
+                    <p className="font-semibold text-gray-900">£80.00</p>
                   </div>
                   <div className="flex justify-between pb-2 border-b">
                     <p className="text-gray-700">Typical 1m³ pour (with 10% waste) - C20</p>
@@ -764,13 +764,13 @@ export default function ConcreteToBagsCalculator() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">Q: Do all merchants stock the same bulk bag sizes?</h3>
-                  <p className="text-gray-700">Most UK merchants use ~850kg bulk bags for 20mm ballast. However, sizes can vary slightly (750-900kg). Always verify exact bulk bag weights with your specific merchant before ordering to ensure accuracy.</p>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">Q: What size are dumpy bags?</h3>
+                  <p className="text-gray-700">Standard dumpy bags (also called handy bags or bulk bags) weigh 800kg in the UK. They contain all-in ballast - a pre-mixed combination of sand and gravel (20mm max diameter). This saves time because you don't need to mix sand and gravel separately.</p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Q: How does moisture affect concrete calculations?</h3>
-                  <p className="text-gray-700">Wet weather increases ballast moisture content, adding 15-20% to actual weight. This calculator uses dry weight assumptions. In very wet conditions, you may need slightly fewer bulk bags. Conversely, in dry conditions, materials may be lighter.</p>
+                  <p className="text-gray-700">Wet weather increases ballast moisture content, adding 15-20% to actual weight. This calculator uses dry weight assumptions. In very wet conditions, you may need slightly fewer dumpy bags. Conversely, in dry conditions, materials may be lighter.</p>
                 </div>
 
                 <div>
@@ -780,7 +780,7 @@ export default function ConcreteToBagsCalculator() {
 
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Q: What concrete strength should I choose?</h3>
-                  <p className="text-gray-700">C20 (12 bags/m³) is suitable for most foundations and general work. C25 (13 bags/m³) is recommended for slabs and driveways with vehicle traffic. C30 (15 bags/m³) is for high-strength structural applications. All use 20mm max diameter stone.</p>
+                  <p className="text-gray-700">C20 (12 bags/m³, 1:2:4 ratio) is suitable for most foundations and general work. C25 (13 bags/m³, 1:2:3 ratio) is recommended for slabs and driveways with vehicle traffic. C30 (15 bags/m³, 1:1.5:3 ratio) is for high-strength structural applications. All use 20mm max diameter stone.</p>
                 </div>
               </div>
             </div>
@@ -834,7 +834,7 @@ export default function ConcreteToBagsCalculator() {
             calculationResults={{
               materials: [
                 { item: `Cement (25kg bags)`, quantity: results.cementBags.toString(), unit: 'bags' },
-                { item: `All-in Ballast (bulk bags, 20mm stone)`, quantity: results.bulkBags.toString(), unit: 'bags' },
+                { item: `All-in Ballast (dumpy bags 800kg, 20mm stone)`, quantity: results.dumpyBags.toString(), unit: 'bags' },
                 { item: `${results.strength.label} - ${results.strength.ratio} Mix`, quantity: results.volumeM3, unit: 'm³' },
                 { item: 'Mixing & Pouring Labour', quantity: '1', unit: 'job' }
               ],
@@ -847,6 +847,7 @@ export default function ConcreteToBagsCalculator() {
     </>
   )
 }
+
 
 
 
