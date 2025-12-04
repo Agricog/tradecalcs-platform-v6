@@ -1,4 +1,4 @@
-import { Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Home as HomeIcon, Droplet, Calculator, TruckIcon } from 'lucide-react'
+import { Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Home as HomeIcon, Droplet, Calculator, TruckIcon, Phone, Mail, MessageSquare } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 
@@ -615,6 +615,109 @@ export default function Home() {
       </div>
     </section>
 
+    {/* ⭐ NEW: GET IN TOUCH SECTION ⭐ */}
+    <section className="py-16 px-4 bg-gradient-to-r from-blue-50 to-purple-50 border-y-2 border-purple-200">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Got a Better Idea? We're Listening</h2>
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            Have an improvement for our existing calculators? Want a brand new calculator built for your specific trade challenge? Or need automation to solve a recurring business problem? Let's talk.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div className="bg-white rounded-lg p-6 border-2 border-purple-200 text-center hover:shadow-lg transition">
+            <div className="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
+              💡
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Calculator Improvements</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Missing a feature? Want us to add something to an existing calculator? Tell us your idea.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-lg p-6 border-2 border-purple-200 text-center hover:shadow-lg transition">
+            <div className="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
+              🛠️
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Custom Calculators</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Need a specialized calculator built for your exact business needs? We build bespoke solutions.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-lg p-6 border-2 border-purple-200 text-center hover:shadow-lg transition">
+            <div className="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
+              ⚙️
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Automation & Tools</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Sick of doing the same task manually? Let's automate it and save you hours every week.
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-xl p-8 md:p-12 border-2 border-purple-300">
+          <div className="max-w-2xl mx-auto">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Get in Touch Directly</h3>
+            
+            <div className="space-y-4 mb-8">
+              <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
+                <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white flex-shrink-0">
+                  <Phone className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Call or text anytime</p>
+                  <a href="tel:07985559775" className="text-xl font-bold text-blue-600 hover:text-blue-700">
+                    07985 559775
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 p-4 bg-purple-50 rounded-lg">
+                <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center text-white flex-shrink-0">
+                  <MessageSquare className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Quick message? WhatsApp or SMS</p>
+                  <p className="text-lg font-bold text-purple-600">
+                    Same number, instant reply
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg">
+                <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white flex-shrink-0">
+                  <Mail className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Email for detailed requests</p>
+                  <a href="mailto:mick@tradecalcs.co.uk" className="font-bold text-green-600 hover:text-green-700">
+                    mick@tradecalcs.co.uk
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg p-6 mb-6 border-l-4 border-purple-600">
+              <p className="text-gray-700 font-semibold mb-2">Why reach out?</p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>✓ You've spotted something we can improve</li>
+                <li>✓ You need a calculator we haven't built yet</li>
+                <li>✓ You want to automate a time-consuming process</li>
+                <li>✓ You have a specific business problem to solve</li>
+                <li>✓ You just want to say thanks or share feedback</li>
+              </ul>
+            </div>
+
+            <p className="text-center text-gray-600 text-sm">
+              <span className="font-semibold">I personally answer every message</span> - whether it's a phone call, text, or email. Let's build something great together.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     {/* CUSTOM & WHITE-LABEL SECTION */}
     <section id="custom" className="py-16 px-4">
       <div className="max-w-5xl mx-auto">
@@ -672,6 +775,7 @@ export default function Home() {
   </>
   )
 }
+
 
 
 
