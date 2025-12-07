@@ -60,13 +60,13 @@ export default function DrainageCalculator() {
     const pipesNeeded = Math.ceil(pipeLen / 3);
     
     setSpoilResults({
-      totalSpoil,
-      beddingVolume,
-      backfillUsed,
-      spoilLeftOver,
-      pipesNeeded,
-      beddigStone: beddingVolume * 1.6,
-    });
+  totalSpoil,
+  beddingVolume,
+  backfillUsed,
+  spoilLeftOver,
+  pipesNeeded,
+  beddingStone: beddingVolume * 1.6,
+});
   };
 
   const toggleFaq = (index) => {
@@ -302,7 +302,7 @@ export default function DrainageCalculator() {
                   </div>
                   <div className="flex justify-between">
                     <span className="font-medium text-gray-700">Bedding Stone Needed (m³):</span>
-                    <span className="font-bold text-purple-600">{spoilResults.beddigStone.toFixed(2)} tonnes</span>
+                    <span className="font-bold text-purple-600">{spoilResults.beddingStone.toFixed(2)} tonnes</span>
                   </div>
                 </div>
               )}
