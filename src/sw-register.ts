@@ -3,8 +3,6 @@
  * Works with react-router-dom and Vite PWA plugin
  */
 
-declare const import_meta_env: { MODE: string }
-
 export async function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) {
     console.warn('Service Workers not supported in this browser')
@@ -12,11 +10,9 @@ export async function registerServiceWorker() {
   }
 
   try {
-    const swPath = import.meta.env.MODE === 'production' 
-      ? '/sw.js' 
-      : '/dev-sw.js?dev-sw'
-
-    const registration = await navigator.serviceWorker.register(swPath, { scope: '/' })
+    const registration = await navigator.serviceWorker.register('/sw.js', { 
+      scope: '/' 
+    })
 
     console.log('✅ Service Worker registered:', registration)
 
@@ -74,4 +70,5 @@ export function setupConnectionListener(
     window.removeEventListener('offline', handleOffline)
   }
 }
+
 
