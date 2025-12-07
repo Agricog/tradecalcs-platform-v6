@@ -317,7 +317,7 @@ export default function DrainageCalculator() {
                   className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-4 rounded-lg font-bold text-lg hover:from-purple-700 hover:to-purple-800 transition flex items-center justify-center gap-2"
                 >
                   <Calculator className="w-5 h-5" />
-                  Calculate Bedding Required
+                  Calculate Bedding, Pipes and Connectors Required
                 </button>
               </div>
             </div>
