@@ -279,12 +279,12 @@ export default function DrainageCalculator() {
             {/* PIPE BEDDING CALCULATOR */}
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-200 overflow-hidden">
               <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-6">
-                <div className="flex items-center gap-3">
-                  <Droplets className="w-6 h-6" />
-                  <h2 className="text-2xl font-bold">Pipe Bedding Calculator</h2>
-                </div>
-                <p className="text-purple-50 mt-2">Calculate 10mm stone bedding needed</p>
-              </div>
+  <div className="flex items-center gap-3">
+    <Droplets className="w-6 h-6" />
+    <h2 className="text-2xl font-bold">Pipe Bedding Calculator</h2>
+  </div>
+  <p className="text-purple-50 mt-2">Calculate bedding stone, pipes needed & straight connectors</p>
+</div>
 
               <div className="p-8">
                 <div className="mb-6">
