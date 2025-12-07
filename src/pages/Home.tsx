@@ -778,84 +778,11 @@ export default function Home() {
         </div>
       </div>
     </section>
-
-    {/* FOOTER */}
-    <footer className="bg-gray-900 text-gray-400 py-12 px-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          <div>
-            <h4 className="text-white font-bold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#calculators" className="hover:text-white">Calculators</a></li>
-              <li><a href="#custom" className="hover:text-white">Custom Solutions</a></li>
-              <li><Link to="/leadfortress" className="hover:text-white">LeadFortress</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-white font-bold mb-4">Support</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="mailto:mick@tradecalcs.co.uk" className="hover:text-white">Email Support</a></li>
-              <li><a href="tel:07985559775" className="hover:text-white">Call Us</a></li>
-              <li><a href="#custom" className="hover:text-white">Contact</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-white font-bold mb-4">Company</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-white">About</a></li>
-              <li><a href="#" className="hover:text-white">Privacy</a></li>
-              <li><a href="#" className="hover:text-white">Terms</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="border-t border-gray-700 pt-8 text-center text-sm">
-          <p>&copy; 2025 TradeCalcs. All rights reserved. | Built for UK trades professionals.</p>
-        </div>
-      </div>
-    </footer>
-  </>
+        </>
   )
 }
 
+export default Home
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
