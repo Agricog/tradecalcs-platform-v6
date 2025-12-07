@@ -1,19 +1,35 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
+interface BeddingResult {
+  diameter: number;
+  diameterMm: number;
+  beddingVolume: number;
+  stoneRequired: number;
+}
+
+interface SpoilResult {
+  totalSpoil: number;
+  beddingVolume: number;
+  backfillUsed: number;
+  spoilLeftOver: number;
+  pipesNeeded: number;
+  beddingStone: number;
+}
+
 export default function DrainageCalculator() {
   const [pipeDiameter, setPipeDiameter] = useState('4');
   const [pipeLength, setPipeLength] = useState('50');
-  const [beddingResults, setBeddingResults] = useState(null);
+  const [beddingResults, setBeddingResults] = useState<BeddingResult | null>(null);
   
   const [trenchWidth, setTrenchWidth] = useState('1.5');
   const [trenchDepth, setTrenchDepth] = useState('2');
   const [trenchLength, setTrenchLength] = useState('50');
   const [pipeDiameter2, setPipeDiameter2] = useState('4');
   const [pipeLength2, setPipeLength2] = useState('50');
-  const [spoilResults, setSpoilResults] = useState(null);
+  const [spoilResults, setSpoilResults] = useState<SpoilResult | null>(null);
   
-  const [expandedFaq, setExpandedFaq] = useState(null);
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   const calculateBedding = () => {
     const diameter = parseFloat(pipeDiameter);
@@ -56,20 +72,20 @@ export default function DrainageCalculator() {
     
     const pipeVolume = pipeArea * pipeLen;
     const backfillUsed = totalSpoil - pipeVolume - beddingVolume;
-    const spoilLeftOver = pipeVolume + beddingVolume;
+    const spoilLeftOver = totalSpoil - backfillUsed - beddingVolume - pipeVolume;
     const pipesNeeded = Math.ceil(pipeLen / 3);
     
     setSpoilResults({
-  totalSpoil,
-  beddingVolume,
-  backfillUsed,
-  spoilLeftOver,
-  pipesNeeded,
-  beddingStone: beddingVolume * 1.6,
-});
+      totalSpoil,
+      beddingVolume,
+      backfillUsed,
+      spoilLeftOver,
+      pipesNeeded,
+      beddingStone: beddingVolume * 1.6,
+    });
   };
 
-  const toggleFaq = (index) => {
+  const toggleFaq = (index: number) => {
     setExpandedFaq(expandedFaq === index ? null : index);
   };
 
@@ -128,15 +144,15 @@ export default function DrainageCalculator() {
         <link rel="canonical" href="https://tradecalcs.co.uk/drainage-calculator" />
       </Helmet>
 
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-purple-600 to-purple-500 text-white py-10 px-4 sm:px-6 rounded-lg mb-8">
+        <div className="bg-gradient-to-r from-purple-600 to-purple-500 text-white py-10 px-4 sm:px-6 rounded-lg mb-8 max-w-6xl mx-auto">
           <h1 className="text-4xl font-bold mb-4">Underground Drainage Pipe Calculator</h1>
           <p className="text-lg opacity-95">Calculate pipe bedding, spoil removal, and backfill requirements instantly</p>
         </div>
 
         {/* Calculator Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 max-w-6xl mx-auto">
           {/* Pipe Bedding Calculator */}
           <div className="bg-white border border-gray-200 rounded-lg p-8 shadow hover:shadow-lg transition">
             <h2 className="text-2xl font-bold text-purple-600 mb-6">💧 Pipe Bedding Calculator</h2>
@@ -301,8 +317,8 @@ export default function DrainageCalculator() {
                     <span className="font-bold text-purple-600">{spoilResults.pipesNeeded}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="font-medium text-gray-700">Bedding Stone Needed (m³):</span>
-                    <span className="font-bold text-purple-600">{spoilResults.beddingStone.toFixed(2)} tonnes</span>
+                    <span className="font-medium text-gray-700">Bedding Stone Needed (tonnes):</span>
+                    <span className="font-bold text-purple-600">{spoilResults.beddingStone.toFixed(2)}</span>
                   </div>
                 </div>
               )}
@@ -315,7 +331,7 @@ export default function DrainageCalculator() {
         </div>
 
         {/* How to Use Section */}
-        <div className="bg-white rounded-lg p-8 shadow mb-12">
+        <div className="bg-white rounded-lg p-8 shadow mb-12 max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">How to Use This Calculator</h2>
           <p className="text-gray-700 mb-4">This drainage calculator helps you determine the exact quantities of materials needed for underground pipe installation and trench backfilling.</p>
           
@@ -337,7 +353,7 @@ export default function DrainageCalculator() {
         </div>
 
         {/* FAQ Section */}
-        <div className="bg-white rounded-lg p-8 shadow mb-12">
+        <div className="bg-white rounded-lg p-8 shadow mb-12 max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
           <div className="space-y-4">
             {faqs.map((faq, index) => (
@@ -360,7 +376,7 @@ export default function DrainageCalculator() {
         </div>
 
         {/* Footer */}
-        <div className="bg-white rounded-lg p-8 shadow">
+        <div className="bg-white rounded-lg p-8 shadow max-w-6xl mx-auto">
           <h3 className="text-xl font-semibold text-gray-900 mb-4">About TradeCalcs</h3>
           <p className="text-gray-700">TradeCalcs provides free, professional calculators for UK construction trades. Our drainage calculator is designed specifically for UK drainage contractors, plumbers, and civil engineers working to Building Regulations standards.</p>
           <p className="text-gray-500 text-sm mt-8 pt-8 border-t border-gray-200">© 2025 TradeCalcs. All rights reserved. | Drainage Calculator v1.0 | Always verify calculations with your engineer or contractor before ordering materials.</p>
