@@ -28,7 +28,8 @@ function App() {
   return (
     <HelmetProvider>
       <Router>
-        <OfflineIndicator />
+       <ScrollToTop />
+       <OfflineIndicator />
         
         {/* Header */}
         <header className="bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-lg">
