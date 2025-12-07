@@ -148,26 +148,52 @@ export default function DrainageCalculator() {
   return (
     <>
       <Helmet>
+        {/* PRIMARY META TAGS (4) */}
         <title>Underground Drainage Pipe Calculator UK 2025 | Trench Bedding & Spoil | TradeCalcs</title>
-        <meta name="description" content="Free UK drainage calculator for underground pipes. Calculate pipe bedding, spoil removal, and backfill for 4, 6, 9, and 12 inch diameter pipes. Instant compliance results for drainage contractors and plumbers." />
+        <meta 
+          name="description" 
+          content="Free UK drainage calculator for underground pipes. Calculate pipe bedding, spoil removal, and backfill for 4, 6, 9, and 12 inch diameter pipes. Instant compliance results for drainage contractors and plumbers." 
+        />
         <meta name="keywords" content="drainage calculator, underground pipe calculator, trench bedding calculator, drainage spoil calculator, pipe bedding calculator UK, drainage design, trench excavation, Building Regulations drainage" />
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="author" content="TradeCalcs" />
+
+        {/* ROBOTS & CRAWLING (2) */}
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        
+        {/* VIEWPORT & MOBILE (1) */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+
+        {/* THEME & APPEARANCE (3) */}
         <meta name="theme-color" content="#7c3aed" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
+        {/* OPEN GRAPH (8) */}
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Underground Drainage Pipe Calculator UK 2025 | TradeCalcs" />
-        <meta property="og:description" content="Free drainage calculator for trench bedding and spoil calculations. Building Regulations compliant." />
-        <meta property="og:url" content="https://tradecalcs.co.uk/drainage-calculator" />
         <meta property="og:site_name" content="TradeCalcs" />
+        <meta property="og:locale" content="en_GB" />
+        <meta property="og:title" content="Underground Drainage Pipe Calculator UK 2025 | TradeCalcs" />
+        <meta property="og:description" content="Free drainage calculator for trench bedding and spoil calculations. Building Regulations compliant for UK drainage contractors and plumbers." />
+        <meta property="og:url" content="https://tradecalcs.co.uk/drainage-calculator" />
+        <meta property="og:image" content="https://tradecalcs.co.uk/images/drainage-calculator-og-1200x630.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Underground Drainage Calculator - UK Building Regulations Compliant Tool" />
 
+        {/* TWITTER CARD (7) */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Underground Drainage Pipe Calculator UK" />
-        <meta name="twitter:description" content="Free drainage calculator for UK drainage contractors, plumbers, and builders." />
+        <meta name="twitter:site" content="@TradeCalcs" />
+        <meta name="twitter:title" content="Underground Drainage Pipe Calculator UK | TradeCalcs" />
+        <meta name="twitter:description" content="Free drainage calculator for UK drainage contractors, plumbers, and builders. Calculate bedding, spoil removal, and backfill instantly." />
+        <meta name="twitter:image" content="https://tradecalcs.co.uk/images/drainage-calculator-twitter-1200x675.jpg" />
+        <meta name="twitter:image:alt" content="Underground Drainage Pipe Calculator" />
+        <meta name="twitter:creator" content="@TradeCalcs" />
 
+        {/* CANONICAL URL (1) */}
         <link rel="canonical" href="https://tradecalcs.co.uk/drainage-calculator" />
 
+        {/* JSON-LD STRUCTURED DATA */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -201,7 +227,12 @@ export default function DrainageCalculator() {
                 '@type': 'Organization',
                 'name': 'TradeCalcs',
                 'url': 'https://tradecalcs.co.uk',
-                'logo': 'https://tradecalcs.co.uk/logo.png'
+                'logo': 'https://tradecalcs.co.uk/logo.png',
+                'contactPoint': {
+                  '@type': 'ContactPoint',
+                  'contactType': 'Customer Support',
+                  'email': 'mick@tradecalcs.co.uk'
+                }
               }
             ]
           })}
@@ -460,7 +491,7 @@ export default function DrainageCalculator() {
         <div className="bg-white py-16 px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">How to Use This Calculator</h2>
-            <p className="text-gray-700 mb-8">\nThis drainage calculator helps you determine exact quantities of materials needed for underground pipe installation and trench backfilling. Perfect for on-site estimation and material ordering.</p>
+            <p className="text-gray-700 mb-8">This drainage calculator helps you determine exact quantities of materials needed for underground pipe installation and trench backfilling. Perfect for on-site estimation and material ordering.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
@@ -539,6 +570,45 @@ export default function DrainageCalculator() {
           </div>
         </div>
 
+        {/* RELATED CALCULATORS - INTERNAL LINKS */}
+        <div className="bg-white py-16 px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Related TradeCalcs Tools</h2>
+            <p className="text-gray-700 mb-8">Explore our complete range of professional calculators for UK trades.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <a 
+                href="/voltage-drop-calculator" 
+                title="Voltage Drop Calculator - BS 7671 Compliance" 
+                className="block p-6 bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-200 rounded-lg hover:shadow-lg transition"
+              >
+                <div className="text-purple-600 font-bold mb-2">⚡ Electrical</div>
+                <h3 className="font-bold text-gray-900 mb-2">Voltage Drop Calculator</h3>
+                <p className="text-sm text-gray-700">Calculate voltage drop for circuits with BS 7671 compliance verification</p>
+              </a>
+              
+              <a 
+                href="/cable-sizing-calculator" 
+                title="Cable Sizing Calculator - UK Building Regulations" 
+                className="block p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-lg transition"
+              >
+                <div className="text-blue-600 font-bold mb-2">🔌 Electrical</div>
+                <h3 className="font-bold text-gray-900 mb-2">Cable Sizing Calculator</h3>
+                <p className="text-sm text-gray-700">Instant cable size selection for electrical installations per BS 7671</p>
+              </a>
+              
+              <a 
+                href="/concrete-calculator" 
+                title="Concrete Calculator - Material Ordering" 
+                className="block p-6 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-lg transition"
+              >
+                <div className="text-green-600 font-bold mb-2">🏗️ Construction</div>
+                <h3 className="font-bold text-gray-900 mb-2">Concrete Calculator</h3>
+                <p className="text-sm text-gray-700">Calculate cement bags and ballast for concrete pours instantly</p>
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* FAQ SECTION */}
         <div className="bg-white py-16 px-4">
           <div className="max-w-4xl mx-auto">
@@ -591,9 +661,9 @@ export default function DrainageCalculator() {
         <div className="bg-gray-50 py-16 px-4">
           <div className="max-w-4xl mx-auto">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">About TradeCalcs</h3>
-            <p className="text-gray-700 mb-4">TradeCalcs provides free, professional calculators for UK construction trades. Our drainage calculator is designed specifically for UK drainage contractors, plumbers, and civil engineers working to Building Regulations standards.</p>
+            <p className="text-gray-700 mb-4">TradeCalcs provides free, professional calculators for UK construction trades. Our drainage calculator is designed specifically for UK drainage contractors, plumbers, and civil engineers working to Building Regulations standards. All calculations are compliant with BS 8301 and UK Building Regulations Part H.</p>
             <p className="text-gray-500 text-sm border-t border-gray-200 pt-6 mt-6">
-              © 2025 TradeCalcs. All rights reserved. | Drainage Calculator v1.0 | Always verify calculations with your engineer or contractor before ordering materials.
+              © 2025 TradeCalcs. All rights reserved. | Drainage Calculator v1.0 | Always verify calculations with your engineer or contractor before ordering materials. Results are estimates based on standard formulas - site conditions may vary.
             </p>
           </div>
         </div>
@@ -601,5 +671,6 @@ export default function DrainageCalculator() {
     </>
   )
 }
+
 
 
