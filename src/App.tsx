@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
+import { OfflineIndicator } from './components/OfflineIndicator'
 import Homepage from './pages/Home'
 import CableSizingCalculatorPage from './pages/CableSizingCalculatorPage'
 import VoltageDropCalculatorPage from './pages/VoltageDropCalculatorPage'
@@ -26,6 +27,8 @@ function App() {
   return (
     <HelmetProvider>
       <Router>
+        <OfflineIndicator />
+        
         {/* Header */}
         <header className="bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-lg">
           <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -173,6 +176,7 @@ function App() {
 }
 
 export default App
+
 
 
 
