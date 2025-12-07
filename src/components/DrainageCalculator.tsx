@@ -39,9 +39,6 @@ export default function DrainageCalculator() {
   const [pipeLength2, setPipeLength2] = useState('50')
   const [spoilResults, setSpoilResults] = useState<SpoilResult | null>(null)
   const [showSpoilResults, setShowSpoilResults] = useState(false)
-  
-  // FAQ State
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
 
   const calculateBedding = () => {
     const diameter = parseFloat(pipeDiameter)
@@ -119,14 +116,6 @@ export default function DrainageCalculator() {
     doc.setFontSize(11)
 
     // Materials table
-    const materials = [
-      ['Material', 'Quantity', 'Unit'],
-      ['10mm Clean Stone Bedding', beddingResults.stoneRequired.toFixed(2), 'tonnes'],
-      ['Drainage Pipes (3m lengths)', beddingResults.pipesNeeded.toString(), 'pipes'],
-      ['Straight Connectors', beddingResults.connectorsNeeded.toString(), 'units'],
-    ]
-
-    // Draw table
     doc.setFillColor(150, 80, 220)
     doc.setTextColor(255, 255, 255)
     doc.rect(20, yPos - 5, 170, 7, 'F')
@@ -138,7 +127,13 @@ export default function DrainageCalculator() {
     doc.setTextColor(0, 0, 0)
     doc.setFillColor(240, 240, 240)
 
-    for (let i = 1; i < materials.length; i++) {
+    const materials = [
+      ['10mm Clean Stone Bedding', beddingResults.stoneRequired.toFixed(2), 'tonnes'],
+      ['Drainage Pipes (3m lengths)', beddingResults.pipesNeeded.toString(), 'pipes'],
+      ['Straight Connectors', beddingResults.connectorsNeeded.toString(), 'units'],
+    ]
+
+    for (let i = 0; i < materials.length; i++) {
       if (i % 2 === 0) {
         doc.rect(20, yPos - 5, 170, 7, 'F')
       }
@@ -226,57 +221,9 @@ export default function DrainageCalculator() {
     window.scrollTo({ top: 1200, behavior: 'smooth' })
   }
 
-  const toggleFaq = (index: number) => {
-    setExpandedFaq(expandedFaq === index ? null : index)
-  }
-
-  const faqs = [
-    {
-      q: "What is pipe bedding and why is it needed?",
-      a: "Pipe bedding is a layer of graded aggregate (typically 10mm stone) placed beneath and around drainage pipes. It distributes ground loads evenly, provides support, prevents differential settlement, protects the pipe from sharp ground objects, and ensures proper drainage performance. UK Building Regulations require 100mm minimum on all sides."
-    },
-    {
-      q: "How much bedding stone do I need?",
-      a: "Use our pipe bedding calculator to enter your pipe diameter and length. The calculator determines the exact volume by calculating the space around the pipe (pipe diameter + 100mm clearance on all sides) multiplied by the pipe length. Standard bedding is 100mm (4 inches) clearance all around the pipe."
-    },
-    {
-      q: "What should I do with excess spoil?",
-      a: "After accounting for backfill and bedding, leftover spoil can be re-used on site for landscaping, levelling, or other projects. If not needed, arrange for skip hire or a waste contractor. This calculator helps you plan disposal requirements accurately."
-    },
-    {
-      q: "How many pipes do I need?",
-      a: "Standard drainage pipes are 3 metres long. Divide your total run length by 3 and round up. This calculator does this automatically and accounts for connections. For a 50m run, you'd need 17 x 3m pipes."
-    },
-    {
-      q: "What's the difference between 10mm and other stone sizes?",
-      a: "10mm clean stone is the standard for drainage bedding because it provides good support, allows water drainage, and compacts well without crushing the pipe. Larger stones can leave voids; smaller stones can create compaction issues. Always specify 10mm for consistency."
-    },
-    {
-      q: "What are UK Building Regulations requirements for drainage?",
-      a: "UK Building Regulations Part H and BS 8301 specify requirements for drainage design and installation, including minimum cover depths, pipe gradients (1:40 to 1:80), proper bedding and support, and access points. This calculator helps with the material specification aspect of compliance."
-    },
-    {
-      q: "Can I use backfill spoil for bedding?",
-      a: "No. Bedding must be clean 10mm stone specifically. Backfill spoil should be screened and compacted but cannot substitute for proper bedding stone. Doing so may cause pipe damage, poor drainage performance, and future structural issues. Always use specified materials."
-    },
-    {
-      q: "What pipe diameters does this calculator support?",
-      a: "This calculator supports 4, 6, 9, and 12 inch diameter pipes, which cover most UK domestic and commercial drainage applications. 4-6 inch is typical for residential; 9-12 inch for larger commercial or industrial systems."
-    },
-    {
-      q: "How accurate is this calculator?",
-      a: "This calculator provides accurate material estimates based on standard industry formulas. For precise project planning, always verify results with your engineer or contractor and account for site-specific factors like ground conditions, slope variations, and connection requirements."
-    },
-    {
-      q: "Is there a mobile-friendly version?",
-      a: "Yes! This calculator is fully responsive and works on all devices including smartphones, tablets, and desktops. Use it on-site to calculate material quantities instantly, perfect for jobsite planning and material ordering."
-    },
-  ]
-
   return (
     <>
       <Helmet>
-        {/* PRIMARY META TAGS */}
         <title>Underground Drainage Pipe Calculator UK 2025 | Trench Bedding & Spoil | TradeCalcs</title>
         <meta 
           name="description" 
@@ -595,13 +542,137 @@ export default function DrainageCalculator() {
           </div>
         </div>
 
+        {/* UNDERSTANDING DRAINAGE SECTION */}
+        <div className="bg-gray-50 py-16 px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Understanding Drainage Design & Installation</h2>
+
+            <div className="space-y-6 mb-8">
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Why Pipe Bedding Matters</h3>
+                <p className="text-gray-700">Proper bedding protects drainage pipes from ground pressure, prevents differential settlement, and ensures long-term structural integrity. The recommended 10mm stone bedding with 100mm clearance all around distributes loads evenly and prevents damage to the pipe.</p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Trench Excavation Best Practices</h3>
+                <p className="text-gray-700">Accurate spoil calculation prevents ordering too much or too little backfill material. Understanding how much spoil will be left over helps with skip hire, re-use on site, or disposal planning.</p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Pipe Selection & Sizing</h3>
+                <p className="text-gray-700">Standard drainage pipes are typically 3 metres long. This calculator helps you determine exactly how many pipes you'll need to complete your run, accounting for connections and joints.</p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Material Requirements for UK Drainage</h3>
+                <p className="text-gray-700 mb-4">UK drainage standards (Building Regulations Part H, BS 8301) require proper bedding and backfilling to ensure pipe longevity and performance. Using this calculator ensures compliance with best practices.</p>
+                
+                <div className="overflow-x-auto">
+                  <table className="w-full bg-white border border-gray-200 rounded-lg">
+                    <thead>
+                      <tr className="bg-purple-600 text-white">
+                        <th className="px-4 py-3 text-left font-semibold">Pipe Diameter</th>
+                        <th className="px-4 py-3 text-left font-semibold">Typical Applications</th>
+                        <th className="px-4 py-3 text-left font-semibold">Recommended Bedding</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-t">
+                        <td className="px-4 py-3">4 inch (101.6mm)</td>
+                        <td className="px-4 py-3">Small domestic surface drains</td>
+                        <td className="px-4 py-3">10mm stone, 100mm clearance</td>
+                      </tr>
+                      <tr className="border-t bg-gray-50">
+                        <td className="px-4 py-3">6 inch (152.4mm)</td>
+                        <td className="px-4 py-3">Domestic foul and surface water</td>
+                        <td className="px-4 py-3">10mm stone, 100mm clearance</td>
+                      </tr>
+                      <tr className="border-t">
+                        <td className="px-4 py-3">9 inch (228.6mm)</td>
+                        <td className="px-4 py-3">Larger residential/commercial</td>
+                        <td className="px-4 py-3">10mm stone, 100mm clearance</td>
+                      </tr>
+                      <tr className="border-t bg-gray-50">
+                        <td className="px-4 py-3">12 inch (304.8mm)</td>
+                        <td className="px-4 py-3">Industrial/large commercial</td>
+                        <td className="px-4 py-3">10mm stone, 100mm clearance</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* RELATED CALCULATORS */}
+        <div className="bg-white py-16 px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Related TradeCalcs Tools</h2>
+            <p className="text-gray-700 mb-8">Explore our complete range of professional calculators for UK trades.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <a 
+                href="/voltage-drop-calculator" 
+                title="Voltage Drop Calculator - BS 7671 Compliance" 
+                className="block p-6 bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-200 rounded-lg hover:shadow-lg transition"
+              >
+                <div className="text-purple-600 font-bold mb-2">⚡ Electrical</div>
+                <h3 className="font-bold text-gray-900 mb-2">Voltage Drop Calculator</h3>
+                <p className="text-sm text-gray-700">Calculate voltage drop for circuits with BS 7671 compliance verification</p>
+              </a>
+              
+              <a 
+                href="/cable-sizing-calculator" 
+                title="Cable Sizing Calculator - UK Building Regulations" 
+                className="block p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-lg transition"
+              >
+                <div className="text-blue-600 font-bold mb-2">🔌 Electrical</div>
+                <h3 className="font-bold text-gray-900 mb-2">Cable Sizing Calculator</h3>
+                <p className="text-sm text-gray-700">Instant cable size selection for electrical installations per BS 7671</p>
+              </a>
+              
+              <a 
+                href="/concrete-calculator" 
+                title="Concrete Calculator - Material Ordering" 
+                className="block p-6 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-lg transition"
+              >
+                <div className="text-green-600 font-bold mb-2">🏗️ Construction</div>
+                <h3 className="font-bold text-gray-900 mb-2">Concrete Calculator</h3>
+                <p className="text-sm text-gray-700">Calculate cement bags and ballast for concrete pours instantly</p>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* NEWSLETTER SECTION */}
+        <div className="bg-white py-16 px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl overflow-hidden">
+              <div className="px-8 py-8 text-white">
+                <h2 className="text-3xl font-bold mb-2">Get Expert Drainage Guidance</h2>
+                <p className="text-lg opacity-95">Join UK drainage professionals using TradeCalcs. Subscribe for tips, updates, and exclusive resources.</p>
+              </div>
+              <div className="px-8 py-8 bg-white">
+                <iframe 
+                  src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" 
+                  width="100%" 
+                  height="600" 
+                  frameBorder="0"
+                  title="TradeCalcs Newsletter"
+                  className="rounded-lg"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* FOOTER */}
         <div className="bg-gray-50 py-16 px-4">
           <div className="max-w-4xl mx-auto">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">About TradeCalcs</h3>
-            <p className="text-gray-700 mb-4">TradeCalcs provides free, professional calculators for UK construction trades. Our drainage calculator is designed for UK drainage contractors, plumbers, and civil engineers working to Building Regulations standards.</p>
+            <p className="text-gray-700 mb-4">TradeCalcs provides free, professional calculators for UK construction trades. Our drainage calculator is designed specifically for UK drainage contractors, plumbers, and civil engineers working to Building Regulations standards. All calculations are compliant with BS 8301 and UK Building Regulations Part H.</p>
             <p className="text-gray-500 text-sm border-t border-gray-200 pt-6 mt-6">
-              © 2025 TradeCalcs. Always verify calculations with your engineer before ordering materials.
+              © 2025 TradeCalcs. All rights reserved. | Drainage Calculator v1.0 | Always verify calculations with your engineer or contractor before ordering materials. Results are estimates based on standard formulas - site conditions may vary.
             </p>
           </div>
         </div>
@@ -609,6 +680,7 @@ export default function DrainageCalculator() {
     </>
   )
 }
+
 
 
 
