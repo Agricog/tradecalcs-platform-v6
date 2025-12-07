@@ -395,7 +395,7 @@ export default function Home() {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <a href="/cable-sizing-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
             <div className="p-6">
               <div className="text-xs font-bold text-blue-600 mb-3 uppercase tracking-wider">For Electricians</div>
