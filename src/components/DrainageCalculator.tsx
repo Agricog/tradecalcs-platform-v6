@@ -113,77 +113,187 @@ export default function DrainageCalculator() {
 
     yPos += 12
     doc.setFont('helvetica', 'normal')
-    doc.setFontSize(11)
+    doc.setFontSize(10)
 
-    // Materials table
+    // Better table layout with proper spacing
+    const col1 = 20
+    const col2 = 110
+    const col3 = 160
+
+    // Header row
     doc.setFillColor(150, 80, 220)
     doc.setTextColor(255, 255, 255)
-    doc.rect(20, yPos - 5, 170, 7, 'F')
-    doc.text('Material', 25, yPos)
-    doc.text('Quantity', 110, yPos)
-    doc.text('Unit', 160, yPos)
+    doc.rect(col1, yPos - 5, 170, 7, 'F')
+    doc.text('Material', col1 + 2, yPos)
+    doc.text('Quantity', col2 + 2, yPos)
+    doc.text('Unit', col3 + 2, yPos)
 
     yPos += 10
     doc.setTextColor(0, 0, 0)
-    doc.setFillColor(240, 240, 240)
 
+    // Data rows
     const materials = [
-      ['10mm Clean Stone Bedding', beddingResults.stoneRequired.toFixed(2), 'tonnes'],
-      ['Drainage Pipes (3m lengths)', beddingResults.pipesNeeded.toString(), 'pipes'],
+      ['10mm Stone Bedding', beddingResults.stoneRequired.toFixed(2), 'tonnes'],
+      ['Drainage Pipes (3m)', beddingResults.pipesNeeded.toString(), 'pipes'],
       ['Straight Connectors', beddingResults.connectorsNeeded.toString(), 'units'],
     ]
 
     for (let i = 0; i < materials.length; i++) {
       if (i % 2 === 0) {
-        doc.rect(20, yPos - 5, 170, 7, 'F')
+        doc.setFillColor(240, 240, 240)
+        doc.rect(col1, yPos - 5, 170, 7, 'F')
       }
-      doc.text(materials[i][0], 25, yPos)
-      doc.text(materials[i][1], 110, yPos)
-      doc.text(materials[i][2], 160, yPos)
+      doc.setTextColor(0, 0, 0)
+      doc.text(materials[i][0], col1 + 2, yPos)
+      doc.text(materials[i][1], col2 + 2, yPos)
+      doc.text(materials[i][2], col3 + 2, yPos)
       yPos += 7
     }
 
     // Calculations Section
-    yPos += 12
-    doc.setFont('helvetica', 'bold')
-    doc.setFontSize(14)
-    doc.text('Calculation Details', 20, yPos)
-
     yPos += 10
-    doc.setFont('helvetica', 'normal')
-    doc.setFontSize(10)
-    doc.text(`Bedding Volume: ${beddingResults.beddingVolume.toFixed(3)} m³`, 20, yPos)
-    yPos += 6
-    doc.text(`Stone Density: 1.6 tonnes/m³`, 20, yPos)
-    yPos += 6
-    doc.text(`Waste Factor: Included in calculations`, 20, yPos)
-    yPos += 6
-    doc.text(`Pipe Length Per Section: 3 metres (standard UK size)`, 20, yPos)
-
-    // Compliance Section
-    yPos += 15
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(12)
-    doc.text('Building Regulations Compliance', 20, yPos)
+    doc.text('Calculation Details', 20, yPos)
 
     yPos += 8
     doc.setFont('helvetica', 'normal')
     doc.setFontSize(10)
+    doc.text(`Bedding Volume: ${beddingResults.beddingVolume.toFixed(3)} m³`, 20, yPos)
+    yPos += 5
+    doc.text(`Stone Density: 1.6 tonnes/m³`, 20, yPos)
+    yPos += 5
+    doc.text(`Pipe Length: 3 metres (standard UK size)`, 20, yPos)
+    yPos += 5
+    doc.text(`Pipes Needed: ${beddingResults.pipesNeeded}`, 20, yPos)
+    yPos += 5
+    doc.text(`Connectors Needed: ${beddingResults.connectorsNeeded}`, 20, yPos)
+
+    // Compliance Section
+    yPos += 12
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(12)
+    doc.text('Building Regulations Compliance', 20, yPos)
+
+    yPos += 7
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(9)
     const complianceText = doc.splitTextToSize(
       '10mm clean stone bedding with 100mm clearance all around the pipe per UK Building Regulations Part H and BS 8301 standards.',
       170
     )
     doc.text(complianceText, 20, yPos)
 
-    yPos += complianceText.length * 5 + 10
-
     // Footer
-    doc.setFontSize(9)
+    yPos = 280
+    doc.setFontSize(8)
     doc.setTextColor(150, 150, 150)
-    doc.text('© 2025 TradeCalcs. Always verify calculations with your engineer before ordering materials.', 20, yPos)
+    doc.text('© 2025 TradeCalcs. Verify calculations with your engineer before ordering.', 20, yPos)
 
     // Save PDF
     doc.save(`drainage-bedding-calculation-${dateStr.replace(/\//g, '-')}.pdf`)
+  }
+
+  const downloadSpoilResults = () => {
+    if (!spoilResults) return
+
+    const doc = new jsPDF()
+    const now = new Date()
+    const dateStr = now.toLocaleDateString('en-GB')
+    const timeStr = now.toLocaleTimeString('en-GB')
+
+    // Header
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(20)
+    doc.text('Spoil & Backfill Calculation Results', 20, 20)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text(`Generated: ${dateStr} at ${timeStr}`, 20, 30)
+    doc.text('TradeCalcs - Underground Drainage Pipe Calculator', 20, 37)
+
+    // Divider
+    doc.setDrawColor(150, 80, 220)
+    doc.line(20, 42, 190, 42)
+
+    // Trench Details Section
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(14)
+    doc.text('Trench Specifications', 20, 55)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    let yPos = 65
+    doc.text(`Width: ${trenchWidth}m × Depth: ${trenchDepth}m × Length: ${trenchLength}m`, 20, yPos)
+    yPos += 8
+    doc.text(`Pipe Diameter: ${pipeDiameter2}" × Length: ${pipeLength2}m`, 20, yPos)
+
+    // Results Section
+    yPos += 15
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(14)
+    doc.text('Excavation & Backfill Results', 20, yPos)
+
+    yPos += 10
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+
+    const col1 = 20
+    const col2 = 110
+    const col3 = 160
+
+    // Header
+    doc.setFillColor(150, 80, 220)
+    doc.setTextColor(255, 255, 255)
+    doc.rect(col1, yPos - 5, 170, 7, 'F')
+    doc.text('Item', col1 + 2, yPos)
+    doc.text('Volume', col2 + 2, yPos)
+    doc.text('Unit', col3 + 2, yPos)
+
+    yPos += 10
+    doc.setTextColor(0, 0, 0)
+
+    // Data rows
+    const results = [
+      ['Total Spoil Excavated', spoilResults.totalSpoil.toFixed(2), 'm³'],
+      ['Bedding Stone Volume', spoilResults.beddingVolume.toFixed(3), 'm³'],
+      ['Backfill Used', spoilResults.backfillUsed.toFixed(2), 'm³'],
+      ['Excess Spoil (Disposal)', Math.max(0, spoilResults.spoilLeftOver).toFixed(2), 'm³'],
+    ]
+
+    for (let i = 0; i < results.length; i++) {
+      if (i % 2 === 0) {
+        doc.setFillColor(240, 240, 240)
+        doc.rect(col1, yPos - 5, 170, 7, 'F')
+      }
+      doc.setTextColor(0, 0, 0)
+      doc.text(results[i][0], col1 + 2, yPos)
+      doc.text(results[i][1], col2 + 2, yPos)
+      doc.text(results[i][2], col3 + 2, yPos)
+      yPos += 7
+    }
+
+    // Materials Section
+    yPos += 10
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(12)
+    doc.text('Materials Required', 20, yPos)
+
+    yPos += 8
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    doc.text(`Drainage Pipes (3m lengths): ${spoilResults.pipesNeeded} pipes`, 20, yPos)
+    yPos += 6
+    doc.text(`10mm Bedding Stone: ${spoilResults.beddingStone.toFixed(2)} tonnes`, 20, yPos)
+
+    // Footer
+    yPos = 280
+    doc.setFontSize(8)
+    doc.setTextColor(150, 150, 150)
+    doc.text('© 2025 TradeCalcs. Verify calculations with your engineer before ordering.', 20, yPos)
+
+    // Save PDF
+    doc.save(`drainage-spoil-calculation-${dateStr.replace(/\//g, '-')}.pdf`)
   }
 
   const calculateSpoil = () => {
@@ -460,14 +570,23 @@ export default function DrainageCalculator() {
           {/* SPOIL RESULTS */}
           {showSpoilResults && spoilResults && (
             <div className="mt-8 bg-white rounded-xl shadow-xl border-2 border-purple-200 p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                  <ShoppingCart className="w-6 h-6 text-purple-600" />
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <ShoppingCart className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900">Spoil & Backfill Results</h3>
+                    <p className="text-gray-600">Complete excavation analysis</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Spoil & Backfill Results</h3>
-                  <p className="text-gray-600">Complete excavation analysis</p>
-                </div>
+                <button
+                  onClick={downloadSpoilResults}
+                  className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition"
+                >
+                  <Download className="w-5 h-5" />
+                  Download PDF
+                </button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -680,6 +799,7 @@ export default function DrainageCalculator() {
     </>
   )
 }
+
 
 
 
