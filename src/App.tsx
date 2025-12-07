@@ -19,6 +19,7 @@ import CISCalculatorPage from './pages/CISCalculatorPage'
 import STGOCalculatorPage from './pages/STGOCalculatorPage'
 import ScaffoldCalculatorPage from './pages/ScaffoldCalculatorPage'
 import InsulationCalculatorPage from './pages/InsulationCalculatorPage'
+import DrainageCalculatorPage from './pages/DrainageCalculatorPage'
 
 
 function App() {
@@ -91,6 +92,10 @@ function App() {
           {/* Paint - new URL + old redirect */}
           <Route path="/paint-calculator" element={<PainterCalculatorPage />} />
           <Route path="/paint" element={<PainterCalculatorPage />} />
+          
+          {/* Drainage - new URL + old redirect */}
+          <Route path="/drainage-calculator" element={<DrainageCalculatorPage />} />
+          <Route path="/drainage" element={<DrainageCalculatorPage />} />
           
           <Route path="/calculators/cis-calculator" element={<CISCalculatorPage />} />
           <Route path="/calculators/stgo-calculator" element={<STGOCalculatorPage />} />
@@ -168,6 +173,7 @@ function App() {
 }
 
 export default App
+
 
 
 
