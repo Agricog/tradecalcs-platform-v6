@@ -350,7 +350,7 @@ export default function Home() {
                 <div className="p-6">
                   <div className={`text-xs font-bold text-${calc.color}-600 mb-3 uppercase tracking-wider`}>{calc.trade}</div>
                   <div className={`w-12 h-12 bg-${calc.color}-${calc.color === 'amber' ? '500' : calc.color === 'red' ? '500' : '500'} rounded-lg flex items-center justify-center text-white mb-4`}>
-                    c.icon className="w-6-6 h-6" />
+                    alc.icon className="w-6 h-6" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{calc.title}</h3>
                   <p className="text-gray-600 text-sm mb-4">{calc.desc}</p>
