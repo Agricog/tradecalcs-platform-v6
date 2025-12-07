@@ -8,6 +8,8 @@ interface BeddingResult {
   diameterMm: number
   beddingVolume: number
   stoneRequired: number
+  pipesNeeded: number
+  connectorsNeeded: number
 }
 
 interface SpoilResult {
@@ -53,11 +55,17 @@ export default function DrainageCalculator() {
     const beddingArea = outerArea - pipeArea
     const beddingVolume = beddingArea * length
     
+    // Calculate pipes and connectors
+    const pipesNeeded = Math.ceil(length / 3)
+    const connectorsNeeded = Math.max(0, pipesNeeded - 1)
+    
     setBeddingResults({
       diameter,
       diameterMm,
       beddingVolume,
       stoneRequired: beddingVolume * 1.6,
+      pipesNeeded,
+      connectorsNeeded,
     })
     setShowBeddingResults(true)
     window.scrollTo({ top: 1000, behavior: 'smooth' })
@@ -383,7 +391,7 @@ export default function DrainageCalculator() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border-2 border-purple-200">
                   <div className="text-sm font-semibold text-purple-700 mb-1">PIPE DIAMETER</div>
                   <div className="text-3xl font-bold text-gray-900 mb-2">{beddingResults.diameter}"</div>
@@ -407,14 +415,48 @@ export default function DrainageCalculator() {
                   <div className="text-3xl font-bold text-gray-900 mb-2">100mm</div>
                   <div className="text-sm text-gray-600">All around pipe</div>
                 </div>
+
+                <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl border-2 border-orange-200">
+                  <div className="text-sm font-semibold text-orange-700 mb-1">PIPES NEEDED</div>
+                  <div className="text-3xl font-bold text-gray-900 mb-2">{beddingResults.pipesNeeded}</div>
+                  <div className="text-sm text-gray-600">× 3m lengths</div>
+                </div>
+
+                <div className="bg-gradient-to-br from-rose-50 to-rose-100 p-6 rounded-xl border-2 border-rose-200">
+                  <div className="text-sm font-semibold text-rose-700 mb-1">STRAIGHT CONNECTORS</div>
+                  <div className="text-3xl font-bold text-gray-900 mb-2">{beddingResults.connectorsNeeded}</div>
+                  <div className="text-sm text-gray-600">Pipe-to-pipe</div>
+                </div>
               </div>
 
-              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded mt-6">
+              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded mb-6">
                 <div className="flex items-start gap-3">
                   <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="font-semibold text-blue-900 mb-1">Building Regulations Compliance</p>
                     <p className="text-sm text-blue-800">10mm clean stone bedding with 100mm (4 inch) clearance all around the pipe per UK Building Regulations Part H and BS 8301 standards.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                <h4 className="font-bold text-gray-900 mb-4">Materials Summary</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Bedding stone (10mm):</span>
+                    <span className="font-semibold text-gray-900">{beddingResults.stoneRequired.toFixed(2)} tonnes</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Drainage pipes ({beddingResults.diameter}"):</span>
+                    <span className="font-semibold text-gray-900">{beddingResults.pipesNeeded} × 3m</span>
+                  </div>
+                  <div className="flex justify-between border-t border-gray-300 pt-2">
+                    <span className="text-gray-700">Straight connectors:</span>
+                    <span className="font-semibold text-gray-900">{beddingResults.connectorsNeeded} units</span>
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-500 mt-3">
+                    <span>Typical cost per connector:</span>
+                    <span>£8–12 each</span>
                   </div>
                 </div>
               </div>
@@ -671,6 +713,7 @@ export default function DrainageCalculator() {
     </>
   )
 }
+
 
 
 
