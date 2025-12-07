@@ -358,8 +358,8 @@ export default function Home() {
                 {calc.isNew && (
                   <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</div>
                 )}
-                <div className="p-6">
-                  <div className={`text-xs font-bold ${getCalcColorClasses(calc.color)} mb-3 uppercase tracking-wider`}>{calc.trade}</div>
+                                <div className="p-6">
+                  <div className={getCalcColorClasses(calc.color) + ' text-xs font-bold mb-3 uppercase tracking-wider'}>{calc.trade}</div>
                   <div 
                     className="w-12 h-12 rounded-lg flex items-center justify-center text-white mb-4"
                     style={{ backgroundColor: colorMap[calc.color as keyof typeof colorMap] }}
@@ -368,11 +368,11 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{calc.title}</h3>
                   <p className="text-gray-600 text-sm mb-4">{calc.desc}</p>
-                  <div className={`${getCalcColorClasses(calc.color)} font-semibold flex items-center gap-2 hover:gap-3 transition`}>
+                  <div className={getCalcColorClasses(calc.color) + ' font-semibold flex items-center gap-2 hover:gap-3 transition'}>
                     Use Calculator <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
-              </a>
+             </a>
             ))}
           </div>
           <p className="text-center text-gray-600 mt-8">More calculators coming soon for carpenters, bricklayers, and more trades</p>
