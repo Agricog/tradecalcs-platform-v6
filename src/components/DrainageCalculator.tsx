@@ -316,7 +316,7 @@ export default function DrainageCalculator() {
     
     const pipeVolume = pipeArea * pipeLen
     const backfillUsed = totalSpoil - pipeVolume - beddingVolume
-    const spoilLeftOver = totalSpoil - backfillUsed - beddingVolume - pipeVolume
+const spoilLeftOver = Math.max(0, totalSpoil - backfillUsed)
     const pipesNeeded = Math.ceil(pipeLen / 3)
     
     setSpoilResults({
