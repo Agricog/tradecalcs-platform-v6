@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { OfflineIndicator } from './components/OfflineIndicator'
+import Footer from './components/Footer'
 import Homepage from './pages/Home'
 import CableSizingCalculatorPage from './pages/CableSizingCalculatorPage'
 import VoltageDropCalculatorPage from './pages/VoltageDropCalculatorPage'
@@ -112,12 +113,16 @@ function App() {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
         </Routes>
+
+        {/* Footer */}
+        <Footer />
       </Router>
     </HelmetProvider>
   )
 }
 
 export default App
+
 
 
 
