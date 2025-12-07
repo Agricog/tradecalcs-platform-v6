@@ -112,70 +112,13 @@ function App() {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
         </Routes>
-
-        {/* Footer (only shows on calculator pages, Home has its own) */}
-        <footer className="bg-gray-900 text-gray-300 py-12 px-4">
-          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
-                  TC
-                </div>
-                <span className="font-bold text-white">TradeCalcs</span>
-              </div>
-              <p className="text-sm">Professional calculators and tools for UK tradespeople. Built by tradespeople, for tradespeople.</p>
-              <p className="text-xs mt-4">© 2025 TradeCalcs. All rights reserved.</p>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-white mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link to="/" className="hover:text-white">Home</Link></li>
-                <li><a href="/#calculators" className="hover:text-white">All Calculators</a></li>
-                <li><Link to="/leadfortress" className="hover:text-white">LeadFortress</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-white mb-4">Services</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="hover:text-white">Custom Development</a></li>
-                <li><Link to="/leadfortress" className="hover:text-white">Lead Management</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-white mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link to="/privacy-policy" className="hover:text-white">Privacy Policy</Link></li>
-                <li><Link to="/terms-of-service" className="hover:text-white">Terms of Service</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-700 pt-8 max-w-5xl mx-auto">
-            <div className="text-center mb-4">
-              <p className="text-sm mb-2">Need help or have questions?</p>
-              <a 
-                href="mailto:mick@tradecalcs.co.uk" 
-                className="text-purple-400 hover:text-purple-300 transition font-semibold text-sm"
-              >
-                mick@tradecalcs.co.uk
-              </a>
-            </div>
-            
-            <div className="text-center text-xs">
-              <p>TradeCalcs is committed to providing accurate, BS-compliant calculations for UK tradespeople.</p>
-              <p className="mt-2">Built by Tradespeople, for Tradespeople</p>
-            </div>
-          </div>
-        </footer>
       </Router>
     </HelmetProvider>
   )
 }
 
 export default App
+
 
 
 
