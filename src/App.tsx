@@ -22,7 +22,7 @@ import STGOCalculatorPage from './pages/STGOCalculatorPage'
 import ScaffoldCalculatorPage from './pages/ScaffoldCalculatorPage'
 import InsulationCalculatorPage from './pages/InsulationCalculatorPage'
 import DrainageCalculatorPage from './pages/DrainageCalculatorPage'
-
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   return (
