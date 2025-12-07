@@ -16,6 +16,23 @@ const colorMap = {
   purple: '#a855f7'
 };
 
+const getContactClasses = (color: string) => {
+  if (color === 'blue') return { bg: 'bg-blue-50', icon: 'bg-blue-600', text: 'text-blue-600', hover: 'hover:text-blue-700' };
+  if (color === 'purple') return { bg: 'bg-purple-50', icon: 'bg-purple-600', text: 'text-purple-600', hover: 'hover:text-purple-700' };
+  return { bg: 'bg-green-50', icon: 'bg-green-600', text: 'text-green-600', hover: 'hover:text-green-700' };
+};
+
+const getCalcColorClasses = (color: string) => {
+  if (color === 'blue') return 'text-blue-600';
+  if (color === 'cyan') return 'text-cyan-600';
+  if (color === 'orange') return 'text-orange-600';
+  if (color === 'green') return 'text-green-600';
+  if (color === 'amber') return 'text-amber-600';
+  if (color === 'red') return 'text-red-600';
+  if (color === 'purple') return 'text-purple-600';
+  return 'text-blue-600';
+};
+
 export default function Home() {
   useEffect(() => {
     document.title = 'TradeCalcs - Free Professional Trade Calculators for UK Tradespeople';
@@ -342,16 +359,16 @@ export default function Home() {
                   <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</div>
                 )}
                 <div className="p-6">
-                  <div className={`text-xs font-bold ${calc.color === 'blue' ? 'text-blue-600' : calc.color === 'cyan' ? 'text-cyan-600' : calc.color === 'orange' ? 'text-orange-600' : calc.color === 'green' ? 'text-green-600' : calc.color === 'amber' ? 'text-amber-600' : calc.color === 'red' ? 'text-red-600' : 'text-purple-600'} mb-3 uppercase tracking-wider`}>{calc.trade}</div>
+                  <div className={`text-xs font-bold ${getCalcColorClasses(calc.color)} mb-3 uppercase tracking-wider`}>{calc.trade}</div>
                   <div 
                     className="w-12 h-12 rounded-lg flex items-center justify-center text-white mb-4"
-                    style={{ backgroundColor: colorMap[calc.color] }}
+                    style={{ backgroundColor: colorMap[calc.color as keyof typeof colorMap] }}
                   >
-                    c.icon classNameme="w-6 h-6" />
+                    c.icon className="w-6-6 h-6" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{calc.title}</h3>
                   <p className="text-gray-600 text-sm mb-4">{calc.desc}</p>
-                  <div className={`${calc.color === 'blue' ? 'text-blue-600' : calc.color === 'cyan' ? 'text-cyan-600' : calc.color === 'orange' ? 'text-orange-600' : calc.color === 'green' ? 'text-green-600' : calc.color === 'amber' ? 'text-amber-600' : calc.color === 'red' ? 'text-red-600' : 'text-purple-600'} font-semibold flex items-center gap-2 hover:gap-3 transition`}>
+                  <div className={`${getCalcColorClasses(calc.color)} font-semibold flex items-center gap-2 hover:gap-3 transition`}>
                     Use Calculator <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -431,24 +448,20 @@ export default function Home() {
                   { icon: MessageSquare, title: 'Quick message? WhatsApp or SMS', detail: 'Same number, instant reply', color: 'purple' },
                   { icon: Mail, title: 'Email for detailed requests', detail: 'mick@tradecalcs.co.uk', color: 'green' }
                 ].map((item, i) => {
-                  const bgClass = item.color === 'blue' ? 'bg-blue-50' : item.color === 'purple' ? 'bg-purple-50' : 'bg-green-50';
-                  const iconBgClass = item.color === 'blue' ? 'bg-blue-600' : item.color === 'purple' ? 'bg-purple-600' : 'bg-green-600';
-                  const textClass = item.color === 'blue' ? 'text-blue-600' : item.color === 'purple' ? 'text-purple-600' : 'text-green-600';
-                  const hoverClass = item.color === 'blue' ? 'hover:text-blue-700' : item.color === 'purple' ? 'hover:text-purple-700' : 'hover:text-green-700';
-                  
+                  const classes = getContactClasses(item.color);
                   return (
-                    <div key={i} className={`flex items-center gap-4 p-4 ${bgClass} rounded-lg`}>
-                      <div className={`w-12 h-12 ${iconBgClass} rounded-lg flex items-center justify-center text-white flex-shrink-0`}>
+                    <div key={i} className={`flex items-center gap-4 p-4 ${classes.bg} rounded-lg`}>
+                      <div className={`w-12 h-12 ${classes.icon} rounded-lg flex items-center justify-center text-white flex-shrink-0`}>
                         <item.icon className="w-6 h-6" />
                       </div>
                       <div>
                         <p className="text-sm text-gray-600">{item.title}</p>
                         {item.detail.startsWith('@') ? (
-                          <a href={`mailto:${item.detail}`} className={`font-bold ${textClass} ${hoverClass}`}>{item.detail}</a>
+                          <a href={`mailto:${item.detail}`} className={`font-bold ${classes.text} ${classes.hover}`}>{item.detail}</a>
                         ) : item.detail.startsWith('07') ? (
-                          <a href={`tel:${item.detail}`} className={`text-xl font-bold ${textClass} ${hoverClass}`}>{item.detail}</a>
+                          <a href={`tel:${item.detail}`} className={`text-xl font-bold ${classes.text} ${classes.hover}`}>{item.detail}</a>
                         ) : (
-                          <p className={`text-lg font-bold ${textClass}`}>{item.detail}</p>
+                          <p className={`text-lg font-bold ${classes.text}`}>{item.detail}</p>
                         )}
                       </div>
                     </div>
@@ -509,6 +522,7 @@ export default function Home() {
 }
 
 export default Home;
+
 
 
 
