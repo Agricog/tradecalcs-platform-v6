@@ -9,11 +9,5 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Force 3 columns on desktop for calculator grid */
-@media (min-width: 1024px) {
-  .grid.gap-6 {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  }
-}
 
 
