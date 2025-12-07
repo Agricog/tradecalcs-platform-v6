@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Droplets, Calculator, AlertCircle, CheckCircle2, ShoppingCart, ArrowLeft } from 'lucide-react'
+import { Droplets, Calculator, AlertCircle, ShoppingCart, ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 interface BeddingResult {
