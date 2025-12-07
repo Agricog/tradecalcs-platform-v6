@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Calculator } from 'lucide-react'
+
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-r from-purple-900 via-purple-800 to-blue-900 text-white">
@@ -26,8 +27,8 @@ export default function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-4">Legal</h3>
             <ul className="space-y-2">
-              <li><Link to="/privacy" className="text-purple-200 hover:text-white transition">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="text-purple-200 hover:text-white transition">Terms of Service</Link></li>
+              <li><Link to="/privacy-policy" className="text-purple-200 hover:text-white transition">Privacy Policy</Link></li>
+              <li><Link to="/terms-of-service" className="text-purple-200 hover:text-white transition">Terms of Service</Link></li>
             </ul>
           </div>
         </div>
