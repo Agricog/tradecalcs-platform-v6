@@ -19,8 +19,6 @@ export default function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><Link to="/tools" className="text-purple-200 hover:text-white transition">Tools</Link></li>
-              <li><Link to="/pricing" className="text-purple-200 hover:text-white transition">Pricing</Link></li>
               <li><a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="text-purple-200 hover:text-white transition">Contact Us</a></li>
             </ul>
           </div>
