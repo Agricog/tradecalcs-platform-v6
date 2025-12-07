@@ -6,24 +6,40 @@ import {
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 
+const colorMap = {
+  blue: '#3b82f6',
+  cyan: '#06b6d4',
+  orange: '#ea580c',
+  green: '#22c55e',
+  amber: '#f59e0b',
+  red: '#ef4444',
+  purple: '#a855f7'
+};
+
+const textColorMap = {
+  blue: 'text-blue-600',
+  cyan: 'text-cyan-600',
+  orange: 'text-orange-600',
+  green: 'text-green-600',
+  amber: 'text-amber-600',
+  red: 'text-red-600',
+  purple: 'text-purple-600'
+};
+
 export default function Home() {
   useEffect(() => {
-    // SEO Page Title
     document.title = 'TradeCalcs - Free Professional Trade Calculators for UK Tradespeople';
 
-    // SEO Meta Description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute('content', 'Free professional trade calculators for electricians, plumbers, builders, painters & more. BS 7671 compliant, mobile-ready. Cable sizing, voltage drop, concrete, paint & 15 more calculators.');
     }
 
-    // SEO Meta Keywords
     const metaKeywords = document.querySelector('meta[name="keywords"]');
     if (metaKeywords) {
       metaKeywords.setAttribute('content', 'trade calculators, electrician calculator, plumber calculator, builder calculator, cable sizing, voltage drop, BS 7671, professional calculators, UK trades');
     }
 
-    // SEO Open Graph Tags
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) ogTitle.setAttribute('content', 'TradeCalcs - Professional Trade Calculators for UK Tradespeople');
 
@@ -39,7 +55,6 @@ export default function Home() {
     const ogType = document.querySelector('meta[property="og:type"]');
     if (ogType) ogType.setAttribute('content', 'website');
 
-    // SEO Twitter Card
     const twitterCard = document.querySelector('meta[name="twitter:card"]');
     if (twitterCard) twitterCard.setAttribute('content', 'summary_large_image');
 
@@ -49,13 +64,11 @@ export default function Home() {
     const twitterDesc = document.querySelector('meta[name="twitter:description"]');
     if (twitterDesc) twitterDesc.setAttribute('content', 'Free calculators for electricians, plumbers, builders, painters & all UK trades. BS 7671 compliant, mobile-ready.');
 
-    // SEO Canonical Tag
     const canonicalLink = document.querySelector('link[rel="canonical"]');
     if (canonicalLink) {
       canonicalLink.setAttribute('href', 'https://tradecalcs.co.uk');
     }
 
-    // SEO JSON-LD Structured Data
     const schemaScript = document.createElement('script');
     schemaScript.type = 'application/ld+json';
     schemaScript.innerHTML = JSON.stringify({
@@ -167,13 +180,11 @@ export default function Home() {
     });
     document.head.appendChild(schemaScript);
 
-    // SEO Robots meta tag
     const robotsMeta = document.querySelector('meta[name="robots"]');
     if (robotsMeta) {
       robotsMeta.setAttribute('content', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
     }
 
-    // SEO Viewport already present but ensuring
     const viewportMeta = document.querySelector('meta[name="viewport"]');
     if (!viewportMeta) {
       const newViewport = document.createElement('meta');
@@ -193,7 +204,6 @@ export default function Home() {
         .twinkle { animation: twinkle 1.5s infinite; }
       `}</style>
 
-      {/* STRAPLINE WITH TWINKLING STARS */}
       <a href="https://app.smartsuite.com/forms/ba974giZx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="block bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 text-center hover:from-purple-700 hover:to-blue-700 transition">
         <div className="flex items-center justify-center gap-2 text-sm md:text-base">
           <span className="twinkle">✨</span>
@@ -202,7 +212,6 @@ export default function Home() {
         </div>
       </a>
 
-      {/* HERO BANNER */}
       <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 text-white py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-5xl font-bold mb-4">Professional Trade Calculators</h1>
@@ -222,7 +231,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* WHY CHOOSE TRADECALCS */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-4">Why Trade Professionals Choose TradeCalcs</h2>
@@ -246,7 +254,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* STOP LOSING LEADS - LEADFORTRESS SECTION */}
       <section className="py-16 px-4 bg-gradient-to-br from-red-50 to-orange-50 border-y-2 border-red-200">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
@@ -304,13 +311,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FREE CALCULATORS */}
       <section id="calculators" className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-2">Free Professional Calculators</h2>
           <p className="text-center text-gray-600 mb-8">Choose your calculator and start working smarter</p>
 
-          {/* CTA SECTION ABOVE CALCULATORS */}
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl p-8 mb-12 shadow-xl">
             <div className="max-w-3xl mx-auto text-center">
               <h3 className="text-3xl font-bold mb-4">Generate Professional Quotes in 2 Minutes</h3>
@@ -324,7 +329,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* CALCULATOR GRID */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { href: '/cable-sizing-calculator', icon: Zap, title: 'Cable Sizing Calculator', desc: 'BS 7671 compliant electrical cable sizing with all derating factors', color: 'blue', trade: 'For Electricians' },
@@ -348,13 +352,16 @@ export default function Home() {
                   <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</div>
                 )}
                 <div className="p-6">
-                  <div className={`text-xs font-bold text-${calc.color}-600 mb-3 uppercase tracking-wider`}>{calc.trade}</div>
-                  <div className={`w-12 h-12 bg-${calc.color}-${calc.color === 'amber' ? '500' : calc.color === 'red' ? '500' : '500'} rounded-lg flex items-center justify-center text-white mb-4`}>
-                    alc.icon className="w-6 h-6" />
+                  <div className={`text-xs font-bold ${textColorMap[calc.color]} mb-3 uppercase tracking-wider`}>{calc.trade}</div>
+                  <div 
+                    className="w-12 h-12 rounded-lg flex items-center justify-center text-white mb-4"
+                    style={{ backgroundColor: colorMap[calc.color] }}
+                  >
+                    c.icon className="w-6-6 h-6" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{calc.title}</h3>
                   <p className="text-gray-600 text-sm mb-4">{calc.desc}</p>
-                  <div className={`text-${calc.color}-600 font-semibold flex items-center gap-2 hover:gap-3 transition`}>
+                  <div className={`${textColorMap[calc.color]} font-semibold flex items-center gap-2 hover:gap-3 transition`}>
                     Use Calculator <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -365,7 +372,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BUILT BY TRADESPEOPLE */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -403,7 +409,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* GET IN TOUCH SECTION */}
       <section className="py-16 px-4 bg-gradient-to-r from-blue-50 to-purple-50 border-y-2 border-purple-200">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
@@ -435,23 +440,30 @@ export default function Home() {
                   { icon: Phone, title: 'Call or text anytime', detail: '07985 559775', color: 'blue' },
                   { icon: MessageSquare, title: 'Quick message? WhatsApp or SMS', detail: 'Same number, instant reply', color: 'purple' },
                   { icon: Mail, title: 'Email for detailed requests', detail: 'mick@tradecalcs.co.uk', color: 'green' }
-                ].map((item, i) => (
-                  <div key={i} className={`flex items-center gap-4 p-4 bg-${item.color}-50 rounded-lg`}>
-                    <div className={`w-12 h-12 bg-${item.color}-600 rounded-lg flex items-center justify-center text-white flex-shrink-0`}>
-                      <item.icon className="w-6 h-6" />
+                ].map((item, i) => {
+                  const bgColorClass = item.color === 'blue' ? 'bg-blue-50' : item.color === 'purple' ? 'bg-purple-50' : 'bg-green-50';
+                  const iconBgClass = item.color === 'blue' ? 'bg-blue-600' : item.color === 'purple' ? 'bg-purple-600' : 'bg-green-600';
+                  const textColorClass = item.color === 'blue' ? 'text-blue-600' : item.color === 'purple' ? 'text-purple-600' : 'text-green-600';
+                  const hoverColorClass = item.color === 'blue' ? 'hover:text-blue-700' : item.color === 'purple' ? 'hover:text-purple-700' : 'hover:text-green-700';
+                  
+                  return (
+                    <div key={i} className={`flex items-center gap-4 p-4 ${bgColorClass} rounded-lg`}>
+                      <div className={`w-12 h-12 ${iconBgClass} rounded-lg flex items-center justify-center text-white flex-shrink-0`}>
+                        <item.icon className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">{item.title}</p>
+                        {item.detail.startsWith('@') ? (
+                          <a href={`mailto:${item.detail}`} className={`font-bold ${textColorClass} ${hoverColorClass}`}>{item.detail}</a>
+                        ) : item.detail.startsWith('07') ? (
+                          <a href={`tel:${item.detail}`} className={`text-xl font-bold ${textColorClass} ${hoverColorClass}`}>{item.detail}</a>
+                        ) : (
+                          <p className={`text-lg font-bold ${textColorClass}`}>{item.detail}</p>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-600">{item.title}</p>
-                      {item.detail.startsWith('@') ? (
-                        <a href={`mailto:${item.detail}`} className={`font-bold text-${item.color}-600 hover:text-${item.color}-700`}>{item.detail}</a>
-                      ) : item.detail.startsWith('07') ? (
-                        <a href={`tel:${item.detail}`} className={`text-xl font-bold text-${item.color}-600 hover:text-${item.color}-700`}>{item.detail}</a>
-                      ) : (
-                        <p className={`text-lg font-bold text-${item.color}-600`}>{item.detail}</p>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               <div className="bg-gray-50 rounded-lg p-6 mb-6 border-l-4 border-purple-600">
                 <p className="text-gray-700 font-semibold mb-2">Why reach out?</p>
@@ -469,7 +481,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CUSTOM WHITE-LABEL SECTION */}
       <section id="custom" className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-4">Need Something Custom?</h2>
@@ -508,6 +519,7 @@ export default function Home() {
 }
 
 export default Home;
+
 
 
 
