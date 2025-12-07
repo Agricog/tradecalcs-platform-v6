@@ -1,4 +1,4 @@
-import { Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Home as HomeIcon, Droplet, Calculator, TruckIcon, Phone, Mail, MessageSquare } from 'lucide-react'
+import { Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight, Package, Palette, Hammer, Home as HomeIcon, Droplet, Calculator, TruckIcon, Phone, Mail, MessageSquare, Droplets } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 
@@ -167,7 +167,7 @@ export default function Home() {
           'telephone': '+44-xxx-xxx-xxxx',
           'email': 'support@tradecalcs.co.uk',
           'areaServed': 'GB',
-          'priceRange': 'Free - Â£15000+'
+          'priceRange': 'Free - £15000+'
         }
       ]
     })
@@ -205,9 +205,9 @@ export default function Home() {
     {/* STRAPLINE WITH TWINKLING STARS */}
     <a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="block bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 text-center hover:from-purple-700 hover:to-blue-700 transition">
       <div className="flex items-center justify-center gap-2 text-sm md:text-base">
-        <span className="twinkle">âœ¨</span>
+        <span className="twinkle">✨</span>
         <span className="font-semibold">Get VIP Access to New Tools + We Build Bespoke Web Apps for Your Business Problems</span>
-        <span className="twinkle">âœ¨</span>
+        <span className="twinkle">✨</span>
       </div>
     </a>
 
@@ -278,10 +278,10 @@ export default function Home() {
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
           <div className="inline-block bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
-            ðŸ’° STOP LOSING LEADS
+            💰 STOP LOSING LEADS
           </div>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Every Missed Call is Â£500-Â£2,000 Walking Away
+            Every Missed Call is £500-£2,000 Walking Away
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
             You're under a boiler. Phone rings. By the time you see it, they've called your competitor.<br/>
@@ -299,7 +299,7 @@ export default function Home() {
             <p className="text-sm text-gray-700">Of customers move on<br/>within 24 hours</p>
           </div>
           <div className="bg-white rounded-lg p-6 border-2 border-red-200 text-center">
-            <div className="text-4xl font-bold text-red-600 mb-2">Â£20k-Â£100k+</div>
+            <div className="text-4xl font-bold text-red-600 mb-2">£20k-£100k+</div>
             <p className="text-sm text-gray-700">Lost revenue annually<br/>from missed leads</p>
           </div>
         </div>
@@ -347,9 +347,9 @@ export default function Home() {
             to="/leadfortress" 
             className="inline-block bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-bold transition"
           >
-            See How LeadFortress Works â†’
+            See How LeadFortress Works →
           </Link>
-          <p className="text-sm text-gray-600 mt-3">Â£99/month â€¢ Live in 48 hours â€¢ Cancel anytime</p>
+          <p className="text-sm text-gray-600 mt-3">£99/month • Live in 48 hours • Cancel anytime</p>
         </div>
       </div>
     </section>
@@ -360,7 +360,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold text-center mb-2">Free Professional Calculators</h2>
         <p className="text-center text-gray-600 mb-8">Choose your calculator and start working smarter</p>
         
-        {/* NEW: CTA SECTION ABOVE CALCULATORS */}
+        {/* CTA SECTION ABOVE CALCULATORS */}
         <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl p-8 mb-12 shadow-xl">
           <div className="max-w-3xl mx-auto text-center">
             <h3 className="text-3xl font-bold mb-4">Generate Professional Quotes in 2 Minutes</h3>
@@ -373,24 +373,24 @@ export default function Home() {
                 href="/paint-calculator" 
                 className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
               >
-                ðŸŽ¨ Painter Calculator
+                🎨 Painter Calculator
               </a>
               <a 
                 href="/cable-sizing-calculator" 
                 className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
               >
-                âš¡ Electrician Calculator
+                ⚡ Electrician Calculator
               </a>
               <a 
                 href="/joinery-calculator" 
                 className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
               >
-                ðŸªš Joinery Calculator
+                🪚 Joinery Calculator
               </a>
             </div>
             
             <p className="text-sm opacity-75">
-              âœ“ Free to use â€¢ âœ“ No sign-up required â€¢ âœ“ Professional PDF quotes
+              ✓ Free to use • ✓ No sign-up required • ✓ Professional PDF quotes
             </p>
           </div>
         </div>
@@ -435,6 +435,16 @@ export default function Home() {
               <h3 className="text-xl font-bold text-gray-900 mb-2">Roofing Insurance Calculator</h3>
               <p className="text-gray-600 text-sm mb-4">Calculate fair market value and fight for proper compensation</p>
               <div className="text-green-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
+            </div>
+          </a>
+
+          <a href="/drainage-calculator" className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+            <div className="p-6">
+              <div className="text-xs font-bold text-blue-600 mb-3 uppercase tracking-wider">For Drainage Pros</div>
+              <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white mb-4"><Droplets className="w-6 h-6" /></div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Drainage Calculator</h3>
+              <p className="text-gray-600 text-sm mb-4">Calculate pipe bedding, spoil removal & trench backfill quantities</p>
+              <div className="text-blue-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
             </div>
           </a>
 
@@ -498,7 +508,6 @@ export default function Home() {
             </div>
           </a>
 
-          {/* CIS CALCULATOR CARD */}
           <a href="/calculators/cis-calculator" className="bg-white border-2 border-purple-300 rounded-lg overflow-hidden hover:shadow-lg transition relative">
             <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</div>
             <div className="p-6">
@@ -510,7 +519,6 @@ export default function Home() {
             </div>
           </a>
 
-          {/* HAULCHECK STGO CALCULATOR CARD */}
           <a href="/calculators/stgo-calculator" className="bg-white border-2 border-orange-300 rounded-lg overflow-hidden hover:shadow-lg transition relative">
             <div className="absolute top-4 right-4 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</div>
             <div className="p-6">
@@ -519,19 +527,18 @@ export default function Home() {
                 <TruckIcon className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">HaulCheck - STGO Compliance</h3>
-              <p className="text-gray-600 text-sm mb-4">Avoid Â£750K fines - instant STGO category checks, weight limits & notification requirements</p>
+              <p className="text-gray-600 text-sm mb-4">Avoid £750K fines - instant STGO category checks, weight limits & notification requirements</p>
               <div className="text-orange-600 font-semibold flex items-center gap-2 hover:gap-3 transition">Use Calculator <ArrowRight className="w-4 h-4" /></div>
             </div>
           </a>
 
-          {/* SCAFFOLD CALCULATOR CARD */}
           <a href="/calculators/scaffold-calculator" className="bg-white border-2 border-blue-300 rounded-lg overflow-hidden hover:shadow-lg transition relative">
             <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</div>
             <div className="p-6">
               <div className="text-xs font-bold text-blue-600 mb-3 uppercase tracking-wider">For Scaffolders</div>
               <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white mb-4">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Scaffold Calculator</h3>
@@ -540,14 +547,13 @@ export default function Home() {
             </div>
           </a>
 
-          {/* INSULATION U-VALUE CALCULATOR CARD */}
           <a href="/calculators/insulation-calculator" className="bg-white border-2 border-green-300 rounded-lg overflow-hidden hover:shadow-lg transition relative">
             <div className="absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</div>
             <div className="p-6">
               <div className="text-xs font-bold text-green-600 mb-3 uppercase tracking-wider">For Builders & Architects</div>
               <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white mb-4">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Insulation U-Value Calculator</h3>
@@ -609,13 +615,13 @@ export default function Home() {
             <button onClick={() => document.getElementById('calculators')?.scrollIntoView({ behavior: 'smooth' })} className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 inline-flex items-center gap-2">
               Start Using Tools <ArrowRight className="w-5 h-5" />
             </button>
-            <p className="text-sm opacity-75 mt-4">No signup required â€¢ Instant access â€¢ Always free</p>
+            <p className="text-sm opacity-75 mt-4">No signup required • Instant access • Always free</p>
           </div>
         </div>
       </div>
     </section>
 
-    {/* â­ NEW: GET IN TOUCH SECTION â­ */}
+    {/* GET IN TOUCH SECTION */}
     <section className="py-16 px-4 bg-gradient-to-r from-blue-50 to-purple-50 border-y-2 border-purple-200">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
@@ -628,7 +634,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <div className="bg-white rounded-lg p-6 border-2 border-purple-200 text-center hover:shadow-lg transition">
             <div className="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
-              ðŸ’¡
+              💡
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-2">Calculator Improvements</h3>
             <p className="text-sm text-gray-600 mb-4">
@@ -638,7 +644,7 @@ export default function Home() {
 
           <div className="bg-white rounded-lg p-6 border-2 border-purple-200 text-center hover:shadow-lg transition">
             <div className="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
-              ðŸ› ï¸
+              🛠️
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-2">Custom Calculators</h3>
             <p className="text-sm text-gray-600 mb-4">
@@ -648,7 +654,7 @@ export default function Home() {
 
           <div className="bg-white rounded-lg p-6 border-2 border-purple-200 text-center hover:shadow-lg transition">
             <div className="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
-              âš™ï¸
+              ⚙️
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-2">Automation & Tools</h3>
             <p className="text-sm text-gray-600 mb-4">
@@ -702,11 +708,11 @@ export default function Home() {
             <div className="bg-gray-50 rounded-lg p-6 mb-6 border-l-4 border-purple-600">
               <p className="text-gray-700 font-semibold mb-2">Why reach out?</p>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li>âœ“ You've spotted something we can improve</li>
-                <li>âœ“ You need a calculator we haven't built yet</li>
-                <li>âœ“ You want to automate a time-consuming process</li>
-                <li>âœ“ You have a specific business problem to solve</li>
-                <li>âœ“ You just want to say thanks or share feedback</li>
+                <li>✓ You've spotted something we can improve</li>
+                <li>✓ You need a calculator we haven't built yet</li>
+                <li>✓ You want to automate a time-consuming process</li>
+                <li>✓ You have a specific business problem to solve</li>
+                <li>✓ You just want to say thanks or share feedback</li>
               </ul>
             </div>
 
@@ -729,29 +735,29 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <div className="bg-white border-2 border-purple-200 rounded-lg p-6">
             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mb-4 text-xl">
-              âš™ï¸
+              ⚙️
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Bespoke Custom Apps</h3>
             <p className="text-gray-700 text-sm mb-4">
               Custom web applications built specifically for your trade business. Automate workflows, capture data, streamline operations.
             </p>
-            <p className="text-purple-600 font-semibold text-sm">Â£2,000 - Â£15,000+</p>
+            <p className="text-purple-600 font-semibold text-sm">£2,000 - £15,000+</p>
           </div>
 
           <div className="bg-white border-2 border-purple-200 rounded-lg p-6">
             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mb-4 text-xl">
-              ðŸ¢
+              🏢
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">White-Label Solutions</h3>
             <p className="text-gray-700 text-sm mb-4">
               Host our calculators on your own website with your branding. Perfect for agencies, trade organizations, and consultancies.
             </p>
-            <p className="text-purple-600 font-semibold text-sm">From Â£99/month</p>
+            <p className="text-purple-600 font-semibold text-sm">From £99/month</p>
           </div>
 
           <div className="bg-white border-2 border-purple-200 rounded-lg p-6">
             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mb-4 text-xl">
-              ðŸ”—
+              🔗
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">API & Integrations</h3>
             <p className="text-gray-700 text-sm mb-4">
@@ -761,20 +767,56 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg p-8 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-3">Custom Development Services</h3>
-          <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-            Whether you need a specialized calculator for your trade, automation to streamline operations, or want to white-label our tools - we've got you covered. Our team specializes in building solutions that save tradespeople time and money.
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl p-8 md:p-12 text-center">
+          <h3 className="text-3xl font-bold mb-4">Ready to Scale Your Business?</h3>
+          <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
+            Whether you need a custom calculator, automation tool, or white-label solution - let's discuss how we can help your business grow.
           </p>
-          <a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-bold inline-flex items-center gap-2">
-            Tell Us What You Need <ArrowRight className="w-5 h-5" />
+          <a href="tel:07985559775" className="inline-block bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition">
+            Schedule a Call
           </a>
         </div>
       </div>
     </section>
+
+    {/* FOOTER */}
+    <footer className="bg-gray-900 text-gray-400 py-12 px-4">
+      <div className="max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div>
+            <h4 className="text-white font-bold mb-4">Quick Links</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="#calculators" className="hover:text-white">Calculators</a></li>
+              <li><a href="#custom" className="hover:text-white">Custom Solutions</a></li>
+              <li><Link to="/leadfortress" className="hover:text-white">LeadFortress</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-white font-bold mb-4">Support</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="mailto:mick@tradecalcs.co.uk" className="hover:text-white">Email Support</a></li>
+              <li><a href="tel:07985559775" className="hover:text-white">Call Us</a></li>
+              <li><a href="#custom" className="hover:text-white">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-white font-bold mb-4">Company</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="#" className="hover:text-white">About</a></li>
+              <li><a href="#" className="hover:text-white">Privacy</a></li>
+              <li><a href="#" className="hover:text-white">Terms</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="border-t border-gray-700 pt-8 text-center text-sm">
+          <p>&copy; 2025 TradeCalcs. All rights reserved. | Built for UK trades professionals.</p>
+        </div>
+      </div>
+    </footer>
   </>
   )
 }
+
 
 
 
