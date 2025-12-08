@@ -18,72 +18,54 @@ export default defineConfig({
         start_url: '/',
         scope: '/',
         categories: ['productivity', 'utilities'],
-        screenshots: [
-          {
-            src: '/screenshot-192.png',
-            sizes: '192x192',
-            type: 'image/png',
-            form_factor: 'narrow'
-          },
-          {
-            src: '/screenshot-512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            form_factor: 'wide'
-          }
-        ],
         icons: [
           {
-            src: '/pwa-192x192.png',
+            src: '/android-launchericon-48-48.png',
+            sizes: '48x48',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: '/android-launchericon-72-72.png',
+            sizes: '72x72',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: '/android-launchericon-96-96.png',
+            sizes: '96x96',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: '/android-launchericon-144-144.png',
+            sizes: '144x144',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: '/192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any'
           },
           {
-            src: '/pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any'
-          },
-          {
-            src: '/pwa-maskable-192x192.png',
+            src: '/android-launchericon-192-192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'maskable'
           },
           {
-            src: '/pwa-maskable-512x512.png',
-            sizes: '512x512',
+            src: '/152.png',
+            sizes: '152x152',
             type: 'image/png',
-            purpose: 'maskable'
-          }
-        ],
-        shortcuts: [
-          {
-            name: 'Electrical Calculators',
-            short_name: 'Electrical',
-            description: 'Voltage drop, cable sizing, and circuit calculators',
-            url: '/?category=electrical',
-            icons: [
-              {
-                src: '/shortcut-electrical-192.png',
-                sizes: '192x192',
-                type: 'image/png'
-              }
-            ]
+            purpose: 'any'
           },
           {
-            name: 'Building Calculators',
-            short_name: 'Building',
-            description: 'Concrete, tiling, insulation, and material calculators',
-            url: '/?category=building',
-            icons: [
-              {
-                src: '/shortcut-building-192.png',
-                sizes: '192x192',
-                type: 'image/png'
-              }
-            ]
+            src: '/android-launchericon-512-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable'
           }
         ]
       },
@@ -137,4 +119,5 @@ export default defineConfig({
     }
   }
 })
+
 
