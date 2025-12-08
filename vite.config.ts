@@ -7,47 +7,40 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
       manifest: {
         name: 'TradeCalcs - Professional Trade Calculators',
         short_name: 'TradeCalcs',
-        description: 'Free professional calculators for UK trades. Works offline on-site with no signal.',
+        description: 'Free professional calculators for UK trades. Works offline on-site.',
         theme_color: '#7c3aed',
         background_color: '#ffffff',
         display: 'standalone',
         start_url: '/',
         scope: '/',
-        categories: ['productivity', 'utilities'],
         icons: [
           {
             src: '/android-launchericon-48-48.png',
             sizes: '48x48',
-            type: 'image/png',
-            purpose: 'any'
+            type: 'image/png'
           },
           {
             src: '/android-launchericon-72-72.png',
             sizes: '72x72',
-            type: 'image/png',
-            purpose: 'any'
+            type: 'image/png'
           },
           {
             src: '/android-launchericon-96-96.png',
             sizes: '96x96',
-            type: 'image/png',
-            purpose: 'any'
+            type: 'image/png'
           },
           {
             src: '/android-launchericon-144-144.png',
             sizes: '144x144',
-            type: 'image/png',
-            purpose: 'any'
+            type: 'image/png'
           },
           {
             src: '/192.png',
             sizes: '192x192',
-            type: 'image/png',
-            purpose: 'any'
+            type: 'image/png'
           },
           {
             src: '/android-launchericon-192-192.png',
@@ -58,66 +51,21 @@ export default defineConfig({
           {
             src: '/152.png',
             sizes: '152x152',
-            type: 'image/png',
-            purpose: 'any'
+            type: 'image/png'
           },
           {
             src: '/android-launchericon-512-512.png',
             sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable'
+            type: 'image/png'
           }
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff,woff2,ttf,eot}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/tradecalcs\.co\.uk\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'tradecalcs-pages-v1',
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 7 * 24 * 60 * 60
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-stylesheets-v1',
-              expiration: {
-                maxEntries: 20,
-                maxAgeSeconds: 365 * 24 * 60 * 60
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-webfonts-v1',
-              expiration: {
-                maxEntries: 30,
-                maxAgeSeconds: 365 * 24 * 60 * 60
-              }
-            }
-          }
-        ]
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff,woff2,ttf,eot}']
       }
     })
-  ],
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom', 'react-helmet-async']
-        }
-      }
-    }
-  }
+  ]
 })
+
 
 
