@@ -146,6 +146,30 @@ export default function VoltageDropCalculator() {
                       '@type': 'Answer',
                       'text': 'Yes, all calculations follow BS 7671:2018+A2:2022 Regulation 525 requirements and use mV/A/m values from Appendix 4 for standard PVC/XLPE copper conductors at 20°C.'
                     }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'What is a 63A circuit used for?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'A 63A MCB is typically used for submain circuits to outbuildings, large commercial feeds, or significant domestic circuits. It\'s common for main distribution feeds and substantial loads requiring high current capacity. 63A circuits must be carefully designed to keep voltage drop within BS 7671 limits, often requiring 10mm² or larger cable.'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'Do 63A circuits need larger cables?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'Yes, 63A circuits almost always require larger cable than smaller circuits. For example, a 63A circuit over 20 meters needs 16mm² minimum to stay compliant. Always check the quick-select 63A button and test different cable sizes to find the right balance between voltage drop compliance and cost.'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'Can I use 63A for residential installations?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'Yes, 63A MCBs are common in residential installations for main distribution, secondary boards, or large submains to outbuildings. Most standard domestic CUs max out at 100A, so a 63A circuit represents a substantial load. Always verify compliance with Building Control and local regulations.'
+                    }
                   }
                 ]
               },
@@ -205,7 +229,7 @@ export default function VoltageDropCalculator() {
                 aria-label="Load current in amps"
               />
               <div className="flex gap-2 flex-wrap">
-                {['6A', '10A', '16A', '20A', '32A', '40A'].map(amp => (
+                {['6A', '10A', '16A', '20A', '32A', '40A', '63A'].map(amp => (
                   <button
                     key={amp}
                     onClick={() => setCurrent(amp.replace('A', ''))}
@@ -506,6 +530,10 @@ export default function VoltageDropCalculator() {
                 <h4 className="font-bold text-gray-900 mb-2">💡 LED Lighting in Long Runs</h4>
                 <p className="text-sm text-gray-700">LED drivers are sensitive to low voltage. While 3% is the legal limit, best practice targets &lt;2% to avoid dimming and driver issues. Long LED circuit runs need careful cable selection.</p>
               </div>
+              <div className="bg-gray-50 p-4 rounded border-l-4 border-indigo-600">
+                <h4 className="font-bold text-gray-900 mb-2">🏢 63A Submain Circuits</h4>
+                <p className="text-sm text-gray-700">63A circuits are common for large residential installations, commercial premises, or substantial submains to outbuildings. These high-current circuits require larger cables. For example, 63A over 20 meters needs 16mm² minimum to stay compliant. Always test with the 63A quick-select button.</p>
+              </div>
             </div>
           </section>
 
@@ -567,7 +595,7 @@ export default function VoltageDropCalculator() {
                   <tr className="hover:bg-gray-50">
                     <td className="px-4 py-2 font-semibold">16.0</td>
                     <td className="px-4 py-2">1.15</td>
-                    <td className="px-4 py-2">Main feeds, long runs</td>
+                    <td className="px-4 py-2">Main feeds, long runs, 63A circuits</td>
                   </tr>
                   <tr className="hover:bg-gray-50 bg-gray-50">
                     <td className="px-4 py-2 font-semibold">25.0</td>
@@ -607,6 +635,18 @@ export default function VoltageDropCalculator() {
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Is this calculator compliant with the 18th Edition?</h4>
                 <p className="text-sm text-gray-700">Yes, all calculations follow BS 7671:2018+A2:2022 Regulation 525 requirements and use mV/A/m values from Appendix 4 for standard PVC/XLPE copper conductors at 20°C.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: What is a 63A circuit used for?</h4>
+                <p className="text-sm text-gray-700">A 63A MCB is typically used for submain circuits to outbuildings, large commercial feeds, or significant domestic circuits. It's common for main distribution feeds and substantial loads requiring high current capacity. 63A circuits must be carefully designed to keep voltage drop within BS 7671 limits, often requiring 10mm² or larger cable.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: Do 63A circuits need larger cables?</h4>
+                <p className="text-sm text-gray-700">Yes, 63A circuits almost always require larger cable than smaller circuits. For example, a 63A circuit over 20 meters needs 16mm² minimum to stay compliant. Always check the quick-select 63A button and test different cable sizes to find the right balance between voltage drop compliance and cost.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: Can I use 63A for residential installations?</h4>
+                <p className="text-sm text-gray-700">Yes, 63A MCBs are common in residential installations for main distribution, secondary boards, or large submains to outbuildings. Most standard domestic CUs max out at 100A, so a 63A circuit represents a substantial load. Always verify compliance with Building Control and local regulations.</p>
               </div>
             </div>
           </section>
@@ -663,6 +703,7 @@ export default function VoltageDropCalculator() {
     </>
   )
 }
+
 
 
 
