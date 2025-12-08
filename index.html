@@ -2,18 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#7c3aed" />
     <meta name="description" content="TradeCalcs - Free professional calculators for UK trades. Works offline on jobsites." />
     
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    
+    <!-- PWA Support (modern) -->
+    <meta name="mobile-web-app-capable" content="yes" />
     
     <!-- Apple Web App Support -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="TradeCalcs" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     
@@ -29,7 +34,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-F0NNTZ784E');
     </script>
   </head>
