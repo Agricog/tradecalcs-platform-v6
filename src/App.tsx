@@ -112,6 +112,9 @@ function App() {
           <Route path="/scaffold-calculator" element={<ScaffoldCalculatorPage />} />
           <Route path="/calculators/insulation-calculator" element={<InsulationCalculatorPage />} />
           <Route path="/insulation-calculator" element={<InsulationCalculatorPage />} />
+          <Route path="/calculators/brick-calculator/garden-wall" element={<BrickCalculatorGardenWall />} />
+          <Route path="/calculators/brick-calculator/house-extension" element={<BrickCalculatorHouseExtension />} />
+          <Route path="/calculators/brick-calculator/boundary-wall" element={<BrickCalculatorBoundaryWall />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
