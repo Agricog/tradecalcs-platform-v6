@@ -19,32 +19,23 @@ type CalculationResults = {
 
 // Use-case props interface for programmatic SEO pages
 export interface BrickCalculatorUsecaseProps {
-  // SEO metadata (if provided, overrides defaults)
   metaTitle?: string
   metaDescription?: string
   h1?: string
   description?: string
-  
-  // Calculator defaults for this use-case
   defaults?: {
     materialType?: 'brick' | 'block140' | 'block100'
     length?: string
     height?: string
     wasteFactor?: number
   }
-  
-  // Use-case specific tips (shown in tips box)
   tips?: string[]
-  
-  // Hide the full page wrapper (for embedding in use-case template)
   embedded?: boolean
-  
-  // Slug for canonical URL
   slug?: string
 }
 
 // ============================================
-// QUOTE GENERATOR COMPONENT (unchanged)
+// QUOTE GENERATOR COMPONENT
 // ============================================
 function QuoteGenerator({ calculationResults, onClose }: { calculationResults: CalculationResults; onClose: () => void }) {
   const [clientName, setClientName] = useState('John Smith')
@@ -126,13 +117,7 @@ function QuoteGenerator({ calculationResults, onClose }: { calculationResults: C
       <div className="bg-white rounded-xl shadow-xl max-w-xl w-full mx-4">
         <div className="flex items-center justify-between border-b px-6 py-4">
           <h2 className="text-lg font-bold text-gray-900">Generate Professional Quote</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
-            aria-label="Close quote generator"
-          >
-            ✕
-          </button>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600" aria-label="Close quote generator">✕</button>
         </div>
 
         <div className="px-6 pt-4 pb-6 space-y-4 max-h-[80vh] overflow-y-auto">
@@ -142,84 +127,41 @@ function QuoteGenerator({ calculationResults, onClose }: { calculationResults: C
 
           <div className="space-y-1">
             <label className="text-xs font-semibold text-gray-700">Client Name *</label>
-            <input
-              type="text"
-              value={clientName}
-              onChange={e => setClientName(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+            <input type="text" value={clientName} onChange={e => setClientName(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </div>
 
           <div className="space-y-1">
             <label className="text-xs font-semibold text-gray-700">Client Address *</label>
-            <textarea
-              value={clientAddress}
-              onChange={e => setClientAddress(e.target.value)}
-              rows={2}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+            <textarea value={clientAddress} onChange={e => setClientAddress(e.target.value)} rows={2} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
               <label className="text-xs font-semibold text-gray-700">Labour Rate (£/hour) *</label>
-              <input
-                type="number"
-                value={labourRate}
-                onChange={e => setLabourRate(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+              <input type="number" value={labourRate} onChange={e => setLabourRate(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               <p className="text-[10px] text-gray-500">Typical range: £25–£50+</p>
             </div>
             <div className="space-y-1">
               <label className="text-xs font-semibold text-gray-700">Estimated Hours *</label>
-              <input
-                type="number"
-                value={estimatedHours}
-                onChange={e => setEstimatedHours(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+              <input type="number" value={estimatedHours} onChange={e => setEstimatedHours(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             </div>
           </div>
 
           <div className="space-y-1">
             <label className="text-xs font-semibold text-gray-700">Material Markup (%)</label>
-            <input
-              type="number"
-              value={materialMarkup}
-              onChange={e => setMaterialMarkup(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+            <input type="number" value={materialMarkup} onChange={e => setMaterialMarkup(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             <p className="text-[10px] text-gray-500">Typical range: 10–20%</p>
           </div>
 
           <div className="space-y-1">
             <label className="text-xs font-semibold text-gray-700">Additional Notes (Optional)</label>
-            <textarea
-              value={additionalNotes}
-              onChange={e => setAdditionalNotes(e.target.value)}
-              rows={3}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Work includes… Materials to be sourced from…"
-            />
+            <textarea value={additionalNotes} onChange={e => setAdditionalNotes(e.target.value)} rows={3} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Work includes… Materials to be sourced from…" />
           </div>
         </div>
 
         <div className="border-t px-6 py-4 flex items-center justify-between gap-3 bg-gray-50 rounded-b-xl">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-white"
-          >
-            Close
-          </button>
-          <button
-            type="button"
-            onClick={handleDownloadPdf}
-            className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold hover:from-purple-700 hover:to-blue-700 text-center"
-          >
-            Download Quote (PDF)
-          </button>
+          <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-white">Close</button>
+          <button type="button" onClick={handleDownloadPdf} className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold hover:from-purple-700 hover:to-blue-700 text-center">Download Quote (PDF)</button>
         </div>
       </div>
     </div>
@@ -234,26 +176,37 @@ interface CalculatorCoreProps {
   defaultLength?: string
   defaultHeight?: string
   defaultWasteFactor?: number
-  usecaseTips?: string[]
-  onResultsChange?: (results: any) => void
 }
 
 export function BrickCalculatorCore({
   defaultMaterialType = 'brick',
   defaultLength = '',
   defaultHeight = '',
-  defaultWasteFactor = 10,
-  usecaseTips,
-  onResultsChange
+  defaultWasteFactor = 10
 }: CalculatorCoreProps) {
   const [materialType, setMaterialType] = useState<'brick' | 'block140' | 'block100'>(defaultMaterialType)
   const [length, setLength] = useState(defaultLength)
   const [height, setHeight] = useState(defaultHeight)
   const [wasteFactor, setWasteFactor] = useState(defaultWasteFactor)
-  const [results, setResults] = useState<any>(null)
+  const [results, setResults] = useState<{
+    materialName: string
+    itemsNeeded: string
+    itemsWithWaste: string
+    wallArea: string
+    length: string
+    height: string
+    sandTonnes: string
+    cementBags: number
+    cementKgBase: string
+    sandKgBase: string
+    sandCost: string
+    cementCost: string
+    totalMaterialCost: string
+    wasteFactor: number
+    mortarRatio: string
+  } | null>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
-  // Apply defaults when props change
   useEffect(() => {
     if (defaultMaterialType) setMaterialType(defaultMaterialType)
     if (defaultLength) setLength(defaultLength)
@@ -262,24 +215,9 @@ export function BrickCalculatorCore({
   }, [defaultMaterialType, defaultLength, defaultHeight, defaultWasteFactor])
 
   const materialSpecs: Record<string, { name: string; bricksPerM2: number; sandPerM2: number; cementPerM2: number }> = {
-    brick: { 
-      name: 'Standard UK Bricks (215×102.5×65mm)', 
-      bricksPerM2: 60,
-      sandPerM2: 40,
-      cementPerM2: 8
-    },
-    block140: { 
-      name: '140mm Concrete Blocks (440×215×140mm)', 
-      bricksPerM2: 10.76,
-      sandPerM2: 32.5,
-      cementPerM2: 9.5
-    },
-    block100: { 
-      name: '100mm Concrete Blocks (440×215×100mm)', 
-      bricksPerM2: 10.76,
-      sandPerM2: 32.5,
-      cementPerM2: 9.5
-    }
+    brick: { name: 'Standard UK Bricks (215×102.5×65mm)', bricksPerM2: 60, sandPerM2: 40, cementPerM2: 8 },
+    block140: { name: '140mm Concrete Blocks (440×215×140mm)', bricksPerM2: 10.76, sandPerM2: 32.5, cementPerM2: 9.5 },
+    block100: { name: '100mm Concrete Blocks (440×215×100mm)', bricksPerM2: 10.76, sandPerM2: 32.5, cementPerM2: 9.5 }
   }
 
   const calculate = () => {
@@ -305,7 +243,7 @@ export function BrickCalculatorCore({
     const sandCost = sandTonnesRounded * 45.00
     const cementCost = cementBags * 6.50
 
-    const newResults = {
+    setResults({
       materialName: specs.name,
       itemsNeeded: itemsNeeded.toLocaleString(),
       itemsWithWaste: itemsWithWaste.toLocaleString(),
@@ -321,15 +259,11 @@ export function BrickCalculatorCore({
       totalMaterialCost: (sandCost + cementCost).toFixed(2),
       wasteFactor,
       mortarRatio: '4:1 (sand:cement)'
-    }
-
-    setResults(newResults)
-    onResultsChange?.(newResults)
+    })
   }
 
   return (
     <div className="bg-white rounded-lg p-6 sm:p-8">
-      {/* Calculator Header */}
       <div className="bg-red-600 text-white rounded-lg p-4 mb-6">
         <div className="flex items-center gap-2 mb-1">
           <Info className="w-5 h-5" />
@@ -338,95 +272,46 @@ export function BrickCalculatorCore({
         <p className="text-sm opacity-90">Calculate cement, sand and mortar using standard 4:1 ratio</p>
       </div>
 
-      {/* Material Type Selection */}
       <div className="mb-6">
         <label className="block font-bold text-gray-800 mb-2">1. Material Type</label>
-        <select
-          value={materialType}
-          onChange={e => setMaterialType(e.target.value as 'brick' | 'block140' | 'block100')}
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 mb-2"
-          aria-label="Material type"
-        >
+        <select value={materialType} onChange={e => setMaterialType(e.target.value as 'brick' | 'block140' | 'block100')} className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 mb-2" aria-label="Material type">
           <option value="brick">Standard UK Bricks (215×102.5×65mm) - 60/m²</option>
           <option value="block140">140mm Concrete Blocks (440×215×140mm) - 10.76/m²</option>
           <option value="block100">100mm Concrete Blocks (440×215×100mm) - 10.76/m²</option>
         </select>
       </div>
 
-      {/* Dimensions */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div>
           <label className="block font-bold text-gray-800 mb-2">2. Wall Length (metres)</label>
-          <input
-            type="number"
-            step="0.1"
-            value={length}
-            onChange={e => setLength(e.target.value)}
-            placeholder="e.g. 10"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 mb-2"
-          />
+          <input type="number" step="0.1" value={length} onChange={e => setLength(e.target.value)} placeholder="e.g. 10" className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 mb-2" />
           <div className="flex gap-2 flex-wrap">
             {['5', '10', '15', '20'].map(len => (
-              <button
-                key={len}
-                onClick={() => setLength(len)}
-                className="px-3 py-1 bg-red-100 text-red-700 rounded font-semibold text-sm hover:bg-red-200"
-              >
-                {len}m
-              </button>
+              <button key={len} onClick={() => setLength(len)} className="px-3 py-1 bg-red-100 text-red-700 rounded font-semibold text-sm hover:bg-red-200">{len}m</button>
             ))}
           </div>
         </div>
-
         <div>
           <label className="block font-bold text-gray-800 mb-2">3. Wall Height (metres)</label>
-          <input
-            type="number"
-            step="0.1"
-            value={height}
-            onChange={e => setHeight(e.target.value)}
-            placeholder="e.g. 2.5"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 mb-2"
-          />
+          <input type="number" step="0.1" value={height} onChange={e => setHeight(e.target.value)} placeholder="e.g. 2.5" className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 mb-2" />
           <div className="flex gap-2 flex-wrap">
             {['1.8', '2.4', '2.7', '3.0'].map(hgt => (
-              <button
-                key={hgt}
-                onClick={() => setHeight(hgt)}
-                className="px-3 py-1 bg-red-100 text-red-700 rounded font-semibold text-sm hover:bg-red-200"
-              >
-                {hgt}m
-              </button>
+              <button key={hgt} onClick={() => setHeight(hgt)} className="px-3 py-1 bg-red-100 text-red-700 rounded font-semibold text-sm hover:bg-red-200">{hgt}m</button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Waste Factor */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <label className="block font-bold text-gray-800">4. Waste Factor: {wasteFactor}%</label>
         </div>
-        <input
-          type="range"
-          min="0"
-          max="20"
-          value={wasteFactor}
-          onChange={e => setWasteFactor(Number(e.target.value))}
-          className="w-full"
-        />
+        <input type="range" min="0" max="20" value={wasteFactor} onChange={e => setWasteFactor(Number(e.target.value))} className="w-full" />
         <p className="text-xs text-gray-500 mt-1">Typical: 10% standard, 5% simple work, 15-20% complex patterns</p>
       </div>
 
-      {/* Calculate Button */}
-      <button
-        onClick={calculate}
-        className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg text-lg transition"
-      >
-        🧱 Calculate Materials
-      </button>
+      <button onClick={calculate} className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg text-lg transition">🧱 Calculate Materials</button>
 
-      {/* Results */}
       {results && (
         <>
           <div className="mt-8 rounded-lg p-6 bg-red-50 border-2 border-red-300">
@@ -480,7 +365,6 @@ export function BrickCalculatorCore({
             </div>
           </div>
 
-          {/* Quote Generator CTA */}
           <div className="mt-6 p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
@@ -493,17 +377,11 @@ export function BrickCalculatorCore({
                 <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
               </div>
             </div>
-            <button
-              onClick={() => setShowQuoteGenerator(true)}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
-            >
-              Generate Free Quote
-            </button>
+            <button onClick={() => setShowQuoteGenerator(true)} className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2">Generate Free Quote</button>
           </div>
         </>
       )}
 
-      {/* Quote Generator Modal */}
       {showQuoteGenerator && results && (
         <QuoteGenerator
           calculationResults={{
@@ -523,7 +401,7 @@ export function BrickCalculatorCore({
 }
 
 // ============================================
-// MAIN COMPONENT (supports both standalone & embedded)
+// MAIN COMPONENT (for standalone page)
 // ============================================
 export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps = {}) {
   const {
@@ -537,7 +415,6 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
     slug
   } = props
 
-  // Default SEO values (original page)
   const seoTitle = metaTitle || 'Brick & Block Calculator UK | Free Bricklaying Materials Calculator | TradeCalcs'
   const seoDescription = metaDescription || 'Free brick and block calculator for UK bricklayers. Calculate exact quantities of bricks, blocks, cement, sand, mortar and labour costs instantly. Professional tool with waste factors.'
   const pageH1 = h1 || 'Brick & Block Calculator UK'
@@ -546,7 +423,6 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
     ? `https://tradecalcs.co.uk/calculators/brick-calculator/${slug}`
     : 'https://tradecalcs.co.uk/brick-block-calculator'
 
-  // If embedded, just render the calculator core
   if (embedded) {
     return (
       <BrickCalculatorCore
@@ -554,12 +430,10 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
         defaultLength={defaults?.length}
         defaultHeight={defaults?.height}
         defaultWasteFactor={defaults?.wasteFactor}
-        usecaseTips={tips}
       />
     )
   }
 
-  // Full page render (standalone)
   return (
     <>
       <Helmet>
@@ -568,21 +442,17 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
         <meta name="keywords" content="brick calculator, block calculator, bricklaying calculator, mortar calculator, cement calculator, UK bricklayer tools, building materials calculator, brick wall calculator, concrete block calculator, bricklaying estimator" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
         <meta property="og:type" content="website" />
         <meta property="og:title" content={seoTitle} />
         <meta property="og:description" content={seoDescription} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:site_name" content="TradeCalcs" />
-
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={seoTitle} />
         <meta name="twitter:description" content={seoDescription} />
-
         <link rel="canonical" href={canonicalUrl} />
         <meta name="author" content="TradeCalcs" />
         <meta name="theme-color" content="#dc2626" />
-
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -611,12 +481,9 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
 
       <div className="bg-gray-50 min-h-screen">
         <div className="max-w-5xl mx-auto px-4 py-4">
-          <a href="/" className="text-purple-600 hover:text-purple-800 font-semibold text-sm">
-            ← Back to All Calculators
-          </a>
+          <a href="/" className="text-purple-600 hover:text-purple-800 font-semibold text-sm">← Back to All Calculators</a>
         </div>
 
-        {/* Hero */}
         <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white py-12 px-4">
           <div className="max-w-5xl mx-auto text-center">
             <Info className="w-12 h-12 mx-auto mb-3" />
@@ -626,18 +493,15 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
         </div>
 
         <div className="max-w-5xl mx-auto px-4 py-8">
-          {/* Calculator */}
           <div className="bg-white rounded-lg shadow-lg mb-8">
             <BrickCalculatorCore
               defaultMaterialType={defaults?.materialType}
               defaultLength={defaults?.length}
               defaultHeight={defaults?.height}
               defaultWasteFactor={defaults?.wasteFactor}
-              usecaseTips={tips}
             />
           </div>
 
-          {/* Use-case specific tips (if provided) */}
           {tips && tips.length > 0 && (
             <div className="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-6 mb-8">
               <div className="flex items-start gap-3">
@@ -657,7 +521,6 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
             </div>
           )}
 
-          {/* Standard Specifications */}
           <div className="bg-red-50 border-l-4 border-red-600 rounded-lg p-6 mb-8">
             <div className="flex items-start gap-3">
               <AlertCircle className="w-6 h-6 text-red-600 mt-1 flex-shrink-0" />
@@ -674,13 +537,10 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
             </div>
           </div>
 
-          {/* CTA */}
           <div className="bg-red-600 text-white rounded-lg p-8 text-center">
             <h2 className="text-2xl font-bold mb-3">Complete Your Trade Calculations</h2>
             <p className="mb-6">Use our comprehensive suite of professional estimators</p>
-            <a href="/" className="bg-white text-red-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
-              View All Calculators
-            </a>
+            <a href="/" className="bg-white text-red-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">View All Calculators</a>
           </div>
         </div>
       </div>
