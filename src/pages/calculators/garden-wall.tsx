@@ -1,9 +1,9 @@
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, MapPin } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
-import { BrickCalculatorCore } from '../../../components/BrickBlockCalculator'
-import LocationSupplierWidget from '../../../components/LocationSupplierWidget'
+import { BrickCalculatorCore } from '../../components/BrickBlockCalculator'
+import LocationSupplierWidget from '../../components/LocationSupplierWidget'
 
 // Use-case specific data - FULLY SEO OPTIMIZED
 const usecaseData = {
@@ -28,10 +28,8 @@ const usecaseData = {
   ],
   relatedUsecases: [
     { slug: 'boundary-wall', title: 'Boundary Walls' },
-    { slug: 'raised-bed', title: 'Raised Garden Beds' },
-    { slug: 'decorative-feature', title: 'Decorative Features' }
+    { slug: 'house-extension', title: 'House Extensions' }
   ],
-  // EXPANDED FAQs - 10 questions for SEO (minimum 8-15 per CLAUDE-tradecalcs-SEO.md)
   faqs: [
     {
       q: 'How many bricks do I need per square metre for a garden wall?',
@@ -82,7 +80,6 @@ export default function BrickCalculatorGardenWall() {
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
-      // 1. BreadcrumbList
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -92,7 +89,6 @@ export default function BrickCalculatorGardenWall() {
           { '@type': 'ListItem', position: 4, name: 'Garden Walls', item: usecaseData.canonicalUrl }
         ]
       },
-      // 2. SoftwareApplication
       {
         '@type': 'SoftwareApplication',
         name: usecaseData.title,
@@ -103,7 +99,6 @@ export default function BrickCalculatorGardenWall() {
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
         aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.8', ratingCount: '156', bestRating: '5', worstRating: '1' }
       },
-      // 3. FAQPage
       {
         '@type': 'FAQPage',
         mainEntity: usecaseData.faqs.map(faq => ({
@@ -112,7 +107,6 @@ export default function BrickCalculatorGardenWall() {
           acceptedAnswer: { '@type': 'Answer', text: faq.a }
         }))
       },
-      // 4. HowTo
       {
         '@type': 'HowTo',
         name: 'How to Calculate Bricks for a Garden Wall',
@@ -128,7 +122,6 @@ export default function BrickCalculatorGardenWall() {
           { '@type': 'HowToStep', position: 5, name: 'Calculate', text: 'Click Calculate to get brick, sand, and cement quantities.' }
         ]
       },
-      // 5. Article
       {
         '@type': 'Article',
         headline: usecaseData.h1,
@@ -139,15 +132,13 @@ export default function BrickCalculatorGardenWall() {
         dateModified: '2025-01-01',
         mainEntityOfPage: usecaseData.canonicalUrl
       },
-      // 6. Organization
       {
         '@type': 'Organization',
         name: 'TradeCalcs',
         url: 'https://tradecalcs.co.uk',
         logo: 'https://tradecalcs.co.uk/logo.png',
         description: 'Free professional calculators for UK construction trades',
-        contactPoint: { '@type': 'ContactPoint', contactType: 'Customer Support', email: 'mick@tradecalcs.co.uk' },
-        sameAs: ['https://twitter.com/TradeCalcs']
+        contactPoint: { '@type': 'ContactPoint', contactType: 'Customer Support', email: 'mick@tradecalcs.co.uk' }
       }
     ]
   }
@@ -155,25 +146,16 @@ export default function BrickCalculatorGardenWall() {
   return (
     <>
       <Helmet>
-        {/* ========== 1. PRIMARY META TAGS ========== */}
         <title>{usecaseData.metaTitle}</title>
         <meta name="description" content={usecaseData.metaDescription} />
         <meta name="keywords" content="garden wall brick calculator, brick wall calculator UK, how many bricks garden wall, garden wall materials, bricklaying calculator, brick quantity calculator, mortar calculator garden wall, garden wall cost calculator" />
         <meta name="author" content="TradeCalcs" />
-
-        {/* ========== 2. ROBOTS & CRAWLING ========== */}
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        
-        {/* ========== 3. VIEWPORT & MOBILE ========== */}
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-
-        {/* ========== 4. THEME & APPEARANCE ========== */}
         <meta name="theme-color" content="#ea580c" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-        {/* ========== 5. OPEN GRAPH (6 tags) ========== */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="TradeCalcs" />
         <meta property="og:locale" content="en_GB" />
@@ -184,45 +166,30 @@ export default function BrickCalculatorGardenWall() {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Brick Calculator for Garden Walls - Free UK Calculator" />
-
-        {/* ========== 6. TWITTER CARD (5 tags) ========== */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@TradeCalcs" />
         <meta name="twitter:title" content={usecaseData.metaTitle} />
         <meta name="twitter:description" content={usecaseData.metaDescription} />
         <meta name="twitter:image" content="https://tradecalcs.co.uk/images/brick-calculator-garden-wall-twitter.jpg" />
         <meta name="twitter:image:alt" content="Brick Calculator for Garden Walls" />
-
-        {/* ========== 7. CANONICAL URL ========== */}
         <link rel="canonical" href={usecaseData.canonicalUrl} />
-
-        {/* ========== 8. JSON-LD STRUCTURED DATA (6 Schemas) ========== */}
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-gray-50">
-        {/* Hero */}
         <div className="bg-gradient-to-r from-orange-600 to-red-500 text-white py-12">
           <div className="max-w-5xl mx-auto px-4 sm:px-6">
-            <Link 
-              to="/brick-block-calculator"
-              className="inline-flex items-center text-white/80 hover:text-white mb-4 text-sm"
-            >
-              <ArrowLeft className="h-4 w-4 mr-1" />
-              Back to Brick Calculator
+            <Link to="/brick-block-calculator" className="inline-flex items-center text-white/80 hover:text-white mb-4 text-sm">
+              <ArrowLeft className="h-4 w-4 mr-1" />Back to Brick Calculator
             </Link>
-            
             <h1 className="text-3xl sm:text-4xl font-bold mb-3">{usecaseData.h1}</h1>
             <p className="text-white/90 max-w-2xl text-lg">{usecaseData.description}</p>
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Calculator Column */}
             <div className="lg:col-span-2">
-              {/* Calculator */}
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
                 <BrickCalculatorCore
                   defaultMaterialType={usecaseData.defaults.materialType}
@@ -232,17 +199,15 @@ export default function BrickCalculatorGardenWall() {
                 />
               </div>
 
-              {/* Tips */}
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-6">
                 <div className="flex items-start gap-3">
                   <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="font-semibold text-amber-900 mb-2">Tips for Garden Walls</h3>
+                    <h2 className="font-semibold text-amber-900 mb-2">Tips for Garden Walls</h2>
                     <ul className="space-y-2">
                       {usecaseData.tips.map((tip, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm text-amber-800">
-                          <CheckCircle2 className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                          <span>{tip}</span>
+                          <CheckCircle2 className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" /><span>{tip}</span>
                         </li>
                       ))}
                     </ul>
@@ -250,59 +215,21 @@ export default function BrickCalculatorGardenWall() {
                 </div>
               </div>
 
-              {/* FAQs */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-                <div className="space-y-3">
-                  {usecaseData.faqs.map((faq, index) => (
-                    <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
-                      <button
-                        onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
-                        className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
-                      >
-                        <span className="font-medium text-gray-900 pr-4">{faq.q}</span>
-                        {expandedFaq === index ? (
-                          <ChevronUp className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                        ) : (
-                          <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                        )}
-                      </button>
-                      {expandedFaq === index && (
-                        <div className="px-4 pb-4 text-gray-600 text-sm">{faq.a}</div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Educational Content Section - H2/H3 Hierarchy for SEO */}
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Understanding Garden Wall Construction</h2>
-                
                 <div className="prose prose-sm max-w-none text-gray-700">
-                  <p className="mb-4">
-                    Garden walls are one of the most popular DIY bricklaying projects in the UK. Whether you're building a decorative boundary, creating raised beds, or adding privacy to your outdoor space, understanding the basics of brick calculation ensures you order the right materials and avoid costly mistakes.
-                  </p>
+                  <p className="mb-4">Garden walls are one of the most popular DIY bricklaying projects in the UK. Whether you're building a decorative boundary, creating raised beds, or adding privacy to your outdoor space, understanding the basics of brick calculation ensures you order the right materials and avoid costly mistakes.</p>
 
                   <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">How Many Bricks Per Square Metre?</h3>
-                  <p className="mb-4">
-                    Standard UK bricks measure 215mm × 102.5mm × 65mm. When laid with 10mm mortar joints, this equates to <strong>60 bricks per square metre</strong> for a single-skin (half-brick) wall. This is the industry standard calculation used by professional bricklayers throughout the UK.
-                  </p>
+                  <p className="mb-4">Standard UK bricks measure 215mm × 102.5mm × 65mm. When laid with 10mm mortar joints, this equates to <strong>60 bricks per square metre</strong> for a single-skin (half-brick) wall.</p>
 
-                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Mortar Requirements for Garden Walls</h3>
-                  <p className="mb-4">
-                    Using the standard 4:1 mortar ratio (4 parts building sand to 1 part cement), you'll need approximately:
-                  </p>
+                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Mortar Requirements</h3>
+                  <p className="mb-4">Using the standard 4:1 mortar ratio (4 parts building sand to 1 part cement), you'll need approximately:</p>
                   <ul className="list-disc pl-6 mb-4 space-y-1">
                     <li><strong>40kg of building sand</strong> per square metre</li>
-                    <li><strong>8kg of cement</strong> per square metre (approximately 1/3 of a 25kg bag)</li>
+                    <li><strong>8kg of cement</strong> per square metre</li>
                     <li>Add plasticiser for improved workability</li>
                   </ul>
-
-                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Foundation Requirements</h3>
-                  <p className="mb-4">
-                    Every garden wall needs proper foundations. The standard rule is foundations should be at least <strong>3× the wall width</strong> and <strong>300mm deep minimum</strong>. For a single-skin wall, this means approximately 300mm × 300mm concrete strip foundations.
-                  </p>
 
                   <div className="bg-blue-50 border-l-4 border-blue-500 p-4 my-4">
                     <h4 className="font-semibold text-blue-900 mb-2">Example Calculation</h4>
@@ -313,24 +240,11 @@ export default function BrickCalculatorGardenWall() {
                       • Cement: 12 × 8kg = 96kg (4 × 25kg bags)
                     </p>
                   </div>
-
-                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">When Do You Need Piers?</h3>
-                  <p className="mb-4">
-                    Piers provide structural support for taller garden walls. You need piers when:
-                  </p>
-                  <ul className="list-disc pl-6 mb-4 space-y-1">
-                    <li>Wall height exceeds 1 metre</li>
-                    <li>Wall length exceeds 3 metres (add pier every 3m)</li>
-                    <li>Wall is in an exposed location</li>
-                    <li>Wall supports gates or heavy objects</li>
-                  </ul>
                 </div>
               </div>
 
-              {/* Common Scenarios Section */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Common Garden Wall Projects</h2>
-                
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="bg-gray-50 rounded-lg p-4">
                     <h3 className="font-semibold text-gray-900 mb-2">Low Decorative Wall (0.6m)</h3>
@@ -341,7 +255,6 @@ export default function BrickCalculatorGardenWall() {
                       <li>• 5% wastage typical</li>
                     </ul>
                   </div>
-                  
                   <div className="bg-gray-50 rounded-lg p-4">
                     <h3 className="font-semibold text-gray-900 mb-2">Standard Garden Wall (1.2m)</h3>
                     <p className="text-sm text-gray-600 mb-2">Privacy screening, boundary markers</p>
@@ -351,7 +264,6 @@ export default function BrickCalculatorGardenWall() {
                       <li>• 5-7% wastage typical</li>
                     </ul>
                   </div>
-                  
                   <div className="bg-gray-50 rounded-lg p-4">
                     <h3 className="font-semibold text-gray-900 mb-2">Tall Boundary Wall (1.8m)</h3>
                     <p className="text-sm text-gray-600 mb-2">Full privacy, security boundaries</p>
@@ -361,7 +273,6 @@ export default function BrickCalculatorGardenWall() {
                       <li>• 7-10% wastage typical</li>
                     </ul>
                   </div>
-                  
                   <div className="bg-gray-50 rounded-lg p-4">
                     <h3 className="font-semibold text-gray-900 mb-2">Maximum Height (2.0m)</h3>
                     <p className="text-sm text-gray-600 mb-2">Maximum without planning permission</p>
@@ -373,36 +284,41 @@ export default function BrickCalculatorGardenWall() {
                   </div>
                 </div>
               </div>
+
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+                <div className="space-y-3">
+                  {usecaseData.faqs.map((faq, index) => (
+                    <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+                      <button onClick={() => setExpandedFaq(expandedFaq === index ? null : index)} className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors">
+                        <span className="font-medium text-gray-900 pr-4">{faq.q}</span>
+                        {expandedFaq === index ? <ChevronUp className="h-5 w-5 text-gray-400 flex-shrink-0" /> : <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0" />}
+                      </button>
+                      {expandedFaq === index && <div className="px-4 pb-4 text-gray-600 text-sm">{faq.a}</div>}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            {/* Sidebar */}
             <div className="lg:col-span-1 space-y-6">
-              {/* Supplier Widget */}
-              <LocationSupplierWidget calculatorType="brick" calculatorSlug="brick-calculator" />
+              <LocationSupplierWidget calculatorType="brick" />
 
-              {/* Related Use Cases */}
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
                 <h3 className="font-semibold text-gray-900 mb-3">Related Calculators</h3>
                 <div className="space-y-2">
                   {usecaseData.relatedUsecases.map((related, index) => (
-                    <Link
-                      key={index}
-                      to={`/calculators/brick-calculator/${related.slug}`}
-                      className="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                    >
+                    <Link key={index} to={`/calculators/brick-calculator/${related.slug}`} className="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                       <span className="text-sm font-medium text-gray-900">{related.title}</span>
                     </Link>
                   ))}
                 </div>
               </div>
 
-              {/* CTA */}
               <div className="bg-gradient-to-r from-purple-600 to-blue-500 rounded-xl p-6 text-white">
                 <h3 className="font-bold text-lg mb-2">Need Professional Help?</h3>
                 <p className="text-white/90 text-sm mb-4">Get quotes from trusted bricklayers in your area.</p>
-                <button className="w-full py-2 bg-white text-purple-600 rounded-lg font-medium hover:bg-gray-100 transition-colors">
-                  Get Free Quotes
-                </button>
+                <button className="w-full py-2 bg-white text-purple-600 rounded-lg font-medium hover:bg-gray-100 transition-colors">Get Free Quotes</button>
               </div>
             </div>
           </div>
