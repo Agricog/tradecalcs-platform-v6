@@ -2,10 +2,9 @@ import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
-import { BrickCalculatorCore } from '../../../components/BrickBlockCalculator'
-import LocationSupplierWidget from '../../../components/LocationSupplierWidget'
+import { BrickCalculatorCore } from '../../components/BrickBlockCalculator'
+import LocationSupplierWidget from '../../components/LocationSupplierWidget'
 
-// FULLY SEO OPTIMIZED USE-CASE DATA
 const usecaseData = {
   slug: 'house-extension',
   title: 'Brick Calculator for House Extensions',
@@ -27,11 +26,9 @@ const usecaseData = {
     'Factor in lintels, DPC, and wall ties separately from brick count'
   ],
   relatedUsecases: [
-    { slug: 'cavity-wall', title: 'Cavity Walls' },
-    { slug: 'garage', title: 'Garage Builds' },
-    { slug: 'single-skin', title: 'Single Skin Walls' }
+    { slug: 'garden-wall', title: 'Garden Walls' },
+    { slug: 'boundary-wall', title: 'Boundary Walls' }
   ],
-  // 10 FAQs for SEO (minimum 8-15)
   faqs: [
     {
       q: 'How do I calculate bricks for a cavity wall extension?',
@@ -79,7 +76,6 @@ const usecaseData = {
 export default function BrickCalculatorHouseExtension() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
 
-  // 6 JSON-LD SCHEMAS FOR MAXIMUM SEO
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -228,10 +224,7 @@ export default function BrickCalculatorHouseExtension() {
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Understanding Extension Cavity Walls</h2>
                 <div className="prose prose-sm max-w-none text-gray-700">
-                  <p className="mb-4">All habitable house extensions in the UK require cavity wall construction to meet Building Regulations. Understanding how to calculate materials for both leaves ensures accurate ordering and avoids expensive delays.</p>
-
-                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">What is a Cavity Wall?</h3>
-                  <p className="mb-4">A cavity wall consists of two separate walls (leaves) with an air gap between them. The outer leaf is typically facing bricks for appearance, while the inner leaf is usually concrete blocks for cost efficiency.</p>
+                  <p className="mb-4">All habitable house extensions in the UK require cavity wall construction to meet Building Regulations.</p>
 
                   <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Typical Cavity Wall Specification</h3>
                   <ul className="list-disc pl-6 mb-4 space-y-1">
@@ -312,7 +305,7 @@ export default function BrickCalculatorHouseExtension() {
             </div>
 
             <div className="lg:col-span-1 space-y-6">
-              <LocationSupplierWidget calculatorType="brick" calculatorSlug="brick-calculator" />
+              <LocationSupplierWidget calculatorType="brick" />
               
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
                 <h3 className="font-semibold text-gray-900 mb-3">Related Calculators</h3>
