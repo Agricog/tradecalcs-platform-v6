@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Info, CheckCircle2, AlertCircle } from 'lucide-react'
+import { Info, CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import jsPDF from 'jspdf'
 
 // ============================================
@@ -70,7 +70,6 @@ function QuoteGenerator({ calculationResults, onClose }: { calculationResults: C
     doc.setFontSize(11)
     doc.text(`Client: ${clientName}`, 20, 32)
     doc.text(`Address: ${clientAddress}`, 20, 38)
-
     doc.text(`Labour rate: £${rate.toFixed(2)}/hour`, 20, 50)
     doc.text(`Estimated hours: ${hours}`, 20, 56)
     doc.text(`Material markup: ${markup}%`, 20, 62)
@@ -117,48 +116,39 @@ function QuoteGenerator({ calculationResults, onClose }: { calculationResults: C
       <div className="bg-white rounded-xl shadow-xl max-w-xl w-full mx-4">
         <div className="flex items-center justify-between border-b px-6 py-4">
           <h2 className="text-lg font-bold text-gray-900">Generate Professional Quote</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600" aria-label="Close quote generator">✕</button>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600" aria-label="Close">✕</button>
         </div>
-
         <div className="px-6 pt-4 pb-6 space-y-4 max-h-[80vh] overflow-y-auto">
           <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-3 text-xs text-indigo-900">
             <strong>FREE Quote Generator</strong> – Turn your calculation into a professional quote in 2 minutes.
           </div>
-
           <div className="space-y-1">
             <label className="text-xs font-semibold text-gray-700">Client Name *</label>
             <input type="text" value={clientName} onChange={e => setClientName(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </div>
-
           <div className="space-y-1">
             <label className="text-xs font-semibold text-gray-700">Client Address *</label>
             <textarea value={clientAddress} onChange={e => setClientAddress(e.target.value)} rows={2} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </div>
-
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
               <label className="text-xs font-semibold text-gray-700">Labour Rate (£/hour) *</label>
               <input type="number" value={labourRate} onChange={e => setLabourRate(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-              <p className="text-[10px] text-gray-500">Typical range: £25–£50+</p>
             </div>
             <div className="space-y-1">
               <label className="text-xs font-semibold text-gray-700">Estimated Hours *</label>
               <input type="number" value={estimatedHours} onChange={e => setEstimatedHours(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             </div>
           </div>
-
           <div className="space-y-1">
             <label className="text-xs font-semibold text-gray-700">Material Markup (%)</label>
             <input type="number" value={materialMarkup} onChange={e => setMaterialMarkup(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-            <p className="text-[10px] text-gray-500">Typical range: 10–20%</p>
           </div>
-
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-700">Additional Notes (Optional)</label>
-            <textarea value={additionalNotes} onChange={e => setAdditionalNotes(e.target.value)} rows={3} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Work includes… Materials to be sourced from…" />
+            <label className="text-xs font-semibold text-gray-700">Additional Notes</label>
+            <textarea value={additionalNotes} onChange={e => setAdditionalNotes(e.target.value)} rows={3} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </div>
         </div>
-
         <div className="border-t px-6 py-4 flex items-center justify-between gap-3 bg-gray-50 rounded-b-xl">
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-white">Close</button>
           <button type="button" onClick={handleDownloadPdf} className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold hover:from-purple-700 hover:to-blue-700 text-center">Download Quote (PDF)</button>
@@ -169,7 +159,7 @@ function QuoteGenerator({ calculationResults, onClose }: { calculationResults: C
 }
 
 // ============================================
-// CALCULATOR CORE COMPONENT (extracted for reuse)
+// CALCULATOR CORE COMPONENT
 // ============================================
 interface CalculatorCoreProps {
   defaultMaterialType?: 'brick' | 'block140' | 'block100'
@@ -197,8 +187,6 @@ export function BrickCalculatorCore({
     height: string
     sandTonnes: string
     cementBags: number
-    cementKgBase: string
-    sandKgBase: string
     sandCost: string
     cementCost: string
     totalMaterialCost: string
@@ -222,24 +210,19 @@ export function BrickCalculatorCore({
 
   const calculate = () => {
     if (!length || !height) return
-
     const lengthM = parseFloat(length)
     const heightM = parseFloat(height)
     const wallArea = lengthM * heightM
     const specs = materialSpecs[materialType]
-    
     const itemsNeeded = Math.ceil(wallArea * specs.bricksPerM2)
     const sandKgBase = wallArea * specs.sandPerM2
     const cementKgBase = wallArea * specs.cementPerM2
-
     const itemsWithWaste = Math.ceil(itemsNeeded * (1 + wasteFactor / 100))
     const sandKgWithWaste = sandKgBase * (1 + wasteFactor / 100)
     const cementKgWithWaste = cementKgBase * (1 + wasteFactor / 100)
-
     const sandTonnes = sandKgWithWaste / 1000
     const sandTonnesRounded = Math.ceil(sandTonnes * 2) / 2
     const cementBags = Math.ceil(cementKgWithWaste / 25)
-
     const sandCost = sandTonnesRounded * 45.00
     const cementCost = cementBags * 6.50
 
@@ -252,8 +235,6 @@ export function BrickCalculatorCore({
       height: heightM.toFixed(2),
       sandTonnes: sandTonnesRounded.toFixed(2),
       cementBags,
-      cementKgBase: cementKgBase.toFixed(1),
-      sandKgBase: sandKgBase.toFixed(1),
       sandCost: sandCost.toFixed(2),
       cementCost: cementCost.toFixed(2),
       totalMaterialCost: (sandCost + cementCost).toFixed(2),
@@ -274,7 +255,7 @@ export function BrickCalculatorCore({
 
       <div className="mb-6">
         <label className="block font-bold text-gray-800 mb-2">1. Material Type</label>
-        <select value={materialType} onChange={e => setMaterialType(e.target.value as 'brick' | 'block140' | 'block100')} className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 mb-2" aria-label="Material type">
+        <select value={materialType} onChange={e => setMaterialType(e.target.value as 'brick' | 'block140' | 'block100')} className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 mb-2">
           <option value="brick">Standard UK Bricks (215×102.5×65mm) - 60/m²</option>
           <option value="block140">140mm Concrete Blocks (440×215×140mm) - 10.76/m²</option>
           <option value="block100">100mm Concrete Blocks (440×215×100mm) - 10.76/m²</option>
@@ -303,9 +284,7 @@ export function BrickCalculatorCore({
       </div>
 
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <label className="block font-bold text-gray-800">4. Waste Factor: {wasteFactor}%</label>
-        </div>
+        <label className="block font-bold text-gray-800 mb-2">4. Waste Factor: {wasteFactor}%</label>
         <input type="range" min="0" max="20" value={wasteFactor} onChange={e => setWasteFactor(Number(e.target.value))} className="w-full" />
         <p className="text-xs text-gray-500 mt-1">Typical: 10% standard, 5% simple work, 15-20% complex patterns</p>
       </div>
@@ -319,7 +298,6 @@ export function BrickCalculatorCore({
               <CheckCircle2 className="w-6 h-6 text-red-600" />
               <h3 className="text-xl font-bold text-red-900">✓ Materials Required</h3>
             </div>
-
             <div className="bg-white p-4 rounded border-t-2 border-b-2 border-red-300">
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
@@ -343,10 +321,9 @@ export function BrickCalculatorCore({
                   <p className="text-xs text-gray-500">bags</p>
                 </div>
               </div>
-
               <div className="border-t pt-4">
                 <div className="flex justify-between mb-2 pb-2 border-b">
-                  <p className="font-semibold">Mortar Ratio (Sand:Cement)</p>
+                  <p className="font-semibold">Mortar Ratio</p>
                   <p className="font-bold">{results.mortarRatio}</p>
                 </div>
                 <div className="flex justify-between mb-3">
@@ -377,7 +354,7 @@ export function BrickCalculatorCore({
                 <p className="text-sm text-gray-600">Generate professional quote in 2 minutes</p>
               </div>
             </div>
-            <button onClick={() => setShowQuoteGenerator(true)} className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2">Generate Free Quote</button>
+            <button onClick={() => setShowQuoteGenerator(true)} className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition">Generate Free Quote</button>
           </div>
         </>
       )}
@@ -388,10 +365,9 @@ export function BrickCalculatorCore({
             materials: [
               { item: results.materialName, quantity: results.itemsWithWaste, unit: 'units' },
               { item: 'Building Sand', quantity: results.sandTonnes, unit: 'tonnes' },
-              { item: 'Cement (25kg bags)', quantity: results.cementBags.toString(), unit: 'bags' },
-              { item: 'Wall Area', quantity: results.wallArea, unit: 'm²' }
+              { item: 'Cement (25kg bags)', quantity: results.cementBags.toString(), unit: 'bags' }
             ],
-            summary: `${results.length}m × ${results.height}m wall (${results.wallArea}m², ${results.materialName}) - ${results.itemsWithWaste} units + ${results.sandTonnes}t sand + ${results.cementBags} cement bags (4:1 mortar ratio) with ${results.wasteFactor}% waste factor included - Materials cost: £${results.totalMaterialCost}`
+            summary: `${results.length}m × ${results.height}m wall - ${results.itemsWithWaste} units + ${results.sandTonnes}t sand + ${results.cementBags} cement bags (4:1 mortar) with ${results.wasteFactor}% waste - Materials: £${results.totalMaterialCost}`
           }}
           onClose={() => setShowQuoteGenerator(false)}
         />
@@ -401,37 +377,50 @@ export function BrickCalculatorCore({
 }
 
 // ============================================
-// MAIN COMPONENT (for standalone page)
+// FAQ DATA
+// ============================================
+const faqs = [
+  { q: 'How many bricks do I need per square metre?', a: 'For standard UK bricks (215mm × 102.5mm × 65mm) with 10mm mortar joints, you need 60 bricks per m² for a half-brick wall. Double this to 120/m² for a one-brick thick wall.' },
+  { q: 'What is the standard mortar mix ratio?', a: 'The standard is 4:1 (4 parts sand to 1 part cement). Use 3:1 for structural work or below DPC. Always add plasticiser for workability.' },
+  { q: 'How much sand and cement per 1000 bricks?', a: 'For 1000 standard bricks: 0.67 tonnes sand and 5.5 bags of cement (25kg bags). This covers approximately 16.7m² of wall.' },
+  { q: 'What wastage factor should I use?', a: '5% for simple walls, 10% standard, 15-20% for complex patterns or cavity walls with many cuts around openings.' },
+  { q: 'How many concrete blocks per square metre?', a: 'Standard concrete blocks (440mm × 215mm) need 10.76 blocks per m² with 10mm joints. Same for both 100mm and 140mm thickness.' },
+  { q: 'How do I calculate bricks for walls with openings?', a: 'Calculate gross wall area, subtract window/door areas, then multiply net area by 60 bricks/m². Add extra for reveals and lintels.' },
+  { q: 'What\'s the difference between facing and engineering bricks?', a: 'Facing bricks are for appearance. Engineering bricks (Class A or B) are stronger and more water-resistant for foundations and DPC.' },
+  { q: 'How much does a pallet of bricks weigh?', a: 'Approximately 500 bricks per pallet, weighing 1.5-2 tonnes. Individual bricks weigh 2.5-3.5kg each.' },
+  { q: 'Can I lay bricks in cold weather?', a: 'Avoid bricklaying below 3°C or if frost is expected within 24 hours. Frost damages fresh mortar and weakens the bond.' },
+  { q: 'How long does mortar take to cure?', a: 'Initial set in 2-4 hours, full strength over 28 days. Keep brickwork damp for 3-7 days in hot weather to prevent cracking.' }
+]
+
+// ============================================
+// MAIN COMPONENT
 // ============================================
 export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps = {}) {
-  const {
-    metaTitle,
-    metaDescription,
-    h1,
-    description,
-    defaults,
-    tips,
-    embedded = false,
-    slug
-  } = props
+  const { metaTitle, metaDescription, h1, description, defaults, tips, embedded = false, slug } = props
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
 
-  const seoTitle = metaTitle || 'Brick & Block Calculator UK | Free Bricklaying Materials Calculator | TradeCalcs'
-  const seoDescription = metaDescription || 'Free brick and block calculator for UK bricklayers. Calculate exact quantities of bricks, blocks, cement, sand, mortar and labour costs instantly. Professional tool with waste factors.'
+  const seoTitle = metaTitle || 'Brick & Block Calculator UK 2025 | Free Bricklaying Materials Calculator | TradeCalcs'
+  const seoDescription = metaDescription || 'Free brick and block calculator for UK bricklayers. Calculate exact quantities of bricks, blocks, cement, sand and mortar instantly. Professional tool with waste factors and quote generator. Used by 50,000+ UK tradespeople.'
   const pageH1 = h1 || 'Brick & Block Calculator UK'
   const pageDescription = description || 'Calculate exact mortar, cement & sand needed instantly'
-  const canonicalUrl = slug 
-    ? `https://tradecalcs.co.uk/calculators/brick-calculator/${slug}`
-    : 'https://tradecalcs.co.uk/brick-block-calculator'
+  const canonicalUrl = slug ? `https://tradecalcs.co.uk/calculators/brick-calculator/${slug}` : 'https://tradecalcs.co.uk/brick-block-calculator'
 
   if (embedded) {
-    return (
-      <BrickCalculatorCore
-        defaultMaterialType={defaults?.materialType}
-        defaultLength={defaults?.length}
-        defaultHeight={defaults?.height}
-        defaultWasteFactor={defaults?.wasteFactor}
-      />
-    )
+    return <BrickCalculatorCore defaultMaterialType={defaults?.materialType} defaultLength={defaults?.length} defaultHeight={defaults?.height} defaultWasteFactor={defaults?.wasteFactor} />
+  }
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://tradecalcs.co.uk' },
+        { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://tradecalcs.co.uk/calculators' },
+        { '@type': 'ListItem', position: 3, name: 'Brick Calculator', item: canonicalUrl }
+      ]},
+      { '@type': 'SoftwareApplication', name: pageH1, description: seoDescription, applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any', url: canonicalUrl, offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' }, aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', ratingCount: '1203', bestRating: '5', worstRating: '1' }},
+      { '@type': 'FAQPage', mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a }}))},
+      { '@type': 'Organization', name: 'TradeCalcs', url: 'https://tradecalcs.co.uk', description: 'Free professional calculators for UK construction trades' }
+    ]
   }
 
   return (
@@ -439,44 +428,25 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
       <Helmet>
         <title>{seoTitle}</title>
         <meta name="description" content={seoDescription} />
-        <meta name="keywords" content="brick calculator, block calculator, bricklaying calculator, mortar calculator, cement calculator, UK bricklayer tools, building materials calculator, brick wall calculator, concrete block calculator, bricklaying estimator" />
-        <meta name="robots" content="index, follow" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content="brick calculator, block calculator, bricklaying calculator, mortar calculator, cement calculator, UK bricklayer tools, how many bricks per m2, sand and cement calculator" />
+        <meta name="author" content="TradeCalcs" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+        <meta name="theme-color" content="#dc2626" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="TradeCalcs" />
+        <meta property="og:locale" content="en_GB" />
         <meta property="og:title" content={seoTitle} />
         <meta property="og:description" content={seoDescription} />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:site_name" content="TradeCalcs" />
+        <meta property="og:image" content="https://tradecalcs.co.uk/images/brick-calculator-og.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@TradeCalcs" />
         <meta name="twitter:title" content={seoTitle} />
         <meta name="twitter:description" content={seoDescription} />
         <link rel="canonical" href={canonicalUrl} />
-        <meta name="author" content="TradeCalcs" />
-        <meta name="theme-color" content="#dc2626" />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            '@context': 'https://schema.org',
-            '@graph': [
-              {
-                '@type': 'BreadcrumbList',
-                'itemListElement': [
-                  { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://tradecalcs.co.uk' },
-                  { '@type': 'ListItem', 'position': 2, 'name': 'Calculators', 'item': 'https://tradecalcs.co.uk/calculators' },
-                  { '@type': 'ListItem', 'position': 3, 'name': pageH1, 'item': canonicalUrl }
-                ]
-              },
-              {
-                '@type': 'SoftwareApplication',
-                'name': pageH1,
-                'description': seoDescription,
-                'applicationCategory': 'Utility',
-                'url': canonicalUrl,
-                'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'GBP' },
-                'aggregateRating': { '@type': 'AggregateRating', 'ratingValue': '4.9', 'ratingCount': '1,203' }
-              }
-            ]
-          })}
-        </script>
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
 
       <div className="bg-gray-50 min-h-screen">
@@ -489,17 +459,13 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
             <Info className="w-12 h-12 mx-auto mb-3" />
             <h1 className="text-4xl font-bold mb-2">{pageH1}</h1>
             <p className="text-lg opacity-95">{pageDescription}</p>
+            <p className="text-sm mt-3 opacity-80">Used by 50,000+ UK tradespeople • Updated January 2025</p>
           </div>
         </div>
 
         <div className="max-w-5xl mx-auto px-4 py-8">
           <div className="bg-white rounded-lg shadow-lg mb-8">
-            <BrickCalculatorCore
-              defaultMaterialType={defaults?.materialType}
-              defaultLength={defaults?.length}
-              defaultHeight={defaults?.height}
-              defaultWasteFactor={defaults?.wasteFactor}
-            />
+            <BrickCalculatorCore defaultMaterialType={defaults?.materialType} defaultLength={defaults?.length} defaultHeight={defaults?.height} defaultWasteFactor={defaults?.wasteFactor} />
           </div>
 
           {tips && tips.length > 0 && (
@@ -509,50 +475,25 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
                 <div>
                   <h3 className="font-bold text-amber-900 mb-3">Tips for This Project Type</h3>
                   <ul className="space-y-2 text-sm text-amber-800">
-                    {tips.map((tip, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                        <span>{tip}</span>
-                      </li>
-                    ))}
+                    {tips.map((tip, i) => <li key={i} className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" /><span>{tip}</span></li>)}
                   </ul>
                 </div>
               </div>
             </div>
           )}
 
-          <div className="bg-red-50 border-l-4 border-red-600 rounded-lg p-6 mb-8">
-            <div className="flex items-start gap-3">
-              <AlertCircle className="w-6 h-6 text-red-600 mt-1 flex-shrink-0" />
-              <div>
-                <h3 className="font-bold text-red-900 mb-3">🧱 Standard Bricklaying Specifications</h3>
-                <ul className="space-y-2 text-sm text-red-900">
-                  <li>• <strong>Standard Bricks (60/m²):</strong> 40kg sand + 8kg cement per m² (4:1 ratio)</li>
-                  <li>• <strong>140mm Blocks (10.76/m²):</strong> 32.5kg sand + 9.5kg cement per m² (4:1 ratio)</li>
-                  <li>• <strong>100mm Blocks (10.76/m²):</strong> 32.5kg sand + 9.5kg cement per m² (4:1 ratio)</li>
-                  <li>• <strong>Waste factors:</strong> 5% simple, 10% standard, 15-20% complex patterns</li>
-                  <li>• <strong>Material costs:</strong> Cement £6.50/bag, Sand £45/tonne (Q4 2025)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Use-Case Pages - Internal Links for SEO */}
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-xl font-bold text-gray-900 mb-2">Calculate Bricks for Your Specific Project</h2>
             <p className="text-gray-600 mb-6">Select your project type for tailored calculations, tips, and guidance:</p>
-            
             <div className="grid md:grid-cols-3 gap-4">
               <a href="/calculators/brick-calculator/garden-wall" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-green-900 mb-1">🌿 Garden Walls</h3>
                 <p className="text-sm text-green-700">Decorative walls, raised beds, low boundary walls up to 2m</p>
               </a>
-              
               <a href="/calculators/brick-calculator/house-extension" className="block p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-blue-900 mb-1">🏠 House Extensions</h3>
                 <p className="text-sm text-blue-700">Cavity wall calculations for single & double storey extensions</p>
               </a>
-              
               <a href="/calculators/brick-calculator/boundary-wall" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-orange-900 mb-1">🧱 Boundary Walls</h3>
                 <p className="text-sm text-orange-700">Property boundaries with pier calculations & Party Wall guidance</p>
@@ -560,35 +501,95 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
             </div>
           </div>
 
-          <div className="bg-red-600 text-white rounded-lg p-8 text-center">
+          <div className="bg-red-50 border-l-4 border-red-600 rounded-lg p-6 mb-8">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-6 h-6 text-red-600 mt-1 flex-shrink-0" />
+              <div>
+                <h2 className="font-bold text-red-900 mb-3">🧱 Standard Bricklaying Specifications (UK)</h2>
+                <ul className="space-y-2 text-sm text-red-900">
+                  <li>• <strong>Standard Bricks (60/m²):</strong> 215mm × 102.5mm × 65mm - 40kg sand + 8kg cement per m²</li>
+                  <li>• <strong>140mm Blocks (10.76/m²):</strong> 440mm × 215mm × 140mm - 32.5kg sand + 9.5kg cement per m²</li>
+                  <li>• <strong>100mm Blocks (10.76/m²):</strong> 440mm × 215mm × 100mm - 32.5kg sand + 9.5kg cement per m²</li>
+                  <li>• <strong>Mortar ratio:</strong> 4:1 (sand:cement) general, 3:1 structural/below DPC</li>
+                  <li>• <strong>Waste factors:</strong> 5% simple, 10% standard, 15-20% complex</li>
+                  <li>• <strong>Material costs:</strong> Cement £6.50/bag, Sand £45/tonne (Q4 2025)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Reference Tables</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Bricks Per Linear Metre (by height)</h3>
+                <div className="space-y-2 text-sm">
+                  {[['0.6m wall', '36 bricks'], ['1.0m wall', '60 bricks'], ['1.2m wall', '72 bricks'], ['1.8m wall', '108 bricks'], ['2.4m wall', '144 bricks']].map(([label, value]) => (
+                    <div key={label} className="flex justify-between p-2 bg-gray-50 rounded"><span>{label}</span><span className="font-bold">{value}</span></div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Sand & Cement Per 1000 Bricks</h3>
+                <div className="space-y-2 text-sm">
+                  {[['Building Sand', '0.67 tonnes'], ['Cement (25kg bags)', '5.5 bags'], ['Plasticiser', '2-3 litres'], ['Wall Area Covered', '16.7 m²']].map(([label, value]) => (
+                    <div key={label} className="flex justify-between p-2 bg-gray-50 rounded"><span>{label}</span><span className="font-bold">{value}</span></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">How to Calculate Bricks for Any Project</h2>
+            <div className="prose prose-sm max-w-none text-gray-700">
+              <p className="mb-4">Accurate brick calculation prevents costly delays from under-ordering or wasted money from over-ordering.</p>
+              <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">The Basic Formula</h3>
+              <p className="mb-4"><strong>Wall Area (m²) × 60 = Number of Bricks</strong>. Then add your waste factor (typically 10%).</p>
+              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 my-4">
+                <h4 className="font-semibold text-blue-900 mb-2">Example Calculation</h4>
+                <p className="text-blue-800 text-sm">Wall: 10m × 2.4m = 24m² → 24 × 60 = 1,440 bricks → +10% waste = <strong>1,584 bricks</strong><br/>Sand: 24 × 40kg = 960kg (≈ 1 tonne) | Cement: 24 × 8kg = 192kg (<strong>8 bags</strong>)</p>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Choosing the Right Waste Factor</h3>
+              <ul className="list-disc pl-6 mb-4 space-y-1">
+                <li><strong>5%:</strong> Simple rectangular walls, experienced bricklayer</li>
+                <li><strong>10%:</strong> Standard projects with corners and openings</li>
+                <li><strong>15%:</strong> Complex shapes, decorative patterns</li>
+                <li><strong>20%:</strong> Intricate designs, cavity walls, inexperienced bricklayer</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <div className="space-y-3">
+              {faqs.map((faq, index) => (
+                <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button onClick={() => setExpandedFaq(expandedFaq === index ? null : index)} className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors">
+                    <span className="font-medium text-gray-900 pr-4">{faq.q}</span>
+                    {expandedFaq === index ? <ChevronUp className="h-5 w-5 text-gray-400 flex-shrink-0" /> : <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0" />}
+                  </button>
+                  {expandedFaq === index && <div className="px-4 pb-4 text-gray-600 text-sm">{faq.a}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-red-600 text-white rounded-lg p-8 text-center mb-8">
             <h2 className="text-2xl font-bold mb-3">Complete Your Trade Calculations</h2>
             <p className="mb-6">Use our comprehensive suite of professional estimators</p>
             <a href="/" className="bg-white text-red-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">View All Calculators</a>
           </div>
 
-          {/* Contact Form Section */}
-          <div className="mt-8 bg-white rounded-lg shadow-lg p-6 sm:p-8">
+          <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8">
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Need a Custom Solution for Your Business?</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Whether you're a contractor needing bulk calculations, a merchant wanting to embed our tools, or a business with specific requirements - we'd love to hear from you.
-              </p>
+              <p className="text-gray-600 max-w-2xl mx-auto">Whether you're a contractor needing bulk calculations, a merchant wanting to embed our tools, or a business with specific requirements - we'd love to hear from you.</p>
             </div>
-            
             <div className="max-w-2xl mx-auto">
-              <iframe 
-                src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" 
-                width="100%" 
-                height="600px" 
-                frameBorder="0"
-                title="Contact Form"
-                className="rounded-lg"
-              />
+              <iframe src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" width="100%" height="600px" frameBorder="0" title="Contact Form" className="rounded-lg" />
             </div>
-            
-            <p className="text-center text-sm text-gray-500 mt-4">
-              Or email us directly at <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 hover:text-purple-700 font-medium">mick@tradecalcs.co.uk</a>
-            </p>
+            <p className="text-center text-sm text-gray-500 mt-4">Or email us directly at <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 hover:text-purple-700 font-medium">mick@tradecalcs.co.uk</a></p>
           </div>
         </div>
       </div>
