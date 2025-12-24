@@ -322,6 +322,31 @@ export default function BrickCalculatorGardenWall() {
               </div>
             </div>
           </div>
+
+          {/* Contact Form Section */}
+          <div className="mt-12 bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Need a Custom Solution for Your Business?</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Whether you're a contractor needing bulk calculations, a merchant wanting to embed our tools, or a business with specific requirements - we'd love to hear from you.
+              </p>
+            </div>
+            
+            <div className="max-w-2xl mx-auto">
+              <iframe 
+                src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" 
+                width="100%" 
+                height="600px" 
+                frameBorder="0"
+                title="Contact Form"
+                className="rounded-lg"
+              />
+            </div>
+            
+            <p className="text-center text-sm text-gray-500 mt-4">
+              Or email us directly at <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 hover:text-purple-700 font-medium">mick@tradecalcs.co.uk</a>
+            </p>
+          </div>
         </div>
       </div>
     </>
