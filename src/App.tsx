@@ -22,6 +22,9 @@ import STGOCalculatorPage from './pages/STGOCalculatorPage'
 import ScaffoldCalculatorPage from './pages/ScaffoldCalculatorPage'
 import InsulationCalculatorPage from './pages/InsulationCalculatorPage'
 import DrainageCalculatorPage from './pages/DrainageCalculatorPage'
+import BrickCalculatorGardenWall from './pages/calculators/garden-wall'
+import BrickCalculatorHouseExtension from './pages/calculators/house-extension'
+import BrickCalculatorBoundaryWall from './pages/calculators/boundary-wall'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
