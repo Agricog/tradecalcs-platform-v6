@@ -537,10 +537,58 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
             </div>
           </div>
 
+          {/* Use-Case Pages - Internal Links for SEO */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Calculate Bricks for Your Specific Project</h2>
+            <p className="text-gray-600 mb-6">Select your project type for tailored calculations, tips, and guidance:</p>
+            
+            <div className="grid md:grid-cols-3 gap-4">
+              <a href="/calculators/brick-calculator/garden-wall" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-green-900 mb-1">🌿 Garden Walls</h3>
+                <p className="text-sm text-green-700">Decorative walls, raised beds, low boundary walls up to 2m</p>
+              </a>
+              
+              <a href="/calculators/brick-calculator/house-extension" className="block p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-blue-900 mb-1">🏠 House Extensions</h3>
+                <p className="text-sm text-blue-700">Cavity wall calculations for single & double storey extensions</p>
+              </a>
+              
+              <a href="/calculators/brick-calculator/boundary-wall" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-orange-900 mb-1">🧱 Boundary Walls</h3>
+                <p className="text-sm text-orange-700">Property boundaries with pier calculations & Party Wall guidance</p>
+              </a>
+            </div>
+          </div>
+
           <div className="bg-red-600 text-white rounded-lg p-8 text-center">
             <h2 className="text-2xl font-bold mb-3">Complete Your Trade Calculations</h2>
             <p className="mb-6">Use our comprehensive suite of professional estimators</p>
             <a href="/" className="bg-white text-red-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">View All Calculators</a>
+          </div>
+
+          {/* Contact Form Section */}
+          <div className="mt-8 bg-white rounded-lg shadow-lg p-6 sm:p-8">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Need a Custom Solution for Your Business?</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Whether you're a contractor needing bulk calculations, a merchant wanting to embed our tools, or a business with specific requirements - we'd love to hear from you.
+              </p>
+            </div>
+            
+            <div className="max-w-2xl mx-auto">
+              <iframe 
+                src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" 
+                width="100%" 
+                height="600px" 
+                frameBorder="0"
+                title="Contact Form"
+                className="rounded-lg"
+              />
+            </div>
+            
+            <p className="text-center text-sm text-gray-500 mt-4">
+              Or email us directly at <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 hover:text-purple-700 font-medium">mick@tradecalcs.co.uk</a>
+            </p>
           </div>
         </div>
       </div>
