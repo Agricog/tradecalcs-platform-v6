@@ -2,10 +2,9 @@ import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
-import { BrickCalculatorCore } from '../../../components/BrickBlockCalculator'
-import LocationSupplierWidget from '../../../components/LocationSupplierWidget'
+import { BrickCalculatorCore } from '../../components/BrickBlockCalculator'
+import LocationSupplierWidget from '../../components/LocationSupplierWidget'
 
-// FULLY SEO OPTIMIZED USE-CASE DATA
 const usecaseData = {
   slug: 'boundary-wall',
   title: 'Brick Calculator for Boundary Walls',
@@ -28,10 +27,8 @@ const usecaseData = {
   ],
   relatedUsecases: [
     { slug: 'garden-wall', title: 'Garden Walls' },
-    { slug: 'pier-pillar', title: 'Piers & Pillars' },
-    { slug: 'single-skin', title: 'Single Skin Walls' }
+    { slug: 'house-extension', title: 'House Extensions' }
   ],
-  // 10 FAQs for SEO (minimum 8-15)
   faqs: [
     {
       q: 'Do I need my neighbour\'s permission to build a boundary wall?',
@@ -79,7 +76,6 @@ const usecaseData = {
 export default function BrickCalculatorBoundaryWall() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
 
-  // 6 JSON-LD SCHEMAS FOR MAXIMUM SEO
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -225,14 +221,13 @@ export default function BrickCalculatorBoundaryWall() {
                 </div>
               </div>
 
-              {/* Educational Content - H2/H3 Hierarchy */}
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Understanding Boundary Wall Construction</h2>
                 <div className="prose prose-sm max-w-none text-gray-700">
-                  <p className="mb-4">Boundary walls are a permanent way to define property boundaries. Unlike fences, they require proper foundations and often need piers for structural support. Understanding ownership, planning rules, and construction requirements is essential before starting.</p>
+                  <p className="mb-4">Boundary walls are a permanent way to define property boundaries. Unlike fences, they require proper foundations and often need piers for structural support.</p>
 
                   <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Pier Calculations for Boundary Walls</h3>
-                  <p className="mb-4">Walls over 1m height need structural support from piers. Here's how to calculate:</p>
+                  <p className="mb-4">Walls over 1m height need structural support from piers:</p>
                   <ul className="list-disc pl-6 mb-4 space-y-1">
                     <li><strong>Spacing:</strong> One pier every 3 metres maximum</li>
                     <li><strong>End piers:</strong> Always required at both ends of the wall</li>
@@ -249,28 +244,9 @@ export default function BrickCalculatorBoundaryWall() {
                       <strong>Total: 1,620 + 605 = 2,225 bricks + 7% waste = 2,381 bricks</strong>
                     </p>
                   </div>
-
-                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Planning Permission Requirements</h3>
-                  <p className="mb-4">Planning rules for boundary walls depend on location and height:</p>
-                  <ul className="list-disc pl-6 mb-4 space-y-1">
-                    <li><strong>Rear boundary:</strong> Up to 2m without planning permission</li>
-                    <li><strong>Front boundary (adjacent to highway):</strong> Maximum 1m without planning</li>
-                    <li><strong>Conservation areas:</strong> Check with local planning authority</li>
-                    <li><strong>Listed buildings:</strong> Always requires listed building consent</li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Party Wall Act Considerations</h3>
-                  <p className="mb-4">The Party Wall Act 1996 applies when building on or astride the boundary line. You must:</p>
-                  <ul className="list-disc pl-6 mb-4 space-y-1">
-                    <li>Serve written notice to affected neighbours 1-2 months before work</li>
-                    <li>Wait for neighbour's response (consent or dispute)</li>
-                    <li>Appoint a party wall surveyor if there's a dispute</li>
-                    <li>Bear the cost of any award and surveyor fees</li>
-                  </ul>
                 </div>
               </div>
 
-              {/* Planning Quick Reference */}
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Planning Permission Quick Guide</h2>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -312,7 +288,7 @@ export default function BrickCalculatorBoundaryWall() {
             </div>
 
             <div className="lg:col-span-1 space-y-6">
-              <LocationSupplierWidget calculatorType="brick" calculatorSlug="brick-calculator" />
+              <LocationSupplierWidget calculatorType="brick" />
               
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
                 <h3 className="font-semibold text-gray-900 mb-3">Related Calculators</h3>
