@@ -25,6 +25,7 @@ import DrainageCalculatorPage from './pages/DrainageCalculatorPage'
 import BrickCalculatorGardenWall from './pages/calculators/garden-wall'
 import BrickCalculatorHouseExtension from './pages/calculators/house-extension'
 import BrickCalculatorBoundaryWall from './pages/calculators/boundary-wall'
+import BrickCalculatorRetainingWall from './pages/calculators/retaining-wall'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -115,6 +116,7 @@ function App() {
           <Route path="/calculators/brick-calculator/garden-wall" element={<BrickCalculatorGardenWall />} />
           <Route path="/calculators/brick-calculator/house-extension" element={<BrickCalculatorHouseExtension />} />
           <Route path="/calculators/brick-calculator/boundary-wall" element={<BrickCalculatorBoundaryWall />} />
+          <Route path="/calculators/brick-calculator/retaining-wall" element={<BrickCalculatorRetainingWall />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
