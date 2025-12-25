@@ -354,7 +354,7 @@ export default function BrickCalculatorHouseExtension() {
               <iframe 
                 src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" 
                 width="100%" 
-                height="600px" 
+                height="750px" 
                 frameBorder="0"
                 title="Contact Form"
                 className="rounded-lg"
