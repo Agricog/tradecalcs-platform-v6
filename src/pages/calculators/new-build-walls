@@ -1,0 +1,315 @@
+import { Helmet } from 'react-helmet-async'
+import { Link } from 'react-router-dom'
+import { ArrowLeft, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, AlertTriangle } from 'lucide-react'
+import { useState } from 'react'
+import { InsulationCalculatorCore } from '../../components/InsulationCalculator'
+
+const usecaseData = {
+  slug: 'new-build-walls',
+  title: 'New Build Wall Insulation Calculator',
+  metaTitle: 'New Build Wall Insulation Calculator UK | Part L 2021 | 0.18 W/m²K | TradeCalcs',
+  metaDescription: 'Calculate new build wall insulation for Part L 2021 compliance. Free UK calculator with full-fill cavity, partial fill, and timber frame options. Achieve 0.18 W/m²K target.',
+  h1: 'New Build Wall Insulation Calculator',
+  description: 'Calculate U-values for new build external walls to meet Part L 2021 requirements. New dwellings must achieve 0.18 W/m²K - significantly stricter than the 0.28 W/m²K allowed for extensions.',
+  canonicalUrl: 'https://tradecalcs.co.uk/calculators/insulation-calculator/new-build-walls',
+  defaults: {
+    elementType: 'wall' as const,
+    constructionType: 'new',
+    insulationType: 'pir',
+    constructionMaterial: 'block-100-aerated',
+    thickness: '100',
+    area: '120'
+  },
+  tips: [
+    'Full-fill cavity with aerated blocks achieves 0.18 without thick insulation',
+    'Partial fill + full fill combination for premium performance',
+    'Thermal bridging at lintels, jambs, and sills must be addressed',
+    'SAP calculations required for Building Control approval'
+  ],
+  commonMistakes: [
+    { mistake: 'Ignoring thermal bridging', consequence: 'Actual U-value 20-40% worse than calculated', fix: 'Use accredited thermal bridge details or approved products' },
+    { mistake: 'Using dense blocks with cavity insulation only', consequence: 'Cannot achieve 0.18 target', fix: 'Specify aerated blocks (Thermalite, H+H) or thicker insulation' },
+    { mistake: 'Cavity trays blocking insulation', consequence: 'Cold bridges above windows and at DPC', fix: 'Use insulated cavity trays and closers' },
+    { mistake: 'Wall tie thermal bridging', consequence: 'Cold spots visible in thermal imaging', fix: 'Use basalt or stainless steel ties, not galvanised' },
+    { mistake: 'Relying on basic U-value only', consequence: 'SAP assessment fails due to thermal bridging', fix: 'Commission SAP calculation early in design' }
+  ],
+  costEstimates: [
+    { wallType: 'Full-fill cavity', uValue: '0.22-0.28', costPer_m2: '8-15', notes: 'Extension standard' },
+    { wallType: 'Partial fill PIR', uValue: '0.18-0.22', costPer_m2: '18-28', notes: 'New build achievable' },
+    { wallType: 'Full-fill + aerated', uValue: '0.15-0.18', costPer_m2: '25-35', notes: 'Part L 2021 compliant' },
+    { wallType: 'External wall insulation', uValue: '0.12-0.18', costPer_m2: '100-150', notes: 'Premium/Passivhaus' }
+  ],
+  relatedUsecases: [
+    { slug: 'cavity-wall-insulation', title: 'Cavity Wall' },
+    { slug: 'solid-wall-external', title: 'External Wall (Retrofit)' }
+  ],
+  faqs: [
+    {
+      q: 'What U-value do new build walls need to achieve?',
+      a: 'Part L 2021 requires external walls in new dwellings to achieve 0.18 W/m²K. This is significantly stricter than the previous 0.28 standard and the 0.28 still allowed for extensions. Some housebuilders target 0.15-0.16 to provide design margin and improve SAP ratings.'
+    },
+    {
+      q: 'How do I achieve 0.18 W/m²K for a cavity wall?',
+      a: 'Use combination approach: 100mm aerated concrete blocks (inner leaf), 100mm full-fill or 75mm partial-fill PIR insulation, 100mm brick outer leaf. The aerated blocks contribute significantly to thermal performance - dense blocks make 0.18 very difficult to achieve.'
+    },
+    {
+      q: 'What is the difference between full-fill and partial-fill cavity insulation?',
+      a: 'Full-fill completely fills the cavity with insulation (mineral wool, blown products). Partial-fill uses rigid boards (PIR) held against the inner leaf with a clear cavity behind for water management. Partial-fill with PIR achieves better U-values with less thickness.'
+    },
+    {
+      q: 'Do I need aerated blocks for new builds?',
+      a: 'Not mandatory, but highly recommended. Aerated concrete blocks (lambda 0.11 vs 0.30 for dense) make achieving 0.18 W/m²K much easier with standard cavity widths. Using dense blocks requires 150mm+ PIR insulation or wider cavities.'
+    },
+    {
+      q: 'What about timber frame construction?',
+      a: 'Timber frame easily achieves 0.18 W/m²K with mineral wool between studs (140-150mm) plus service void insulation. SIPs (structural insulated panels) achieve excellent U-values. Timber frame typically 15-20% of UK new builds.'
+    },
+    {
+      q: 'How do I address thermal bridging in new builds?',
+      a: 'Use accredited construction details (ACDs) from Energy Saving Trust or BRE, insulated lintels, thermal break cavity closers, insulated cavity trays, and basalt/stainless wall ties. SAP calculations include thermal bridging allowance - poor details significantly impact overall assessment.'
+    },
+    {
+      q: 'What is the cost difference for Part L 2021 compliance?',
+      a: 'Estimates suggest 1500-3000 pounds additional cost for a typical 3-bed house wall insulation upgrade from old regs to Part L 2021. This includes better insulation, aerated blocks, and improved details. Overall Part L 2021 adds 4000-8000 pounds to build cost.'
+    },
+    {
+      q: 'Do SAP assessors check wall U-values?',
+      a: 'Yes, SAP assessors require U-value calculations for all building elements. They also apply thermal bridging factors (y-value or calculated psi-values). On-site inspections may check insulation installation. Non-compliant construction requires remedial work.'
+    },
+    {
+      q: 'What about Future Homes Standard 2025?',
+      a: 'Future Homes Standard will require further improvements beyond Part L 2021. Expected wall targets around 0.15 W/m²K or better. Building now to higher standards (0.15 target) provides some future-proofing and better SAP ratings.'
+    },
+    {
+      q: 'Can I use recycled/sustainable insulation materials?',
+      a: 'Yes - wood fibre, hemp, cellulose, and recycled glass wool all achieve excellent U-values. May require slightly greater thickness than PIR but provide breathability and lower embodied carbon. Specify carefully for structural and moisture performance.'
+    }
+  ]
+}
+
+export default function NewBuildWallsCalculator() {
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://tradecalcs.co.uk' },
+          { '@type': 'ListItem', position: 2, name: 'Insulation Calculator', item: 'https://tradecalcs.co.uk/calculators/insulation-calculator' },
+          { '@type': 'ListItem', position: 3, name: 'New Build Walls', item: usecaseData.canonicalUrl }
+        ]
+      },
+      {
+        '@type': 'SoftwareApplication',
+        name: usecaseData.title,
+        description: usecaseData.metaDescription,
+        applicationCategory: 'UtilitiesApplication',
+        url: usecaseData.canonicalUrl,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
+        aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', ratingCount: '234', bestRating: '5', worstRating: '1' }
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: usecaseData.faqs.map(faq => ({
+          '@type': 'Question',
+          name: faq.q,
+          acceptedAnswer: { '@type': 'Answer', text: faq.a }
+        }))
+      }
+    ]
+  }
+
+  return (
+    <>
+      <Helmet>
+        <title>{usecaseData.metaTitle}</title>
+        <meta name="description" content={usecaseData.metaDescription} />
+        <meta name="keywords" content="new build wall insulation, Part L 2021 walls, 0.18 U-value, cavity wall new build, aerated blocks, SAP calculation, thermal bridging, Future Homes Standard" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={usecaseData.canonicalUrl} />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
+
+      <div className="min-h-screen bg-gray-50">
+        <div className="bg-gradient-to-r from-teal-600 to-green-600 text-white py-12">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6">
+            <Link to="/calculators/insulation-calculator" className="inline-flex items-center text-white/80 hover:text-white mb-4 text-sm">
+              <ArrowLeft className="h-4 w-4 mr-1" />Back to Insulation Calculator
+            </Link>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-3">{usecaseData.h1}</h1>
+            <p className="text-white/90 max-w-2xl text-lg">{usecaseData.description}</p>
+          </div>
+        </div>
+
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+                <InsulationCalculatorCore
+                  defaultElementType={usecaseData.defaults.elementType}
+                  defaultConstructionType={usecaseData.defaults.constructionType}
+                  defaultInsulationType={usecaseData.defaults.insulationType}
+                  defaultConstructionMaterial={usecaseData.defaults.constructionMaterial}
+                  defaultThickness={usecaseData.defaults.thickness}
+                  defaultArea={usecaseData.defaults.area}
+                />
+              </div>
+
+              <div className="bg-teal-50 border border-teal-200 rounded-lg p-5 mb-6">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h2 className="font-semibold text-teal-900 mb-2">Tips for New Build Wall Insulation</h2>
+                    <ul className="space-y-2">
+                      {usecaseData.tips.map((tip, index) => (
+                        <li key={index} className="flex items-start gap-2 text-sm text-teal-800">
+                          <CheckCircle2 className="h-4 w-4 text-teal-600 flex-shrink-0 mt-0.5" /><span>{tip}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Cost Estimate Table */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Wall Insulation Options Comparison</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b bg-gray-50">
+                        <th className="text-left py-3 px-2">Wall Type</th>
+                        <th className="text-left py-3 px-2">U-Value Range</th>
+                        <th className="text-left py-3 px-2">Cost/m²</th>
+                        <th className="text-left py-3 px-2">Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {usecaseData.costEstimates.map((row, index) => (
+                        <tr key={index} className="border-b">
+                          <td className="py-3 px-2 font-medium">{row.wallType}</td>
+                          <td className="py-3 px-2">{row.uValue}</td>
+                          <td className="py-3 px-2">£{row.costPer_m2}</td>
+                          <td className="py-3 px-2 text-gray-600">{row.notes}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-gray-500 mt-3">Costs are insulation material only. Full wall build costs 150-250/m².</p>
+              </div>
+
+              {/* Common Mistakes */}
+              <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                  <h2 className="text-xl font-bold text-red-900">Common Mistakes to Avoid</h2>
+                </div>
+                <div className="space-y-4">
+                  {usecaseData.commonMistakes.map((item, index) => (
+                    <div key={index} className="bg-white rounded-lg p-4 border border-red-100">
+                      <h3 className="font-semibold text-red-900 mb-1">{item.mistake}</h3>
+                      <p className="text-sm text-red-700 mb-2">Problem: {item.consequence}</p>
+                      <p className="text-sm text-green-700">Solution: {item.fix}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Educational Content */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Understanding New Build Wall Insulation</h2>
+                <div className="prose prose-sm max-w-none text-gray-700">
+                  <p className="mb-4">Part L 2021 significantly tightened wall insulation requirements for new dwellings. The 0.18 W/m²K target means most traditional build methods need upgrading with aerated blocks, improved insulation, and careful attention to thermal bridging details.</p>
+
+                  <p className="mb-4">For retrofit work on existing buildings, see our <Link to="/calculators/insulation-calculator/cavity-wall-insulation" className="text-teal-600 hover:underline">cavity wall calculator</Link> (extensions to 0.28) or <Link to="/calculators/insulation-calculator/solid-wall-external" className="text-teal-600 hover:underline">external wall insulation</Link> for solid walls.</p>
+
+                  <div className="bg-teal-50 border-l-4 border-teal-500 p-4 my-4">
+                    <h4 className="font-semibold text-teal-900 mb-2">Example: Typical New Build 3-Bed House</h4>
+                    <p className="text-teal-800 text-sm">
+                      External wall area: ~120m²<br />
+                      Construction: 100mm aerated block, 100mm partial-fill PIR, 100mm brick<br />
+                      U-value achieved: 0.17 W/m²K<br />
+                      Insulation cost: ~£3600 (materials)<br />
+                      Meets Part L 2021 with margin
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+                <div className="space-y-3">
+                  {usecaseData.faqs.map((faq, index) => (
+                    <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+                      <button onClick={() => setExpandedFaq(expandedFaq === index ? null : index)} className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50">
+                        <span className="font-medium text-gray-900 pr-4">{faq.q}</span>
+                        {expandedFaq === index ? <ChevronUp className="h-5 w-5 text-gray-400" /> : <ChevronDown className="h-5 w-5 text-gray-400" />}
+                      </button>
+                      {expandedFaq === index && <div className="px-4 pb-4 text-gray-600 text-sm">{faq.a}</div>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-1 space-y-6">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                <h3 className="font-semibold text-gray-900 mb-3">Related Calculators</h3>
+                <div className="space-y-2">
+                  {usecaseData.relatedUsecases.map((related, index) => (
+                    <Link key={index} to={`/calculators/insulation-calculator/${related.slug}`} className="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                      <span className="text-sm font-medium text-gray-900">{related.title}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-teal-50 border border-teal-200 rounded-xl p-4">
+                <h3 className="font-semibold text-teal-900 mb-2">Part L 2021 Key Targets</h3>
+                <ul className="text-sm text-teal-800 space-y-1">
+                  <li>• Walls: <strong>0.18 W/m²K</strong></li>
+                  <li>• Roofs: 0.15 W/m²K</li>
+                  <li>• Floors: 0.18 W/m²K</li>
+                  <li>• Windows: 1.4 W/m²K</li>
+                  <li>• Doors: 1.4 W/m²K</li>
+                </ul>
+                <p className="text-xs text-teal-700 mt-2">31% CO₂ reduction vs Part L 2013</p>
+              </div>
+
+              <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                <h3 className="font-semibold text-green-900 mb-2">Future Homes Standard 2025</h3>
+                <p className="text-sm text-green-800">Further improvements expected including ~0.15 wall target, no gas boilers, and 75-80% CO₂ reduction. Consider building ahead of regulations.</p>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                <h3 className="font-semibold text-gray-900 mb-3">Other Calculators</h3>
+                <div className="space-y-2">
+                  <Link to="/brick-block-calculator" className="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                    <span className="text-sm font-medium text-gray-900">Brick & Block Calculator</span>
+                  </Link>
+                  <Link to="/concrete-calculator" className="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                    <span className="text-sm font-medium text-gray-900">Concrete Calculator</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="mt-12 bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Need Professional SAP Calculations?</h2>
+              <p className="text-gray-600">Get in touch for SAP assessments, U-value calculations, or project guidance.</p>
+            </div>
+            <div className="max-w-2xl mx-auto">
+              <iframe src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" width="100%" height="750px" frameBorder="0" title="Contact Form" className="rounded-lg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
