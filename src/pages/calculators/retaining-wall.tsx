@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
 import { BrickCalculatorCore } from '../../components/BrickBlockCalculator'
-import LocationSupplierWidget from '../../components/LocationSupplierWidget'
 
 const usecaseData = {
   slug: 'retaining-wall',
@@ -338,8 +337,6 @@ export default function BrickCalculatorRetainingWall() {
             </div>
 
             <div className="lg:col-span-1 space-y-6">
-              <LocationSupplierWidget calculatorType="brick" />
-
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
                 <h3 className="font-semibold text-gray-900 mb-3">Related Calculators</h3>
                 <div className="space-y-2">
