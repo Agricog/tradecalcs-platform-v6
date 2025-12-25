@@ -35,13 +35,13 @@ import BrickCalculatorSingleSkin from './pages/calculators/single-skin'
 import BrickCalculatorCavity from './pages/calculators/cavity-wall'
 import BrickCalculatorDecorative from './pages/calculators/decorative-feature'
 import LoftInsulation from './pages/calculators/loft-insulation'
-import CavityWallInsulation from './pages/insulation/cavity-wall-insulation'
-import SolidWallInternal from './pages/insulation/solid-wall-internal'
-import SolidWallExternal from './pages/insulation/solid-wall-external'
-import FloorInsulation from './pages/insulation/floor-insulation'
-import RoomInRoof from './pages/insulation/room-in-roof'
-import FlatRoof from './pages/insulation/flat-roof'
-import NewBuildWalls from './pages/insulation/new-build-walls'
+import CavityWallInsulation from './pages/calculators/cavity-wall-insulation'
+import SolidWallInternal from './pages/calculators/solid-wall-internal'
+import SolidWallExternal from './pages/calculators/solid-wall-external'
+import FloorInsulation from './pages/calculators/floor-insulation'
+import RoomInRoof from './pages/calculators/room-in-roof'
+import FlatRoof from './pages/calculators/flat-roof'
+import NewBuildWalls from './pages/calculators/new-build-walls'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -135,7 +135,7 @@ function App() {
           <Route path="/calculators/brick-calculator/retaining-wall" element={<BrickCalculatorRetainingWall />} />
           <Route path="/calculators/brick-calculator/garage" element={<BrickCalculatorGarage />} />
           <Route path="/calculators/brick-calculator/raised-bed" element={<BrickCalculatorRaisedBed />} />
-           <Route path="/calculators/brick-calculator/bbq-outdoor-kitchen" element={<BrickCalculatorBBQ />} />
+          <Route path="/calculators/brick-calculator/bbq-outdoor-kitchen" element={<BrickCalculatorBBQ />} />
           <Route path="/calculators/brick-calculator/chimney" element={<BrickCalculatorChimney />} />
           <Route path="/calculators/brick-calculator/pier-pillar" element={<BrickCalculatorPier />} />
           <Route path="/calculators/brick-calculator/single-skin" element={<BrickCalculatorSingleSkin />} />
