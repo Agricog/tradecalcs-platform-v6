@@ -34,6 +34,14 @@ import BrickCalculatorPier from './pages/calculators/pier-pillar'
 import BrickCalculatorSingleSkin from './pages/calculators/single-skin'
 import BrickCalculatorCavity from './pages/calculators/cavity-wall'
 import BrickCalculatorDecorative from './pages/calculators/decorative-feature'
+import LoftInsulation from './pages/insulation/loft-insulation'
+import CavityWallInsulation from './pages/insulation/cavity-wall-insulation'
+import SolidWallInternal from './pages/insulation/solid-wall-internal'
+import SolidWallExternal from './pages/insulation/solid-wall-external'
+import FloorInsulation from './pages/insulation/floor-insulation'
+import RoomInRoof from './pages/insulation/room-in-roof'
+import FlatRoof from './pages/insulation/flat-roof'
+import NewBuildWalls from './pages/insulation/new-build-walls'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -133,6 +141,14 @@ function App() {
           <Route path="/calculators/brick-calculator/single-skin" element={<BrickCalculatorSingleSkin />} />
           <Route path="/calculators/brick-calculator/cavity-wall" element={<BrickCalculatorCavity />} />
           <Route path="/calculators/brick-calculator/decorative-feature" element={<BrickCalculatorDecorative />} />
+          <Route path="/calculators/insulation-calculator/loft-insulation" element={<LoftInsulation />} />
+          <Route path="/calculators/insulation-calculator/cavity-wall-insulation" element={<CavityWallInsulation />} />
+          <Route path="/calculators/insulation-calculator/solid-wall-internal" element={<SolidWallInternal />} />
+          <Route path="/calculators/insulation-calculator/solid-wall-external" element={<SolidWallExternal />} />
+          <Route path="/calculators/insulation-calculator/floor-insulation" element={<FloorInsulation />} />
+          <Route path="/calculators/insulation-calculator/room-in-roof" element={<RoomInRoof />} />
+          <Route path="/calculators/insulation-calculator/flat-roof" element={<FlatRoof />} />
+          <Route path="/calculators/insulation-calculator/new-build-walls" element={<NewBuildWalls />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
