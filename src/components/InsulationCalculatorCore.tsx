@@ -1,3 +1,7 @@
+// InsulationCalculatorCore.tsx
+// Standalone core calculator component for use-case pages
+// Import this in use-case pages, keep main InsulationCalculator.tsx unchanged
+
 import { useState } from 'react'
 import { CheckCircle2, Layers, AlertCircle, Printer } from 'lucide-react'
 
@@ -44,6 +48,7 @@ export function InsulationCalculatorCore({
   const [area, setArea] = useState(defaultArea)
   const [results, setResults] = useState<InsulationResults | null>(null)
 
+  // Lambda (thermal conductivity) values in W/mK
   const materialLambdaValues: Record<string, number> = {
     'phenolic': 0.020,
     'pir': 0.023,
@@ -54,12 +59,14 @@ export function InsulationCalculatorCore({
     'mineral-wool': 0.044
   }
 
+  // Surface resistances for different element types
   const surfaceResistances: Record<string, { rsi: number; rso: number }> = {
     'wall': { rsi: 0.13, rso: 0.04 },
     'roof': { rsi: 0.10, rso: 0.04 },
     'floor': { rsi: 0.17, rso: 0.04 }
   }
 
+  // R-values for construction materials (m²K/W)
   const constructionRValues: Record<string, number> = {
     'brick-100': 0.13,
     'brick-215': 0.28,
@@ -70,11 +77,13 @@ export function InsulationCalculatorCore({
     'timber-50': 0.15
   }
 
+  // Air gap R-values (m²K/W)
   const airGapRValues: Record<string, number> = {
     'unventilated': 0.18,
     'ventilated': 0.00
   }
 
+  // Building Regulations targets (W/m²K)
   const buildingRegsTargets: Record<string, number> = {
     'wall-new': 0.18,
     'wall-extension': 0.28,
@@ -193,7 +202,7 @@ export function InsulationCalculatorCore({
         <body>
           <h1>U-Value Calculation Results</h1>
           <div class="result-box">
-            <h2>${results.isCompliant ? 'Part L Compliant' : 'Below Standard'}</h2>
+            <h2>${results.isCompliant ? '✓ Part L Compliant' : '✗ Below Standard'}</h2>
             <p style="font-size:32px;font-weight:bold">${results.calculatedUValue} W/m²K</p>
             <p>Target: ${results.regulationTarget} W/m²K</p>
           </div>
@@ -248,6 +257,7 @@ export function InsulationCalculatorCore({
         <p className="text-sm opacity-90">Check Part L 2021 compliance for your insulation project</p>
       </div>
 
+      {/* Building Element */}
       <div className="mb-6">
         <label className="block font-bold text-gray-800 mb-2">1. Building Element</label>
         <div className="grid grid-cols-3 gap-3">
@@ -267,6 +277,7 @@ export function InsulationCalculatorCore({
         </div>
       </div>
 
+      {/* Construction Type */}
       <div className="mb-6">
         <label className="block font-bold text-gray-800 mb-2">2. Construction Type</label>
         <select
@@ -280,6 +291,7 @@ export function InsulationCalculatorCore({
         </select>
       </div>
 
+      {/* Wall Construction Material */}
       {elementType === 'wall' && (
         <div className="mb-6">
           <label className="block font-bold text-gray-800 mb-2">3a. Wall Construction</label>
@@ -296,6 +308,7 @@ export function InsulationCalculatorCore({
         </div>
       )}
 
+      {/* Insulation Material */}
       <div className="mb-6">
         <label className="block font-bold text-gray-800 mb-2">
           {elementType === 'wall' ? '3b' : '3'}. Insulation Material
@@ -316,6 +329,7 @@ export function InsulationCalculatorCore({
         </select>
       </div>
 
+      {/* Air Gap */}
       <div className="mb-6">
         <label className="block font-bold text-gray-800 mb-2">
           {elementType === 'wall' ? '3c' : '4'}. Air Gap
@@ -330,6 +344,7 @@ export function InsulationCalculatorCore({
         </select>
       </div>
 
+      {/* Thickness and Area */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div>
           <label className="block font-bold text-gray-800 mb-2">Thickness (mm)</label>
@@ -353,6 +368,7 @@ export function InsulationCalculatorCore({
         </div>
       </div>
 
+      {/* Buttons */}
       <div className="grid grid-cols-2 gap-4">
         <button
           onClick={resetCalculator}
@@ -368,6 +384,7 @@ export function InsulationCalculatorCore({
         </button>
       </div>
 
+      {/* Results */}
       {results && (
         <div className={`mt-6 rounded-lg p-6 ${results.isCompliant ? 'bg-green-50 border-2 border-green-300' : 'bg-red-50 border-2 border-red-300'}`}>
           <div className="flex items-center justify-between mb-4">
