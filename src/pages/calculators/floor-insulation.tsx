@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, AlertTriangle } from 'lucide-react'
 import { useState } from 'react'
-import { InsulationCalculatorCore } from '../../components/InsulationCalculator'
+import { InsulationCalculatorCore } from '../../components/InsulationCalculatorCore'
 
 const usecaseData = {
   slug: 'floor-insulation',
