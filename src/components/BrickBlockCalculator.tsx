@@ -494,7 +494,7 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-xl font-bold text-gray-900 mb-2">Calculate Bricks for Your Specific Project</h2>
             <p className="text-gray-600 mb-6">Select your project type for tailored calculations, tips, and guidance:</p>
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               <a href="/calculators/brick-calculator/garden-wall" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-green-900 mb-1">🌿 Garden Walls</h3>
                 <p className="text-sm text-green-700">Decorative walls, raised beds, low boundary walls up to 2m</p>
@@ -506,6 +506,10 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
               <a href="/calculators/brick-calculator/boundary-wall" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-orange-900 mb-1">🧱 Boundary Walls</h3>
                 <p className="text-sm text-orange-700">Property boundaries with pier calculations & Party Wall guidance</p>
+              </a>
+              <a href="/calculators/brick-calculator/retaining-wall" className="block p-4 bg-gradient-to-br from-stone-50 to-gray-50 border border-stone-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-stone-900 mb-1">🪨 Retaining Walls</h3>
+                <p className="text-sm text-stone-700">Structural walls with drainage & Building Regs guidance</p>
               </a>
             </div>
           </div>
