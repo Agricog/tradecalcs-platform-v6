@@ -189,6 +189,8 @@ export function BrickCalculatorCore({
     cementBags: number
     sandCost: string
     cementCost: string
+    unitCost: string
+    unitName: string
     totalMaterialCost: string
     wasteFactor: number
     mortarRatio: string
@@ -202,10 +204,10 @@ export function BrickCalculatorCore({
     if (defaultWasteFactor) setWasteFactor(defaultWasteFactor)
   }, [defaultMaterialType, defaultLength, defaultHeight, defaultWasteFactor])
 
-  const materialSpecs: Record<string, { name: string; bricksPerM2: number; sandPerM2: number; cementPerM2: number }> = {
-    brick: { name: 'Standard UK Bricks (215×102.5×65mm)', bricksPerM2: 60, sandPerM2: 40, cementPerM2: 8 },
-    block140: { name: '140mm Concrete Blocks (440×215×140mm)', bricksPerM2: 10.76, sandPerM2: 32.5, cementPerM2: 9.5 },
-    block100: { name: '100mm Concrete Blocks (440×215×100mm)', bricksPerM2: 10.76, sandPerM2: 32.5, cementPerM2: 9.5 }
+  const materialSpecs: Record<string, { name: string; bricksPerM2: number; sandPerM2: number; cementPerM2: number; unitPrice: number; unitName: string }> = {
+    brick: { name: 'Standard UK Bricks (215×102.5×65mm)', bricksPerM2: 60, sandPerM2: 40, cementPerM2: 8, unitPrice: 0.65, unitName: 'bricks' },
+    block140: { name: '140mm Concrete Blocks (440×215×140mm)', bricksPerM2: 10.76, sandPerM2: 32.5, cementPerM2: 9.5, unitPrice: 1.90, unitName: 'blocks' },
+    block100: { name: '100mm Concrete Blocks (440×215×100mm)', bricksPerM2: 10.76, sandPerM2: 32.5, cementPerM2: 9.5, unitPrice: 1.50, unitName: 'blocks' }
   }
 
   const calculate = () => {
@@ -225,6 +227,7 @@ export function BrickCalculatorCore({
     const cementBags = Math.ceil(cementKgWithWaste / 25)
     const sandCost = sandTonnesRounded * 45.00
     const cementCost = cementBags * 6.50
+    const unitCost = itemsWithWaste * specs.unitPrice
 
     setResults({
       materialName: specs.name,
@@ -237,7 +240,9 @@ export function BrickCalculatorCore({
       cementBags,
       sandCost: sandCost.toFixed(2),
       cementCost: cementCost.toFixed(2),
-      totalMaterialCost: (sandCost + cementCost).toFixed(2),
+      unitCost: unitCost.toFixed(2),
+      unitName: specs.unitName,
+      totalMaterialCost: (sandCost + cementCost + unitCost).toFixed(2),
       wasteFactor,
       mortarRatio: '4:1 (sand:cement)'
     })
@@ -327,6 +332,10 @@ export function BrickCalculatorCore({
                   <p className="font-bold">{results.mortarRatio}</p>
                 </div>
                 <div className="flex justify-between mb-3">
+                  <p className="font-semibold">{results.unitName.charAt(0).toUpperCase() + results.unitName.slice(1)} Cost</p>
+                  <p className="font-bold text-lg">£{results.unitCost}</p>
+                </div>
+                <div className="flex justify-between mb-3 p-2 rounded bg-gray-50">
                   <p className="font-semibold">Sand Cost</p>
                   <p className="font-bold text-lg">£{results.sandCost}</p>
                 </div>
@@ -363,11 +372,11 @@ export function BrickCalculatorCore({
         <QuoteGenerator
           calculationResults={{
             materials: [
-              { item: results.materialName, quantity: results.itemsWithWaste, unit: 'units' },
-              { item: 'Building Sand', quantity: results.sandTonnes, unit: 'tonnes' },
-              { item: 'Cement (25kg bags)', quantity: results.cementBags.toString(), unit: 'bags' }
+              { item: results.materialName, quantity: results.itemsWithWaste, unit: `units @ £${results.unitCost}` },
+              { item: 'Building Sand', quantity: results.sandTonnes, unit: `tonnes @ £${results.sandCost}` },
+              { item: 'Cement (25kg bags)', quantity: results.cementBags.toString(), unit: `bags @ £${results.cementCost}` }
             ],
-            summary: `${results.length}m × ${results.height}m wall - ${results.itemsWithWaste} units + ${results.sandTonnes}t sand + ${results.cementBags} cement bags (4:1 mortar) with ${results.wasteFactor}% waste - Materials: £${results.totalMaterialCost}`
+            summary: `${results.length}m × ${results.height}m wall - ${results.itemsWithWaste} ${results.unitName} + ${results.sandTonnes}t sand + ${results.cementBags} cement bags (4:1 mortar) with ${results.wasteFactor}% waste - Total Materials: £${results.totalMaterialCost}`
           }}
           onClose={() => setShowQuoteGenerator(false)}
         />
@@ -507,12 +516,12 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
               <div>
                 <h2 className="font-bold text-red-900 mb-3">🧱 Standard Bricklaying Specifications (UK)</h2>
                 <ul className="space-y-2 text-sm text-red-900">
-                  <li>• <strong>Standard Bricks (60/m²):</strong> 215mm × 102.5mm × 65mm - 40kg sand + 8kg cement per m²</li>
-                  <li>• <strong>140mm Blocks (10.76/m²):</strong> 440mm × 215mm × 140mm - 32.5kg sand + 9.5kg cement per m²</li>
-                  <li>• <strong>100mm Blocks (10.76/m²):</strong> 440mm × 215mm × 100mm - 32.5kg sand + 9.5kg cement per m²</li>
+                  <li>• <strong>Standard Bricks (60/m²):</strong> 215mm × 102.5mm × 65mm - £0.65/brick avg</li>
+                  <li>• <strong>140mm Blocks (10.76/m²):</strong> 440mm × 215mm × 140mm - £1.90/block avg</li>
+                  <li>• <strong>100mm Blocks (10.76/m²):</strong> 440mm × 215mm × 100mm - £1.50/block avg</li>
                   <li>• <strong>Mortar ratio:</strong> 4:1 (sand:cement) general, 3:1 structural/below DPC</li>
                   <li>• <strong>Waste factors:</strong> 5% simple, 10% standard, 15-20% complex</li>
-                  <li>• <strong>Material costs:</strong> Cement £6.50/bag, Sand £45/tonne (Q4 2025)</li>
+                  <li>• <strong>Mortar costs:</strong> Cement £6.50/bag, Sand £45/tonne (Q4 2025)</li>
                 </ul>
               </div>
             </div>
