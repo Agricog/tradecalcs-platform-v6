@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
 import { BrickCalculatorCore } from '../../components/BrickBlockCalculator'
+import LocationSupplierWidget from '../../components/LocationSupplierWidget'
 
 const usecaseData = {
   slug: 'retaining-wall',
@@ -108,7 +109,7 @@ export default function BrickCalculatorRetainingWall() {
       {
         '@type': 'HowTo',
         name: 'How to Calculate Bricks for a Retaining Wall',
-        description: 'Step-by-step guide to calculating brick quantities for retaining walls using the TradeCalcs calculator.',
+        description: 'Step-by-step guide to calculating brick quantities for retaining walls.',
         totalTime: 'PT3M',
         estimatedCost: { '@type': 'MonetaryAmount', currency: 'GBP', value: '0' },
         tool: [{ '@type': 'HowToTool', name: 'TradeCalcs Brick Calculator' }],
@@ -188,16 +189,6 @@ export default function BrickCalculatorRetainingWall() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h2 className="font-semibold text-red-900 mb-1">⚠️ Structural Warning</h2>
-                    <p className="text-sm text-red-800">Retaining walls are structural elements. Walls over 1.2m or supporting loads require professional engineering design. Failure can cause serious injury or property damage.</p>
-                  </div>
-                </div>
-              </div>
-
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
                 <BrickCalculatorCore
                   defaultMaterialType={usecaseData.defaults.materialType}
@@ -205,6 +196,16 @@ export default function BrickCalculatorRetainingWall() {
                   defaultHeight={usecaseData.defaults.height}
                   defaultWasteFactor={usecaseData.defaults.wasteFactor}
                 />
+              </div>
+
+              <div className="bg-red-50 border border-red-200 rounded-lg p-5 mb-6">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h2 className="font-semibold text-red-900 mb-1">⚠️ Structural Warning</h2>
+                    <p className="text-sm text-red-800">Retaining walls are structural elements. Walls over 1.2m or supporting loads require professional engineering design. Failure can cause serious injury or property damage.</p>
+                  </div>
+                </div>
               </div>
 
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-6">
@@ -337,6 +338,8 @@ export default function BrickCalculatorRetainingWall() {
             </div>
 
             <div className="lg:col-span-1 space-y-6">
+              <LocationSupplierWidget calculatorType="brick" />
+
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
                 <h3 className="font-semibold text-gray-900 mb-3">Related Calculators</h3>
                 <div className="space-y-2">
@@ -408,7 +411,7 @@ export default function BrickCalculatorRetainingWall() {
               <iframe 
                 src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" 
                 width="100%" 
-                height="600px" 
+                height="750px" 
                 frameBorder="0"
                 title="Contact Form"
                 className="rounded-lg"
