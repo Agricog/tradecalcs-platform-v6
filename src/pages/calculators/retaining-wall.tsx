@@ -5,13 +5,14 @@ import { useState } from 'react'
 import { BrickCalculatorCore } from '../../components/BrickBlockCalculator'
 import LocationSupplierWidget from '../../components/LocationSupplierWidget'
 
+// Use-case specific data - FULLY SEO OPTIMIZED
 const usecaseData = {
   slug: 'retaining-wall',
   title: 'Brick Calculator for Retaining Walls',
-  metaTitle: 'Brick Calculator for Retaining Walls | UK Retaining Wall Guide 2025',
-  metaDescription: 'Calculate bricks and blocks for retaining walls. Includes engineering brick requirements, drainage considerations, and Building Regulations guidance for UK projects.',
+  metaTitle: 'Brick Calculator for Retaining Walls | Free UK Calculator 2025',
+  metaDescription: 'Calculate exact bricks for retaining walls, garden terraces, level changes. Free UK calculator with engineering brick guidance, drainage requirements, and Building Regulations advice.',
   h1: 'Brick Calculator for Retaining Walls',
-  description: 'Building a retaining wall to hold back soil or create level changes in your garden? Calculate exact brick and block quantities including engineering brick requirements. Our calculator covers small garden terraces to structural retaining walls with UK Building Regulations guidance.',
+  description: 'Building a retaining wall to hold back soil or create level changes? Calculate exactly how many bricks you need including engineering brick requirements. Our calculator accounts for wastage, drainage considerations, and UK Building Regulations guidance.',
   canonicalUrl: 'https://tradecalcs.co.uk/calculators/brick-calculator/retaining-wall',
   defaults: {
     materialType: 'brick' as const,
@@ -48,7 +49,7 @@ const usecaseData = {
     },
     {
       q: 'How deep should retaining wall foundations be?',
-      a: 'Foundations should be at least 450mm deep and extend 150mm beyond the wall on each side. Width should be 2-3× the wall thickness. For walls over 1m or in clay soil, foundations may need to be 600mm+ deep. Always below frost line.'
+      a: 'Foundations should be at least 450mm deep and extend 150mm beyond the wall on each side. Width should be 2-3x the wall thickness. For walls over 1m or in clay soil, foundations may need to be 600mm+ deep. Always below frost line.'
     },
     {
       q: 'Can I build a retaining wall myself?',
@@ -59,16 +60,16 @@ const usecaseData = {
       a: 'Most building experts recommend a maximum of 1.2m for DIY brick retaining walls. Beyond this height, the engineering becomes complex and failure risks increase significantly. Professional design is strongly advised for taller walls.'
     },
     {
+      q: 'How much sand and cement do I need for a retaining wall?',
+      a: 'For retaining walls, use a stronger 3:1 mortar mix. Allow 50kg of building sand and 17kg of cement per square metre of wall. A 6m x 1m retaining wall needs approximately 0.3 tonnes of sand and 4 bags (25kg each) of cement.'
+    },
+    {
       q: 'Do I need steel reinforcement in a retaining wall?',
       a: 'Brick retaining walls under 1m typically don\'t need reinforcement if properly designed. Taller walls or those with surcharge loads often require steel reinforcement or should be built with reinforced concrete blocks with filled cores.'
     },
     {
       q: 'How much does a retaining wall cost per metre?',
-      a: 'Budget £200-400 per linear metre for a 1m high brick retaining wall including materials, drainage, and labour. Costs increase significantly with height - a 1.5m wall may cost £400-700/m. Engineering design adds £500-1500 for the project.'
-    },
-    {
-      q: 'What mortar mix for retaining walls?',
-      a: 'Use a strong 3:1 mortar mix (3 parts sand to 1 part cement) for retaining walls due to ground contact and moisture exposure. Add waterproofer to the mix. For engineering bricks below DPC, some specifications call for 2.5:1 mix.'
+      a: 'Budget 200-400 pounds per linear metre for a 1m high brick retaining wall including materials, drainage, and labour. Costs increase significantly with height - a 1.5m wall may cost 400-700 pounds per metre. Engineering design adds 500-1500 pounds for the project.'
     }
   ]
 }
@@ -109,16 +110,16 @@ export default function BrickCalculatorRetainingWall() {
       {
         '@type': 'HowTo',
         name: 'How to Calculate Bricks for a Retaining Wall',
-        description: 'Step-by-step guide to calculating brick quantities for retaining walls.',
-        totalTime: 'PT3M',
+        description: 'Step-by-step guide to calculating brick quantities for retaining walls using the TradeCalcs calculator.',
+        totalTime: 'PT2M',
         estimatedCost: { '@type': 'MonetaryAmount', currency: 'GBP', value: '0' },
         tool: [{ '@type': 'HowToTool', name: 'TradeCalcs Brick Calculator' }],
         step: [
-          { '@type': 'HowToStep', position: 1, name: 'Determine Wall Height', text: 'Measure the height of soil/ground to be retained.' },
-          { '@type': 'HowToStep', position: 2, name: 'Measure Wall Length', text: 'Measure the full length of retaining wall needed.' },
-          { '@type': 'HowToStep', position: 3, name: 'Select Material', text: 'Choose bricks or blocks based on wall height and load.' },
-          { '@type': 'HowToStep', position: 4, name: 'Set Waste Factor', text: 'Use 10% for standard work, 15% for complex shapes.' },
-          { '@type': 'HowToStep', position: 5, name: 'Calculate', text: 'Click Calculate and add engineering bricks for below-ground courses.' }
+          { '@type': 'HowToStep', position: 1, name: 'Select Material Type', text: 'Choose Standard UK Bricks (60 per m2) or Concrete Blocks for larger walls.' },
+          { '@type': 'HowToStep', position: 2, name: 'Enter Wall Length', text: 'Measure and enter your retaining wall length in metres.' },
+          { '@type': 'HowToStep', position: 3, name: 'Enter Wall Height', text: 'Enter wall height. Retaining walls are typically 0.6m to 1.2m for DIY.' },
+          { '@type': 'HowToStep', position: 4, name: 'Set Waste Factor', text: 'Set 10% for standard walls, 15% for complex shapes.' },
+          { '@type': 'HowToStep', position: 5, name: 'Calculate', text: 'Click Calculate to get brick, sand, and cement quantities.' }
         ]
       },
       {
@@ -147,7 +148,7 @@ export default function BrickCalculatorRetainingWall() {
       <Helmet>
         <title>{usecaseData.metaTitle}</title>
         <meta name="description" content={usecaseData.metaDescription} />
-        <meta name="keywords" content="retaining wall calculator, retaining wall bricks, garden retaining wall, engineering bricks retaining wall, retaining wall cost UK, retaining wall building regulations, retaining wall drainage, retaining wall foundation depth" />
+        <meta name="keywords" content="retaining wall brick calculator, brick retaining wall calculator UK, how many bricks retaining wall, retaining wall materials, engineering bricks calculator, brick quantity calculator, mortar calculator retaining wall, retaining wall cost calculator" />
         <meta name="author" content="TradeCalcs" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
@@ -198,16 +199,6 @@ export default function BrickCalculatorRetainingWall() {
                 />
               </div>
 
-              <div className="bg-red-50 border border-red-200 rounded-lg p-5 mb-6">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h2 className="font-semibold text-red-900 mb-1">⚠️ Structural Warning</h2>
-                    <p className="text-sm text-red-800">Retaining walls are structural elements. Walls over 1.2m or supporting loads require professional engineering design. Failure can cause serious injury or property damage.</p>
-                  </div>
-                </div>
-              </div>
-
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-6">
                 <div className="flex items-start gap-3">
                   <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
@@ -227,96 +218,70 @@ export default function BrickCalculatorRetainingWall() {
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Understanding Retaining Wall Construction</h2>
                 <div className="prose prose-sm max-w-none text-gray-700">
-                  <p className="mb-4">Retaining walls hold back soil to create level changes in a garden or prevent erosion. Unlike freestanding walls, they must resist constant lateral pressure from the soil behind them, making proper construction critical.</p>
+                  <p className="mb-4">Retaining walls hold back soil to create level changes in a garden or prevent erosion. Unlike freestanding walls, they must resist constant lateral pressure from the soil behind them, making proper construction and drainage critical for long-term stability.</p>
 
-                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Key Components of a Retaining Wall</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">How Many Bricks Per Square Metre?</h3>
+                  <p className="mb-4">Standard UK bricks measure 215mm x 102.5mm x 65mm. When laid with 10mm mortar joints, this equates to <strong>60 bricks per square metre</strong> for a single-skin wall. Retaining walls often require thicker construction.</p>
+
+                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Mortar Requirements</h3>
+                  <p className="mb-4">Retaining walls need a stronger 3:1 mortar ratio (3 parts building sand to 1 part cement) due to ground contact and moisture exposure:</p>
                   <ul className="list-disc pl-6 mb-4 space-y-1">
-                    <li><strong>Foundation:</strong> Concrete strip footing, minimum 450mm deep</li>
-                    <li><strong>Base courses:</strong> Engineering bricks below ground and 150mm above</li>
-                    <li><strong>Wall body:</strong> Facing bricks or blocks above engineering courses</li>
-                    <li><strong>Drainage:</strong> Weep holes + gravel backfill + landscape fabric</li>
-                    <li><strong>Coping:</strong> Weather-resistant cap to shed water</li>
+                    <li><strong>50kg of building sand</strong> per square metre</li>
+                    <li><strong>17kg of cement</strong> per square metre</li>
+                    <li>Add waterproofer to the mortar mix</li>
                   </ul>
 
-                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Engineering Brick Requirements</h3>
-                  <p className="mb-4">Engineering bricks are essential for retaining walls due to ground contact:</p>
-                  
                   <div className="bg-blue-50 border-l-4 border-blue-500 p-4 my-4">
-                    <h4 className="font-semibold text-blue-900 mb-2">Example: 6m × 1m Retaining Wall</h4>
+                    <h4 className="font-semibold text-blue-900 mb-2">Example Calculation</h4>
                     <p className="text-blue-800 text-sm">
-                      Total wall: 6m² = 360 bricks (facing) + 10% waste = 396 bricks<br />
-                      Engineering courses: 6m × 0.3m = 1.8m² = 108 engineering bricks<br />
-                      <strong>Order: 288 facing bricks + 120 engineering bricks</strong><br />
-                      Plus: Drainage pipe, gravel, landscape fabric
+                      For a 6m long x 1m high retaining wall (6m2):<br />
+                      - Bricks: 6 x 60 = 360 bricks (+ 10% waste = 396 bricks)<br />
+                      - Engineering bricks for base: approx 108 bricks<br />
+                      - Sand: 6 x 50kg = 300kg (0.3 tonnes)<br />
+                      - Cement: 6 x 17kg = 102kg (5 x 25kg bags)
                     </p>
                   </div>
                 </div>
               </div>
 
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Retaining Wall Height Guide</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Common Retaining Wall Projects</h2>
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-green-50 rounded-lg p-4">
-                    <h3 className="font-semibold text-green-900 mb-2">Up to 600mm ✓</h3>
-                    <p className="text-sm text-green-700 mb-2">DIY suitable, single brick thickness</p>
-                    <ul className="text-sm text-green-800 space-y-1">
-                      <li>• Single brick wall (215mm)</li>
-                      <li>• Standard foundation</li>
-                      <li>• Basic drainage required</li>
-                      <li>• No Building Regs needed</li>
-                    </ul>
-                  </div>
-                  <div className="bg-amber-50 rounded-lg p-4">
-                    <h3 className="font-semibold text-amber-900 mb-2">600mm - 1.2m ⚠️</h3>
-                    <p className="text-sm text-amber-700 mb-2">Experienced DIY, thicker wall needed</p>
-                    <ul className="text-sm text-amber-800 space-y-1">
-                      <li>• 1.5 brick or block wall</li>
-                      <li>• Deeper foundation (450mm+)</li>
-                      <li>• Full drainage system</li>
-                      <li>• Building Regs may apply</li>
-                    </ul>
-                  </div>
-                  <div className="bg-red-50 rounded-lg p-4">
-                    <h3 className="font-semibold text-red-900 mb-2">1.2m - 2m ⛔</h3>
-                    <p className="text-sm text-red-700 mb-2">Professional design required</p>
-                    <ul className="text-sm text-red-800 space-y-1">
-                      <li>• Structural engineer design</li>
-                      <li>• Reinforced construction</li>
-                      <li>• Building Regs approval</li>
-                      <li>• Professional build recommended</li>
-                    </ul>
-                  </div>
-                  <div className="bg-gray-100 rounded-lg p-4">
-                    <h3 className="font-semibold text-gray-900 mb-2">Over 2m 🚫</h3>
-                    <p className="text-sm text-gray-600 mb-2">Specialist contractor only</p>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="font-semibold text-gray-900 mb-2">Low Garden Terrace (0.6m)</h3>
+                    <p className="text-sm text-gray-600 mb-2">Raised beds, small level changes</p>
                     <ul className="text-sm text-gray-700 space-y-1">
-                      <li>• Full structural design</li>
-                      <li>• Piled foundations possible</li>
-                      <li>• Building Regs mandatory</li>
-                      <li>• CDM regulations apply</li>
+                      <li>- 36 bricks per linear metre</li>
+                      <li>- Single brick thickness OK</li>
+                      <li>- Basic drainage required</li>
                     </ul>
                   </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Drainage Requirements</h2>
-                <div className="prose prose-sm max-w-none text-gray-700">
-                  <p className="mb-4">Proper drainage is the single most important factor in retaining wall longevity. Hydrostatic pressure from waterlogged soil is the primary cause of retaining wall failure.</p>
-                  
-                  <div className="grid md:grid-cols-3 gap-4 mt-4">
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h4 className="font-semibold text-gray-900 mb-2">Weep Holes</h4>
-                      <p className="text-sm text-gray-600">50mm diameter pipes every 900-1200mm at base of wall. Angle slightly downward toward front.</p>
-                    </div>
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h4 className="font-semibold text-gray-900 mb-2">Gravel Backfill</h4>
-                      <p className="text-sm text-gray-600">150-300mm layer of 20mm gravel behind wall, full height. Allows water to drain to weep holes.</p>
-                    </div>
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h4 className="font-semibold text-gray-900 mb-2">Landscape Fabric</h4>
-                      <p className="text-sm text-gray-600">Geotextile membrane between gravel and soil. Prevents soil migrating into drainage layer.</p>
-                    </div>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="font-semibold text-gray-900 mb-2">Standard Retaining (1.0m)</h3>
+                    <p className="text-sm text-gray-600 mb-2">Garden terracing, driveway edges</p>
+                    <ul className="text-sm text-gray-700 space-y-1">
+                      <li>- 60 bricks per linear metre</li>
+                      <li>- 1.5 brick thickness recommended</li>
+                      <li>- Full drainage system needed</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="font-semibold text-gray-900 mb-2">Tall Retaining (1.2m)</h3>
+                    <p className="text-sm text-gray-600 mb-2">Maximum DIY height</p>
+                    <ul className="text-sm text-gray-700 space-y-1">
+                      <li>- 72 bricks per linear metre</li>
+                      <li>- Double brick or block required</li>
+                      <li>- Building Regs may apply</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="font-semibold text-gray-900 mb-2">Structural (Over 1.2m)</h3>
+                    <p className="text-sm text-gray-600 mb-2">Professional design required</p>
+                    <ul className="text-sm text-gray-700 space-y-1">
+                      <li>- Engineer calculation needed</li>
+                      <li>- Reinforced construction</li>
+                      <li>- Building Regs mandatory</li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -349,45 +314,6 @@ export default function BrickCalculatorRetainingWall() {
                     </Link>
                   ))}
                 </div>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-                <h3 className="font-semibold text-gray-900 mb-3">Materials Checklist</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center gap-2 p-2 bg-gray-50 rounded">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <span>Engineering bricks (below ground)</span>
-                  </div>
-                  <div className="flex items-center gap-2 p-2 bg-gray-50 rounded">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <span>Facing bricks (above ground)</span>
-                  </div>
-                  <div className="flex items-center gap-2 p-2 bg-gray-50 rounded">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <span>Sand & cement (3:1 mix)</span>
-                  </div>
-                  <div className="flex items-center gap-2 p-2 bg-gray-50 rounded">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <span>Concrete for foundation</span>
-                  </div>
-                  <div className="flex items-center gap-2 p-2 bg-gray-50 rounded">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <span>Drainage pipe (50mm)</span>
-                  </div>
-                  <div className="flex items-center gap-2 p-2 bg-gray-50 rounded">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <span>20mm gravel (drainage)</span>
-                  </div>
-                  <div className="flex items-center gap-2 p-2 bg-gray-50 rounded">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <span>Landscape fabric</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-                <h3 className="font-semibold text-red-900 mb-2">⚠️ Building Regulations</h3>
-                <p className="text-sm text-red-800">Retaining walls over 1.2m require Building Regulations approval. Contact your local Building Control before starting work.</p>
               </div>
 
               <div className="bg-gradient-to-r from-purple-600 to-blue-500 rounded-xl p-6 text-white">
