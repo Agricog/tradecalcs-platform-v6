@@ -29,6 +29,11 @@ import BrickCalculatorRetainingWall from './pages/calculators/retaining-wall'
 import BrickCalculatorGarage from './pages/calculators/garage'
 import BrickCalculatorRaisedBed from './pages/calculators/raised-bed'
 import BrickCalculatorBBQ from './pages/calculators/bbq-outdoor-kitchen'
+import BrickCalculatorChimney from './pages/calculators/chimney'
+import BrickCalculatorPier from './pages/calculators/pier-pillar'
+import BrickCalculatorSingleSkin from './pages/calculators/single-skin'
+import BrickCalculatorCavity from './pages/calculators/cavity-wall'
+import BrickCalculatorDecorative from './pages/calculators/decorative-feature'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -123,6 +128,11 @@ function App() {
           <Route path="/calculators/brick-calculator/garage" element={<BrickCalculatorGarage />} />
           <Route path="/calculators/brick-calculator/raised-bed" element={<BrickCalculatorRaisedBed />} />
            <Route path="/calculators/brick-calculator/bbq-outdoor-kitchen" element={<BrickCalculatorBBQ />} />
+          <Route path="/calculators/brick-calculator/chimney" element={<BrickCalculatorChimney />} />
+          <Route path="/calculators/brick-calculator/pier-pillar" element={<BrickCalculatorPier />} />
+          <Route path="/calculators/brick-calculator/single-skin" element={<BrickCalculatorSingleSkin />} />
+          <Route path="/calculators/brick-calculator/cavity-wall" element={<BrickCalculatorCavity />} />
+          <Route path="/calculators/brick-calculator/decorative-feature" element={<BrickCalculatorDecorative />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
