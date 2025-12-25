@@ -1,4 +1,4 @@
-import { useState } from 'react'
+           import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Info, CheckCircle2, Layers, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -899,6 +899,23 @@ export default function InsulationCalculator() {
               </>
             )}
           </div>
+          {/* USE CASE CARDS */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Calculate Insulation for Your Specific Project</h2>
+            <p className="text-gray-600 mb-6">Select your project type for tailored calculations, tips, and guidance:</p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Link to="/calculators/insulation-calculator/loft-insulation" className="block p-4 bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow"><h3 className="font-bold text-amber-900 mb-1">Loft Insulation</h3><p className="text-sm text-amber-700">270mm target, mineral wool rolls</p></Link>
+              <Link to="/calculators/insulation-calculator/cavity-wall-insulation" className="block p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow"><h3 className="font-bold text-blue-900 mb-1">Cavity Wall</h3><p className="text-sm text-blue-700">Blown or batt insulation</p></Link>
+              <Link to="/calculators/insulation-calculator/solid-wall-internal" className="block p-4 bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-lg hover:shadow-md transition-shadow"><h3 className="font-bold text-purple-900 mb-1">Solid Wall (Internal)</h3><p className="text-sm text-purple-700">IWI insulated dry lining</p></Link>
+              <Link to="/calculators/insulation-calculator/solid-wall-external" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow"><h3 className="font-bold text-green-900 mb-1">Solid Wall (External)</h3><p className="text-sm text-green-700">EWI render systems</p></Link>
+              <Link to="/calculators/insulation-calculator/floor-insulation" className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow"><h3 className="font-bold text-orange-900 mb-1">Floor Insulation</h3><p className="text-sm text-orange-700">Suspended and solid floors</p></Link>
+              <Link to="/calculators/insulation-calculator/room-in-roof" className="block p-4 bg-gradient-to-br from-cyan-50 to-sky-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow"><h3 className="font-bold text-cyan-900 mb-1">Room in Roof</h3><p className="text-sm text-cyan-700">Loft conversion insulation</p></Link>
+              <Link to="/calculators/insulation-calculator/flat-roof" className="block p-4 bg-gradient-to-br from-slate-50 to-gray-50 border border-slate-200 rounded-lg hover:shadow-md transition-shadow"><h3 className="font-bold text-slate-900 mb-1">Flat Roof</h3><p className="text-sm text-slate-700">Warm deck insulation</p></Link>
+              <Link to="/calculators/insulation-calculator/new-build-walls" className="block p-4 bg-gradient-to-br from-teal-50 to-green-50 border border-teal-200 rounded-lg hover:shadow-md transition-shadow"><h3 className="font-bold text-teal-900 mb-1">New Build Walls</h3><p className="text-sm text-teal-700">Part L 2021 compliant</p></Link>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 border-l-4 border-blue-600 rounded-lg p-6 mb-8">
 
           <div className="bg-blue-50 border-l-4 border-blue-600 rounded-lg p-6 mb-8">
             <div className="flex items-start gap-3">
