@@ -26,6 +26,9 @@ import BrickCalculatorGardenWall from './pages/calculators/garden-wall'
 import BrickCalculatorHouseExtension from './pages/calculators/house-extension'
 import BrickCalculatorBoundaryWall from './pages/calculators/boundary-wall'
 import BrickCalculatorRetainingWall from './pages/calculators/retaining-wall'
+import BrickCalculatorGarage from './pages/calculators/garage'
+import BrickCalculatorRaisedBed from './pages/calculators/raised-bed'
+import BrickCalculatorBBQ from './pages/calculators/bbq-outdoor-kitchen'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -117,6 +120,9 @@ function App() {
           <Route path="/calculators/brick-calculator/house-extension" element={<BrickCalculatorHouseExtension />} />
           <Route path="/calculators/brick-calculator/boundary-wall" element={<BrickCalculatorBoundaryWall />} />
           <Route path="/calculators/brick-calculator/retaining-wall" element={<BrickCalculatorRetainingWall />} />
+          <Route path="/calculators/brick-calculator/garage" element={<BrickCalculatorGarage />} />
+          <Route path="/calculators/brick-calculator/raised-bed" element={<BrickCalculatorRaisedBed />} />
+           <Route path="/calculators/brick-calculator/bbq-outdoor-kitchen" element={<BrickCalculatorBBQ />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
