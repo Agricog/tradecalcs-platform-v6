@@ -596,7 +596,7 @@ export default function BrickBlockCalculator(props: BrickCalculatorUsecaseProps 
               <p className="text-gray-600 max-w-2xl mx-auto">Whether you're a contractor needing bulk calculations, a merchant wanting to embed our tools, or a business with specific requirements - we'd love to hear from you.</p>
             </div>
             <div className="max-w-2xl mx-auto">
-              <iframe src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" width="100%" height="600px" frameBorder="0" title="Contact Form" className="rounded-lg" />
+              <iframe src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false" width="100%" height="750px" frameBorder="0" title="Contact Form" className="rounded-lg" />
             </div>
             <p className="text-center text-sm text-gray-500 mt-4">Or email us directly at <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 hover:text-purple-700 font-medium">mick@tradecalcs.co.uk</a></p>
           </div>
