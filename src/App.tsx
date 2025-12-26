@@ -70,6 +70,11 @@ import ShopRetailUnitCableSizing from './pages/calculators/shop-retail-unit-cabl
 import GroundSourceHeatPumpCableSizing from './pages/calculators/ground-source-heat-pump-cable-sizing'
 import BatteryStorageCableSizing from './pages/calculators/battery-storage-cable-sizing'
 import CommercialEVChargingCableSizing from './pages/calculators/commercial-ev-charging-cable-sizing'
+import SubmainOutbuildingVoltageDrop from './pages/calculators/submain-outbuilding-voltage-drop'
+import EVChargerVoltageDrop from './pages/calculators/ev-charger-voltage-drop'
+import GardenLightingVoltageDrop from './pages/calculators/garden-lighting-voltage-drop'
+import ShowerCircuitVoltageDrop from './pages/calculators/shower-circuit-voltage-drop'
+import CookerCircuitVoltageDrop from './pages/calculators/cooker-circuit-voltage-drop'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -206,6 +211,11 @@ function App() {
           <Route path="/calculators/cable-sizing/ground-source-heat-pump-cable-sizing" element={<GroundSourceHeatPumpCableSizing />} />
           <Route path="/calculators/cable-sizing/battery-storage-cable-sizing" element={<BatteryStorageCableSizing />} />
           <Route path="/calculators/cable-sizing/commercial-ev-charging-cable-sizing" element={<CommercialEVChargingCableSizing />} />
+          <Route path="/calculators/voltage-drop/submain-outbuilding" element={<SubmainOutbuildingVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/ev-charger" element={<EVChargerVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/garden-lighting" element={<GardenLightingVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/shower-circuit" element={<ShowerCircuitVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/cooker-circuit" element={<CookerCircuitVoltageDrop />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
