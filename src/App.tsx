@@ -51,6 +51,12 @@ import ImmersionHeaterCableSizing from './pages/calculators/immersion-heater-cab
 import SolarPVBatteryCableSizing from './pages/calculators/solar-pv-battery-cable-sizing'
 import AirSourceHeatPumpCableSizing from './pages/calculators/air-source-heat-pump-cable-sizing'
 import UnderfloorHeatingCableSizing from './pages/calculators/underfloor-heating-cable-sizing'
+import GarageWorkshopCableSizing from './pages/calculators/garage-workshop-cable-sizing'
+import SaunaCableSizing from './pages/calculators/sauna-cable-sizing'
+import AirConditioningCableSizing from './pages/calculators/air-conditioning-cable-sizing'
+import SwimmingPoolCableSizing from './pages/calculators/swimming-pool-cable-sizing'
+import ElectricGatesCableSizing from './pages/calculators/electric-gates-cable-sizing'
+import CCTVSecurityCableSizing from './pages/calculators/cctv-security-cable-sizing'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -168,6 +174,12 @@ function App() {
           <Route path="/calculators/cable-sizing/solar-pv-battery-cable-sizing" element={<SolarPVBatteryCableSizing />} />
           <Route path="/calculators/cable-sizing/air-source-heat-pump-cable-sizing" element={<AirSourceHeatPumpCableSizing />} />
           <Route path="/calculators/cable-sizing/underfloor-heating-cable-sizing" element={<UnderfloorHeatingCableSizing />} />
+          <Route path="/calculators/cable-sizing/garage-workshop-cable-sizing" element={<GarageWorkshopCableSizing />} />
+          <Route path="/calculators/cable-sizing/sauna-cable-sizing" element={<SaunaCableSizing />} />
+          <Route path="/calculators/cable-sizing/air-conditioning-cable-sizing" element={<AirConditioningCableSizing />} />
+          <Route path="/calculators/cable-sizing/swimming-pool-cable-sizing" element={<SwimmingPoolCableSizing />} />
+          <Route path="/calculators/cable-sizing/electric-gates-cable-sizing" element={<ElectricGatesCableSizing />} />
+          <Route path="/calculators/cable-sizing/cctv-security-cable-sizing" element={<CCTVSecurityCableSizing />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
