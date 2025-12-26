@@ -268,6 +268,14 @@ export default function ElectricShowerCableSizing() {
             </div>
           </div>
 
+          {/* Internal linking section */}
+          <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-6 mb-8">
+            <h3 className="font-bold text-cyan-900 mb-3">Related Bathroom & Water Heating</h3>
+            <p className="text-sm text-cyan-800 mb-4">
+              Bathroom projects often include <Link to="/calculators/cable-sizing/underfloor-heating-cable-sizing" className="text-cyan-600 font-semibold hover:underline">electric underfloor heating</Link> for added comfort. If you're also upgrading hot water, see our <Link to="/calculators/cable-sizing/immersion-heater-cable-sizing" className="text-cyan-600 font-semibold hover:underline">immersion heater cable calculator</Link>. For whole-house water heating upgrades, consider an <Link to="/calculators/cable-sizing/air-source-heat-pump-cable-sizing" className="text-cyan-600 font-semibold hover:underline">air source heat pump</Link>.
+            </p>
+          </div>
+
           <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg p-6 mb-8">
             <h3 className="font-bold text-blue-900 mb-2">{usecaseData.defined.term}</h3>
             <p className="text-sm text-blue-800">{usecaseData.defined.definition}</p>
