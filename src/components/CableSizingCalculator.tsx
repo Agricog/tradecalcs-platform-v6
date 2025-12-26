@@ -473,6 +473,18 @@ export default function CableCalculator() {
   <h3 className="font-bold text-pink-900 mb-1">Shop & Retail</h3>
   <p className="text-sm text-pink-700">Commercial fit-outs & small business</p>
 </a>
+    <a href="/calculators/cable-sizing/ground-source-heat-pump-cable-sizing" className="block p-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-emerald-900 mb-1">Ground Source Heat Pump</h3>
+  <p className="text-sm text-emerald-700">GSHP & borehole systems</p>
+</a>
+<a href="/calculators/cable-sizing/battery-storage-cable-sizing" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-violet-900 mb-1">Battery Storage</h3>
+  <p className="text-sm text-violet-700">Home battery & retrofit systems</p>
+</a>
+<a href="/calculators/cable-sizing/commercial-ev-charging-cable-sizing" className="block p-4 bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-teal-900 mb-1">Commercial EV Charging</h3>
+  <p className="text-sm text-teal-700">Workplace, car parks & fleet</p>
+</a>
   </div>
 </div>
 
