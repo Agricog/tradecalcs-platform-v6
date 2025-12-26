@@ -47,6 +47,10 @@ import ElectricShowerCableSizing from './pages/calculators/electric-shower-cable
 import CookerCircuitCableSizing from './pages/calculators/cooker-circuit-cable-sizing'
 import GardenOfficeCableSizing from './pages/calculators/garden-office-cable-sizing'
 import HotTubCableSizing from './pages/calculators/hot-tub-cable-sizing'
+import ImmersionHeaterCableSizing from './pages/calculators/immersion-heater-cable-sizing'
+import SolarPVBatteryCableSizing from './pages/calculators/solar-pv-battery-cable-sizing'
+import AirSourceHeatPumpCableSizing from './pages/calculators/air-source-heat-pump-cable-sizing'
+import UnderfloorHeatingCableSizing from './pages/calculators/underfloor-heating-cable-sizing'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -160,6 +164,10 @@ function App() {
           <Route path="/calculators/cable-sizing/cooker-circuit-cable-sizing" element={<CookerCircuitCableSizing />} />
           <Route path="/calculators/cable-sizing/garden-office-cable-sizing" element={<GardenOfficeCableSizing />} />
           <Route path="/calculators/cable-sizing/hot-tub-cable-sizing" element={<HotTubCableSizing />} />
+          <Route path="/calculators/cable-sizing/immersion-heater-cable-sizing" element={<ImmersionHeaterCableSizing />} />
+          <Route path="/calculators/cable-sizing/solar-pv-battery-cable-sizing" element={<SolarPVBatteryCableSizing />} />
+          <Route path="/calculators/cable-sizing/air-source-heat-pump-cable-sizing" element={<AirSourceHeatPumpCableSizing />} />
+          <Route path="/calculators/cable-sizing/underfloor-heating-cable-sizing" element={<UnderfloorHeatingCableSizing />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
