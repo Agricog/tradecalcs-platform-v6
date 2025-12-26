@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Zap, CheckCircle2, AlertCircle } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import QuoteGenerator from './QuoteGenerator'
 
 export default function VoltageDropCalculator() {
@@ -442,8 +441,8 @@ export default function VoltageDropCalculator() {
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Submain to Outbuilding */}
-              <Link 
-                to="/calculators/voltage-drop/submain-outbuilding" 
+              <a 
+                href="/calculators/voltage-drop/submain-outbuilding" 
                 className="block p-4 bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center gap-2 mb-2">
@@ -454,11 +453,11 @@ export default function VoltageDropCalculator() {
                 </div>
                 <p className="text-sm text-cyan-700">Garden offices, garages, workshops, annexes</p>
                 <p className="text-xs text-gray-500 mt-1">10mm²-25mm² SWA • 32A-63A</p>
-              </Link>
+              </a>
 
               {/* EV Charger */}
-              <Link 
-                to="/calculators/voltage-drop/ev-charger" 
+              <a 
+                href="/calculators/voltage-drop/ev-charger" 
                 className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center gap-2 mb-2">
@@ -469,11 +468,11 @@ export default function VoltageDropCalculator() {
                 </div>
                 <p className="text-sm text-green-700">7kW and 22kW home charging points</p>
                 <p className="text-xs text-gray-500 mt-1">6mm²-10mm² • 32A continuous</p>
-              </Link>
+              </a>
 
               {/* Garden Lighting */}
-              <Link 
-                to="/calculators/voltage-drop/garden-lighting" 
+              <a 
+                href="/calculators/voltage-drop/garden-lighting" 
                 className="block p-4 bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center gap-2 mb-2">
@@ -484,11 +483,11 @@ export default function VoltageDropCalculator() {
                 </div>
                 <p className="text-sm text-yellow-700">Path lights, security lights, festoons</p>
                 <p className="text-xs text-gray-500 mt-1">1.5mm²-2.5mm² • 3% lighting limit</p>
-              </Link>
+              </a>
 
               {/* Shower Circuit */}
-              <Link 
-                to="/calculators/voltage-drop/shower-circuit" 
+              <a 
+                href="/calculators/voltage-drop/shower-circuit" 
                 className="block p-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center gap-2 mb-2">
@@ -499,11 +498,11 @@ export default function VoltageDropCalculator() {
                 </div>
                 <p className="text-sm text-blue-700">8.5kW, 9.5kW, 10.5kW electric showers</p>
                 <p className="text-xs text-gray-500 mt-1">6mm²-10mm² • 37A-46A</p>
-              </Link>
+              </a>
 
               {/* Cooker Circuit */}
-              <Link 
-                to="/calculators/voltage-drop/cooker-circuit" 
+              <a 
+                href="/calculators/voltage-drop/cooker-circuit" 
                 className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center gap-2 mb-2">
@@ -514,7 +513,7 @@ export default function VoltageDropCalculator() {
                 </div>
                 <p className="text-sm text-orange-700">Electric ovens, hobs, range cookers</p>
                 <p className="text-xs text-gray-500 mt-1">6mm²-10mm² • 32A-45A with diversity</p>
-              </Link>
+              </a>
 
               {/* More Coming Soon */}
               <div className="block p-4 bg-gray-50 border border-gray-200 rounded-lg opacity-75">
@@ -773,9 +772,9 @@ export default function VoltageDropCalculator() {
           {/* CONTACT FORM SECTION */}
           <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
             <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Need Help or Have Questions?</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Want a Bespoke Calculator or App?</h3>
               <p className="text-gray-700">
-                Got a specific calculation requirement or want a custom tool for your trade? Fill out the form below.
+                Are you a contractor or business looking for custom calculation tools, quote generators, or workflow apps built specifically for your trade? Fill out the form below and let's discuss your requirements.
               </p>
             </div>
             
@@ -785,7 +784,7 @@ export default function VoltageDropCalculator() {
                 width="100%" 
                 height="650px" 
                 frameBorder="0"
-                title="SmartSuite Voltage Drop Calculator Inquiry Form"
+                title="SmartSuite Bespoke App Inquiry Form"
                 className="rounded-lg"
               />
             </div>
@@ -822,7 +821,6 @@ export default function VoltageDropCalculator() {
     </>
   )
 }
-
 
 
 
