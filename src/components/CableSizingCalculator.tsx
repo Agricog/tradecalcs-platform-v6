@@ -365,7 +365,31 @@ export default function CableCalculator() {
                   </p>
                 </div>
               </>
-            )}
+           )}
+          </div>
+
+          {/* USE CASE CARDS */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Calculate Cable Size for Your Specific Project</h2>
+            <p className="text-gray-600 mb-6">Select your project type for tailored calculations, tips, and guidance:</p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <a href="/calculators/cable-sizing/ev-charger-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-green-900 mb-1">EV Charger</h3>
+                <p className="text-sm text-green-700">7kW, 22kW home & commercial</p>
+              </a>
+              <div className="block p-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-lg opacity-60">
+                <h3 className="font-bold text-blue-900 mb-1">Electric Shower</h3>
+                <p className="text-sm text-blue-700">Coming soon</p>
+              </div>
+              <div className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg opacity-60">
+                <h3 className="font-bold text-orange-900 mb-1">Cooker Circuit</h3>
+                <p className="text-sm text-orange-700">Coming soon</p>
+              </div>
+              <div className="block p-4 bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg opacity-60">
+                <h3 className="font-bold text-purple-900 mb-1">Garden Office</h3>
+                <p className="text-sm text-purple-700">Coming soon</p>
+              </div>
+            </div>
           </div>
 
           {/* IMPORTANT NOTES */}
