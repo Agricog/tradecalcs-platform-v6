@@ -433,6 +433,26 @@ export default function CableCalculator() {
   <h3 className="font-bold text-indigo-900 mb-1">CCTV & Security</h3>
   <p className="text-sm text-indigo-700">Camera systems & alarm power</p>
 </a>
+    <a href="/calculators/cable-sizing/annex-granny-flat-cable-sizing" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-violet-900 mb-1">Annex & Granny Flat</h3>
+  <p className="text-sm text-violet-700">Submains for self-contained annexes</p>
+</a>
+<a href="/calculators/cable-sizing/shed-summer-house-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-green-900 mb-1">Shed & Summer House</h3>
+  <p className="text-sm text-green-700">Garden building power supplies</p>
+</a>
+<a href="/calculators/cable-sizing/outdoor-lighting-cable-sizing" className="block p-4 bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-yellow-900 mb-1">Outdoor Lighting</h3>
+  <p className="text-sm text-yellow-700">Garden, security & festoon lights</p>
+</a>
+<a href="/calculators/cable-sizing/electric-storage-heater-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-red-900 mb-1">Storage Heaters</h3>
+  <p className="text-sm text-red-700">Economy 7 & panel heater circuits</p>
+</a>
+<a href="/calculators/cable-sizing/ring-main-socket-circuit-cable-sizing" className="block p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-blue-900 mb-1">Ring Main & Sockets</h3>
+  <p className="text-sm text-blue-700">Ring final & radial socket circuits</p>
+</a>
   </div>
 </div>
 
