@@ -67,6 +67,9 @@ import ServerRoomCableSizing from './pages/calculators/server-room-cable-sizing'
 import CaravanMarinaHookupCableSizing from './pages/calculators/caravan-marina-hookup-cable-sizing'
 import FarmAgriculturalCableSizing from './pages/calculators/farm-agricultural-cable-sizing'
 import ShopRetailUnitCableSizing from './pages/calculators/shop-retail-unit-cable-sizing'
+import GroundSourceHeatPumpCableSizing from './pages/calculators/ground-source-heat-pump-cable-sizing'
+import BatteryStorageCableSizing from './pages/calculators/battery-storage-cable-sizing'
+import CommercialEVChargingCableSizing from './pages/calculators/commercial-ev-charging-cable-sizing'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -200,6 +203,9 @@ function App() {
           <Route path="/calculators/cable-sizing/caravan-marina-hookup-cable-sizing" element={<CaravanMarinaHookupCableSizing />} />
           <Route path="/calculators/cable-sizing/farm-agricultural-cable-sizing" element={<FarmAgriculturalCableSizing />} />
           <Route path="/calculators/cable-sizing/shop-retail-unit-cable-sizing" element={<ShopRetailUnitCableSizing />} />
+          <Route path="/calculators/cable-sizing/ground-source-heat-pump-cable-sizing" element={<GroundSourceHeatPumpCableSizing />} />
+          <Route path="/calculators/cable-sizing/battery-storage-cable-sizing" element={<BatteryStorageCableSizing />} />
+          <Route path="/calculators/cable-sizing/commercial-ev-charging-cable-sizing" element={<CommercialEVChargingCableSizing />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
