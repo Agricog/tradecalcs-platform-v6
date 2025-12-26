@@ -267,6 +267,14 @@ export default function GardenOfficeCableSizing() {
             </div>
           </div>
 
+          {/* Internal linking section */}
+          <div className="bg-teal-50 border border-teal-200 rounded-lg p-6 mb-8">
+            <h3 className="font-bold text-teal-900 mb-3">Complete Garden & Outbuilding Electrical</h3>
+            <p className="text-sm text-teal-800 mb-4">
+              Garden offices often benefit from <Link to="/calculators/cable-sizing/solar-pv-battery-cable-sizing" className="text-teal-600 font-semibold hover:underline">solar PV installations</Link> for off-grid or reduced running costs. Add an <Link to="/calculators/cable-sizing/ev-charger-cable-sizing" className="text-teal-600 font-semibold hover:underline">EV charger</Link> to your outbuilding supply. For workshop spaces, see our <Link to="/calculators/cable-sizing/garage-workshop-cable-sizing" className="text-teal-600 font-semibold hover:underline">garage and workshop guide</Link>. Property security? Check <Link to="/calculators/cable-sizing/cctv-security-cable-sizing" className="text-teal-600 font-semibold hover:underline">CCTV and security systems</Link>.
+            </p>
+          </div>
+
           <div className="bg-gradient-to-r from-green-50 to-teal-50 border border-green-200 rounded-lg p-6 mb-8">
             <h3 className="font-bold text-green-900 mb-2">{usecaseData.defined.term}</h3>
             <p className="text-sm text-green-800">{usecaseData.defined.definition}</p>
