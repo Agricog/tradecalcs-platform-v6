@@ -385,7 +385,7 @@ export default function RingMainSocketCircuitCableSizing() {
               <iframe 
                 src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false&Prefill_Registration+Source=RingMainSocketCircuitCableSizing" 
                 width="100%" 
-                height="650px" 
+                height="700px" 
                 frameBorder="0"
                 title="Get Electrician Quotes"
                 className="rounded-lg"
