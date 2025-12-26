@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom'
 import { ArrowLeft, AlertCircle, ChevronDown, ChevronUp, Zap, ChefHat } from 'lucide-react'
 import { useState } from 'react'
 import { VoltageDropCalculatorCore } from '../../components/VoltageDropCalculatorCore'
@@ -91,10 +90,10 @@ export default function CookerCircuitVoltageDrop() {
       <div className="bg-gray-50 min-h-screen">
         {/* Back Navigation */}
         <div className="max-w-5xl mx-auto px-4 py-4">
-          <Link to="/voltage-drop-calculator" className="inline-flex items-center text-purple-600 hover:text-purple-800 font-semibold text-sm">
+          <a href="/voltage-drop-calculator" className="inline-flex items-center text-purple-600 hover:text-purple-800 font-semibold text-sm">
             <ArrowLeft className="w-4 h-4 mr-1" />
             Back to Voltage Drop Calculator
-          </Link>
+          </a>
         </div>
 
         {/* Hero Section */}
@@ -220,18 +219,18 @@ export default function CookerCircuitVoltageDrop() {
           <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 mb-8">
             <h3 className="font-bold text-purple-900 mb-3">Related Calculators</h3>
             <div className="grid md:grid-cols-3 gap-4">
-              <Link to="/calculators/voltage-drop/shower-circuit" className="block p-3 bg-white rounded-lg hover:shadow-md transition">
+              <a href="/calculators/voltage-drop/shower-circuit" className="block p-3 bg-white rounded-lg hover:shadow-md transition">
                 <h4 className="font-semibold text-purple-800">Shower Circuit</h4>
                 <p className="text-sm text-gray-600">Electric shower installations</p>
-              </Link>
-              <Link to="/voltage-drop-calculator" className="block p-3 bg-white rounded-lg hover:shadow-md transition">
+              </a>
+              <a href="/voltage-drop-calculator" className="block p-3 bg-white rounded-lg hover:shadow-md transition">
                 <h4 className="font-semibold text-purple-800">General Voltage Drop</h4>
                 <p className="text-sm text-gray-600">All circuit types</p>
-              </Link>
-              <Link to="/cable-sizing-calculator" className="block p-3 bg-white rounded-lg hover:shadow-md transition">
+              </a>
+              <a href="/cable-sizing-calculator" className="block p-3 bg-white rounded-lg hover:shadow-md transition">
                 <h4 className="font-semibold text-purple-800">Cable Sizing</h4>
                 <p className="text-sm text-gray-600">Current capacity selection</p>
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -314,27 +313,30 @@ export default function CookerCircuitVoltageDrop() {
 
           {/* Contact Form */}
           <div id="get-quotes" className="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">Get Cooker Circuit Installation Quotes</h3>
-            <p className="text-gray-600 text-center mb-6">Connect with qualified electricians in your area</p>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">Want a Bespoke Calculator or App?</h3>
+            <p className="text-gray-600 text-center mb-6">Are you a contractor or business looking for custom calculation tools, quote generators, or workflow apps built specifically for your trade?</p>
             <div className="max-w-2xl mx-auto">
               <iframe 
                 src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false&Prefill_Registration+Source=CookerCircuitVoltageDrop" 
                 width="100%" 
                 height="700px" 
                 frameBorder="0"
-                title="Get quotes for cooker circuit installation"
+                title="Bespoke app inquiry form"
                 className="rounded-lg"
               />
             </div>
+            <p className="text-center text-sm text-gray-600 mt-4">
+              Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 font-semibold hover:underline">mick@tradecalcs.co.uk</a>
+            </p>
           </div>
 
           {/* Footer CTA */}
           <div className="bg-orange-500 text-white rounded-lg p-8 text-center">
             <h2 className="text-2xl font-bold mb-3">Explore More Electrical Calculators</h2>
             <p className="mb-6 opacity-90">Professional tools for UK electricians - all free, all BS 7671 compliant</p>
-            <Link to="/" className="inline-block bg-white text-orange-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 transition">
+            <a href="/" className="inline-block bg-white text-orange-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 transition">
               View All Calculators
-            </Link>
+            </a>
           </div>
         </div>
       </div>
