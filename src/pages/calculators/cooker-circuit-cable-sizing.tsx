@@ -267,6 +267,14 @@ export default function CookerCircuitCableSizing() {
             </div>
           </div>
 
+          {/* Internal linking section */}
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
+            <h3 className="font-bold text-red-900 mb-3">Kitchen Electrical Projects</h3>
+            <p className="text-sm text-red-800 mb-4">
+              Kitchen rewires often include multiple high-power circuits. You might also need our <Link to="/calculators/cable-sizing/electric-shower-cable-sizing" className="text-red-600 font-semibold hover:underline">electric shower calculator</Link> for utility rooms, or check <Link to="/calculators/cable-sizing/underfloor-heating-cable-sizing" className="text-red-600 font-semibold hover:underline">underfloor heating requirements</Link> for kitchen extensions. For outdoor kitchen projects, see our <Link to="/calculators/cable-sizing/garden-office-cable-sizing" className="text-red-600 font-semibold hover:underline">garden building electrical guide</Link>.
+            </p>
+          </div>
+
           <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-lg p-6 mb-8">
             <h3 className="font-bold text-orange-900 mb-2">{usecaseData.defined.term}</h3>
             <p className="text-sm text-orange-800">{usecaseData.defined.definition}</p>
