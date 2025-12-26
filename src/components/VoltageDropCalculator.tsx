@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Zap, CheckCircle2, AlertCircle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import QuoteGenerator from './QuoteGenerator'
 
 export default function VoltageDropCalculator() {
@@ -376,7 +377,7 @@ export default function VoltageDropCalculator() {
                     <div className={`flex justify-between mb-3 p-2 rounded ${result.compliant ? 'bg-cyan-50' : 'bg-red-50'}`}>
                       <p className="font-semibold">Margin</p>
                       <p className={`font-bold ${result.compliant ? 'text-cyan-700' : 'text-red-700'}`}>
-                        {result.compliant ? `+${(result.maxVD - result.vdPercent).toFixed(2)}%` : `-${(result.vdPercent - result.maxVD).toFixed(2)}%`}
+                        {result.compliant ? `+${(result.maxVD - parseFloat(result.vdPercent)).toFixed(2)}%` : `-${(parseFloat(result.vdPercent) - result.maxVD).toFixed(2)}%`}
                       </p>
                     </div>
                     <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded mt-3">
@@ -433,6 +434,101 @@ export default function VoltageDropCalculator() {
               </div>
             </div>
           </div>
+
+          {/* USE-CASE CALCULATORS - RIGHT AFTER IMPORTANT NOTES */}
+          <section className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Voltage Drop Calculators by Application</h2>
+            <p className="text-gray-600 mb-6">Jump to a specific use-case calculator with pre-filled values for your scenario:</p>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Submain to Outbuilding */}
+              <Link 
+                to="/calculators/voltage-drop/submain-outbuilding" 
+                className="block p-4 bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <svg className="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <h3 className="font-bold text-cyan-900">Submain to Outbuilding</h3>
+                </div>
+                <p className="text-sm text-cyan-700">Garden offices, garages, workshops, annexes</p>
+                <p className="text-xs text-gray-500 mt-1">10mm²-25mm² SWA • 32A-63A</p>
+              </Link>
+
+              {/* EV Charger */}
+              <Link 
+                to="/calculators/voltage-drop/ev-charger" 
+                className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <h3 className="font-bold text-green-900">EV Charger Installation</h3>
+                </div>
+                <p className="text-sm text-green-700">7kW and 22kW home charging points</p>
+                <p className="text-xs text-gray-500 mt-1">6mm²-10mm² • 32A continuous</p>
+              </Link>
+
+              {/* Garden Lighting */}
+              <Link 
+                to="/calculators/voltage-drop/garden-lighting" 
+                className="block p-4 bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <svg className="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                  <h3 className="font-bold text-yellow-900">Garden Lighting</h3>
+                </div>
+                <p className="text-sm text-yellow-700">Path lights, security lights, festoons</p>
+                <p className="text-xs text-gray-500 mt-1">1.5mm²-2.5mm² • 3% lighting limit</p>
+              </Link>
+
+              {/* Shower Circuit */}
+              <Link 
+                to="/calculators/voltage-drop/shower-circuit" 
+                className="block p-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                  </svg>
+                  <h3 className="font-bold text-blue-900">Shower Circuit</h3>
+                </div>
+                <p className="text-sm text-blue-700">8.5kW, 9.5kW, 10.5kW electric showers</p>
+                <p className="text-xs text-gray-500 mt-1">6mm²-10mm² • 37A-46A</p>
+              </Link>
+
+              {/* Cooker Circuit */}
+              <Link 
+                to="/calculators/voltage-drop/cooker-circuit" 
+                className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                  </svg>
+                  <h3 className="font-bold text-orange-900">Cooker Circuit</h3>
+                </div>
+                <p className="text-sm text-orange-700">Electric ovens, hobs, range cookers</p>
+                <p className="text-xs text-gray-500 mt-1">6mm²-10mm² • 32A-45A with diversity</p>
+              </Link>
+
+              {/* More Coming Soon */}
+              <div className="block p-4 bg-gray-50 border border-gray-200 rounded-lg opacity-75">
+                <div className="flex items-center gap-2 mb-2">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  <h3 className="font-bold text-gray-500">More Coming Soon</h3>
+                </div>
+                <p className="text-sm text-gray-500">Three-phase, solar PV, heat pumps...</p>
+                <p className="text-xs text-gray-400 mt-1">Batch 2 in development</p>
+              </div>
+            </div>
+          </section>
 
           {/* UNDERSTANDING VOLTAGE DROP */}
           <section className="bg-white rounded-lg shadow p-6 mb-8">
@@ -559,101 +655,6 @@ export default function VoltageDropCalculator() {
               </div>
             </div>
           </section>
-
-          <section className="bg-white rounded-lg shadow p-6 mb-8">
-  <h2 className="text-2xl font-bold text-gray-900 mb-4">Voltage Drop Calculators by Application</h2>
-  <p className="text-gray-600 mb-6">Jump to a specific use-case calculator with pre-filled values for your scenario:</p>
-  
-  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-    {/* Submain to Outbuilding */}
-    <a 
-      href="/calculators/voltage-drop/submain-outbuilding" 
-      className="block p-4 bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow"
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <svg className="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg>
-        <h3 className="font-bold text-cyan-900">Submain to Outbuilding</h3>
-      </div>
-      <p className="text-sm text-cyan-700">Garden offices, garages, workshops, annexes</p>
-      <p className="text-xs text-gray-500 mt-1">10mm²-25mm² SWA • 32A-63A</p>
-    </a>
-
-    {/* EV Charger */}
-    <a 
-      href="/calculators/voltage-drop/ev-charger" 
-      className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow"
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-        <h3 className="font-bold text-green-900">EV Charger Installation</h3>
-      </div>
-      <p className="text-sm text-green-700">7kW and 22kW home charging points</p>
-      <p className="text-xs text-gray-500 mt-1">6mm²-10mm² • 32A continuous</p>
-    </a>
-
-    {/* Garden Lighting */}
-    <a 
-      href="/calculators/voltage-drop/garden-lighting" 
-      className="block p-4 bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow"
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <svg className="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-        <h3 className="font-bold text-yellow-900">Garden Lighting</h3>
-      </div>
-      <p className="text-sm text-yellow-700">Path lights, security lights, festoons</p>
-      <p className="text-xs text-gray-500 mt-1">1.5mm²-2.5mm² • 3% lighting limit</p>
-    </a>
-
-    {/* Shower Circuit */}
-    <a 
-      href="/calculators/voltage-drop/shower-circuit" 
-      className="block p-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow"
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-        </svg>
-        <h3 className="font-bold text-blue-900">Shower Circuit</h3>
-      </div>
-      <p className="text-sm text-blue-700">8.5kW, 9.5kW, 10.5kW electric showers</p>
-      <p className="text-xs text-gray-500 mt-1">6mm²-10mm² • 37A-46A</p>
-    </a>
-
-    {/* Cooker Circuit */}
-    <a 
-      href="/calculators/voltage-drop/cooker-circuit" 
-      className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow"
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-        </svg>
-        <h3 className="font-bold text-orange-900">Cooker Circuit</h3>
-      </div>
-      <p className="text-sm text-orange-700">Electric ovens, hobs, range cookers</p>
-      <p className="text-xs text-gray-500 mt-1">6mm²-10mm² • 32A-45A with diversity</p>
-    </a>
-
-    {/* More Coming Soon */}
-    <div className="block p-4 bg-gray-50 border border-gray-200 rounded-lg opacity-75">
-      <div className="flex items-center gap-2 mb-2">
-        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-        <h3 className="font-bold text-gray-500">More Coming Soon</h3>
-      </div>
-      <p className="text-sm text-gray-500">Three-phase, solar PV, heat pumps...</p>
-      <p className="text-xs text-gray-400 mt-1">Batch 2 in development</p>
-    </div>
-  </div>
-</section>
-
 
           {/* SUCCESS BOX */}
           <div className="bg-green-50 border-l-4 border-green-600 rounded-lg p-6 mb-8">
