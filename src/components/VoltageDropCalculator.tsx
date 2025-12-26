@@ -11,9 +11,24 @@ export default function VoltageDropCalculator() {
   const [result, setResult] = useState<any>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
-  const cableResistance: Record<string, number> = {
-    '1': 18.1, '1.5': 12.1, '2.5': 7.41, '4': 4.62, '6': 3.08,
-    '10': 1.83, '16': 1.15, '25': 0.727, '35': 0.524, '50': 0.387
+  // =============================================================================
+  // BS 7671 TABLE 4D1B - mV/A/m VALUES AT 70°C OPERATING TEMPERATURE
+  // =============================================================================
+  // These are the OFFICIAL voltage drop values for thermoplastic (PVC) insulated
+  // copper conductors. Values ALREADY INCLUDE both conductors (live + neutral).
+  // DO NOT multiply by 2 when using these values.
+  // =============================================================================
+  const mVperAperM: Record<string, number> = {
+    '1': 44,
+    '1.5': 29,
+    '2.5': 18,
+    '4': 11,
+    '6': 7.3,
+    '10': 4.4,
+    '16': 2.8,
+    '25': 1.75,
+    '35': 1.25,
+    '50': 0.93
   }
 
   const calculate = () => {
@@ -24,8 +39,15 @@ export default function VoltageDropCalculator() {
 
     const I = parseFloat(current)
     const L = parseFloat(length)
-    const R = (cableResistance[cableSize] || 7.41) / 1000
-    const vd = I * L * R * 2
+    const mV = mVperAperM[cableSize] || 18
+
+    // =============================================================================
+    // BS 7671 VOLTAGE DROP FORMULA (Regulation 525)
+    // =============================================================================
+    // Single phase: VD = (mV/A/m × Ib × L) ÷ 1000
+    // DO NOT multiply by 2 - the mV/A/m values already account for both conductors
+    // =============================================================================
+    const vd = (mV * I * L) / 1000
     const vdPercent = (vd / 230) * 100
     const maxVD = circuitType === 'lighting' ? 3 : 5
     const compliant = vdPercent <= maxVD
@@ -35,10 +57,11 @@ export default function VoltageDropCalculator() {
       vdPercent: vdPercent.toFixed(2),
       maxVD,
       compliant,
-      formula: `VD = (2 × ${I}A × ${L}m × ${R.toFixed(4)}Ω/m) = ${vd.toFixed(2)}V`,
+      formula: `VD = (${mV} mV/A/m × ${I}A × ${L}m) ÷ 1000 = ${vd.toFixed(2)}V`,
       current: I,
       length: L,
-      cableSize
+      cableSize,
+      mV
     })
   }
 
@@ -49,16 +72,16 @@ export default function VoltageDropCalculator() {
         <title>Voltage Drop Calculator UK | BS 7671 Regulation 525 | TradeCalcs</title>
         <meta 
           name="description" 
-          content="Free voltage drop calculator for UK electricians. Verify BS 7671 Regulation 525 compliance instantly. Calculate voltage drop with cable sizing and circuit type analysis." 
+          content="Free voltage drop calculator for UK electricians. Verify BS 7671 Regulation 525 compliance instantly using official Table 4D1B mV/A/m values. Calculate voltage drop with cable sizing and circuit type analysis." 
         />
-        <meta name="keywords" content="voltage drop calculator, BS 7671 calculator, UK electrician tools, cable sizing calculator, Regulation 525, electrical calculations, voltage drop compliance, mV/A/m method" />
+        <meta name="keywords" content="voltage drop calculator, BS 7671 calculator, UK electrician tools, cable sizing calculator, Regulation 525, electrical calculations, voltage drop compliance, mV/A/m method, Table 4D1B" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Voltage Drop Calculator UK | BS 7671 Regulation 525 Compliance" />
-        <meta property="og:description" content="Verify BS 7671 compliance for electrical circuits. Free professional voltage drop calculator for UK electricians. Instant results." />
+        <meta property="og:description" content="Verify BS 7671 compliance for electrical circuits using official Table 4D1B mV/A/m values. Free professional voltage drop calculator for UK electricians. Instant results." />
         <meta property="og:url" content="https://tradecalcs.co.uk/voltage-drop-calculator" />
         <meta property="og:image" content="https://tradecalcs.co.uk/images/voltage-drop-calculator-og.jpg" />
         <meta property="og:site_name" content="TradeCalcs" />
@@ -66,7 +89,7 @@ export default function VoltageDropCalculator() {
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Voltage Drop Calculator UK | TradeCalcs" />
-        <meta name="twitter:description" content="Free voltage drop calculator. Verify BS 7671 Regulation 525 compliance instantly." />
+        <meta name="twitter:description" content="Free voltage drop calculator using BS 7671 Table 4D1B mV/A/m method. Verify Regulation 525 compliance instantly." />
         <meta name="twitter:image" content="https://tradecalcs.co.uk/images/voltage-drop-calculator-og.jpg" />
 
         {/* Additional SEO */}
@@ -90,7 +113,7 @@ export default function VoltageDropCalculator() {
               {
                 '@type': 'SoftwareApplication',
                 'name': 'Voltage Drop Calculator UK',
-                'description': 'Professional BS 7671 Regulation 525 compliant voltage drop calculator for UK electricians with instant compliance verification.',
+                'description': 'Professional BS 7671 Regulation 525 compliant voltage drop calculator using official Table 4D1B mV/A/m values for UK electricians with instant compliance verification.',
                 'applicationCategory': 'Utility',
                 'url': 'https://tradecalcs.co.uk/voltage-drop-calculator',
                 'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'GBP' },
@@ -109,10 +132,10 @@ export default function VoltageDropCalculator() {
                   },
                   {
                     '@type': 'Question',
-                    'name': 'How is voltage drop calculated?',
+                    'name': 'How is voltage drop calculated using BS 7671 Table 4D1B?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Voltage drop = (2 × Current × Length × Resistance per meter) ÷ 1000. The factor of 2 accounts for both conductors. Resistance values are from BS 7671 Appendix 4 mV/A/m tables.'
+                      'text': 'Voltage drop = (mV/A/m × Current × Length) ÷ 1000. The mV/A/m values from Table 4D1B already account for both conductors, so do NOT multiply by 2. This is the official BS 7671 method.'
                     }
                   },
                   {
@@ -128,7 +151,7 @@ export default function VoltageDropCalculator() {
                     'name': 'What should I do if voltage drop exceeds limits?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Increase cable size to reduce resistance, reposition the distribution board closer to the load, or split large loads across multiple circuits. Larger cables reduce voltage drop.'
+                      'text': 'Increase cable size to reduce the mV/A/m value, reposition the distribution board closer to the load, or split large loads across multiple circuits. Larger cables have lower mV/A/m values.'
                     }
                   },
                   {
@@ -144,7 +167,7 @@ export default function VoltageDropCalculator() {
                     'name': 'Is this calculator compliant with 18th Edition?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Yes, all calculations follow BS 7671:2018+A2:2022 Regulation 525 requirements and use mV/A/m values from Appendix 4 for standard PVC/XLPE copper conductors at 20°C.'
+                      'text': 'Yes, all calculations follow BS 7671:2018+A2:2022 Regulation 525 requirements and use mV/A/m values from Table 4D1B for thermoplastic (PVC) insulated copper conductors at 70°C operating temperature.'
                     }
                   },
                   {
@@ -214,7 +237,7 @@ export default function VoltageDropCalculator() {
                 <Zap className="w-5 h-5" />
                 <h2 className="text-lg font-bold">Voltage Drop Calculator</h2>
               </div>
-              <p className="text-sm opacity-90">BS 7671 Regulation 525 compliance verification</p>
+              <p className="text-sm opacity-90">BS 7671 Table 4D1B mV/A/m method</p>
             </div>
 
             {/* STEP 1: LOAD CURRENT */}
@@ -274,18 +297,18 @@ export default function VoltageDropCalculator() {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-600"
                 aria-label="Cable size in square millimeters"
               >
-                <option value="1">1mm² (18.1 mΩ/m)</option>
-                <option value="1.5">1.5mm² (12.1 mΩ/m)</option>
-                <option value="2.5">2.5mm² (7.41 mΩ/m)</option>
-                <option value="4">4mm² (4.62 mΩ/m)</option>
-                <option value="6">6mm² (3.08 mΩ/m)</option>
-                <option value="10">10mm² (1.83 mΩ/m)</option>
-                <option value="16">16mm² (1.15 mΩ/m)</option>
-                <option value="25">25mm² (0.727 mΩ/m)</option>
-                <option value="35">35mm² (0.524 mΩ/m)</option>
-                <option value="50">50mm² (0.387 mΩ/m)</option>
+                <option value="1">1mm² (44 mV/A/m)</option>
+                <option value="1.5">1.5mm² (29 mV/A/m)</option>
+                <option value="2.5">2.5mm² (18 mV/A/m)</option>
+                <option value="4">4mm² (11 mV/A/m)</option>
+                <option value="6">6mm² (7.3 mV/A/m)</option>
+                <option value="10">10mm² (4.4 mV/A/m)</option>
+                <option value="16">16mm² (2.8 mV/A/m)</option>
+                <option value="25">25mm² (1.75 mV/A/m)</option>
+                <option value="35">35mm² (1.25 mV/A/m)</option>
+                <option value="50">50mm² (0.93 mV/A/m)</option>
               </select>
-              <p className="text-xs text-gray-500 mt-1">Resistance values from BS 7671 Appendix 4 at 20°C</p>
+              <p className="text-xs text-gray-500 mt-1">mV/A/m values from BS 7671 Table 4D1B (PVC copper at 70°C)</p>
             </div>
 
             {/* STEP 4: CIRCUIT TYPE */}
@@ -357,7 +380,7 @@ export default function VoltageDropCalculator() {
                       </p>
                     </div>
                     <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded mt-3">
-                      <p className="font-mono font-semibold mb-1">Calculation:</p>
+                      <p className="font-mono font-semibold mb-1">BS 7671 Calculation (Table 4D1B):</p>
                       <p className="font-mono">{result.formula}</p>
                     </div>
                   </div>
@@ -401,10 +424,10 @@ export default function VoltageDropCalculator() {
                 <h3 className="font-bold text-cyan-900 mb-3">⚡ Important Compliance Notes</h3>
                 <ul className="space-y-2 text-sm text-cyan-900">
                   <li>• <strong>BS 7671 limits:</strong> 3% for lighting, 5% for other circuits (Regulation 525.1)</li>
-                  <li>• <strong>Calculation formula:</strong> VD = (2 × I × L × R) ÷ 1000 where R is resistance in mΩ/m</li>
-                  <li>• <strong>Factor of 2:</strong> Accounts for both live and neutral conductors in the circuit</li>
-                  <li>• <strong>Resistance values:</strong> From BS 7671:2018+A2:2022 Appendix 4 at 20°C for standard PVC/XLPE copper</li>
-                  <li>• <strong>Temperature correction:</strong> Add 0.4% per °C above 20°C for copper conductors if required</li>
+                  <li>• <strong>Calculation method:</strong> Uses official Table 4D1B mV/A/m values at 70°C operating temperature</li>
+                  <li>• <strong>Formula:</strong> VD = (mV/A/m × I × L) ÷ 1000 — do NOT multiply by 2</li>
+                  <li>• <strong>mV/A/m values:</strong> Already account for both live and neutral conductors</li>
+                  <li>• <strong>Temperature:</strong> Values at 70°C (conductor temperature under load), not 20°C reference</li>
                   <li>• <strong>Always consult:</strong> A qualified electrician for professional installations and complex scenarios</li>
                 </ul>
               </div>
@@ -418,7 +441,7 @@ export default function VoltageDropCalculator() {
               Voltage drop is the reduction in voltage that occurs as electrical current flows through cables due to conductor resistance. As current travels along a conductor, it encounters resistance which dissipates energy as heat and causes a voltage reduction. BS 7671:2018+A2:2022 Regulation 525 sets strict limits on acceptable voltage drop to ensure electrical equipment operates safely and efficiently.
             </p>
             <div className="bg-gray-50 p-4 rounded border-l-4 border-cyan-600">
-              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Long cable runs with high current draw experience significant voltage drop. A 32A circuit running 50 meters in 2.5mm² cable experiences approximately 4.7V drop (2% at 230V), while the same circuit in 10mm² cable drops only 1.4V (0.6%).</p>
+              <p className="text-sm text-gray-700"><strong>Key principle:</strong> Long cable runs with high current draw experience significant voltage drop. A 32A circuit running 30 meters in 2.5mm² cable: VD = (18 × 32 × 30) ÷ 1000 = <strong>17.28V (7.5%)</strong> — this exceeds the 5% limit and requires larger cable.</p>
             </div>
           </section>
 
@@ -480,32 +503,32 @@ export default function VoltageDropCalculator() {
 
           {/* HOW TO CALCULATE VOLTAGE DROP */}
           <section className="bg-white rounded-lg shadow p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">How Voltage Drop is Calculated</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">How Voltage Drop is Calculated (BS 7671 Method)</h2>
             <p className="text-gray-700 mb-4">
-              Voltage drop depends on cable length, cable size, load current, conductor material, and cable temperature. Our calculator uses the <strong>mV/A/m method</strong> which is the standard BS 7671 approach.
+              This calculator uses the official BS 7671 method with <strong>mV/A/m values from Table 4D1B</strong>. These values are for thermoplastic (PVC) insulated copper conductors at 70°C operating temperature.
             </p>
             <div className="bg-gray-50 p-4 rounded border-l-4 border-cyan-600 mb-4">
               <p className="text-sm font-mono text-gray-800 mb-2"><strong>Formula:</strong></p>
-              <p className="text-sm font-mono text-gray-700 mb-3">VD = (2 × I × L × R) ÷ 1000</p>
+              <p className="text-sm font-mono text-gray-700 mb-3">VD = (mV/A/m × I × L) ÷ 1000</p>
               <ul className="text-sm text-gray-700 space-y-1">
                 <li>• <strong>VD</strong> = Voltage drop in volts</li>
+                <li>• <strong>mV/A/m</strong> = Millivolts per amp per metre (from Table 4D1B)</li>
                 <li>• <strong>I</strong> = Current in amps</li>
-                <li>• <strong>L</strong> = Cable length in meters</li>
-                <li>• <strong>R</strong> = Conductor resistance in mΩ/m</li>
-                <li>• <strong>2</strong> = Factor for both live and neutral conductors</li>
-                <li>• <strong>1000</strong> = Conversion factor (mΩ to Ω)</li>
+                <li>• <strong>L</strong> = Cable length in metres</li>
+                <li>• <strong>1000</strong> = Conversion factor (mV to V)</li>
               </ul>
+              <p className="text-sm text-gray-700 mt-3"><strong>Important:</strong> Do NOT multiply by 2 — the mV/A/m values already account for both conductors.</p>
             </div>
             <div className="bg-cyan-50 p-4 rounded">
               <p className="font-semibold text-gray-900 mb-2">Practical Example:</p>
               <p className="text-sm text-gray-700">
-                A 20A circuit running 30 meters in 2.5mm² cable:
+                A 20A circuit running 30 metres in 2.5mm² cable (18 mV/A/m):
               </p>
               <p className="text-sm font-mono text-gray-700 mt-2">
-                VD = (2 × 20 × 30 × 7.41) ÷ 1000 = 8.89V (3.86%)
+                VD = (18 × 20 × 30) ÷ 1000 = 10.8V (4.7%)
               </p>
               <p className="text-sm text-gray-700 mt-2">
-                This <strong>exceeds the 3% lighting limit</strong> and would require a larger cable (4mm² = 1.41V, 0.61% ✓).
+                This <strong>exceeds the 3% lighting limit</strong> but passes for power circuits. For lighting, use 4mm² (11 mV/A/m) = 6.6V (2.87%) ✓
               </p>
             </div>
           </section>
@@ -516,11 +539,11 @@ export default function VoltageDropCalculator() {
             <div className="space-y-4">
               <div className="bg-gray-50 p-4 rounded border-l-4 border-blue-600">
                 <h4 className="font-bold text-gray-900 mb-2">🏠 Long Cable Runs to Outbuildings</h4>
-                <p className="text-sm text-gray-700">Garages, workshops, and garden buildings often require sub-mains of 20–50 meters. Use larger cables to keep voltage drop within limits. Example: 40A to garage (50m) needs 16mm² cable minimum.</p>
+                <p className="text-sm text-gray-700">Garages, workshops, and garden buildings often require sub-mains of 20–50 metres. Example: 32A at 40m with 10mm² (4.4 mV/A/m) = (4.4 × 32 × 40) ÷ 1000 = 5.63V (2.4%) ✓</p>
               </div>
               <div className="bg-gray-50 p-4 rounded border-l-4 border-green-600">
                 <h4 className="font-bold text-gray-900 mb-2">⚡ Electric Vehicle Charging Points</h4>
-                <p className="text-sm text-gray-700">32A EV chargers draw continuous high current. Most domestic installations need 10mm² minimum cable for compliance. 50m runs may need 16mm².</p>
+                <p className="text-sm text-gray-700">32A EV chargers draw continuous high current. 32A at 25m with 6mm² (7.3 mV/A/m) = (7.3 × 32 × 25) ÷ 1000 = 5.84V (2.5%) ✓</p>
               </div>
               <div className="bg-gray-50 p-4 rounded border-l-4 border-purple-600">
                 <h4 className="font-bold text-gray-900 mb-2">❄️ Large Motors and Air Conditioning</h4>
@@ -528,11 +551,11 @@ export default function VoltageDropCalculator() {
               </div>
               <div className="bg-gray-50 p-4 rounded border-l-4 border-orange-600">
                 <h4 className="font-bold text-gray-900 mb-2">💡 LED Lighting in Long Runs</h4>
-                <p className="text-sm text-gray-700">LED drivers are sensitive to low voltage. While 3% is the legal limit, best practice targets &lt;2% to avoid dimming and driver issues. Long LED circuit runs need careful cable selection.</p>
+                <p className="text-sm text-gray-700">LED drivers are sensitive to low voltage. 6A at 20m with 1.5mm² (29 mV/A/m) = (29 × 6 × 20) ÷ 1000 = 3.48V (1.5%) ✓ — within 3% lighting limit.</p>
               </div>
               <div className="bg-gray-50 p-4 rounded border-l-4 border-indigo-600">
                 <h4 className="font-bold text-gray-900 mb-2">🏢 63A Submain Circuits</h4>
-                <p className="text-sm text-gray-700">63A circuits are common for large residential installations, commercial premises, or substantial submains to outbuildings. These high-current circuits require larger cables. For example, 63A over 20 meters needs 16mm² minimum to stay compliant. Always test with the 63A quick-select button.</p>
+                <p className="text-sm text-gray-700">63A circuits are common for large residential installations. 63A at 30m with 16mm² (2.8 mV/A/m) = (2.8 × 63 × 30) ÷ 1000 = 5.29V (2.3%) ✓</p>
               </div>
             </div>
           </section>
@@ -543,69 +566,69 @@ export default function VoltageDropCalculator() {
               <CheckCircle2 className="w-6 h-6 text-green-600 mt-1 flex-shrink-0" />
               <div>
                 <p className="font-bold text-green-900 mb-2">✓ Pass Inspections & EICR Every Time</p>
-                <p className="text-sm text-green-800">Verifying voltage drop compliance during the design phase saves costly remedial work. Use this calculator before installation to ensure your design passes certification first time. Document your calculations to prove BS 7671 compliance to inspectors.</p>
+                <p className="text-sm text-green-800">Verifying voltage drop compliance during the design phase saves costly remedial work. Use this calculator before installation to ensure your design passes certification first time. Document your calculations using Table 4D1B mV/A/m values to prove BS 7671 compliance to inspectors.</p>
               </div>
             </div>
           </div>
 
-          {/* CABLE RESISTANCE REFERENCE TABLE */}
+          {/* mV/A/m REFERENCE TABLE */}
           <section className="bg-white rounded-lg shadow p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Cable Resistance Reference (BS 7671 Appendix 4)</h2>
-            <p className="text-sm text-gray-600 mb-4">Resistance values for standard PVC/XLPE copper conductors at 20°C. Heating increases resistance by ~0.4% per °C. These are the mV/A/m values used for voltage drop calculations.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">BS 7671 Table 4D1B - mV/A/m Reference</h2>
+            <p className="text-sm text-gray-600 mb-4">Voltage drop values for thermoplastic (PVC) insulated copper conductors at 70°C operating temperature. These values already include both conductors — do NOT multiply by 2.</p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-gray-700">
                 <thead>
                   <tr className="bg-cyan-100 border-b">
                     <th className="px-4 py-2 text-left font-semibold">Cable Size (mm²)</th>
-                    <th className="px-4 py-2 text-left font-semibold">Resistance (mΩ/m)</th>
+                    <th className="px-4 py-2 text-left font-semibold">mV/A/m</th>
                     <th className="px-4 py-2 text-left font-semibold">Typical Uses</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
                   <tr className="hover:bg-gray-50">
                     <td className="px-4 py-2 font-semibold">1.0</td>
-                    <td className="px-4 py-2">18.1</td>
-                    <td className="px-4 py-2">Low-current single pole</td>
+                    <td className="px-4 py-2">44</td>
+                    <td className="px-4 py-2">Low-current single circuits</td>
                   </tr>
                   <tr className="hover:bg-gray-50 bg-gray-50">
                     <td className="px-4 py-2 font-semibold">1.5</td>
-                    <td className="px-4 py-2">12.1</td>
-                    <td className="px-4 py-2">Single pole, bell circuits</td>
+                    <td className="px-4 py-2">29</td>
+                    <td className="px-4 py-2">Lighting circuits</td>
                   </tr>
                   <tr className="hover:bg-gray-50">
                     <td className="px-4 py-2 font-semibold">2.5</td>
-                    <td className="px-4 py-2">7.41</td>
-                    <td className="px-4 py-2">Lighting, 16A circuits (short runs)</td>
+                    <td className="px-4 py-2">18</td>
+                    <td className="px-4 py-2">Ring finals, radial sockets</td>
                   </tr>
                   <tr className="hover:bg-gray-50 bg-gray-50">
                     <td className="px-4 py-2 font-semibold">4.0</td>
-                    <td className="px-4 py-2">4.62</td>
-                    <td className="px-4 py-2">Appliances, cookers, lighting (longer runs)</td>
+                    <td className="px-4 py-2">11</td>
+                    <td className="px-4 py-2">Immersion heaters, high-load radials</td>
                   </tr>
                   <tr className="hover:bg-gray-50">
                     <td className="px-4 py-2 font-semibold">6.0</td>
-                    <td className="px-4 py-2">3.08</td>
-                    <td className="px-4 py-2">Heavy loads, showers, hobs</td>
+                    <td className="px-4 py-2">7.3</td>
+                    <td className="px-4 py-2">Cookers, showers up to 9kW</td>
                   </tr>
                   <tr className="hover:bg-gray-50 bg-gray-50">
                     <td className="px-4 py-2 font-semibold">10.0</td>
-                    <td className="px-4 py-2">1.83</td>
-                    <td className="px-4 py-2">Submain cables, distribution</td>
+                    <td className="px-4 py-2">4.4</td>
+                    <td className="px-4 py-2">Large showers, small submains</td>
                   </tr>
                   <tr className="hover:bg-gray-50">
                     <td className="px-4 py-2 font-semibold">16.0</td>
-                    <td className="px-4 py-2">1.15</td>
-                    <td className="px-4 py-2">Main feeds, long runs, 63A circuits</td>
+                    <td className="px-4 py-2">2.8</td>
+                    <td className="px-4 py-2">Submains, long runs, 63A circuits</td>
                   </tr>
                   <tr className="hover:bg-gray-50 bg-gray-50">
                     <td className="px-4 py-2 font-semibold">25.0</td>
-                    <td className="px-4 py-2">0.727</td>
-                    <td className="px-4 py-2">Main board supplies, large submains</td>
+                    <td className="px-4 py-2">1.75</td>
+                    <td className="px-4 py-2">Main supplies, large submains</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-gray-500 mt-4">Note: For three-phase systems, use single-phase voltage (230V) for percentage calculations. Values are for copper conductors at 20°C per BS 7671:2018+A2:2022 Appendix 4.</p>
+            <p className="text-xs text-gray-500 mt-4">Source: BS 7671:2018+A2:2022 Table 4D1B — Voltage drop (mV/A/m) for single-phase circuits. For three-phase, multiply result by 0.866.</p>
           </section>
 
           {/* FAQ */}
@@ -614,11 +637,15 @@ export default function VoltageDropCalculator() {
             <div className="space-y-4">
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: What if my voltage drop calculation exceeds the limit?</h4>
-                <p className="text-sm text-gray-700">Increase the cable size to reduce resistance (lower mΩ/m value). Alternatively, reposition the distribution board closer to the load, split the circuit into two smaller circuits, or use multi-core cables if applicable. Always choose the most practical solution.</p>
+                <p className="text-sm text-gray-700">Increase the cable size to get a lower mV/A/m value. For example, going from 2.5mm² (18 mV/A/m) to 4mm² (11 mV/A/m) reduces voltage drop by 39%. Alternatively, reposition the distribution board closer to the load, or split the circuit into two smaller circuits.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Does the 3% or 5% limit apply to the whole installation or just final circuits?</h4>
                 <p className="text-sm text-gray-700">The limit applies to the TOTAL voltage drop from the origin of the installation to the load point. This includes distribution circuits AND final circuits combined. You cannot exceed 3% (lighting) or 5% (power) total.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-1">Q: Why don't you multiply by 2 when using mV/A/m values?</h4>
+                <p className="text-sm text-gray-700">The mV/A/m values in Table 4D1B already account for both conductors (live and neutral). The old "multiply resistance by 2" method uses conductor resistance at 20°C, which is a different approach. Don't mix methods — use mV/A/m without the factor of 2.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Can I temporarily exceed voltage drop limits during motor starting?</h4>
@@ -629,12 +656,12 @@ export default function VoltageDropCalculator() {
                 <p className="text-sm text-gray-700">Design for anticipated future maximum demand rather than current load. This avoids costly cable upgrades later. For example, if a distribution might eventually need 40A, design for 40A now rather than upgrading from 20A later.</p>
               </div>
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: Does temperature affect voltage drop calculations?</h4>
-                <p className="text-sm text-gray-700">Yes, conductor resistance increases with temperature (~0.4% per °C for copper above 20°C). The calculator uses 20°C baseline. For high-temperature environments (lofts, sunny areas), add 0.4% to VD per °C above 20°C or consult BS 7671 Appendix 4 for temperature-corrected values.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Q: Do I need to apply temperature correction to mV/A/m values?</h4>
+                <p className="text-sm text-gray-700">No — the Table 4D1B values are already at 70°C operating temperature. Unlike the conductor resistance method which uses 20°C and needs correction, mV/A/m values represent real operating conditions under load.</p>
               </div>
               <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: Is this calculator compliant with the 18th Edition?</h4>
-                <p className="text-sm text-gray-700">Yes, all calculations follow BS 7671:2018+A2:2022 Regulation 525 requirements and use mV/A/m values from Appendix 4 for standard PVC/XLPE copper conductors at 20°C.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Q: Is this calculator compliant with 18th Edition?</h4>
+                <p className="text-sm text-gray-700">Yes, all calculations follow BS 7671:2018+A2:2022 Regulation 525 requirements and use mV/A/m values from Table 4D1B for thermoplastic (PVC) insulated copper conductors at 70°C operating temperature.</p>
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: What is a 63A circuit used for?</h4>
@@ -642,11 +669,7 @@ export default function VoltageDropCalculator() {
               </div>
               <div>
                 <h4 className="font-bold text-gray-800 mb-1">Q: Do 63A circuits need larger cables?</h4>
-                <p className="text-sm text-gray-700">Yes, 63A circuits almost always require larger cable than smaller circuits. For example, a 63A circuit over 20 meters needs 16mm² minimum to stay compliant. Always check the quick-select 63A button and test different cable sizes to find the right balance between voltage drop compliance and cost.</p>
-              </div>
-              <div>
-                <h4 className="font-bold text-gray-800 mb-1">Q: Can I use 63A for residential installations?</h4>
-                <p className="text-sm text-gray-700">Yes, 63A MCBs are common in residential installations for main distribution, secondary boards, or large submains to outbuildings. Most standard domestic CUs max out at 100A, so a 63A circuit represents a substantial load. Always verify compliance with Building Control and local regulations.</p>
+                <p className="text-sm text-gray-700">Yes, 63A circuits almost always require larger cable than smaller circuits. For example, a 63A circuit over 20 metres needs 16mm² minimum to stay compliant. Always check the quick-select 63A button and test different cable sizes to find the right balance between voltage drop compliance and cost.</p>
               </div>
             </div>
           </section>
@@ -694,7 +717,7 @@ export default function VoltageDropCalculator() {
                 { item: `${result.cableSize}mm² Twin & Earth Cable`, quantity: result.length.toString(), unit: 'meters' },
                 { item: 'Cable Installation & Testing', quantity: '1', unit: 'job' }
               ],
-              summary: `BS 7671 Regulation 525 compliant voltage drop: ${result.vd}V (${result.vdPercent}%) for ${result.current}A load at ${result.length}m length using ${result.cableSize}mm² cable`
+              summary: `BS 7671 compliant voltage drop: ${result.vd}V (${result.vdPercent}%) for ${result.current}A load at ${result.length}m using ${result.cableSize}mm² cable (Table 4D1B: ${result.mV} mV/A/m)`
             }}
             onClose={() => setShowQuoteGenerator(false)}
           />
