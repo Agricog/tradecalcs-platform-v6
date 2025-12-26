@@ -232,7 +232,22 @@ export default function CookerCircuitCableSizing() {
               defaultLength={usecaseData.defaults.length}
               defaultMethod={usecaseData.defaults.method}
               defaultLighting={usecaseData.defaults.lighting}
-            />
+            />          </div>
+
+          {/* CONTRACTOR LEAD CTA */}
+          <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg p-6 mb-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <h3 className="text-xl font-bold mb-1">Need a Qualified Electrician?</h3>
+                <p className="text-purple-100">Get quotes from vetted, local contractors for your cooker circuit installation</p>
+              </div>
+              <a 
+                href="#get-quotes" 
+                className="bg-white text-purple-700 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 text-center whitespace-nowrap"
+              >
+                Get Free Quotes
+              </a>
+            </div>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6 mb-8">
@@ -345,11 +360,11 @@ export default function CookerCircuitCableSizing() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+          <div className="bg-white rounded-lg shadow-lg p-8 mb-8" id="get-quotes">
             <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Need a Custom Solution for Your Business?</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Get Quotes from Local Electricians</h3>
               <p className="text-gray-700">
-                Whether you're a contractor needing bulk calculations, a merchant wanting to embed our tools, or a business with specific requirements - we'd love to hear from you.
+                Looking for a qualified electrician for your cooker circuit installation? Tell us about your project and we'll connect you with vetted contractors in your area. Free, no obligation quotes.
               </p>
             </div>
             
@@ -364,9 +379,11 @@ export default function CookerCircuitCableSizing() {
               />
             </div>
             
-            <p className="text-center text-sm text-gray-600 mt-4">
-              Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" className="text-blue-600 font-semibold hover:underline">mick@tradecalcs.co.uk</a>
-            </p>
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <p className="text-center text-sm text-gray-600">
+  <strong>Trade professional or electrical business?</strong> Use the form above and let us know - we offer lead referrals in your area, bulk calculation tools, and white-label partnerships for merchants and suppliers.
+</p>
+            </div>
           </div>
 
           <div className="bg-orange-600 text-white rounded-lg p-8 text-center">
