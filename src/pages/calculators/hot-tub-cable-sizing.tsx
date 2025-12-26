@@ -267,6 +267,14 @@ export default function HotTubCableSizing() {
             </div>
           </div>
 
+          {/* Internal linking section */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+            <h3 className="font-bold text-blue-900 mb-3">Complete Your Outdoor Living Space</h3>
+            <p className="text-sm text-blue-800 mb-4">
+              Hot tubs pair perfectly with <Link to="/calculators/cable-sizing/sauna-cable-sizing" className="text-blue-600 font-semibold hover:underline">sauna installations</Link> for complete home wellness. Consider adding <Link to="/calculators/cable-sizing/swimming-pool-cable-sizing" className="text-blue-600 font-semibold hover:underline">swimming pool electrical</Link> for the ultimate garden setup. For garden rooms housing your hot tub, check our <Link to="/calculators/cable-sizing/garden-office-cable-sizing" className="text-blue-600 font-semibold hover:underline">garden building guide</Link>.
+            </p>
+          </div>
+
           <div className="bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg p-6 mb-8">
             <h3 className="font-bold text-cyan-900 mb-2">{usecaseData.defined.term}</h3>
             <p className="text-sm text-cyan-800">{usecaseData.defined.definition}</p>
