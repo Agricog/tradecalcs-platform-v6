@@ -273,6 +273,14 @@ export default function EVChargerCableSizing() {
             </div>
           </div>
 
+          {/* Internal linking section */}
+          <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
+            <h3 className="font-bold text-green-900 mb-3">Complete Your Home Electrification</h3>
+            <p className="text-sm text-green-800 mb-4">
+              EV charging often goes hand-in-hand with <Link to="/calculators/cable-sizing/solar-pv-battery-cable-sizing" className="text-green-600 font-semibold hover:underline">solar PV and battery storage</Link> to maximise self-consumption and reduce charging costs. Many customers also install <Link to="/calculators/cable-sizing/air-source-heat-pump-cable-sizing" className="text-green-600 font-semibold hover:underline">air source heat pumps</Link> as part of whole-home electrification. For garage installations, check our <Link to="/calculators/cable-sizing/garage-workshop-cable-sizing" className="text-green-600 font-semibold hover:underline">garage and workshop electrical guide</Link>.
+            </p>
+          </div>
+
           {/* Definition Box */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-8">
             <h3 className="font-bold text-blue-900 mb-2">{usecaseData.defined.term}</h3>
@@ -395,8 +403,8 @@ export default function EVChargerCableSizing() {
             
             <div className="mt-6 pt-6 border-t border-gray-200">
               <p className="text-center text-sm text-gray-600">
-  <strong>Trade professional or electrical business?</strong> Use the form above and let us know - we offer lead referrals in your area, bulk calculation tools, and white-label partnerships for merchants and suppliers.
-</p>
+                <strong>Trade professional or electrical business?</strong> Use the form above and let us know - we offer lead referrals in your area, bulk calculation tools, and white-label partnerships for merchants and suppliers.
+              </p>
             </div>
           </div>
 
