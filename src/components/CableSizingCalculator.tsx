@@ -453,6 +453,26 @@ export default function CableCalculator() {
   <h3 className="font-bold text-blue-900 mb-1">Ring Main & Sockets</h3>
   <p className="text-sm text-blue-700">Ring final & radial socket circuits</p>
 </a>
+    <a href="/calculators/cable-sizing/commercial-kitchen-cable-sizing" className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-orange-900 mb-1">Commercial Kitchen</h3>
+  <p className="text-sm text-orange-700">Restaurants, cafés & catering</p>
+</a>
+<a href="/calculators/cable-sizing/server-room-cable-sizing" className="block p-4 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-indigo-900 mb-1">Server Room</h3>
+  <p className="text-sm text-indigo-700">Data centres & IT infrastructure</p>
+</a>
+<a href="/calculators/cable-sizing/caravan-marina-hookup-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-cyan-900 mb-1">Caravan & Marina</h3>
+  <p className="text-sm text-cyan-700">Holiday parks & boat hookups</p>
+</a>
+<a href="/calculators/cable-sizing/farm-agricultural-cable-sizing" className="block p-4 bg-gradient-to-br from-lime-50 to-green-50 border border-lime-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-lime-900 mb-1">Farm & Agricultural</h3>
+  <p className="text-sm text-lime-700">Barns, milking parlours, workshops</p>
+</a>
+<a href="/calculators/cable-sizing/shop-retail-unit-cable-sizing" className="block p-4 bg-gradient-to-br from-pink-50 to-purple-50 border border-pink-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-pink-900 mb-1">Shop & Retail</h3>
+  <p className="text-sm text-pink-700">Commercial fit-outs & small business</p>
+</a>
   </div>
 </div>
 
