@@ -57,6 +57,11 @@ import AirConditioningCableSizing from './pages/calculators/air-conditioning-cab
 import SwimmingPoolCableSizing from './pages/calculators/swimming-pool-cable-sizing'
 import ElectricGatesCableSizing from './pages/calculators/electric-gates-cable-sizing'
 import CCTVSecurityCableSizing from './pages/calculators/cctv-security-cable-sizing'
+import AnnexGrannyFlatCableSizing from './pages/calculators/annex-granny-flat-cable-sizing'
+import ShedSummerHouseCableSizing from './pages/calculators/shed-summer-house-cable-sizing'
+import OutdoorLightingCableSizing from './pages/calculators/outdoor-lighting-cable-sizing'
+import ElectricStorageHeaterCableSizing from './pages/calculators/electric-storage-heater-cable-sizing'
+import RingMainSocketCircuitCableSizing from './pages/calculators/ring-main-socket-circuit-cable-sizing'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -180,6 +185,11 @@ function App() {
           <Route path="/calculators/cable-sizing/swimming-pool-cable-sizing" element={<SwimmingPoolCableSizing />} />
           <Route path="/calculators/cable-sizing/electric-gates-cable-sizing" element={<ElectricGatesCableSizing />} />
           <Route path="/calculators/cable-sizing/cctv-security-cable-sizing" element={<CCTVSecurityCableSizing />} />
+          <Route path="/calculators/cable-sizing/annex-granny-flat-cable-sizing" element={<AnnexGrannyFlatCableSizing />} />
+          <Route path="/calculators/cable-sizing/shed-summer-house-cable-sizing" element={<ShedSummerHouseCableSizing />} />
+          <Route path="/calculators/cable-sizing/outdoor-lighting-cable-sizing" element={<OutdoorLightingCableSizing />} />
+          <Route path="/calculators/cable-sizing/electric-storage-heater-cable-sizing" element={<ElectricStorageHeaterCableSizing />} />
+          <Route path="/calculators/cable-sizing/ring-main-socket-circuit-cable-sizing" element={<RingMainSocketCircuitCableSizing />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
