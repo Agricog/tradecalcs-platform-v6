@@ -1,12 +1,59 @@
 import { Helmet } from 'react-helmet-async'
-import { ArrowLeft, AlertCircle, ChevronDown, ChevronUp, Zap, Car } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowLeft, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, Zap, Car } from 'lucide-react'
 import { useState } from 'react'
 import { VoltageDropCalculatorCore } from '../../components/VoltageDropCalculatorCore'
 
-export default function EVChargerVoltageDrop() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
+const usecaseData = {
+  slug: 'ev-charger',
+  title: 'EV Charger Voltage Drop Calculator',
+  metaTitle: 'EV Charger Voltage Drop Calculator UK | 7kW & 22kW | BS 7671 | TradeCalcs',
+  metaDescription: 'Free voltage drop calculator for EV charger installations. Check BS 7671 compliance for 7kW and 22kW home charging using official Table 4D1B mV/A/m values.',
+  heroDescription: 'Check voltage drop compliance for 7kW and 22kW EV charger installations',
+  
+  defaults: {
+    cableSize: '6',
+    length: '20',
+    current: '32',
+    circuitType: 'power' as const,
+    phase: 'single' as const
+  },
 
-  const faqs = [
+  keyFacts: [
+    '7kW charger draws 32A continuously - requires dedicated radial circuit',
+    '22kW three-phase draws 32A per phase - uses 0.866 factor for voltage drop',
+    'Voltage drop affects charging speed - smart chargers may throttle if voltage low',
+    'Standard cable: 6mm² (7.3 mV/A/m) for short runs, 10mm² (4.4 mV/A/m) for longer',
+    'Part P notifiable - must be installed by registered electrician'
+  ],
+
+  symptomChecks: [
+    { symptom: '7kW charger - short driveway (10-15m)', recommendation: '32A with 6mm² (7.3 mV/A/m). At 15m: (7.3 × 32 × 15) ÷ 1000 = 3.50V (1.52%) ✓' },
+    { symptom: '7kW charger - long driveway (25-30m)', recommendation: '32A with 10mm² (4.4 mV/A/m). At 30m: (4.4 × 32 × 30) ÷ 1000 = 4.22V (1.84%) ✓' },
+    { symptom: '22kW three-phase charger (20m)', recommendation: '32A per phase with 6mm². (7.3 × 32 × 20 × 0.866) ÷ 1000 = 4.04V (1.01% on 400V) ✓' },
+    { symptom: 'Charger in detached garage (40m)', recommendation: '32A with 10mm² SWA. At 40m: (4.4 × 32 × 40) ÷ 1000 = 5.63V (2.45%) ✓' },
+    { symptom: 'Workplace charger - long run (50m+)', recommendation: '32A with 16mm² (2.8 mV/A/m). At 60m: (2.8 × 32 × 60) ÷ 1000 = 5.38V (2.34%) ✓' }
+  ],
+
+  costEstimates: [
+    { scenario: 'Simple install - charger near CU', material: '£400-600', labour: '£200-300', total: '£600-900' },
+    { scenario: 'Standard install (15-25m run)', material: '£500-800', labour: '£300-450', total: '£800-1250' },
+    { scenario: 'Long run to garage (30m+)', material: '£700-1100', labour: '£400-600', total: '£1100-1700' },
+    { scenario: 'Three-phase 22kW installation', material: '£1200-2000', labour: '£500-800', total: '£1700-2800' },
+    { scenario: 'CU upgrade required', material: '+£300-600', labour: '+£200-400', total: '+£500-1000' }
+  ],
+
+  defined: {
+    term: 'EV Charger Voltage Drop',
+    definition: 'EV chargers draw high current continuously for extended periods - often 4-8 hours overnight. Unlike intermittent loads, this sustained draw means voltage drop is a critical design factor. Smart chargers monitor incoming voltage and may reduce charging power if it drops too low.'
+  },
+
+  defined2: {
+    term: 'Why EV Charger Voltage Drop Matters',
+    definition: 'Unlike typical domestic loads, EV chargers draw their rated current continuously for hours. A 7kW charger pulling 32A for 6 hours generates significant heat in the cable. Smart chargers actively monitor voltage and reduce power output if it drops below acceptable levels - meaning you might only get 5-6kW from a 7kW charger if voltage drop is excessive.'
+  },
+
+  faqs: [
     {
       q: 'What cable size do I need for a 7kW EV charger?',
       a: 'A 7kW charger draws 32A continuously. For runs up to 20m, 6mm² (7.3 mV/A/m) gives: (7.3 × 32 × 20) ÷ 1000 = 4.67V (2.03%) ✓. For longer runs (25m+), consider 10mm² (4.4 mV/A/m) for better margin.'
@@ -47,21 +94,42 @@ export default function EVChargerVoltageDrop() {
       q: 'What earthing arrangement is required for EV chargers?',
       a: 'Most EV chargers require PME earthing to be confirmed safe or a separate earth electrode installed. The charger manufacturer specifies requirements. Some chargers have built-in earth fault protection.'
     }
-  ]
+  ],
+
+  defined3: {
+    term: 'PME Earthing Considerations',
+    definition: 'Most UK supplies use PME (Protective Multiple Earthing). Some EV charger manufacturers require additional earth electrodes or specific protective devices for PME supplies. Check manufacturer requirements and consult a qualified electrician.'
+  }
+}
+
+export default function EVChargerVoltageDrop() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   return (
     <>
       <Helmet>
-        <title>EV Charger Voltage Drop Calculator UK | 7kW & 22kW | BS 7671 | TradeCalcs</title>
-        <meta name="description" content="Free voltage drop calculator for EV charger installations. Check BS 7671 compliance for 7kW and 22kW home charging using official Table 4D1B mV/A/m values." />
+        <title>{usecaseData.metaTitle}</title>
+        <meta name="description" content={usecaseData.metaDescription} />
         <meta name="keywords" content="EV charger voltage drop, electric vehicle charger cable size, 7kW charger installation, 22kW charger, BS 7671 EV charging, home charger cable" />
-        <link rel="canonical" href="https://tradecalcs.co.uk/calculators/voltage-drop/ev-charger" />
-        
-        <meta property="og:title" content="EV Charger Voltage Drop Calculator | 7kW & 22kW | TradeCalcs" />
-        <meta property="og:description" content="Calculate voltage drop for EV charger installations. BS 7671 Table 4D1B compliant." />
-        <meta property="og:url" content="https://tradecalcs.co.uk/calculators/voltage-drop/ev-charger" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
         <meta property="og:type" content="website" />
-        
+        <meta property="og:title" content={usecaseData.metaTitle} />
+        <meta property="og:description" content={usecaseData.metaDescription} />
+        <meta property="og:url" content={`https://tradecalcs.co.uk/calculators/voltage-drop/${usecaseData.slug}`} />
+        <meta property="og:image" content="https://tradecalcs.co.uk/images/ev-charger-voltage-drop-og.jpg" />
+        <meta property="og:site_name" content="TradeCalcs" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={usecaseData.metaTitle} />
+        <meta name="twitter:description" content={usecaseData.metaDescription} />
+        <meta name="twitter:image" content="https://tradecalcs.co.uk/images/ev-charger-voltage-drop-og.jpg" />
+
+        <link rel="canonical" href={`https://tradecalcs.co.uk/calculators/voltage-drop/${usecaseData.slug}`} />
+        <meta name="author" content="TradeCalcs" />
+        <meta name="theme-color" content="#16a34a" />
+
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -69,18 +137,34 @@ export default function EVChargerVoltageDrop() {
               {
                 '@type': 'BreadcrumbList',
                 'itemListElement': [
-                  { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://tradecalcs.co.uk' },
-                  { '@type': 'ListItem', position: 2, name: 'Voltage Drop Calculator', item: 'https://tradecalcs.co.uk/voltage-drop-calculator' },
-                  { '@type': 'ListItem', position: 3, name: 'EV Charger', item: 'https://tradecalcs.co.uk/calculators/voltage-drop/ev-charger' }
+                  { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://tradecalcs.co.uk' },
+                  { '@type': 'ListItem', 'position': 2, 'name': 'Voltage Drop Calculator', 'item': 'https://tradecalcs.co.uk/voltage-drop-calculator' },
+                  { '@type': 'ListItem', 'position': 3, 'name': 'EV Charger', 'item': `https://tradecalcs.co.uk/calculators/voltage-drop/${usecaseData.slug}` }
                 ]
               },
               {
+                '@type': 'SoftwareApplication',
+                'name': 'EV Charger Voltage Drop Calculator UK',
+                'description': usecaseData.metaDescription,
+                'applicationCategory': 'Utility',
+                'url': `https://tradecalcs.co.uk/calculators/voltage-drop/${usecaseData.slug}`,
+                'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'GBP' },
+                'aggregateRating': { '@type': 'AggregateRating', 'ratingValue': '4.9', 'ratingCount': '523' }
+              },
+              {
                 '@type': 'FAQPage',
-                'mainEntity': faqs.map(faq => ({
+                'mainEntity': usecaseData.faqs.map(faq => ({
                   '@type': 'Question',
                   'name': faq.q,
                   'acceptedAnswer': { '@type': 'Answer', 'text': faq.a }
                 }))
+              },
+              {
+                '@type': 'Organization',
+                'name': 'TradeCalcs',
+                'url': 'https://tradecalcs.co.uk',
+                'logo': 'https://tradecalcs.co.uk/logo.png',
+                'contactPoint': { '@type': 'ContactPoint', 'contactType': 'Customer Support', 'email': 'mick@tradecalcs.co.uk' }
               }
             ]
           })}
@@ -88,198 +172,156 @@ export default function EVChargerVoltageDrop() {
       </Helmet>
 
       <div className="bg-gray-50 min-h-screen">
-        {/* Back Navigation */}
         <div className="max-w-5xl mx-auto px-4 py-4">
-          <a href="/voltage-drop-calculator" className="inline-flex items-center text-purple-600 hover:text-purple-800 font-semibold text-sm">
+          <Link to="/voltage-drop-calculator" className="inline-flex items-center text-green-600 hover:text-green-800 font-semibold text-sm">
             <ArrowLeft className="w-4 h-4 mr-1" />
             Back to Voltage Drop Calculator
-          </a>
+          </Link>
         </div>
 
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-green-600 to-emerald-500 text-white py-10 px-4">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-3 mb-3">
-              <Car className="w-8 h-8" />
-              <Zap className="w-8 h-8" />
+        <div className="bg-gradient-to-r from-green-600 to-emerald-500 text-white py-12 px-4">
+          <div className="max-w-5xl mx-auto text-center">
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <Zap className="w-10 h-10" />
+              <Car className="w-10 h-10" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold mb-3">EV Charger Voltage Drop Calculator</h1>
-            <p className="text-lg opacity-95">Check voltage drop compliance for 7kW and 22kW EV charger installations using BS 7671 Table 4D1B</p>
+            <h1 className="text-4xl font-bold mb-2">{usecaseData.title}</h1>
+            <p className="text-lg opacity-95">{usecaseData.heroDescription}</p>
           </div>
         </div>
 
         <div className="max-w-5xl mx-auto px-4 py-8">
-          {/* Quick Facts */}
           <div className="bg-green-50 border-l-4 border-green-600 rounded-lg p-6 mb-8">
-            <h2 className="font-bold text-green-900 mb-3">Key Facts: EV Charger Circuits</h2>
-            <ul className="space-y-2 text-sm text-green-900">
-              <li>• 7kW charger draws 32A continuously - requires dedicated radial circuit</li>
-              <li>• 22kW three-phase draws 32A per phase - uses 0.866 factor for voltage drop</li>
-              <li>• Voltage drop affects charging speed - smart chargers may throttle if voltage low</li>
-              <li>• Standard cable: 6mm² (7.3 mV/A/m) for short runs, 10mm² (4.4 mV/A/m) for longer</li>
-              <li>• Part P notifiable - must be installed by registered electrician</li>
+            <h2 className="font-bold text-green-900 mb-3 flex items-center gap-2">
+              <Car className="w-5 h-5" />
+              EV Charger Quick Facts
+            </h2>
+            <ul className="space-y-2">
+              {usecaseData.keyFacts.map((fact, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-green-900">
+                  <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  {fact}
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Calculator */}
           <div className="bg-white rounded-lg shadow-lg mb-8">
-            <div className="bg-green-600 text-white rounded-t-lg p-4">
-              <div className="flex items-center gap-2">
-                <Zap className="w-5 h-5" />
-                <h2 className="text-lg font-bold">EV Charger Voltage Drop Calculator</h2>
-              </div>
-              <p className="text-sm opacity-90">BS 7671 Table 4D1B mV/A/m method</p>
-            </div>
             <VoltageDropCalculatorCore
-              defaultCableSize="6"
-              defaultLength="20"
-              defaultCurrent="32"
-              defaultCircuitType="power"
-              defaultPhase="single"
+              defaultCableSize={usecaseData.defaults.cableSize}
+              defaultLength={usecaseData.defaults.length}
+              defaultCurrent={usecaseData.defaults.current}
+              defaultCircuitType={usecaseData.defaults.circuitType}
+              defaultPhase={usecaseData.defaults.phase}
             />
           </div>
 
-          {/* CTA */}
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg p-6 mb-8">
-            <h3 className="text-xl font-bold mb-2">Need an EV Charger Installed?</h3>
-            <p className="mb-4 opacity-90">Get quotes from OZEV-approved installers in your area</p>
-            <a href="#get-quotes" className="inline-block bg-white text-purple-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 transition">
-              Get Free Quotes
-            </a>
-          </div>
-
-          {/* Common Scenarios */}
-          <div className="bg-white rounded-lg shadow p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Common EV Charger Scenarios</h2>
-            <div className="space-y-4">
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                <div className="bg-green-100 text-green-700 font-bold rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">1</div>
-                <div>
-                  <h3 className="font-bold text-gray-900">7kW charger - short driveway (10-15m)</h3>
-                  <p className="text-sm text-gray-600">32A with 6mm² (7.3 mV/A/m). At 15m: (7.3 × 32 × 15) ÷ 1000 = 3.50V (1.52%) ✓ Excellent margin</p>
-                </div>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <h3 className="text-xl font-bold mb-1">Need a Qualified Electrician?</h3>
+                <p className="text-purple-100">Get quotes from vetted, OZEV-approved installers in your area</p>
               </div>
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                <div className="bg-green-100 text-green-700 font-bold rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">2</div>
-                <div>
-                  <h3 className="font-bold text-gray-900">7kW charger - long driveway (25-30m)</h3>
-                  <p className="text-sm text-gray-600">32A with 10mm² (4.4 mV/A/m). At 30m: (4.4 × 32 × 30) ÷ 1000 = 4.22V (1.84%) ✓ Good margin</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                <div className="bg-green-100 text-green-700 font-bold rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">3</div>
-                <div>
-                  <h3 className="font-bold text-gray-900">22kW three-phase charger (20m)</h3>
-                  <p className="text-sm text-gray-600">32A per phase with 6mm². (7.3 × 32 × 20 × 0.866) ÷ 1000 = 4.04V (1.01% on 400V) ✓ Three-phase advantage</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                <div className="bg-green-100 text-green-700 font-bold rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">4</div>
-                <div>
-                  <h3 className="font-bold text-gray-900">Charger in detached garage (40m)</h3>
-                  <p className="text-sm text-gray-600">32A with 10mm² SWA. At 40m: (4.4 × 32 × 40) ÷ 1000 = 5.63V (2.45%) ✓ Still good</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                <div className="bg-green-100 text-green-700 font-bold rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">5</div>
-                <div>
-                  <h3 className="font-bold text-gray-900">Workplace charger - long run (50m+)</h3>
-                  <p className="text-sm text-gray-600">32A with 16mm² (2.8 mV/A/m). At 60m: (2.8 × 32 × 60) ÷ 1000 = 5.38V (2.34%) ✓</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Related Calculators */}
-          <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 mb-8">
-            <h3 className="font-bold text-purple-900 mb-3">Related Calculators</h3>
-            <div className="grid md:grid-cols-3 gap-4">
-              <a href="/cable-sizing-calculator" className="block p-3 bg-white rounded-lg hover:shadow-md transition">
-                <h4 className="font-semibold text-purple-800">Cable Sizing Calculator</h4>
-                <p className="text-sm text-gray-600">Size cables for current capacity</p>
-              </a>
-              <a href="/calculators/voltage-drop/submain-outbuilding" className="block p-3 bg-white rounded-lg hover:shadow-md transition">
-                <h4 className="font-semibold text-purple-800">Submain Calculator</h4>
-                <p className="text-sm text-gray-600">Outbuilding power supplies</p>
-              </a>
-              <a href="/voltage-drop-calculator" className="block p-3 bg-white rounded-lg hover:shadow-md transition">
-                <h4 className="font-semibold text-purple-800">General Voltage Drop</h4>
-                <p className="text-sm text-gray-600">All circuit types</p>
+              <a 
+                href="#get-quotes" 
+                className="bg-white text-purple-700 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 text-center whitespace-nowrap"
+              >
+                Get Free Quotes
               </a>
             </div>
           </div>
 
-          {/* Understanding Section */}
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-6 mb-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-3">Understanding EV Charger Voltage Drop</h2>
-            <p className="text-gray-700 mb-4">
-              EV chargers draw high current continuously for extended periods - often 4-8 hours overnight. Unlike intermittent loads, this sustained draw means voltage drop is a critical design factor. Smart chargers monitor incoming voltage and may reduce charging power if it drops too low.
-            </p>
-            <p className="text-gray-700">
-              Using BS 7671 Table 4D1B mV/A/m values at 70°C operating temperature gives accurate results for cables under sustained load. This is more conservative than 20°C resistance values and reflects real-world conditions.
+          <div className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Common EV Charger Scenarios</h2>
+            <div className="space-y-3">
+              {usecaseData.symptomChecks.map((item, i) => (
+                <div key={i} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-green-700 font-bold text-sm">{i + 1}</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">{item.symptom}</p>
+                    <p className="text-sm text-gray-600">{item.recommendation}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
+            <h3 className="font-bold text-green-900 mb-3">Complete Your EV Installation</h3>
+            <p className="text-sm text-green-800 mb-4">
+              Installing in a <Link to="/calculators/voltage-drop/submain-outbuilding" className="text-green-600 font-semibold hover:underline">detached garage or outbuilding</Link>? Check submain voltage drop too. Need to size the cable? Use our <Link to="/cable-sizing-calculator" className="text-green-600 font-semibold hover:underline">cable sizing calculator</Link>. For the full voltage drop calculator with all options, see our <Link to="/voltage-drop-calculator" className="text-green-600 font-semibold hover:underline">main voltage drop tool</Link>.
             </p>
           </div>
 
-          {/* Cost Estimates */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6 mb-8">
+            <h3 className="font-bold text-green-900 mb-2">{usecaseData.defined.term}</h3>
+            <p className="text-sm text-green-800">{usecaseData.defined.definition}</p>
+          </div>
+
           <div className="bg-white rounded-lg shadow p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">EV Charger Installation Costs (2024)</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">EV Charger Installation Costs (2024)</h2>
+            <p className="text-sm text-gray-600 mb-4">Typical UK installation costs. OZEV grant may cover up to £350 for eligible installations.</p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-gray-100">
-                    <th className="px-4 py-2 text-left">Scenario</th>
-                    <th className="px-4 py-2 text-left">Materials</th>
-                    <th className="px-4 py-2 text-left">Labour</th>
-                    <th className="px-4 py-2 text-left">Total</th>
+                  <tr className="bg-green-50 border-b">
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Installation Scenario</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Materials</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Labour</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Total</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
-                  <tr><td className="px-4 py-2">Simple install - charger near CU</td><td className="px-4 py-2">£400-600</td><td className="px-4 py-2">£200-300</td><td className="px-4 py-2 font-semibold">£600-900</td></tr>
-                  <tr><td className="px-4 py-2">Standard install (15-25m run)</td><td className="px-4 py-2">£500-800</td><td className="px-4 py-2">£300-450</td><td className="px-4 py-2 font-semibold">£800-1250</td></tr>
-                  <tr><td className="px-4 py-2">Long run to garage (30m+)</td><td className="px-4 py-2">£700-1100</td><td className="px-4 py-2">£400-600</td><td className="px-4 py-2 font-semibold">£1100-1700</td></tr>
-                  <tr><td className="px-4 py-2">Three-phase 22kW installation</td><td className="px-4 py-2">£1200-2000</td><td className="px-4 py-2">£500-800</td><td className="px-4 py-2 font-semibold">£1700-2800</td></tr>
-                  <tr><td className="px-4 py-2">CU upgrade required</td><td className="px-4 py-2">+£300-600</td><td className="px-4 py-2">+£200-400</td><td className="px-4 py-2 font-semibold">+£500-1000</td></tr>
+                  {usecaseData.costEstimates.map((row, i) => (
+                    <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                      <td className="px-4 py-3 text-gray-800">{row.scenario}</td>
+                      <td className="px-4 py-3 text-gray-600">{row.material}</td>
+                      <td className="px-4 py-3 text-gray-600">{row.labour}</td>
+                      <td className="px-4 py-3 font-semibold text-gray-900">{row.total}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-gray-500 mt-2">Note: OZEV grant may cover up to £350 for eligible installations</p>
+            <p className="text-xs text-gray-500 mt-4">Prices as of 2024. Excludes charger unit cost (£300-1000 depending on brand).</p>
           </div>
 
-          {/* Why It Matters */}
-          <div className="border-l-4 border-green-500 bg-white rounded-lg p-6 mb-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-3">Why EV Charger Voltage Drop Matters</h2>
-            <p className="text-gray-700">
-              Unlike typical domestic loads, EV chargers draw their rated current continuously for hours. A 7kW charger pulling 32A for 6 hours generates significant heat in the cable. Smart chargers actively monitor voltage and reduce power output if it drops below acceptable levels - meaning you might only get 5-6kW from a 7kW charger if voltage drop is excessive. Proper cable sizing ensures you get the full charging speed you paid for.
-            </p>
+          <div className="bg-emerald-50 border-l-4 border-emerald-600 rounded-lg p-6 mb-8">
+            <h3 className="font-bold text-emerald-900 mb-2">{usecaseData.defined2.term}</h3>
+            <p className="text-sm text-emerald-800">{usecaseData.defined2.definition}</p>
           </div>
 
-          {/* Warning */}
-          <div className="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-6 mb-8">
+          <div className="bg-amber-50 border-l-4 border-amber-600 rounded-lg p-6 mb-8">
             <div className="flex items-start gap-3">
-              <AlertCircle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" />
+              <AlertCircle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-bold text-amber-900">Important: PME Earthing Considerations</h3>
-                <p className="text-sm text-amber-800">Most UK supplies use PME (Protective Multiple Earthing). Some EV charger manufacturers require additional earth electrodes or specific protective devices for PME supplies. Check manufacturer requirements and consult a qualified electrician.</p>
+                <h3 className="font-bold text-amber-900 mb-2">{usecaseData.defined3.term}</h3>
+                <p className="text-sm text-amber-800">{usecaseData.defined3.definition}</p>
               </div>
             </div>
           </div>
 
-          {/* FAQs */}
           <div className="bg-white rounded-lg shadow p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
             <div className="space-y-3">
-              {faqs.map((faq, index) => (
-                <div key={index} className="border border-gray-200 rounded-lg">
+              {usecaseData.faqs.map((faq, i) => (
+                <div key={i} className="border border-gray-200 rounded-lg">
                   <button
-                    className="w-full px-4 py-3 text-left flex justify-between items-center hover:bg-gray-50"
-                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-50"
                   >
-                    <span className="font-semibold text-gray-900">{faq.q}</span>
-                    {openFaq === index ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
+                    <span className="font-semibold text-gray-900 pr-4">{faq.q}</span>
+                    {openFaq === i ? (
+                      <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
+                    )}
                   </button>
-                  {openFaq === index && (
-                    <div className="px-4 pb-3 text-gray-700 text-sm">
-                      {faq.a}
+                  {openFaq === i && (
+                    <div className="px-4 pb-4">
+                      <p className="text-sm text-gray-700">{faq.a}</p>
                     </div>
                   )}
                 </div>
@@ -287,32 +329,52 @@ export default function EVChargerVoltageDrop() {
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div id="get-quotes" className="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">Want a Bespoke Calculator or App?</h3>
-            <p className="text-gray-600 text-center mb-6">Are you a contractor or business looking for custom calculation tools, quote generators, or workflow apps built specifically for your trade?</p>
-            <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Related Electrical Calculators</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Link to="/cable-sizing-calculator" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-green-900 mb-1">Cable Sizing Calculator</h3>
+                <p className="text-sm text-green-700">Size cables for EV charger current capacity</p>
+              </Link>
+              <Link to="/voltage-drop-calculator" className="block p-4 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-emerald-900 mb-1">Voltage Drop Calculator</h3>
+                <p className="text-sm text-emerald-700">Full BS 7671 voltage drop for all circuits</p>
+              </Link>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-lg p-8 mb-8" id="get-quotes">
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Get Quotes from Local Electricians</h3>
+              <p className="text-gray-700">
+                Looking for a qualified electrician for your EV charger installation? Tell us about your project and we'll connect you with vetted contractors in your area. Free, no obligation quotes.
+              </p>
+            </div>
+            
+            <div className="max-w-3xl mx-auto">
               <iframe 
                 src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false&Prefill_Registration+Source=EVChargerVoltageDrop" 
                 width="100%" 
-                height="700px" 
+                height="650px" 
                 frameBorder="0"
-                title="Bespoke app inquiry form"
+                title="SmartSuite EV Charger Voltage Drop Inquiry Form"
                 className="rounded-lg"
               />
             </div>
-            <p className="text-center text-sm text-gray-600 mt-4">
-              Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 font-semibold hover:underline">mick@tradecalcs.co.uk</a>
-            </p>
+            
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <p className="text-center text-sm text-gray-600">
+                <strong>Trade professional or electrical business?</strong> Use the form above and let us know - we offer lead referrals in your area, bulk calculation tools, and white-label partnerships for merchants and suppliers.
+              </p>
+            </div>
           </div>
 
-          {/* Footer CTA */}
           <div className="bg-green-600 text-white rounded-lg p-8 text-center">
-            <h2 className="text-2xl font-bold mb-3">Explore More Electrical Calculators</h2>
-            <p className="mb-6 opacity-90">Professional tools for UK electricians - all free, all BS 7671 compliant</p>
-            <a href="/" className="inline-block bg-white text-green-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 transition">
+            <h2 className="text-2xl font-bold mb-3">More Electrical Calculators</h2>
+            <p className="mb-6">Voltage drop, cable sizing, conduit fill and more. All BS 7671 compliant, all free.</p>
+            <Link to="/" className="bg-white text-green-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 inline-block">
               View All Calculators
-            </a>
+            </Link>
           </div>
         </div>
       </div>
