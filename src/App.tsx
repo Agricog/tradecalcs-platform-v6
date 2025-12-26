@@ -42,6 +42,7 @@ import FloorInsulation from './pages/calculators/floor-insulation'
 import RoomInRoof from './pages/calculators/room-in-roof'
 import FlatRoof from './pages/calculators/flat-roof'
 import NewBuildWalls from './pages/calculators/new-build-walls'
+import EVChargerCableSizing from './pages/calculators/ev-charger-cable-sizing'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -149,6 +150,7 @@ function App() {
           <Route path="/calculators/insulation-calculator/room-in-roof" element={<RoomInRoof />} />
           <Route path="/calculators/insulation-calculator/flat-roof" element={<FlatRoof />} />
           <Route path="/calculators/insulation-calculator/new-build-walls" element={<NewBuildWalls />} />
+          <Route path="/calculators/cable-sizing/ev-charger-cable-sizing" element={<EVChargerCableSizing />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
