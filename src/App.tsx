@@ -62,6 +62,11 @@ import ShedSummerHouseCableSizing from './pages/calculators/shed-summer-house-ca
 import OutdoorLightingCableSizing from './pages/calculators/outdoor-lighting-cable-sizing'
 import ElectricStorageHeaterCableSizing from './pages/calculators/electric-storage-heater-cable-sizing'
 import RingMainSocketCircuitCableSizing from './pages/calculators/ring-main-socket-circuit-cable-sizing'
+import CommercialKitchenCableSizing from './pages/calculators/commercial-kitchen-cable-sizing'
+import ServerRoomCableSizing from './pages/calculators/server-room-cable-sizing'
+import CaravanMarinaHookupCableSizing from './pages/calculators/caravan-marina-hookup-cable-sizing'
+import FarmAgriculturalCableSizing from './pages/calculators/farm-agricultural-cable-sizing'
+import ShopRetailUnitCableSizing from './pages/calculators/shop-retail-unit-cable-sizing'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -190,6 +195,11 @@ function App() {
           <Route path="/calculators/cable-sizing/outdoor-lighting-cable-sizing" element={<OutdoorLightingCableSizing />} />
           <Route path="/calculators/cable-sizing/electric-storage-heater-cable-sizing" element={<ElectricStorageHeaterCableSizing />} />
           <Route path="/calculators/cable-sizing/ring-main-socket-circuit-cable-sizing" element={<RingMainSocketCircuitCableSizing />} />
+          <Route path="/calculators/cable-sizing/commercial-kitchen-cable-sizing" element={<CommercialKitchenCableSizing />} />
+          <Route path="/calculators/cable-sizing/server-room-cable-sizing" element={<ServerRoomCableSizing />} />
+          <Route path="/calculators/cable-sizing/caravan-marina-hookup-cable-sizing" element={<CaravanMarinaHookupCableSizing />} />
+          <Route path="/calculators/cable-sizing/farm-agricultural-cable-sizing" element={<FarmAgriculturalCableSizing />} />
+          <Route path="/calculators/cable-sizing/shop-retail-unit-cable-sizing" element={<ShopRetailUnitCableSizing />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
