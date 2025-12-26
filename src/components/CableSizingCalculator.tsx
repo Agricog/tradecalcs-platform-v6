@@ -393,6 +393,22 @@ export default function CableCalculator() {
       <h3 className="font-bold text-cyan-900 mb-1">Hot Tub & Spa</h3>
       <p className="text-sm text-cyan-700">Spas, swim spas, jacuzzis</p>
     </a>
+    <a href="/calculators/cable-sizing/immersion-heater-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-red-900 mb-1">Immersion Heater</h3>
+  <p className="text-sm text-red-700">Hot water cylinder circuits</p>
+</a>
+<a href="/calculators/cable-sizing/solar-pv-battery-cable-sizing" className="block p-4 bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-yellow-900 mb-1">Solar PV & Battery</h3>
+  <p className="text-sm text-yellow-700">Inverter & storage systems</p>
+</a>
+<a href="/calculators/cable-sizing/air-source-heat-pump-cable-sizing" className="block p-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-emerald-900 mb-1">Air Source Heat Pump</h3>
+  <p className="text-sm text-emerald-700">£7,500 BUS grant eligible</p>
+</a>
+<a href="/calculators/cable-sizing/underfloor-heating-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-red-900 mb-1">Underfloor Heating</h3>
+  <p className="text-sm text-red-700">Electric UFH supply circuits</p>
+</a>
   </div>
 </div>
 
