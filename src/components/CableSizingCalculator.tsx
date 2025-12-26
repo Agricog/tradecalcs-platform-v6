@@ -395,7 +395,6 @@ export default function CableCalculator() {
     </a>
   </div>
 </div>
-          </div>
 
           {/* IMPORTANT NOTES */}
           <div className="bg-blue-50 border-l-4 border-blue-700 rounded-lg p-6 mb-8">
