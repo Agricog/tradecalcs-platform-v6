@@ -409,6 +409,30 @@ export default function CableCalculator() {
   <h3 className="font-bold text-red-900 mb-1">Underfloor Heating</h3>
   <p className="text-sm text-red-700">Electric UFH supply circuits</p>
 </a>
+    <a href="/calculators/cable-sizing/garage-workshop-cable-sizing" className="block p-4 bg-gradient-to-br from-slate-50 to-zinc-50 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-slate-900 mb-1">Garage & Workshop</h3>
+  <p className="text-sm text-slate-700">Power tools, welders, compressors</p>
+</a>
+<a href="/calculators/cable-sizing/sauna-cable-sizing" className="block p-4 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-amber-900 mb-1">Sauna</h3>
+  <p className="text-sm text-amber-700">Electric sauna heater installations</p>
+</a>
+<a href="/calculators/cable-sizing/air-conditioning-cable-sizing" className="block p-4 bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-sky-900 mb-1">Air Conditioning</h3>
+  <p className="text-sm text-sky-700">Split systems & multi-split AC</p>
+</a>
+<a href="/calculators/cable-sizing/swimming-pool-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-cyan-900 mb-1">Swimming Pool</h3>
+  <p className="text-sm text-cyan-700">Pumps, heaters, lighting circuits</p>
+</a>
+<a href="/calculators/cable-sizing/electric-gates-cable-sizing" className="block p-4 bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-gray-900 mb-1">Electric Gates</h3>
+  <p className="text-sm text-gray-700">Gate motors & access control</p>
+</a>
+<a href="/calculators/cable-sizing/cctv-security-cable-sizing" className="block p-4 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-indigo-900 mb-1">CCTV & Security</h3>
+  <p className="text-sm text-indigo-700">Camera systems & alarm power</p>
+</a>
   </div>
 </div>
 
