@@ -395,8 +395,8 @@ export default function EVChargerCableSizing() {
             
             <div className="mt-6 pt-6 border-t border-gray-200">
               <p className="text-center text-sm text-gray-600">
-                <strong>Are you a contractor?</strong> Want bulk calculations, white-label tools, or to receive leads in your area? <a href="mailto:mick@tradecalcs.co.uk" className="text-blue-600 font-semibold hover:underline">Email us</a>
-              </p>
+  <strong>Trade professional or electrical business?</strong> Use the form above and let us know - we offer lead referrals in your area, bulk calculation tools, and white-label partnerships for merchants and suppliers.
+</p>
             </div>
           </div>
 
