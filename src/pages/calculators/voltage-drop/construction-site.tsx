@@ -186,7 +186,7 @@ export default function ConstructionSiteVoltageDrop() {
 
       <div className="bg-gray-50 min-h-screen">
         <div className="max-w-5xl mx-auto px-4 py-4">
-          <Link to="/voltage-drop-calculator" className="inline-flex items-center text-yellow-600 hover:text-yellow-800 font-semibold text-sm">
+          <Link to="/electrical-calculators" className="inline-flex items-center text-yellow-600 hover:text-yellow-800 font-semibold text-sm">
             <ArrowLeft className="w-4 h-4 mr-1" />
             Back to Voltage Drop Calculator
           </Link>
