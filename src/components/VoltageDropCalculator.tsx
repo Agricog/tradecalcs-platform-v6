@@ -515,113 +515,118 @@ export default function VoltageDropCalculator() {
                 <p className="text-sm text-orange-700">Electric ovens, hobs, range cookers</p>
                 <p className="text-xs text-gray-500 mt-1">6mm²-10mm² • 32A-45A with diversity</p>
               </a>
+
               <Link to="/calculators/voltage-drop/three-phase-motor" className="block p-4 bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-purple-900 mb-1">Three-Phase Motor</h3>
-  <p className="text-sm text-purple-700">Industrial motors with 0.866 factor & starting current</p>
-</Link>
+                <h3 className="font-bold text-purple-900 mb-1">Three-Phase Motor</h3>
+                <p className="text-sm text-purple-700">Industrial motors with 0.866 factor & starting current</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/solar-pv" className="block p-4 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-amber-900 mb-1">Solar PV</h3>
-  <p className="text-sm text-amber-700">Inverter to consumer unit AC cable sizing</p>
-</Link>
+              <Link to="/calculators/voltage-drop/solar-pv" className="block p-4 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-amber-900 mb-1">Solar PV</h3>
+                <p className="text-sm text-amber-700">Inverter to consumer unit AC cable sizing</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/heat-pump" className="block p-4 bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-cyan-900 mb-1">Heat Pump</h3>
-  <p className="text-sm text-cyan-700">ASHP & GSHP circuits - MCS compliant</p>
-</Link>
+              <Link to="/calculators/voltage-drop/heat-pump" className="block p-4 bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-cyan-900 mb-1">Heat Pump</h3>
+                <p className="text-sm text-cyan-700">ASHP & GSHP circuits - MCS compliant</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/marina" className="block p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-blue-900 mb-1">Marina Shore Power</h3>
-  <p className="text-sm text-blue-700">Section 709 - stricter 3% limit applies</p>
-</Link>
+              <Link to="/calculators/voltage-drop/marina" className="block p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-blue-900 mb-1">Marina Shore Power</h3>
+                <p className="text-sm text-blue-700">Section 709 - stricter 3% limit applies</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/caravan-site" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-green-900 mb-1">Caravan & Camping Site</h3>
-  <p className="text-sm text-green-700">Section 708 pitch supplies & PME considerations</p>
-</Link>
+              <Link to="/calculators/voltage-drop/caravan-site" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-green-900 mb-1">Caravan & Camping Site</h3>
+                <p className="text-sm text-green-700">Section 708 pitch supplies & PME considerations</p>
+              </Link>
+
               <Link to="/calculators/voltage-drop/commercial-lighting" className="block p-4 bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-yellow-900 mb-1">Commercial Lighting</h3>
-  <p className="text-sm text-yellow-700">3% limit - offices, retail, emergency</p>
-</Link>
+                <h3 className="font-bold text-yellow-900 mb-1">Commercial Lighting</h3>
+                <p className="text-sm text-yellow-700">3% limit - offices, retail, emergency</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/warehouse" className="block p-4 bg-gradient-to-br from-slate-50 to-gray-100 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-slate-900 mb-1">Warehouse & Industrial</h3>
-  <p className="text-sm text-slate-700">Long runs, three-phase distribution</p>
-</Link>
+              <Link to="/calculators/voltage-drop/warehouse" className="block p-4 bg-gradient-to-br from-slate-50 to-gray-100 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-slate-900 mb-1">Warehouse & Industrial</h3>
+                <p className="text-sm text-slate-700">Long runs, three-phase distribution</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/server-room" className="block p-4 bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-indigo-900 mb-1">Server Room / Data Centre</h3>
-  <p className="text-sm text-indigo-700">UPS feeds, critical power, 2-3% target</p>
-</Link>
+              <Link to="/calculators/voltage-drop/server-room" className="block p-4 bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-indigo-900 mb-1">Server Room / Data Centre</h3>
+                <p className="text-sm text-indigo-700">UPS feeds, critical power, 2-3% target</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/agricultural" className="block p-4 bg-gradient-to-br from-lime-50 to-green-50 border border-lime-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-lime-900 mb-1">Agricultural & Farm</h3>
-  <p className="text-sm text-lime-700">Section 705 - grain dryers, livestock</p>
-</Link>
+              <Link to="/calculators/voltage-drop/agricultural" className="block p-4 bg-gradient-to-br from-lime-50 to-green-50 border border-lime-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-lime-900 mb-1">Agricultural & Farm</h3>
+                <p className="text-sm text-lime-700">Section 705 - grain dryers, livestock</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/swimming-pool" className="block p-4 bg-gradient-to-br from-sky-50 to-cyan-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-sky-900 mb-1">Swimming Pool</h3>
-  <p className="text-sm text-sky-700">Section 702 - zones, SELV, bonding</p>
-</Link>
-              
-<Link to="/calculators/voltage-drop/hot-tub" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-violet-900 mb-1">Hot Tub & Spa</h3>
-  <p className="text-sm text-violet-700">13A-32A dedicated outdoor circuits</p>
-</Link>
+              <Link to="/calculators/voltage-drop/swimming-pool" className="block p-4 bg-gradient-to-br from-sky-50 to-cyan-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-sky-900 mb-1">Swimming Pool</h3>
+                <p className="text-sm text-sky-700">Section 702 - zones, SELV, bonding</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/battery-storage" className="block p-4 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-emerald-900 mb-1">Home Battery Storage</h3>
-  <p className="text-sm text-emerald-700">Tesla, GivEnergy, hybrid inverters</p>
-</Link>
+              <Link to="/calculators/voltage-drop/hot-tub" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-violet-900 mb-1">Hot Tub & Spa</h3>
+                <p className="text-sm text-violet-700">13A-32A dedicated outdoor circuits</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/workshop" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-orange-900 mb-1">Workshop & Garage</h3>
-  <p className="text-sm text-orange-700">Welders, compressors, machinery</p>
-</Link>
+              <Link to="/calculators/voltage-drop/battery-storage" className="block p-4 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-emerald-900 mb-1">Home Battery Storage</h3>
+                <p className="text-sm text-emerald-700">Tesla, GivEnergy, hybrid inverters</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/annex" className="block p-4 bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-pink-900 mb-1">Annex & Granny Flat</h3>
-  <p className="text-sm text-pink-700">Separate dwelling supplies</p>
-</Link>
+              <Link to="/calculators/voltage-drop/workshop" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-orange-900 mb-1">Workshop & Garage</h3>
+                <p className="text-sm text-orange-700">Welders, compressors, machinery</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/construction-site" className="block p-4 bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-yellow-900 mb-1">Construction Site</h3>
-  <p className="text-sm text-yellow-700">Section 704 - temporary supplies</p>
-</Link>
+              <Link to="/calculators/voltage-drop/annex" className="block p-4 bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-pink-900 mb-1">Annex & Granny Flat</h3>
+                <p className="text-sm text-pink-700">Separate dwelling supplies</p>
+              </Link>
+
+              <Link to="/calculators/voltage-drop/construction-site" className="block p-4 bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-yellow-900 mb-1">Construction Site</h3>
+                <p className="text-sm text-yellow-700">Section 704 - temporary supplies</p>
+              </Link>
+
               <Link to="/calculators/voltage-drop/ring-circuit" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-violet-900 mb-1">Ring Circuit</h3>
-  <p className="text-sm text-violet-700">UK ring main - divide by 4 method</p>
-</Link>
+                <h3 className="font-bold text-violet-900 mb-1">Ring Circuit</h3>
+                <p className="text-sm text-violet-700">UK ring main - divide by 4 method</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/radial-circuit" className="block p-4 bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-sky-900 mb-1">Radial Circuit</h3>
-  <p className="text-sm text-sky-700">20A and 32A socket circuits</p>
-</Link>
+              <Link to="/calculators/voltage-drop/radial-circuit" className="block p-4 bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-sky-900 mb-1">Radial Circuit</h3>
+                <p className="text-sm text-sky-700">20A and 32A socket circuits</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/domestic-lighting" className="block p-4 bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-amber-900 mb-1">Domestic Lighting</h3>
-  <p className="text-sm text-amber-700">Indoor lighting - 3% limit</p>
-</Link>
+              <Link to="/calculators/voltage-drop/domestic-lighting" className="block p-4 bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-amber-900 mb-1">Domestic Lighting</h3>
+                <p className="text-sm text-amber-700">Indoor lighting - 3% limit</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/immersion-heater" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-red-900 mb-1">Immersion Heater</h3>
-  <p className="text-sm text-red-700">3kW hot water circuits</p>
-</Link>
+              <Link to="/calculators/voltage-drop/immersion-heater" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-red-900 mb-1">Immersion Heater</h3>
+                <p className="text-sm text-red-700">3kW hot water circuits</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/12v-dc-systems" className="block p-4 bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-sky-900 mb-1">12V DC Systems</h3>
-  <p className="text-sm text-sky-700">Caravans, boats, solar, garden</p>
-</Link>
-              
-  <Link to="/calculators/voltage-drop/swa-armoured-cable" className="block p-4 bg-gradient-to-br from-slate-50 to-gray-50 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-slate-900 mb-1">SWA Armoured Cable</h3>
-  <p className="text-sm text-slate-700">Buried and external cable runs</p>
-</Link>
+              <Link to="/calculators/voltage-drop/12v-dc-systems" className="block p-4 bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-sky-900 mb-1">12V DC Systems</h3>
+                <p className="text-sm text-sky-700">Caravans, boats, solar, garden</p>
+              </Link>
 
-<Link to="/calculators/voltage-drop/underfloor-heating" className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-orange-900 mb-1">Underfloor Heating</h3>
-  <p className="text-sm text-orange-700">Electric UFH mats and cables</p>
-</Link>
+              <Link to="/calculators/voltage-drop/swa-armoured-cable" className="block p-4 bg-gradient-to-br from-slate-50 to-gray-50 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-slate-900 mb-1">SWA Armoured Cable</h3>
+                <p className="text-sm text-slate-700">Buried and external cable runs</p>
+              </Link>
+
+              <Link to="/calculators/voltage-drop/underfloor-heating" className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-orange-900 mb-1">Underfloor Heating</h3>
+                <p className="text-sm text-orange-700">Electric UFH mats and cables</p>
+              </Link>
+            </div>
+          </section>
 
           {/* UNDERSTANDING VOLTAGE DROP */}
           <section className="bg-white rounded-lg shadow p-6 mb-8">
