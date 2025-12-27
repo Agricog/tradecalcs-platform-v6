@@ -90,6 +90,11 @@ import BatteryStorageVoltageDrop from './pages/calculators/voltage-drop/battery-
 import WorkshopVoltageDrop from './pages/calculators/voltage-drop/workshop'
 import AnnexVoltageDrop from './pages/calculators/voltage-drop/annex'
 import ConstructionSiteVoltageDrop from './pages/calculators/voltage-drop/construction-site'
+import RingCircuitVoltageDrop from './pages/calculators/voltage-drop/ring-circuit'
+import RadialCircuitVoltageDrop from './pages/calculators/voltage-drop/radial-circuit'
+import DomesticLightingVoltageDrop from './pages/calculators/voltage-drop/domestic-lighting'
+import ImmersionHeaterVoltageDrop from './pages/calculators/voltage-drop/immersion-heater'
+import TwelveVoltDCSystemsVoltageDrop from './pages/calculators/voltage-drop/12v-dc-systems'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -246,6 +251,11 @@ function App() {
           <Route path="/calculators/voltage-drop/workshop" element={<WorkshopVoltageDrop />} />
           <Route path="/calculators/voltage-drop/annex" element={<AnnexVoltageDrop />} />
           <Route path="/calculators/voltage-drop/construction-site" element={<ConstructionSiteVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/ring-circuit" element={<RingCircuitVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/radial-circuit" element={<RadialCircuitVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/domestic-lighting" element={<DomesticLightingVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/immersion-heater" element={<ImmersionHeaterVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/12v-dc-systems" element={<TwelveVoltDCSystemsVoltageDrop />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
