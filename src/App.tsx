@@ -80,6 +80,11 @@ import SolarPVVoltageDrop from './pages/calculators/voltage-drop/solar-pv'
 import HeatPumpVoltageDrop from './pages/calculators/voltage-drop/heat-pump'
 import MarinaVoltageDrop from './pages/calculators/voltage-drop/marina'
 import CaravanSiteVoltageDrop from './pages/calculators/voltage-drop/caravan-site'
+import CommercialLightingVoltageDrop from './pages/calculators/voltage-drop/commercial-lighting'
+import WarehouseVoltageDrop from './pages/calculators/voltage-drop/warehouse'
+import ServerRoomVoltageDrop from './pages/calculators/voltage-drop/server-room'
+import AgriculturalVoltageDrop from './pages/calculators/voltage-drop/agricultural'
+import SwimmingPoolVoltageDrop from './pages/calculators/voltage-drop/swimming-pool'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -226,6 +231,11 @@ function App() {
           <Route path="/calculators/voltage-drop/heat-pump" element={<HeatPumpVoltageDrop />} />
           <Route path="/calculators/voltage-drop/marina" element={<MarinaVoltageDrop />} />
           <Route path="/calculators/voltage-drop/caravan-site" element={<CaravanSiteVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/commercial-lighting" element={<CommercialLightingVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/warehouse" element={<WarehouseVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/server-room" element={<ServerRoomVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/agricultural" element={<AgriculturalVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/swimming-pool" element={<SwimmingPoolVoltageDrop />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
