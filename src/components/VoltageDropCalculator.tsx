@@ -612,6 +612,16 @@ export default function VoltageDropCalculator() {
   <h3 className="font-bold text-sky-900 mb-1">12V DC Systems</h3>
   <p className="text-sm text-sky-700">Caravans, boats, solar, garden</p>
 </Link>
+              
+  <Link to="/calculators/voltage-drop/swa-armoured-cable" className="block p-4 bg-gradient-to-br from-slate-50 to-gray-50 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-slate-900 mb-1">SWA Armoured Cable</h3>
+  <p className="text-sm text-slate-700">Buried and external cable runs</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/underfloor-heating" className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-orange-900 mb-1">Underfloor Heating</h3>
+  <p className="text-sm text-orange-700">Electric UFH mats and cables</p>
+</Link>
 
           {/* UNDERSTANDING VOLTAGE DROP */}
           <section className="bg-white rounded-lg shadow p-6 mb-8">
