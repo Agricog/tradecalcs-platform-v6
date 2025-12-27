@@ -539,6 +539,30 @@ export default function VoltageDropCalculator() {
   <h3 className="font-bold text-green-900 mb-1">Caravan & Camping Site</h3>
   <p className="text-sm text-green-700">Section 708 pitch supplies & PME considerations</p>
 </Link>
+              <Link to="/calculators/voltage-drop/commercial-lighting" className="block p-4 bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-yellow-900 mb-1">Commercial Lighting</h3>
+  <p className="text-sm text-yellow-700">3% limit - offices, retail, emergency</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/warehouse" className="block p-4 bg-gradient-to-br from-slate-50 to-gray-100 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-slate-900 mb-1">Warehouse & Industrial</h3>
+  <p className="text-sm text-slate-700">Long runs, three-phase distribution</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/server-room" className="block p-4 bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-indigo-900 mb-1">Server Room / Data Centre</h3>
+  <p className="text-sm text-indigo-700">UPS feeds, critical power, 2-3% target</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/agricultural" className="block p-4 bg-gradient-to-br from-lime-50 to-green-50 border border-lime-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-lime-900 mb-1">Agricultural & Farm</h3>
+  <p className="text-sm text-lime-700">Section 705 - grain dryers, livestock</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/swimming-pool" className="block p-4 bg-gradient-to-br from-sky-50 to-cyan-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-sky-900 mb-1">Swimming Pool</h3>
+  <p className="text-sm text-sky-700">Section 702 - zones, SELV, bonding</p>
+</Link>
 
               {/* More Coming Soon */}
               <div className="block p-4 bg-gray-50 border border-gray-200 rounded-lg opacity-75">
