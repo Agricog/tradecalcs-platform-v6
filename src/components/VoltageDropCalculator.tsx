@@ -613,20 +613,6 @@ export default function VoltageDropCalculator() {
   <p className="text-sm text-sky-700">Caravans, boats, solar, garden</p>
 </Link>
 
-              {/* More Coming Soon */}
-              <div className="block p-4 bg-gray-50 border border-gray-200 rounded-lg opacity-75">
-                <div className="flex items-center gap-2 mb-2">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                  <h3 className="font-bold text-gray-500">More Coming Soon</h3>
-                </div>
-                <p className="text-sm text-gray-500">Three-phase, solar PV, heat pumps...</p>
-                <p className="text-xs text-gray-400 mt-1">Batch 2 in development</p>
-              </div>
-            </div>
-          </section>
-
           {/* UNDERSTANDING VOLTAGE DROP */}
           <section className="bg-white rounded-lg shadow p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Understanding Voltage Drop in Electrical Circuits</h2>
