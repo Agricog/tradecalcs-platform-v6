@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, Zap, Settings } from 'lucide-react'
 import { useState } from 'react'
-import { VoltageDropCalculatorCore } from '../../components/VoltageDropCalculatorCore'
+import { VoltageDropCalculatorCore } from '../../../components/VoltageDropCalculatorCore'
 
 const usecaseData = {
   slug: 'three-phase-motor',
