@@ -563,6 +563,31 @@ export default function VoltageDropCalculator() {
   <h3 className="font-bold text-sky-900 mb-1">Swimming Pool</h3>
   <p className="text-sm text-sky-700">Section 702 - zones, SELV, bonding</p>
 </Link>
+              
+<Link to="/calculators/voltage-drop/hot-tub" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-violet-900 mb-1">Hot Tub & Spa</h3>
+  <p className="text-sm text-violet-700">13A-32A dedicated outdoor circuits</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/battery-storage" className="block p-4 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-emerald-900 mb-1">Home Battery Storage</h3>
+  <p className="text-sm text-emerald-700">Tesla, GivEnergy, hybrid inverters</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/workshop" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-orange-900 mb-1">Workshop & Garage</h3>
+  <p className="text-sm text-orange-700">Welders, compressors, machinery</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/annex" className="block p-4 bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-pink-900 mb-1">Annex & Granny Flat</h3>
+  <p className="text-sm text-pink-700">Separate dwelling supplies</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/construction-site" className="block p-4 bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-yellow-900 mb-1">Construction Site</h3>
+  <p className="text-sm text-yellow-700">Section 704 - temporary supplies</p>
+</Link>
 
               {/* More Coming Soon */}
               <div className="block p-4 bg-gray-50 border border-gray-200 rounded-lg opacity-75">
