@@ -95,6 +95,8 @@ import RadialCircuitVoltageDrop from './pages/calculators/voltage-drop/radial-ci
 import DomesticLightingVoltageDrop from './pages/calculators/voltage-drop/domestic-lighting'
 import ImmersionHeaterVoltageDrop from './pages/calculators/voltage-drop/immersion-heater'
 import TwelveVoltDCSystemsVoltageDrop from './pages/calculators/voltage-drop/12v-dc-systems'
+import SWAArmouredCableVoltageDrop from './pages/calculators/voltage-drop/swa-armoured-cable'
+import UnderfloorHeatingVoltageDrop from './pages/calculators/voltage-drop/underfloor-heating'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -256,6 +258,8 @@ function App() {
           <Route path="/calculators/voltage-drop/domestic-lighting" element={<DomesticLightingVoltageDrop />} />
           <Route path="/calculators/voltage-drop/immersion-heater" element={<ImmersionHeaterVoltageDrop />} />
           <Route path="/calculators/voltage-drop/12v-dc-systems" element={<TwelveVoltDCSystemsVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/swa-armoured-cable" element={<SWAArmouredCableVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/underfloor-heating" element={<UnderfloorHeatingVoltageDrop />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
