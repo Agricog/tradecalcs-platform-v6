@@ -336,6 +336,17 @@ export default function Home() {
             </div>
           </div>
 
+          <Link to="/electrical-calculators" className="block mb-8 p-6 bg-gradient-to-r from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-purple-600 text-xs font-bold uppercase tracking-wider mb-1">HUB PAGE</p>
+                <h3 className="text-2xl font-bold text-purple-900 mb-2">All Electrical Calculators</h3>
+                <p className="text-purple-700">Voltage drop, cable sizing & 27 use-case calculators for every circuit type</p>
+              </div>
+              <ArrowRight className="w-8 h-8 text-purple-600" />
+            </div>
+          </Link>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { href: '/cable-sizing-calculator', icon: Zap, title: 'Cable Sizing Calculator', desc: 'BS 7671 compliant electrical cable sizing with all derating factors', color: 'blue', trade: 'For Electricians' },
@@ -358,7 +369,7 @@ export default function Home() {
                 {calc.isNew && (
                   <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</div>
                 )}
-                                <div className="p-6">
+                <div className="p-6">
                   <div className={getCalcColorClasses(calc.color) + ' text-xs font-bold mb-3 uppercase tracking-wider'}>{calc.trade}</div>
                   <div 
                     className="w-12 h-12 rounded-lg flex items-center justify-center text-white mb-4"
@@ -372,7 +383,7 @@ export default function Home() {
                     Use Calculator <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
-             </a>
+              </a>
             ))}
           </div>
           <p className="text-center text-gray-600 mt-8">More calculators coming soon for carpenters, bricklayers, and more trades</p>
