@@ -588,6 +588,30 @@ export default function VoltageDropCalculator() {
   <h3 className="font-bold text-yellow-900 mb-1">Construction Site</h3>
   <p className="text-sm text-yellow-700">Section 704 - temporary supplies</p>
 </Link>
+              <Link to="/calculators/voltage-drop/ring-circuit" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-violet-900 mb-1">Ring Circuit</h3>
+  <p className="text-sm text-violet-700">UK ring main - divide by 4 method</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/radial-circuit" className="block p-4 bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-sky-900 mb-1">Radial Circuit</h3>
+  <p className="text-sm text-sky-700">20A and 32A socket circuits</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/domestic-lighting" className="block p-4 bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-amber-900 mb-1">Domestic Lighting</h3>
+  <p className="text-sm text-amber-700">Indoor lighting - 3% limit</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/immersion-heater" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-red-900 mb-1">Immersion Heater</h3>
+  <p className="text-sm text-red-700">3kW hot water circuits</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/12v-dc-systems" className="block p-4 bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-sky-900 mb-1">12V DC Systems</h3>
+  <p className="text-sm text-sky-700">Caravans, boats, solar, garden</p>
+</Link>
 
               {/* More Coming Soon */}
               <div className="block p-4 bg-gray-50 border border-gray-200 rounded-lg opacity-75">
