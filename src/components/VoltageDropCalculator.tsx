@@ -514,6 +514,30 @@ export default function VoltageDropCalculator() {
                 <p className="text-sm text-orange-700">Electric ovens, hobs, range cookers</p>
                 <p className="text-xs text-gray-500 mt-1">6mm²-10mm² • 32A-45A with diversity</p>
               </a>
+              <Link to="/calculators/voltage-drop/three-phase-motor" className="block p-4 bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-purple-900 mb-1">Three-Phase Motor</h3>
+  <p className="text-sm text-purple-700">Industrial motors with 0.866 factor & starting current</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/solar-pv" className="block p-4 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-amber-900 mb-1">Solar PV</h3>
+  <p className="text-sm text-amber-700">Inverter to consumer unit AC cable sizing</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/heat-pump" className="block p-4 bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-cyan-900 mb-1">Heat Pump</h3>
+  <p className="text-sm text-cyan-700">ASHP & GSHP circuits - MCS compliant</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/marina" className="block p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-blue-900 mb-1">Marina Shore Power</h3>
+  <p className="text-sm text-blue-700">Section 709 - stricter 3% limit applies</p>
+</Link>
+
+<Link to="/calculators/voltage-drop/caravan-site" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
+  <h3 className="font-bold text-green-900 mb-1">Caravan & Camping Site</h3>
+  <p className="text-sm text-green-700">Section 708 pitch supplies & PME considerations</p>
+</Link>
 
               {/* More Coming Soon */}
               <div className="block p-4 bg-gray-50 border border-gray-200 rounded-lg opacity-75">
