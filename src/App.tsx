@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Navigate, Route, Link } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { OfflineIndicator } from './components/OfflineIndicator'
 import Footer from './components/Footer'
@@ -262,6 +262,7 @@ function App() {
           <Route path="/calculators/voltage-drop/swa-armoured-cable" element={<SWAArmouredCableVoltageDrop />} />
           <Route path="/calculators/voltage-drop/underfloor-heating" element={<UnderfloorHeatingVoltageDrop />} />
           <Route path="/electrical-calculators" element={<ElectricalCalculators />} />
+          <Route path="/wire-size-calculator" element={<Navigate to="/cable-sizing-calculator" replace />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
