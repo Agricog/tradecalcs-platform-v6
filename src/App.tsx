@@ -75,6 +75,11 @@ import EVChargerVoltageDrop from './pages/calculators/ev-charger-voltage-drop'
 import GardenLightingVoltageDrop from './pages/calculators/garden-lighting-voltage-drop'
 import ShowerCircuitVoltageDrop from './pages/calculators/shower-circuit-voltage-drop'
 import CookerCircuitVoltageDrop from './pages/calculators/cooker-circuit-voltage-drop'
+import ThreePhaseMotorVoltageDrop from './pages/calculators/voltage-drop/three-phase-motor-voltage-drop'
+import SolarPVVoltageDrop from './pages/calculators/voltage-drop/solar-pv-voltage-drop'
+import HeatPumpVoltageDrop from './pages/calculators/voltage-drop/heat-pump-voltage-drop'
+import MarinaVoltageDrop from './pages/calculators/voltage-drop/marina-voltage-drop'
+import CaravanSiteVoltageDrop from './pages/calculators/voltage-drop/caravan-site-voltage-drop'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -216,6 +221,11 @@ function App() {
           <Route path="/calculators/voltage-drop/garden-lighting" element={<GardenLightingVoltageDrop />} />
           <Route path="/calculators/voltage-drop/shower-circuit" element={<ShowerCircuitVoltageDrop />} />
           <Route path="/calculators/voltage-drop/cooker-circuit" element={<CookerCircuitVoltageDrop />} />
+          { path: '/calculators/voltage-drop/three-phase-motor', element: <ThreePhaseMotorVoltageDrop /> },
+          { path: '/calculators/voltage-drop/solar-pv', element: <SolarPVVoltageDrop /> },
+          { path: '/calculators/voltage-drop/heat-pump', element: <HeatPumpVoltageDrop /> },
+          { path: '/calculators/voltage-drop/marina', element: <MarinaVoltageDrop /> },
+          { path: '/calculators/voltage-drop/caravan-site', element: <CaravanSiteVoltageDrop /> },
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
