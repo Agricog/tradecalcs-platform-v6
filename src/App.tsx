@@ -85,6 +85,11 @@ import WarehouseVoltageDrop from './pages/calculators/voltage-drop/warehouse'
 import ServerRoomVoltageDrop from './pages/calculators/voltage-drop/server-room'
 import AgriculturalVoltageDrop from './pages/calculators/voltage-drop/agricultural'
 import SwimmingPoolVoltageDrop from './pages/calculators/voltage-drop/swimming-pool'
+import HotTubVoltageDrop from './pages/calculators/voltage-drop/hot-tub'
+import BatteryStorageVoltageDrop from './pages/calculators/voltage-drop/battery-storage'
+import WorkshopVoltageDrop from './pages/calculators/voltage-drop/workshop'
+import AnnexVoltageDrop from './pages/calculators/voltage-drop/annex'
+import ConstructionSiteVoltageDrop from './pages/calculators/voltage-drop/construction-site'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -236,6 +241,11 @@ function App() {
           <Route path="/calculators/voltage-drop/server-room" element={<ServerRoomVoltageDrop />} />
           <Route path="/calculators/voltage-drop/agricultural" element={<AgriculturalVoltageDrop />} />
           <Route path="/calculators/voltage-drop/swimming-pool" element={<SwimmingPoolVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/hot-tub" element={<HotTubVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/battery-storage" element={<BatteryStorageVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/workshop" element={<WorkshopVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/annex" element={<AnnexVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/construction-site" element={<ConstructionSiteVoltageDrop />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
