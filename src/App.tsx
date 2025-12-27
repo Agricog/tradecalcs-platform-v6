@@ -221,11 +221,11 @@ function App() {
           <Route path="/calculators/voltage-drop/garden-lighting" element={<GardenLightingVoltageDrop />} />
           <Route path="/calculators/voltage-drop/shower-circuit" element={<ShowerCircuitVoltageDrop />} />
           <Route path="/calculators/voltage-drop/cooker-circuit" element={<CookerCircuitVoltageDrop />} />
-          { path: '/calculators/voltage-drop/three-phase-motor', element: <ThreePhaseMotorVoltageDrop /> },
-          { path: '/calculators/voltage-drop/solar-pv', element: <SolarPVVoltageDrop /> },
-          { path: '/calculators/voltage-drop/heat-pump', element: <HeatPumpVoltageDrop /> },
-          { path: '/calculators/voltage-drop/marina', element: <MarinaVoltageDrop /> },
-          { path: '/calculators/voltage-drop/caravan-site', element: <CaravanSiteVoltageDrop /> },
+          <Route path="/calculators/voltage-drop/three-phase-motor" element={<ThreePhaseMotorVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/solar-pv" element={<SolarPVVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/heat-pump" element={<HeatPumpVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/marina" element={<MarinaVoltageDrop />} />
+          <Route path="/calculators/voltage-drop/caravan-site" element={<CaravanSiteVoltageDrop />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
