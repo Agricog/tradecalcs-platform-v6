@@ -97,6 +97,7 @@ import ImmersionHeaterVoltageDrop from './pages/calculators/voltage-drop/immersi
 import TwelveVoltDCSystemsVoltageDrop from './pages/calculators/voltage-drop/12v-dc-systems'
 import SWAArmouredCableVoltageDrop from './pages/calculators/voltage-drop/swa-armoured-cable'
 import UnderfloorHeatingVoltageDrop from './pages/calculators/voltage-drop/underfloor-heating'
+import ElectricalCalculators from './pages/ElectricalCalculators'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -260,6 +261,7 @@ function App() {
           <Route path="/calculators/voltage-drop/12v-dc-systems" element={<TwelveVoltDCSystemsVoltageDrop />} />
           <Route path="/calculators/voltage-drop/swa-armoured-cable" element={<SWAArmouredCableVoltageDrop />} />
           <Route path="/calculators/voltage-drop/underfloor-heating" element={<UnderfloorHeatingVoltageDrop />} />
+          <Route path="/electrical-calculators" element={<ElectricalCalculators />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
