@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { 
   Zap, Cable, Gauge, Calculator, ChevronDown, ChevronUp, Building2, Home, Factory, 
   Waves, Sun, Car, Flame, AlertTriangle, CheckCircle2, BookOpen, HelpCircle,
-  Lightbulb, Shield, Smartphone, Clock, FileText, ArrowRight
+  Lightbulb, Shield, Smartphone, Clock
 } from 'lucide-react'
 import { useState } from 'react'
 
