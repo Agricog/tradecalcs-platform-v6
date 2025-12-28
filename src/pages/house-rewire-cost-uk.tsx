@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
-import { Zap, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, PoundSterling, Home, Clock, FileText, Calculator } from 'lucide-react'
+import { CheckCircle2, AlertCircle, ChevronDown, ChevronUp, PoundSterling, Calculator } from 'lucide-react'
 
 export default function HouseRewireCostUK() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
