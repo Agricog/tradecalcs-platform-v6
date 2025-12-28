@@ -49,6 +49,12 @@ export default function HouseRewireCostUK() {
     }
   ]
 
+  const faqSchema = faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": { "@type": "Answer", "text": faq.a }
+  }))
+
   return (
     <>
       <Helmet>
@@ -150,11 +156,7 @@ export default function HouseRewireCostUK() {
               },
               {
                 "@type": "FAQPage",
-                "mainEntity": faqs.map(faq => ({
-                  "@type": "Question",
-                  "name": faq.q,
-                  "acceptedAnswer": { "@type": "Answer", "text": faq.a }
-                }))
+                "mainEntity": faqSchema
               },
               {
                 "@type": "Organization",
@@ -295,7 +297,7 @@ export default function HouseRewireCostUK() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-green-600 mt-1">✓</span>
-                    <span><strong>All new cables</strong> - twin & earth throughout property</span>
+                    <span><strong>All new cables</strong> - twin and earth throughout property</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-green-600 mt-1">✓</span>
@@ -461,7 +463,7 @@ export default function HouseRewireCostUK() {
                 <span className="font-bold">£2,000</span>
               </div>
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                <span className="font-medium">Testing & certification (0.5 days)</span>
+                <span className="font-medium">Testing and certification (0.5 days)</span>
                 <span className="font-bold">£125</span>
               </div>
               <div className="flex justify-between items-center p-3 bg-blue-50 rounded border-t-2 border-blue-300">
@@ -494,7 +496,7 @@ export default function HouseRewireCostUK() {
                 <ul className="text-sm text-gray-700 space-y-1">
                   <li>• Solid concrete floors (no void access)</li>
                   <li>• Multi-storey without loft drops</li>
-                  <li>• Older properties with lath & plaster</li>
+                  <li>• Older properties with lath and plaster</li>
                   <li>• Listed buildings (special requirements)</li>
                 </ul>
               </div>
@@ -520,7 +522,7 @@ export default function HouseRewireCostUK() {
               </div>
               
               <div className="p-4 border border-gray-200 rounded-lg">
-                <h3 className="font-bold text-gray-900 mb-2">🔧 Access & Complexity</h3>
+                <h3 className="font-bold text-gray-900 mb-2">🔧 Access and Complexity</h3>
                 <ul className="text-sm text-gray-700 space-y-1">
                   <li>• No loft access = surface/trunking</li>
                   <li>• Occupied property = careful working</li>
@@ -598,7 +600,7 @@ export default function HouseRewireCostUK() {
             
             <div className="mt-6 bg-blue-50 p-4 rounded-lg">
               <p className="text-sm text-blue-900">
-                <strong>Recommendation:</strong> If your property was built before 1980 and hasn't been rewired, get an Electrical Installation Condition Report (EICR) from a registered electrician. This will identify any safety issues and confirm whether rewiring is needed. An EICR typically costs £150-£300.
+                <strong>Recommendation:</strong> If your property was built before 1980 and has not been rewired, get an Electrical Installation Condition Report (EICR) from a registered electrician. This will identify any safety issues and confirm whether rewiring is needed. An EICR typically costs £150-£300.
               </p>
             </div>
           </section>
@@ -615,8 +617,8 @@ export default function HouseRewireCostUK() {
                   <li>• Exact number of socket and lighting points</li>
                   <li>• Consumer unit make and specification</li>
                   <li>• Smoke detector locations and type</li>
-                  <li>• Clear statement of what's excluded (making good)</li>
-                  <li>• Electrician's scheme registration number (NICEIC/NAPIT/ELECSA)</li>
+                  <li>• Clear statement of what is excluded (making good)</li>
+                  <li>• Electrician scheme registration number (NICEIC/NAPIT/ELECSA)</li>
                   <li>• Timeline estimate and payment terms</li>
                 </ul>
               </div>
@@ -626,17 +628,17 @@ export default function HouseRewireCostUK() {
                 <ul className="text-sm text-red-800 space-y-1">
                   <li>• Single lump sum with no breakdown</li>
                   <li>• Price significantly below market rate (30%+ cheaper)</li>
-                  <li>• No scheme registration or can't provide number</li>
+                  <li>• No scheme registration or cannot provide number</li>
                   <li>• Demands large deposit upfront (10-20% is normal)</li>
-                  <li>• Won't provide written quote</li>
-                  <li>• Can start "tomorrow" (good electricians are booked ahead)</li>
+                  <li>• Will not provide written quote</li>
+                  <li>• Can start tomorrow (good electricians are booked ahead)</li>
                 </ul>
               </div>
             </div>
             
             <div className="mt-6 bg-gray-50 p-4 rounded-lg">
               <p className="text-sm text-gray-700">
-                <strong>Tip:</strong> Always get 3 quotes minimum. The cheapest is rarely the best - look for the quote that best balances price, specification, timeline, and the electrician's communication/professionalism.
+                <strong>Tip:</strong> Always get 3 quotes minimum. The cheapest is rarely the best - look for the quote that best balances price, specification, timeline, and the electrician's communication and professionalism.
               </p>
             </div>
           </section>
@@ -714,7 +716,7 @@ export default function HouseRewireCostUK() {
             
             <div className="max-w-3xl mx-auto">
               <iframe 
-                src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false&Prefill_Registration+Source=ElectricalCalculatorsHub" 
+                src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false&Prefill_Registration+Source=HouseRewireCostGuide" 
                 width="100%" 
                 height="700px" 
                 frameBorder="0"
@@ -722,6 +724,11 @@ export default function HouseRewireCostUK() {
                 className="rounded-lg"
               />
             </div>
+            
+            <p className="text-center text-sm text-gray-600 mt-4">
+              Or email us directly: <a href="mailto:mick@tradecalcs.co.uk" className="text-purple-600 font-semibold hover:underline">mick@tradecalcs.co.uk</a>
+            </p>
+          </div>
 
           {/* CTA FOOTER */}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg p-8 text-center">
