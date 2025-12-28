@@ -347,10 +347,18 @@ export default function Home() {
             </div>
           </Link>
 
-          <Link to="/cable-sizing-calculators" className="...">
-  <span className="text-blue-600 text-sm font-semibold">HUB PAGE</span>
-  <h3>All Cable Sizing Calculators</h3>
-  <p>29 use-case calculators for every circuit type</p>
+             <Link 
+  to="/cable-sizing-calculators" 
+  className="block bg-gradient-to-r from-blue-50 to-indigo-100 border-2 border-blue-200 rounded-xl p-6 hover:shadow-lg transition-shadow mb-8"
+>
+  <div className="flex justify-between items-center">
+    <div>
+      <span className="text-blue-600 text-sm font-semibold">HUB PAGE</span>
+      <h3 className="text-xl font-bold text-blue-700">All Cable Sizing Calculators</h3>
+      <p className="text-blue-600">29 use-case calculators for every circuit type</p>
+    </div>
+    <ArrowRight className="w-6 h-6 text-blue-600" />
+  </div>
 </Link>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
