@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { 
-  Zap, Cable, Gauge, Calculator, ChevronDown, ChevronUp, Building2, Home, Factory, 
+  Zap, Cable, Gauge, PoundSterling, Calculator, ChevronDown, ChevronUp, Building2, Home, Factory, 
   Waves, Sun, Car, Flame, AlertTriangle, CheckCircle2, BookOpen, HelpCircle,
   Lightbulb, Shield, Smartphone, Clock
 } from 'lucide-react'
@@ -391,6 +391,33 @@ export default function ElectricalCalculators() {
               </Link>
             </div>
           </section>
+
+          {/* PRICING GUIDES */}
+<section className="bg-white rounded-lg shadow p-6 mb-8">
+  <div className="flex items-center gap-3 mb-4">
+    <PoundSterling className="w-8 h-8 text-green-600" />
+    <h2 className="text-2xl font-bold text-gray-900">Electrical Pricing Guides</h2>
+  </div>
+  <p className="text-gray-600 mb-6">How much do electrical jobs cost in the UK? Detailed pricing guides with cost breakdowns:</p>
+  
+  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <Link to="/house-rewire-cost-uk" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-300 rounded-lg hover:shadow-md transition-shadow">
+      <h3 className="font-bold text-green-900 mb-1">🏠 House Rewire Cost UK</h3>
+      <p className="text-sm text-green-700">Full rewire pricing by property type</p>
+      <p className="text-xs text-gray-500 mt-1">£3,000 - £10,000+ • 2025 prices</p>
+    </Link>
+    <div className="block p-4 bg-gray-50 border border-gray-200 rounded-lg opacity-60">
+      <h3 className="font-bold text-gray-700 mb-1">Consumer Unit Upgrade</h3>
+      <p className="text-sm text-gray-500">Fuse box replacement costs</p>
+      <p className="text-xs text-gray-400 mt-1">Coming soon</p>
+    </div>
+    <div className="block p-4 bg-gray-50 border border-gray-200 rounded-lg opacity-60">
+      <h3 className="font-bold text-gray-700 mb-1">EV Charger Installation</h3>
+      <p className="text-sm text-gray-500">Home charging point costs</p>
+      <p className="text-xs text-gray-400 mt-1">Coming soon</p>
+    </div>
+  </div>
+</section>
 
           {/* DOMESTIC CIRCUITS */}
           <section className="mb-12">
