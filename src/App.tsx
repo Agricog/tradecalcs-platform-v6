@@ -97,8 +97,10 @@ import ImmersionHeaterVoltageDrop from './pages/calculators/voltage-drop/immersi
 import TwelveVoltDCSystemsVoltageDrop from './pages/calculators/voltage-drop/12v-dc-systems'
 import SWAArmouredCableVoltageDrop from './pages/calculators/voltage-drop/swa-armoured-cable'
 import UnderfloorHeatingVoltageDrop from './pages/calculators/voltage-drop/underfloor-heating'
+import HouseRewireCostUK from './pages/house-rewire-cost-uk'
 import ElectricalCalculators from './pages/ElectricalCalculators'
 import CableSizingCalculators from './pages/cable-sizing-calculators'
+
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -264,6 +266,7 @@ function App() {
           <Route path="/calculators/voltage-drop/underfloor-heating" element={<UnderfloorHeatingVoltageDrop />} />
           <Route path="/cable-sizing-calculators" element={<CableSizingCalculators />} />
           <Route path="/electrical-calculators" element={<ElectricalCalculators />} />
+          <Route path="/house-rewire-cost-uk" element={<HouseRewireCostUK />} />
           <Route path="/wire-size-calculator" element={<Navigate to="/cable-sizing-calculator" replace />} />
           <Route path="/leadfortress" element={<LeadFortressPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
