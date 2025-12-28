@@ -16,6 +16,14 @@
     <priority>0.95</priority>
   </url>
 
+  <!-- Cable Sizing Calculators Hub -->
+<url>
+  <loc>https://tradecalcs.co.uk/cable-sizing-calculators</loc>
+  <lastmod>2025-12-28</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.95</priority>
+</url>
+
   <!-- Calculators -->
   <url>
     <loc>https://tradecalcs.co.uk/brick-calculator</loc>
