@@ -703,6 +703,26 @@ export default function HouseRewireCostUK() {
             </div>
           </div>
 
+                    {/* CONTACT FORM */}
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">Need a Custom Electrical Calculator?</h2>
+              <p className="text-gray-700">
+                Looking for a specific calculation tool we don't have? We build bespoke calculators for contractors, merchants and training providers. Tell us what you need.
+              </p>
+            </div>
+            
+            <div className="max-w-3xl mx-auto">
+              <iframe 
+                src="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE?header=false&Prefill_Registration+Source=ElectricalCalculatorsHub" 
+                width="100%" 
+                height="700px" 
+                frameBorder="0"
+                title="SmartSuite Electrical Calculator Inquiry Form"
+                className="rounded-lg"
+              />
+            </div>
+
           {/* CTA FOOTER */}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg p-8 text-center">
             <h2 className="text-2xl font-bold mb-3">Need Electrical Calculations?</h2>
