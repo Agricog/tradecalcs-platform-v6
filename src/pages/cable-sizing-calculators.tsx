@@ -137,16 +137,16 @@ export default function CableSizingCalculators() {
                 "mainEntity": {
                   "@type": "ItemList",
                   "itemListElement": [
-                    { "@type": "ListItem", "position": 1, "name": "Electric Shower Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/electric-shower-cable-sizing" },
-                    { "@type": "ListItem", "position": 2, "name": "EV Charger Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/ev-charger-cable-sizing" },
-                    { "@type": "ListItem", "position": 3, "name": "Cooker Circuit Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/cooker-circuit-cable-sizing" },
-                    { "@type": "ListItem", "position": 4, "name": "Immersion Heater Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/immersion-heater-cable-sizing" },
-                    { "@type": "ListItem", "position": 5, "name": "Ring Main Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/ring-main-socket-circuit-cable-sizing" },
-                    { "@type": "ListItem", "position": 6, "name": "Hot Tub Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/hot-tub-cable-sizing" },
-                    { "@type": "ListItem", "position": 7, "name": "Garden Office Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/garden-office-cable-sizing" },
-                    { "@type": "ListItem", "position": 8, "name": "Garage Workshop Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/garage-workshop-cable-sizing" },
-                    { "@type": "ListItem", "position": 9, "name": "Solar PV Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/solar-pv-battery-cable-sizing" },
-                    { "@type": "ListItem", "position": 10, "name": "Heat Pump Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/air-source-heat-pump-cable-sizing" }
+                    { "@type": "ListItem", "position": 1, "name": "Electric Shower Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/cable-sizing/electric-shower-cable-sizing" },
+                    { "@type": "ListItem", "position": 2, "name": "EV Charger Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/cable-sizing/ev-charger-cable-sizing" },
+                    { "@type": "ListItem", "position": 3, "name": "Cooker Circuit Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/cable-sizing/cooker-circuit-cable-sizing" },
+                    { "@type": "ListItem", "position": 4, "name": "Immersion Heater Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/cable-sizing/immersion-heater-cable-sizing" },
+                    { "@type": "ListItem", "position": 5, "name": "Ring Main Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/cable-sizing/ring-main-socket-circuit-cable-sizing" },
+                    { "@type": "ListItem", "position": 6, "name": "Hot Tub Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/cable-sizing/hot-tub-cable-sizing" },
+                    { "@type": "ListItem", "position": 7, "name": "Garden Office Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/cable-sizing/garden-office-cable-sizing" },
+                    { "@type": "ListItem", "position": 8, "name": "Garage Workshop Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/cable-sizing/garage-workshop-cable-sizing" },
+                    { "@type": "ListItem", "position": 9, "name": "Solar PV Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/cable-sizing/solar-pv-battery-cable-sizing" },
+                    { "@type": "ListItem", "position": 10, "name": "Heat Pump Cable Sizing", "url": "https://tradecalcs.co.uk/calculators/cable-sizing/air-source-heat-pump-cable-sizing" }
                   ]
                 }
               },
@@ -267,25 +267,25 @@ export default function CableSizingCalculators() {
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <h3 className="font-bold text-green-900 mb-2">🚿 "Shower, cooker, or appliance"</h3>
                 <p className="text-sm text-green-700 mb-2">Pre-configured calculators with typical values</p>
-                <Link to="/calculators/electric-shower-cable-sizing" className="text-green-600 font-semibold text-sm hover:underline">→ Shower Cable Sizing</Link>
+                <Link to="/calculators/cable-sizing/electric-shower-cable-sizing" className="text-green-600 font-semibold text-sm hover:underline">→ Shower Cable Sizing</Link>
               </div>
               
               <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
                 <h3 className="font-bold text-emerald-900 mb-2">🔌 "EV charger installation"</h3>
                 <p className="text-sm text-emerald-700 mb-2">7kW/22kW chargers with continuous load rating</p>
-                <Link to="/calculators/ev-charger-cable-sizing" className="text-emerald-600 font-semibold text-sm hover:underline">→ EV Charger Cable Sizing</Link>
+                <Link to="/calculators/cable-sizing/ev-charger-cable-sizing" className="text-emerald-600 font-semibold text-sm hover:underline">→ EV Charger Cable Sizing</Link>
               </div>
               
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                 <h3 className="font-bold text-amber-900 mb-2">🏠 "Submain to outbuilding"</h3>
                 <p className="text-sm text-amber-700 mb-2">SWA cable sizing for garages, offices, annexes</p>
-                <Link to="/calculators/garden-office-cable-sizing" className="text-amber-600 font-semibold text-sm hover:underline">→ Garden Office Cable Sizing</Link>
+                <Link to="/calculators/cable-sizing/garden-office-cable-sizing" className="text-amber-600 font-semibold text-sm hover:underline">→ Garden Office Cable Sizing</Link>
               </div>
               
               <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                 <h3 className="font-bold text-orange-900 mb-2">☀️ "Solar PV or heat pump"</h3>
                 <p className="text-sm text-orange-700 mb-2">Renewable energy circuit sizing</p>
-                <Link to="/calculators/solar-pv-battery-cable-sizing" className="text-orange-600 font-semibold text-sm hover:underline">→ Solar PV Cable Sizing</Link>
+                <Link to="/calculators/cable-sizing/solar-pv-battery-cable-sizing" className="text-orange-600 font-semibold text-sm hover:underline">→ Solar PV Cable Sizing</Link>
               </div>
               
               <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
@@ -305,49 +305,42 @@ export default function CableSizingCalculators() {
             <p className="text-gray-600 mb-6">Common household circuits with pre-configured typical values:</p>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Link to="/calculators/electric-shower-cable-sizing" className="block p-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/electric-shower-cable-sizing" className="block p-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-blue-900 mb-1">Electric Shower</h3>
                 <p className="text-sm text-blue-700">7.5kW to 10.5kW showers</p>
                 <p className="text-xs text-gray-500 mt-1">6mm² - 10mm² • 32A - 45A</p>
               </Link>
-
-              <Link to="/calculators/cooker-circuit-cable-sizing" className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/cooker-circuit-cable-sizing" className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-orange-900 mb-1">Cooker Circuit</h3>
                 <p className="text-sm text-orange-700">Ovens, hobs, range cookers</p>
                 <p className="text-xs text-gray-500 mt-1">6mm² - 10mm² • 32A - 45A</p>
               </Link>
-
-              <Link to="/calculators/immersion-heater-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/immersion-heater-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-red-900 mb-1">Immersion Heater</h3>
                 <p className="text-sm text-red-700">3kW hot water cylinders</p>
                 <p className="text-xs text-gray-500 mt-1">2.5mm² - 4mm² • 16A - 20A</p>
               </Link>
-
-              <Link to="/calculators/ring-main-socket-circuit-cable-sizing" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/ring-main-socket-circuit-cable-sizing" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-violet-900 mb-1">Ring Main Circuit</h3>
                 <p className="text-sm text-violet-700">Socket ring final circuits</p>
                 <p className="text-xs text-gray-500 mt-1">2.5mm² T&E • 32A</p>
               </Link>
-
-              <Link to="/calculators/electric-storage-heater-cable-sizing" className="block p-4 bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/electric-storage-heater-cable-sizing" className="block p-4 bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-amber-900 mb-1">Storage Heaters</h3>
                 <p className="text-sm text-amber-700">Night storage heater circuits</p>
                 <p className="text-xs text-gray-500 mt-1">2.5mm² - 4mm² • Off-peak</p>
               </Link>
-
-              <Link to="/calculators/underfloor-heating-cable-sizing" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/underfloor-heating-cable-sizing" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-orange-900 mb-1">Underfloor Heating</h3>
                 <p className="text-sm text-orange-700">Electric UFH mats and cables</p>
                 <p className="text-xs text-gray-500 mt-1">2.5mm² - 6mm² • Zone sizing</p>
               </Link>
-
-              <Link to="/calculators/outdoor-lighting-cable-sizing" className="block p-4 bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/outdoor-lighting-cable-sizing" className="block p-4 bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-yellow-900 mb-1">Outdoor Lighting</h3>
                 <p className="text-sm text-yellow-700">Garden and security lighting</p>
                 <p className="text-xs text-gray-500 mt-1">1.5mm² - 2.5mm² • 3% limit</p>
               </Link>
-
-              <Link to="/calculators/air-conditioning-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/air-conditioning-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-cyan-900 mb-1">Air Conditioning</h3>
                 <p className="text-sm text-cyan-700">Split system AC units</p>
                 <p className="text-xs text-gray-500 mt-1">2.5mm² - 6mm² • Starting current</p>
@@ -364,37 +357,32 @@ export default function CableSizingCalculators() {
             <p className="text-gray-600 mb-6">SWA cable sizing for external supplies to detached structures:</p>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Link to="/calculators/garden-office-cable-sizing" className="block p-4 bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/garden-office-cable-sizing" className="block p-4 bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-amber-900 mb-1">🏠 Garden Office</h3>
                 <p className="text-sm text-amber-700">Home office, studio, cabin</p>
                 <p className="text-xs text-gray-500 mt-1">6mm² - 16mm² SWA • 32A - 63A</p>
               </Link>
-
-              <Link to="/calculators/garage-workshop-cable-sizing" className="block p-4 bg-gradient-to-br from-slate-50 to-gray-100 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/garage-workshop-cable-sizing" className="block p-4 bg-gradient-to-br from-slate-50 to-gray-100 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-slate-900 mb-1">Garage / Workshop</h3>
                 <p className="text-sm text-slate-700">Power tools, welders, machinery</p>
                 <p className="text-xs text-gray-500 mt-1">6mm² - 16mm² SWA • 32A - 63A</p>
               </Link>
-
-              <Link to="/calculators/shed-summer-house-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/shed-summer-house-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-green-900 mb-1">Shed / Summer House</h3>
                 <p className="text-sm text-green-700">Light duty supplies</p>
                 <p className="text-xs text-gray-500 mt-1">4mm² - 6mm² SWA • 16A - 32A</p>
               </Link>
-
-              <Link to="/calculators/annex-granny-flat-cable-sizing" className="block p-4 bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/annex-granny-flat-cable-sizing" className="block p-4 bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-pink-900 mb-1">Annex / Granny Flat</h3>
                 <p className="text-sm text-pink-700">Separate dwelling supplies</p>
                 <p className="text-xs text-gray-500 mt-1">16mm² - 25mm² SWA • 63A - 100A</p>
               </Link>
-
-              <Link to="/calculators/bbq-outdoor-kitchen" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/bbq-outdoor-kitchen-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-red-900 mb-1">BBQ / Outdoor Kitchen</h3>
                 <p className="text-sm text-red-700">External cooking areas</p>
                 <p className="text-xs text-gray-500 mt-1">6mm² - 10mm² • Weatherproof</p>
               </Link>
-
-              <Link to="/calculators/electric-gates-cable-sizing" className="block p-4 bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/electric-gates-cable-sizing" className="block p-4 bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-gray-900 mb-1">Electric Gates</h3>
                 <p className="text-sm text-gray-700">Gate motors and intercoms</p>
                 <p className="text-xs text-gray-500 mt-1">2.5mm² - 4mm² • Long runs</p>
@@ -412,37 +400,32 @@ export default function CableSizingCalculators() {
             <p className="text-gray-600 mb-6">Future-focused installations requiring careful cable selection:</p>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Link to="/calculators/ev-charger-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-300 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/ev-charger-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-300 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-green-900 mb-1">⚡ EV Charger (Domestic)</h3>
                 <p className="text-sm text-green-700">7kW home charging points</p>
                 <p className="text-xs text-gray-500 mt-1">6mm² - 10mm² • 32A continuous</p>
               </Link>
-
-              <Link to="/calculators/commercial-ev-charging-cable-sizing" className="block p-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/commercial-ev-charging-cable-sizing" className="block p-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-emerald-900 mb-1">EV Charger (Commercial)</h3>
                 <p className="text-sm text-emerald-700">22kW three-phase chargers</p>
                 <p className="text-xs text-gray-500 mt-1">10mm² - 16mm² • 32A 3-phase</p>
               </Link>
-
-              <Link to="/calculators/solar-pv-battery-cable-sizing" className="block p-4 bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/solar-pv-battery-cable-sizing" className="block p-4 bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-amber-900 mb-1">☀️ Solar PV & Battery</h3>
                 <p className="text-sm text-amber-700">Inverter to consumer unit</p>
                 <p className="text-xs text-gray-500 mt-1">6mm² - 16mm² • DC & AC sides</p>
               </Link>
-
-              <Link to="/calculators/air-source-heat-pump-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/air-source-heat-pump-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-cyan-900 mb-1">Air Source Heat Pump</h3>
                 <p className="text-sm text-cyan-700">ASHP outdoor units</p>
                 <p className="text-xs text-gray-500 mt-1">6mm² - 16mm² • MCS compliant</p>
               </Link>
-
-              <Link to="/calculators/ground-source-heat-pump-cable-sizing" className="block p-4 bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/ground-source-heat-pump-cable-sizing" className="block p-4 bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-teal-900 mb-1">Ground Source Heat Pump</h3>
                 <p className="text-sm text-teal-700">GSHP installations</p>
                 <p className="text-xs text-gray-500 mt-1">10mm² - 25mm² • Higher loads</p>
               </Link>
-
-              <Link to="/calculators/battery-storage-cable-sizing" className="block p-4 bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/battery-storage-cable-sizing" className="block p-4 bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-purple-900 mb-1">Battery Storage</h3>
                 <p className="text-sm text-purple-700">Home battery systems</p>
                 <p className="text-xs text-gray-500 mt-1">6mm² - 16mm² • Hybrid inverters</p>
@@ -459,25 +442,22 @@ export default function CableSizingCalculators() {
             <p className="text-gray-600 mb-6">Locations with additional requirements under BS 7671:</p>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Link to="/calculators/hot-tub-cable-sizing" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/hot-tub-cable-sizing" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-violet-900 mb-1">Hot Tub / Spa</h3>
                 <p className="text-sm text-violet-700">Section 702 compliance</p>
                 <p className="text-xs text-gray-500 mt-1">6mm² - 10mm² • 32A - 40A</p>
               </Link>
-
-              <Link to="/calculators/swimming-pool-cable-sizing" className="block p-4 bg-gradient-to-br from-sky-50 to-cyan-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/swimming-pool-cable-sizing" className="block p-4 bg-gradient-to-br from-sky-50 to-cyan-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-sky-900 mb-1">Swimming Pool</h3>
                 <p className="text-sm text-sky-700">Pumps, heaters, lighting</p>
                 <p className="text-xs text-gray-500 mt-1">Section 702 • Zones apply</p>
               </Link>
-
-              <Link to="/calculators/sauna-cable-sizing" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/sauna-cable-sizing" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-orange-900 mb-1">Sauna</h3>
                 <p className="text-sm text-orange-700">Section 703 compliance</p>
                 <p className="text-xs text-gray-500 mt-1">Heat-resistant cable • 6mm² - 10mm²</p>
               </Link>
-
-              <Link to="/calculators/caravan-marina-hookup-cable-sizing" className="block p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/caravan-marina-hookup-cable-sizing" className="block p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-blue-900 mb-1">Caravan / Marina</h3>
                 <p className="text-sm text-blue-700">Section 708/709 supplies</p>
                 <p className="text-xs text-gray-500 mt-1">Pitch supplies • PME restrictions</p>
@@ -494,31 +474,27 @@ export default function CableSizingCalculators() {
             <p className="text-gray-600 mb-6">Larger installations and specialist applications:</p>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Link to="/calculators/commercial-kitchen-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/commercial-kitchen-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-red-900 mb-1">Commercial Kitchen</h3>
                 <p className="text-sm text-red-700">Catering equipment circuits</p>
                 <p className="text-xs text-gray-500 mt-1">Three-phase • High loads</p>
               </Link>
-
-              <Link to="/calculators/shop-retail-unit-cable-sizing" className="block p-4 bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/shop-retail-unit-cable-sizing" className="block p-4 bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-purple-900 mb-1">Shop / Retail Unit</h3>
                 <p className="text-sm text-purple-700">Retail premises supplies</p>
                 <p className="text-xs text-gray-500 mt-1">Distribution boards • Lighting</p>
               </Link>
-
-              <Link to="/calculators/server-room-cable-sizing" className="block p-4 bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/server-room-cable-sizing" className="block p-4 bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-indigo-900 mb-1">Server Room</h3>
                 <p className="text-sm text-indigo-700">Data centre power</p>
                 <p className="text-xs text-gray-500 mt-1">UPS feeds • Redundancy</p>
               </Link>
-
-              <Link to="/calculators/farm-agricultural-cable-sizing" className="block p-4 bg-gradient-to-br from-lime-50 to-green-50 border border-lime-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/farm-agricultural-cable-sizing" className="block p-4 bg-gradient-to-br from-lime-50 to-green-50 border border-lime-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-lime-900 mb-1">Farm / Agricultural</h3>
                 <p className="text-sm text-lime-700">Section 705 compliance</p>
                 <p className="text-xs text-gray-500 mt-1">Long runs • Harsh environment</p>
               </Link>
-
-              <Link to="/calculators/cctv-security-cable-sizing" className="block p-4 bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+              <Link to="/calculators/cable-sizing/cctv-security-cable-sizing" className="block p-4 bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-gray-900 mb-1">CCTV / Security</h3>
                 <p className="text-sm text-gray-700">Camera and alarm systems</p>
                 <p className="text-xs text-gray-500 mt-1">Low voltage • Long runs</p>
