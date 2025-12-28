@@ -98,7 +98,7 @@ import TwelveVoltDCSystemsVoltageDrop from './pages/calculators/voltage-drop/12v
 import SWAArmouredCableVoltageDrop from './pages/calculators/voltage-drop/swa-armoured-cable'
 import UnderfloorHeatingVoltageDrop from './pages/calculators/voltage-drop/underfloor-heating'
 import ElectricalCalculators from './pages/ElectricalCalculators'
-import CableSizingCalculators from './pages/calculators/CableSizingCalculators'
+import CableSizingCalculators from './pages/cable-sizing-calculators'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
