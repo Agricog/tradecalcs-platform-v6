@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, HelpCircle } from 'lucide-react'
 import { useState } from 'react'
-import { BrickCalculatorCore } from '../../components/BrickBlockCalculator'
+import { BrickCalculatorCore } from '../../../components/BrickBlockCalculator'
 
 const defined = {
   slug: 'patio-paver',
