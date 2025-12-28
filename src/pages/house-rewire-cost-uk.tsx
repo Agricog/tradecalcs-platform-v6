@@ -703,7 +703,7 @@ export default function HouseRewireCostUK() {
             </div>
           </div>
 
-                    {/* CONTACT FORM */}
+          {/* CONTACT FORM */}
           <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-3">Need a Custom Electrical Calculator?</h2>
