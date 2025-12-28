@@ -347,6 +347,12 @@ export default function Home() {
             </div>
           </Link>
 
+          <Link to="/cable-sizing-calculators" className="...">
+  <span className="text-blue-600 text-sm font-semibold">HUB PAGE</span>
+  <h3>All Cable Sizing Calculators</h3>
+  <p>29 use-case calculators for every circuit type</p>
+</Link>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { href: '/cable-sizing-calculator', icon: Zap, title: 'Cable Sizing Calculator', desc: 'BS 7671 compliant electrical cable sizing with all derating factors', color: 'blue', trade: 'For Electricians' },
