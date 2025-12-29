@@ -1,7 +1,7 @@
 import {
   Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight,
   Package, Palette, Hammer, Home as HomeIcon, Droplet, Calculator, TruckIcon,
-  Phone, Mail, MessageSquare, Droplets, Flame
+  Phone, Mail, MessageSquare, Droplets, Flame, Circle
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -13,7 +13,8 @@ const colorMap = {
   green: '#22c55e',
   amber: '#f59e0b',
   red: '#ef4444',
-  purple: '#a855f7'
+  purple: '#a855f7',
+  slate: '#475569'
 };
 
 const getContactClasses = (color: string) => {
@@ -30,6 +31,7 @@ const getCalcColorClasses = (color: string) => {
   if (color === 'amber') return 'text-amber-600';
   if (color === 'red') return 'text-red-600';
   if (color === 'purple') return 'text-purple-600';
+  if (color === 'slate') return 'text-slate-600';
   return 'text-blue-600';
 };
 
@@ -365,6 +367,7 @@ export default function Home() {
             {[
               { href: '/cable-sizing-calculator', icon: Zap, title: 'Cable Sizing Calculator', desc: 'BS 7671 compliant electrical cable sizing with all derating factors', color: 'blue', trade: 'For Electricians' },
               { href: '/voltage-drop-calculator', icon: Zap, title: 'Voltage Drop Calculator', desc: 'Verify BS 7671 Regulation 525 compliance for electrical circuits', color: 'cyan', trade: 'For Electricians' },
+              { href: '/conduit-fill-calculator', icon: Circle, title: 'Conduit Fill Calculator', desc: 'Calculate cable capacity for conduit and trunking. BS 7671 40% fill limit.', color: 'slate', trade: 'For Electricians', isNew: true },
               { href: '/radiator-btu-calculator', icon: Flame, title: 'Radiator BTU Calculator', desc: 'Calculate exact heat output needed for any room. Accounts for insulation, windows & room type.', color: 'orange', trade: 'For Heating Engineers', isNew: true },
               { href: '/bsp-thread-calculator', icon: Lightbulb, title: 'BSP Thread Identifier', desc: 'Identify British Standard Pipe threads by diameter or TPI', color: 'orange', trade: 'For Plumbers' },
               { href: '/roofing-insurance-calculator', icon: PoundSterling, title: 'Roofing Insurance Calculator', desc: 'Calculate fair market value and fight for proper compensation', color: 'green', trade: 'For Roofers' },
