@@ -198,7 +198,6 @@ export function BoilerSizingCalculatorCore({
     setShowers(1)
     setPropertyType('semi')
     setPropertyAge('1976-2000')
-    setCurrentHeating('combi')
     setTotalRadiatorOutput(12000)
     setNumberOfRadiators(8)
     setResult(null)
