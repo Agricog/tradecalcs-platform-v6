@@ -1,7 +1,7 @@
 import {
   Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight,
   Package, Palette, Hammer, Home as HomeIcon, Droplet, Calculator, TruckIcon,
-  Phone, Mail, MessageSquare, Droplets, Flame, Circle
+  Phone, Mail, MessageSquare, Droplets, Flame, Circle, Activity
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -14,7 +14,8 @@ const colorMap = {
   amber: '#f59e0b',
   red: '#ef4444',
   purple: '#a855f7',
-  slate: '#475569'
+  slate: '#475569',
+  indigo: '#4f46e5'
 };
 
 const getContactClasses = (color: string) => {
@@ -32,6 +33,7 @@ const getCalcColorClasses = (color: string) => {
   if (color === 'red') return 'text-red-600';
   if (color === 'purple') return 'text-purple-600';
   if (color === 'slate') return 'text-slate-600';
+  if (color === 'indigo') return 'text-indigo-600';
   return 'text-blue-600';
 };
 
@@ -365,6 +367,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
+              { href: '/electrical-load-calculator', icon: Activity, title: 'Electrical Load Calculator', desc: 'Calculate maximum demand with BS 7671 diversity factors. Determine supply size.', color: 'indigo', trade: 'For Electricians', isNew: true },
               { href: '/cable-sizing-calculator', icon: Zap, title: 'Cable Sizing Calculator', desc: 'BS 7671 compliant electrical cable sizing with all derating factors', color: 'blue', trade: 'For Electricians' },
               { href: '/voltage-drop-calculator', icon: Zap, title: 'Voltage Drop Calculator', desc: 'Verify BS 7671 Regulation 525 compliance for electrical circuits', color: 'cyan', trade: 'For Electricians' },
               { href: '/conduit-fill-calculator', icon: Circle, title: 'Conduit Fill Calculator', desc: 'Calculate cable capacity for conduit and trunking. BS 7671 40% fill limit.', color: 'slate', trade: 'For Electricians', isNew: true },
