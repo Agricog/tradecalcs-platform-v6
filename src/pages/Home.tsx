@@ -1,7 +1,7 @@
 import {
   Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight,
   Package, Palette, Hammer, Home as HomeIcon, Droplet, Calculator, TruckIcon,
-  Phone, Mail, MessageSquare, Droplets
+  Phone, Mail, MessageSquare, Droplets, Flame
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -347,24 +347,25 @@ export default function Home() {
             </div>
           </Link>
 
-             <Link 
-  to="/cable-sizing-calculators" 
-  className="block bg-gradient-to-r from-blue-50 to-indigo-100 border-2 border-blue-200 rounded-xl p-6 hover:shadow-lg transition-shadow mb-8"
->
-  <div className="flex justify-between items-center">
-    <div>
-      <span className="text-blue-600 text-sm font-semibold">HUB PAGE</span>
-      <h3 className="text-xl font-bold text-blue-700">All Cable Sizing Calculators</h3>
-      <p className="text-blue-600">29 use-case calculators for every circuit type</p>
-    </div>
-    <ArrowRight className="w-6 h-6 text-blue-600" />
-  </div>
-</Link>
+          <Link 
+            to="/cable-sizing-calculators" 
+            className="block bg-gradient-to-r from-blue-50 to-indigo-100 border-2 border-blue-200 rounded-xl p-6 hover:shadow-lg transition-shadow mb-8"
+          >
+            <div className="flex justify-between items-center">
+              <div>
+                <span className="text-blue-600 text-sm font-semibold">HUB PAGE</span>
+                <h3 className="text-xl font-bold text-blue-700">All Cable Sizing Calculators</h3>
+                <p className="text-blue-600">29 use-case calculators for every circuit type</p>
+              </div>
+              <ArrowRight className="w-6 h-6 text-blue-600" />
+            </div>
+          </Link>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { href: '/cable-sizing-calculator', icon: Zap, title: 'Cable Sizing Calculator', desc: 'BS 7671 compliant electrical cable sizing with all derating factors', color: 'blue', trade: 'For Electricians' },
               { href: '/voltage-drop-calculator', icon: Zap, title: 'Voltage Drop Calculator', desc: 'Verify BS 7671 Regulation 525 compliance for electrical circuits', color: 'cyan', trade: 'For Electricians' },
+              { href: '/radiator-btu-calculator', icon: Flame, title: 'Radiator BTU Calculator', desc: 'Calculate exact heat output needed for any room. Accounts for insulation, windows & room type.', color: 'orange', trade: 'For Heating Engineers', isNew: true },
               { href: '/bsp-thread-calculator', icon: Lightbulb, title: 'BSP Thread Identifier', desc: 'Identify British Standard Pipe threads by diameter or TPI', color: 'orange', trade: 'For Plumbers' },
               { href: '/roofing-insurance-calculator', icon: PoundSterling, title: 'Roofing Insurance Calculator', desc: 'Calculate fair market value and fight for proper compensation', color: 'green', trade: 'For Roofers' },
               { href: '/drainage-calculator', icon: Droplets, title: 'Drainage Calculator', desc: 'Calculate pipe bedding, spoil removal & trench backfill quantities', color: 'blue', trade: 'For Drainage Pros' },
