@@ -1,10 +1,10 @@
 import {
   Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight,
   Package, Palette, Hammer, Home as HomeIcon, Droplet, Calculator, TruckIcon,
-  Phone, Mail, MessageSquare, Droplets, Flame, Circle, Activity
+  Phone, Mail, MessageSquare, Droplets, Flame, Circle, Activity, Search, X
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const colorMap = {
   blue: '#3b82f6',
@@ -37,7 +37,68 @@ const getCalcColorClasses = (color: string) => {
   return 'text-blue-600';
 };
 
+// Calculator data grouped by trade
+const calculatorsByTrade = {
+  'Electricians': [
+    { href: '/electrical-load-calculator', title: 'Electrical Load Calculator', icon: Activity, color: 'indigo' },
+    { href: '/cable-sizing-calculator', title: 'Cable Sizing Calculator', icon: Zap, color: 'blue' },
+    { href: '/voltage-drop-calculator', title: 'Voltage Drop Calculator', icon: Zap, color: 'cyan' },
+    { href: '/conduit-fill-calculator', title: 'Conduit Fill Calculator', icon: Circle, color: 'slate' },
+  ],
+  'Heating Engineers': [
+    { href: '/radiator-btu-calculator', title: 'Radiator BTU Calculator', icon: Flame, color: 'orange' },
+  ],
+  'Plumbers': [
+    { href: '/bsp-thread-calculator', title: 'BSP Thread Identifier', icon: Lightbulb, color: 'orange' },
+    { href: '/drainage-calculator', title: 'Drainage Calculator', icon: Droplets, color: 'blue' },
+  ],
+  'Builders': [
+    { href: '/concrete-calculator', title: 'Concrete Calculator', icon: Package, color: 'green' },
+    { href: '/brick-block-calculator', title: 'Brick Block Calculator', icon: HomeIcon, color: 'red' },
+    { href: '/calculators/insulation-calculator', title: 'Insulation U-Value Calculator', icon: HomeIcon, color: 'green' },
+    { href: '/calculators/scaffold-calculator', title: 'Scaffold Calculator', icon: Calculator, color: 'blue' },
+  ],
+  'Plasterers': [
+    { href: '/plasterer-calculator', title: 'Plasterer Calculator', icon: Palette, color: 'amber' },
+  ],
+  'Joiners': [
+    { href: '/joinery-calculator', title: 'Joinery Calculator', icon: Hammer, color: 'amber' },
+  ],
+  'Tilers': [
+    { href: '/tiling-calculator', title: 'Tiling Calculator', icon: Droplet, color: 'amber' },
+  ],
+  'Painters & Decorators': [
+    { href: '/paint-calculator', title: 'Paint Calculator', icon: Palette, color: 'red' },
+  ],
+  'Roofers': [
+    { href: '/roofing-insurance-calculator', title: 'Roofing Insurance Calculator', icon: PoundSterling, color: 'green' },
+  ],
+  'Hauliers': [
+    { href: '/calculators/stgo-calculator', title: 'HaulCheck - STGO Compliance', icon: TruckIcon, color: 'orange' },
+  ],
+  'All Trades': [
+    { href: '/calculators/cis-calculator', title: 'CIS Tax Calculator', icon: Calculator, color: 'purple' },
+  ],
+};
+
 export default function Home() {
+  const [showQuickFind, setShowQuickFind] = useState(false);
+
+  // Close modal on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setShowQuickFind(false);
+    };
+    if (showQuickFind) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [showQuickFind]);
+
   useEffect(() => {
     document.title = 'TradeCalcs - Free Professional Trade Calculators for UK Tradespeople';
 
@@ -215,6 +276,57 @@ export default function Home() {
         .twinkle { animation: twinkle 1.5s infinite; }
       `}</style>
 
+      {/* Quick Find Modal */}
+      {showQuickFind && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20 px-4"
+          onClick={() => setShowQuickFind(false)}
+        >
+          <div 
+            className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[70vh] overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+              <div className="flex items-center gap-2">
+                <Search className="w-5 h-5" />
+                <h2 className="text-lg font-bold">Quick Find Calculator</h2>
+              </div>
+              <button 
+                onClick={() => setShowQuickFind(false)}
+                className="p-1 hover:bg-white/20 rounded"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="overflow-y-auto max-h-[calc(70vh-60px)] p-4">
+              {Object.entries(calculatorsByTrade).map(([trade, calcs]) => (
+                <div key={trade} className="mb-4">
+                  <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">{trade}</h3>
+                  <div className="space-y-1">
+                    {calcs.map(calc => (
+                      <Link
+                        key={calc.href}
+                        to={calc.href}
+                        onClick={() => setShowQuickFind(false)}
+                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition"
+                      >
+                        <div 
+                          className="w-8 h-8 rounded flex items-center justify-center text-white flex-shrink-0"
+                          style={{ backgroundColor: colorMap[calc.color as keyof typeof colorMap] }}
+                        >
+                          <calc.icon className="w-4 h-4" />
+                        </div>
+                        <span className="font-medium text-gray-900">{calc.title}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       <a href="https://app.smartsuite.com/forms/ba974giZx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="block bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 text-center hover:from-purple-700 hover:to-blue-700 transition">
         <div className="flex items-center justify-center gap-2 text-sm md:text-base">
           <span className="twinkle">✨</span>
@@ -232,12 +344,16 @@ export default function Home() {
             reduce errors, and work with confidence.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <button onClick={() => document.getElementById('calculators')?.scrollIntoView({ behavior: 'smooth' })} className="bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 flex items-center gap-2">
-              View Free Tools <ArrowRight className="w-5 h-5" />
+            <button 
+              onClick={() => setShowQuickFind(true)} 
+              className="bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 flex items-center gap-2"
+            >
+              <Search className="w-5 h-5" />
+              Quick Find Calculator
             </button>
-            <a href="/custom" className="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-purple-600 transition">
-              Request Custom Tool
-            </a>
+            <button onClick={() => document.getElementById('calculators')?.scrollIntoView({ behavior: 'smooth' })} className="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-purple-600 transition flex items-center gap-2">
+              View All Tools <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
@@ -324,8 +440,19 @@ export default function Home() {
 
       <section id="calculators" className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-2">Free Professional Calculators</h2>
-          <p className="text-center text-gray-600 mb-8">Choose your calculator and start working smarter</p>
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-3xl font-bold">Free Professional Calculators</h2>
+              <p className="text-gray-600">Choose your calculator and start working smarter</p>
+            </div>
+            <button 
+              onClick={() => setShowQuickFind(true)}
+              className="hidden md:flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-lg font-semibold hover:bg-purple-200 transition"
+            >
+              <Search className="w-4 h-4" />
+              Quick Find
+            </button>
+          </div>
 
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl p-8 mb-12 shadow-xl">
             <div className="max-w-3xl mx-auto text-center">
@@ -439,8 +566,9 @@ export default function Home() {
             <div className="bg-gradient-to-br from-purple-600 to-blue-600 text-white rounded-lg p-8">
               <h3 className="text-2xl font-bold mb-3">Ready to Work Smarter?</h3>
               <p className="mb-6 opacity-95">Join professional tradespeople who are already saving time and reducing errors with TradeCalcs.</p>
-              <button onClick={() => document.getElementById('calculators')?.scrollIntoView({ behavior: 'smooth' })} className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 inline-flex items-center gap-2">
-                Start Using Tools <ArrowRight className="w-5 h-5" />
+              <button onClick={() => setShowQuickFind(true)} className="bg-white text-purple-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 inline-flex items-center gap-2">
+                <Search className="w-5 h-5" />
+                Find Your Calculator
               </button>
               <p className="text-sm opacity-75 mt-4">No signup required • Instant access • Always free</p>
             </div>
@@ -552,7 +680,6 @@ export default function Home() {
     </>
   );
 }
-
 
 
 
