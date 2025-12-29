@@ -97,6 +97,7 @@ import ImmersionHeaterVoltageDrop from './pages/calculators/voltage-drop/immersi
 import TwelveVoltDCSystemsVoltageDrop from './pages/calculators/voltage-drop/12v-dc-systems'
 import SWAArmouredCableVoltageDrop from './pages/calculators/voltage-drop/swa-armoured-cable'
 import UnderfloorHeatingVoltageDrop from './pages/calculators/voltage-drop/underfloor-heating'
+import BoilerSizingCalculatorPage from './pages/BoilerSizingCalculatorPage'
 import ElectricalLoadCalculatorPage from './pages/ElectricalLoadCalculatorPage'
 import ConduitFillCalculatorPage from './pages/ConduitFillCalculatorPage'
 import RadiatorBTUCalculatorPage from './pages/RadiatorBTUCalculatorPage'
@@ -267,6 +268,8 @@ function App() {
           <Route path="/calculators/voltage-drop/12v-dc-systems" element={<TwelveVoltDCSystemsVoltageDrop />} />
           <Route path="/calculators/voltage-drop/swa-armoured-cable" element={<SWAArmouredCableVoltageDrop />} />
           <Route path="/calculators/voltage-drop/underfloor-heating" element={<UnderfloorHeatingVoltageDrop />} />
+          <Route path="/boiler-sizing-calculator" element={<BoilerSizingCalculatorPage />} />
+          <Route path="/boiler-calculator" element={<BoilerSizingCalculatorPage />} />
           <Route path="/electrical-load-calculator" element={<ElectricalLoadCalculatorPage />} />
           <Route path="/conduit-fill-calculator" element={<ConduitFillCalculatorPage />} />
           <Route path="/cable-sizing-calculators" element={<CableSizingCalculators />} />
