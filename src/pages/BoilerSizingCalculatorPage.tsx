@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { BoilerSizingCalculatorCore } from '../components/BoilerSizingCalculatorCore'
-import { Flame, ArrowLeft, AlertCircle, CheckCircle2, Droplets, ThermometerSun, Home, Zap } from 'lucide-react'
+import { Flame, ArrowLeft, AlertCircle, Droplets, ThermometerSun, Home } from 'lucide-react'
 
 export default function BoilerSizingCalculatorPage() {
   const faqs = [
