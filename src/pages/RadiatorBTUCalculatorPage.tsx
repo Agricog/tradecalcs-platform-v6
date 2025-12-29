@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Flame, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, Thermometer, Home } from 'lucide-react'
+import { ArrowLeft, Flame, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, Thermometer } from 'lucide-react'
 import { useState } from 'react'
 import { RadiatorBTUCalculatorCore } from '../components/RadiatorBTUCalculatorCore'
 
