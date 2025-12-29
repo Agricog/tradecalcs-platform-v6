@@ -32,6 +32,7 @@ const allCalculators: Category[] = [
       { href: '/radiator-btu-calculator', title: 'Radiator BTU Calculator', icon: Flame, color: '#ea580c' },
       { href: '/concrete-calculator', title: 'Concrete Calculator', icon: Package, color: '#22c55e' },
       { href: '/brick-block-calculator', title: 'Brick & Block Calculator', icon: Home, color: '#ef4444' },
+      { href: '/boiler-sizing-calculator', title: 'Boiler Sizing Calculator', icon: Flame, color: '#ef4444' },
     ]
   },
   {
@@ -131,13 +132,14 @@ const allCalculators: Category[] = [
     ]
   },
   {
-    name: 'Heating Engineers',
-    icon: Flame,
-    color: '#ea580c',
-    calculators: [
-      { href: '/radiator-btu-calculator', title: 'Radiator BTU Calculator', icon: Flame, color: '#ea580c' },
-    ]
-  },
+  name: 'Heating Engineers',
+  icon: Flame,
+  color: '#ea580c',
+  calculators: [
+    { href: '/radiator-btu-calculator', title: 'Radiator BTU Calculator', icon: Flame, color: '#ea580c' },
+    { href: '/boiler-sizing-calculator', title: 'Boiler Sizing Calculator', icon: Flame, color: '#ef4444' },
+  ]
+},
   {
     name: 'Plumbers & Drainage',
     icon: Droplets,
