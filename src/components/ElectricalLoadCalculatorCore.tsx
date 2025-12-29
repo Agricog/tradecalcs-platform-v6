@@ -235,12 +235,11 @@ export function ElectricalLoadCalculatorCore({
 
     // Calculate lighting separately (special diversity rules)
     const lightingCircuits = circuits.filter(c => c.type === 'lighting')
-    const otherCircuits = circuits.filter(c => c.type !== 'lighting')
 
     // Lighting: 66% of total
     if (lightingCircuits.length > 0) {
       const lightingConnected = lightingCircuits.reduce((sum, c) => {
-        const config = circuitTypes[c.type as keyof typeof circuitTypes]
+        const _config = circuitTypes[c.type as keyof typeof circuitTypes]
         return sum + (c.rating * 230 * c.quantity)
       }, 0)
       const lightingDiversified = lightingConnected * 0.66
