@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CheckCircle2, AlertCircle, Printer, Flame, Droplets, Home, ThermometerSun } from 'lucide-react'
+import { CheckCircle2, AlertCircle, Printer, Flame, Droplets, ThermometerSun } from 'lucide-react'
 
 export interface BoilerSizingCalculatorCoreProps {
   defaultMethod?: 'quick' | 'detailed'
@@ -16,7 +16,6 @@ export function BoilerSizingCalculatorCore({
   const [showers, setShowers] = useState(1)
   const [propertyType, setPropertyType] = useState<'flat' | 'mid-terrace' | 'end-terrace' | 'semi' | 'detached'>('semi')
   const [propertyAge, setPropertyAge] = useState<'pre-1930' | '1930-1975' | '1976-2000' | 'post-2000'>('1976-2000')
-  const [currentHeating, setCurrentHeating] = useState<'combi' | 'system' | 'regular' | 'none'>('combi')
   
   // Detailed method inputs
   const [totalRadiatorOutput, setTotalRadiatorOutput] = useState(12000) // Watts
