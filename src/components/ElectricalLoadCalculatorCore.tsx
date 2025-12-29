@@ -239,7 +239,6 @@ export function ElectricalLoadCalculatorCore({
     // Lighting: 66% of total
     if (lightingCircuits.length > 0) {
       const lightingConnected = lightingCircuits.reduce((sum, c) => {
-        const _config = circuitTypes[c.type as keyof typeof circuitTypes]
         return sum + (c.rating * 230 * c.quantity)
       }, 0)
       const lightingDiversified = lightingConnected * 0.66
