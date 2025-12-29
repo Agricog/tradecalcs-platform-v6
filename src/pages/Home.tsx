@@ -1,10 +1,11 @@
 import {
   Zap, Shield, Smartphone, PoundSterling, Lightbulb, CheckCircle2, ArrowRight,
   Package, Palette, Hammer, Home as HomeIcon, Droplet, Calculator, TruckIcon,
-  Phone, Mail, MessageSquare, Droplets, Flame, Circle, Activity, Search, X
+  Phone, Mail, MessageSquare, Droplets, Flame, Circle, Activity, Search
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import QuickFindModal from '../components/QuickFindModal';
 
 const colorMap = {
   blue: '#3b82f6',
@@ -37,74 +38,15 @@ const getCalcColorClasses = (color: string) => {
   return 'text-blue-600';
 };
 
-// Calculator data grouped by trade
-const calculatorsByTrade = {
-  'Electricians': [
-    { href: '/electrical-load-calculator', title: 'Electrical Load Calculator', icon: Activity, color: 'indigo' },
-    { href: '/cable-sizing-calculator', title: 'Cable Sizing Calculator', icon: Zap, color: 'blue' },
-    { href: '/voltage-drop-calculator', title: 'Voltage Drop Calculator', icon: Zap, color: 'cyan' },
-    { href: '/conduit-fill-calculator', title: 'Conduit Fill Calculator', icon: Circle, color: 'slate' },
-  ],
-  'Heating Engineers': [
-    { href: '/radiator-btu-calculator', title: 'Radiator BTU Calculator', icon: Flame, color: 'orange' },
-  ],
-  'Plumbers': [
-    { href: '/bsp-thread-calculator', title: 'BSP Thread Identifier', icon: Lightbulb, color: 'orange' },
-    { href: '/drainage-calculator', title: 'Drainage Calculator', icon: Droplets, color: 'blue' },
-  ],
-  'Builders': [
-    { href: '/concrete-calculator', title: 'Concrete Calculator', icon: Package, color: 'green' },
-    { href: '/brick-block-calculator', title: 'Brick Block Calculator', icon: HomeIcon, color: 'red' },
-    { href: '/calculators/insulation-calculator', title: 'Insulation U-Value Calculator', icon: HomeIcon, color: 'green' },
-    { href: '/calculators/scaffold-calculator', title: 'Scaffold Calculator', icon: Calculator, color: 'blue' },
-  ],
-  'Plasterers': [
-    { href: '/plasterer-calculator', title: 'Plasterer Calculator', icon: Palette, color: 'amber' },
-  ],
-  'Joiners': [
-    { href: '/joinery-calculator', title: 'Joinery Calculator', icon: Hammer, color: 'amber' },
-  ],
-  'Tilers': [
-    { href: '/tiling-calculator', title: 'Tiling Calculator', icon: Droplet, color: 'amber' },
-  ],
-  'Painters & Decorators': [
-    { href: '/paint-calculator', title: 'Paint Calculator', icon: Palette, color: 'red' },
-  ],
-  'Roofers': [
-    { href: '/roofing-insurance-calculator', title: 'Roofing Insurance Calculator', icon: PoundSterling, color: 'green' },
-  ],
-  'Hauliers': [
-    { href: '/calculators/stgo-calculator', title: 'HaulCheck - STGO Compliance', icon: TruckIcon, color: 'orange' },
-  ],
-  'All Trades': [
-    { href: '/calculators/cis-calculator', title: 'CIS Tax Calculator', icon: Calculator, color: 'purple' },
-  ],
-};
-
 export default function Home() {
   const [showQuickFind, setShowQuickFind] = useState(false);
-
-  // Close modal on escape key
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setShowQuickFind(false);
-    };
-    if (showQuickFind) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
-    }
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
-    };
-  }, [showQuickFind]);
 
   useEffect(() => {
     document.title = 'TradeCalcs - Free Professional Trade Calculators for UK Tradespeople';
 
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Free professional trade calculators for electricians, plumbers, builders, painters & more. BS 7671 compliant, mobile-ready. Cable sizing, voltage drop, concrete, paint & 15 more calculators.');
+      metaDescription.setAttribute('content', 'Free professional trade calculators for electricians, plumbers, builders, painters & more. BS 7671 compliant, mobile-ready. Cable sizing, voltage drop, concrete, paint & 100+ more calculators.');
     }
 
     const metaKeywords = document.querySelector('meta[name="keywords"]');
@@ -192,7 +134,7 @@ export default function Home() {
               name: 'What trade calculators do you offer?',
               acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'We offer 15+ professional calculators for electricians, plumbers, builders, painters, plasterers, joiners, bricklayers, tilers, roofers, scaffolders and more. All calculators are free to use and BS 7671 compliant where applicable.'
+                text: 'We offer 100+ professional calculators for electricians, plumbers, builders, painters, plasterers, joiners, bricklayers, tilers, roofers, scaffolders and more. All calculators are free to use and BS 7671 compliant where applicable.'
               }
             },
             {
@@ -277,55 +219,7 @@ export default function Home() {
       `}</style>
 
       {/* Quick Find Modal */}
-      {showQuickFind && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20 px-4"
-          onClick={() => setShowQuickFind(false)}
-        >
-          <div 
-            className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[70vh] overflow-hidden"
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-purple-600 to-blue-600 text-white">
-              <div className="flex items-center gap-2">
-                <Search className="w-5 h-5" />
-                <h2 className="text-lg font-bold">Quick Find Calculator</h2>
-              </div>
-              <button 
-                onClick={() => setShowQuickFind(false)}
-                className="p-1 hover:bg-white/20 rounded"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="overflow-y-auto max-h-[calc(70vh-60px)] p-4">
-              {Object.entries(calculatorsByTrade).map(([trade, calcs]) => (
-                <div key={trade} className="mb-4">
-                  <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">{trade}</h3>
-                  <div className="space-y-1">
-                    {calcs.map(calc => (
-                      <Link
-                        key={calc.href}
-                        to={calc.href}
-                        onClick={() => setShowQuickFind(false)}
-                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition"
-                      >
-                        <div 
-                          className="w-8 h-8 rounded flex items-center justify-center text-white flex-shrink-0"
-                          style={{ backgroundColor: colorMap[calc.color as keyof typeof colorMap] }}
-                        >
-                          <calc.icon className="w-4 h-4" />
-                        </div>
-                        <span className="font-medium text-gray-900">{calc.title}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      <QuickFindModal isOpen={showQuickFind} onClose={() => setShowQuickFind(false)} />
 
       <a href="https://app.smartsuite.com/forms/ba974giZx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="block bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 text-center hover:from-purple-700 hover:to-blue-700 transition">
         <div className="flex items-center justify-center gap-2 text-sm md:text-base">
@@ -340,7 +234,7 @@ export default function Home() {
           <h1 className="text-5xl font-bold mb-4">Professional Trade Calculators</h1>
           <p className="text-2xl mb-8">Built for UK Tradespeople</p>
           <p className="text-lg mb-8 opacity-95">
-            Fast, accurate calculations compliant with British Standards. Save time,<br />
+            100+ free calculators compliant with British Standards. Save time,<br />
             reduce errors, and work with confidence.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
@@ -349,10 +243,10 @@ export default function Home() {
               className="bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 flex items-center gap-2"
             >
               <Search className="w-5 h-5" />
-              Quick Find Calculator
+              Find Your Calculator
             </button>
             <button onClick={() => document.getElementById('calculators')?.scrollIntoView({ behavior: 'smooth' })} className="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-purple-600 transition flex items-center gap-2">
-              View All Tools <ArrowRight className="w-5 h-5" />
+              Browse All Tools <ArrowRight className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -443,7 +337,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-3xl font-bold">Free Professional Calculators</h2>
-              <p className="text-gray-600">Choose your calculator and start working smarter</p>
+              <p className="text-gray-600">100+ calculators for every trade</p>
             </div>
             <button 
               onClick={() => setShowQuickFind(true)}
@@ -472,7 +366,7 @@ export default function Home() {
               <div>
                 <p className="text-purple-600 text-xs font-bold uppercase tracking-wider mb-1">HUB PAGE</p>
                 <h3 className="text-2xl font-bold text-purple-900 mb-2">All Electrical Calculators</h3>
-                <p className="text-purple-700">Voltage drop, cable sizing & 27 use-case calculators for every circuit type</p>
+                <p className="text-purple-700">Voltage drop, cable sizing & 50+ use-case calculators for every circuit type</p>
               </div>
               <ArrowRight className="w-8 h-8 text-purple-600" />
             </div>
@@ -486,7 +380,7 @@ export default function Home() {
               <div>
                 <span className="text-blue-600 text-sm font-semibold">HUB PAGE</span>
                 <h3 className="text-xl font-bold text-blue-700">All Cable Sizing Calculators</h3>
-                <p className="text-blue-600">29 use-case calculators for every circuit type</p>
+                <p className="text-blue-600">28 use-case calculators for every circuit type</p>
               </div>
               <ArrowRight className="w-6 h-6 text-blue-600" />
             </div>
@@ -534,7 +428,18 @@ export default function Home() {
               </a>
             ))}
           </div>
-          <p className="text-center text-gray-600 mt-8">More calculators coming soon for carpenters, bricklayers, and more trades</p>
+          
+          {/* Quick Find CTA */}
+          <div className="mt-12 text-center">
+            <p className="text-gray-600 mb-4">Can't find what you're looking for? We have 100+ calculators!</p>
+            <button 
+              onClick={() => setShowQuickFind(true)}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700 transition"
+            >
+              <Search className="w-5 h-5" />
+              Search All Calculators
+            </button>
+          </div>
         </div>
       </section>
 
