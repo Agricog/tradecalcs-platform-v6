@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Project {
+  id            String   @id @default(cuid())
+  clerkUserId   String   @map("clerk_user_id")
+  name          String
+  address       String?
+  customerName  String?  @map("customer_name")
+  customerEmail String?  @map("customer_email")
+  customerPhone String?  @map("customer_phone")
+  status        String   @default("draft")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  calculations     Calculation[]
+  materialItems    MaterialItem[]
+  wholesalerQuotes WholesalerQuote[]
+  customerQuotes   CustomerQuote[]
+
+  @@index([clerkUserId])
+  @@map("projects")
+}
+
+model Calculation {
+  id           String   @id @default(cuid())
+  projectId    String   @map("project_id")
+  circuitName  String   @map("circuit_name")
+  calcType     String   @map("calc_type")
+  inputs       Json
+  outputs      Json
+  cableType    String?  @map("cable_type")
+  cableSize    String?  @map("cable_size")
+  lengthMetres Decimal? @map("length_metres") @db.Decimal(10, 2)
+  quantity     Int      @default(1)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("calculations")
+}
+
+model MaterialItem {
+  id            String   @id @default(cuid())
+  projectId     String   @map("project_id")
+  description   String
+  cableType     String?  @map("cable_type")
+  cableSize     String?  @map("cable_size")
+  totalLength   Decimal? @map("total_length") @db.Decimal(10, 2)
+  unit          String   @default("metres")
+  quantity      Int      @default(1)
+  listPrice     Decimal? @map("list_price") @db.Decimal(10, 2)
+  nettPrice     Decimal? @map("nett_price") @db.Decimal(10, 2)
+  sourceCalcIds Json?    @map("source_calc_ids")
+  manuallyAdded Boolean  @default(false) @map("manually_added")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("material_items")
+}
+
+model WholesalerQuote {
+  id              String    @id @default(cuid())
+  projectId       String    @map("project_id")
+  token           String    @unique
+  wholesalerName  String?   @map("wholesaler_name")
+  wholesalerEmail String?   @map("wholesaler_email")
+  accountNumber   String?   @map("account_number")
+  status          String    @default("draft")
+  discountPercent Decimal?  @map("discount_percent") @db.Decimal(5, 2)
+  notes           String?
+  sentAt          DateTime? @map("sent_at")
+  pricedAt        DateTime? @map("priced_at")
+  expiresAt       DateTime? @map("expires_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([token])
+  @@map("wholesaler_quotes")
+}
+
+model CustomerQuote {
+  id                 String    @id @default(cuid())
+  projectId          String    @map("project_id")
+  quoteNumber        String    @unique @map("quote_number")
+  status             String    @default("draft")
+  materialsTotal     Decimal   @default(0) @map("materials_total") @db.Decimal(10, 2)
+  labourTotal        Decimal   @default(0) @map("labour_total") @db.Decimal(10, 2)
+  subtotal           Decimal   @default(0) @db.Decimal(10, 2)
+  markupPercent      Decimal   @default(0) @map("markup_percent") @db.Decimal(5, 2)
+  markupAmount       Decimal   @default(0) @map("markup_amount") @db.Decimal(10, 2)
+  contingencyPercent Decimal   @default(0) @map("contingency_percent") @db.Decimal(5, 2)
+  contingencyAmount  Decimal   @default(0) @map("contingency_amount") @db.Decimal(10, 2)
+  netTotal           Decimal   @default(0) @map("net_total") @db.Decimal(10, 2)
+  vatPercent         Decimal   @default(20) @map("vat_percent") @db.Decimal(5, 2)
+  vatAmount          Decimal   @default(0) @map("vat_amount") @db.Decimal(10, 2)
+  grandTotal         Decimal   @default(0) @map("grand_total") @db.Decimal(10, 2)
+  validDays          Int       @default(30) @map("valid_days")
+  notes              String?
+  terms              String?
+  createdAt          DateTime  @default(now()) @map("created_at")
+  sentAt             DateTime? @map("sent_at")
+
+  project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  labourItems LabourItem[]
+
+  @@index([projectId])
+  @@map("customer_quotes")
+}
+
+model LabourItem {
+  id              String   @id @default(cuid())
+  customerQuoteId String   @map("customer_quote_id")
+  description     String
+  days            Decimal? @db.Decimal(5, 2)
+  dayRate         Decimal? @map("day_rate") @db.Decimal(10, 2)
+  total           Decimal  @default(0) @db.Decimal(10, 2)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  customerQuote CustomerQuote @relation(fields: [customerQuoteId], references: [id], onDelete: Cascade)
+
+  @@index([customerQuoteId])
+  @@map("labour_items")
+}
