@@ -1,26 +1,23 @@
 import { z } from 'zod';
 
 export const createMaterialSchema = z.object({
-  projectId: z.string().min(1, 'Project ID is required'),
-  description: z.string().min(1, 'Description is required').max(500),
-  cableType: z.string().max(100).optional(),
-  cableSize: z.string().max(50).optional(),
-  totalLength: z.number().positive().optional(),
-  unit: z.enum(['metres', 'each', 'box', 'set', 'roll']).default('metres'),
+  projectId: z.string().min(1),
+  description: z.string().min(1).max(500),
+  cableType: z.string().max(100).optional().nullable(),
+  cableSize: z.string().max(50).optional().nullable(),
+  totalLength: z.number().positive().optional().nullable(),
+  unit: z.enum(['metres', 'each', 'box', 'set', 'roll']),
   quantity: z.number().int().positive().default(1),
-  listPrice: z.number().positive().optional(),
-  manuallyAdded: z.boolean().default(true),
+  listPrice: z.number().nonnegative().optional().nullable(),
+  nettPrice: z.number().nonnegative().optional().nullable(),
 });
 
 export const updateMaterialSchema = z.object({
   description: z.string().min(1).max(500).optional(),
-  cableType: z.string().max(100).optional(),
-  cableSize: z.string().max(50).optional(),
-  totalLength: z.number().positive().optional(),
-  unit: z.enum(['metres', 'each', 'box', 'set', 'roll']).optional(),
+  totalLength: z.number().positive().optional().nullable(),
   quantity: z.number().int().positive().optional(),
-  listPrice: z.number().positive().optional(),
-  nettPrice: z.number().positive().optional(),
+  listPrice: z.number().nonnegative().optional().nullable(),
+  nettPrice: z.number().nonnegative().optional().nullable(),
 });
 
 export type CreateMaterialInput = z.infer<typeof createMaterialSchema>;
