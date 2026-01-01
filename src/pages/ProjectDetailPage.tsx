@@ -18,6 +18,7 @@ import {
 import toast from 'react-hot-toast';
 import { api } from '../lib/api';
 import Button from '../components/ui/Button';
+import AddMaterialModal from '../components/projects/AddMaterialModal';
 
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -26,6 +27,7 @@ export default function ProjectDetailPage() {
   const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
+  const [showAddMaterial, setShowAddMaterial] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -70,6 +72,33 @@ export default function ProjectDetailPage() {
       toast.error('Failed to delete project');
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const handleMaterialAdded = (material: any) => {
+    setProject((prev: any) => ({
+      ...prev,
+      materialItems: [...(prev.materialItems || []), material],
+    }));
+  };
+
+  const handleDeleteMaterial = async (materialId: string) => {
+    if (!confirm('Delete this material?')) return;
+    
+    try {
+      const token = await getToken();
+      const response = await api.deleteMaterial(materialId, token);
+      if (response.success) {
+        setProject((prev: any) => ({
+          ...prev,
+          materialItems: prev.materialItems.filter((m: any) => m.id !== materialId),
+        }));
+        toast.success('Material deleted');
+      } else {
+        toast.error(response.error?.message || 'Failed to delete');
+      }
+    } catch (error) {
+      toast.error('Failed to delete material');
     }
   };
 
@@ -179,7 +208,7 @@ export default function ProjectDetailPage() {
                   <Package className="w-5 h-5 text-purple-600" />
                   Materials
                 </h2>
-                <Button size="sm" variant="secondary">
+                <Button size="sm" variant="secondary" onClick={() => setShowAddMaterial(true)}>
                   <Plus className="w-4 h-4 mr-1" />
                   Add Material
                 </Button>
@@ -189,26 +218,44 @@ export default function ProjectDetailPage() {
                 <div className="text-center py-8 text-gray-500">
                   <Package className="w-12 h-12 mx-auto mb-3 opacity-50" />
                   <p>No materials yet</p>
-                  <p className="text-sm">Materials are auto-extracted from calculations</p>
+                  <p className="text-sm">Materials are auto-extracted from calculations or add manually</p>
                 </div>
               ) : (
                 <div className="space-y-3">
                   {project.materialItems?.map((material: any) => (
                     <div 
                       key={material.id} 
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg group"
                     >
-                      <div>
+                      <div className="flex-1">
                         <p className="font-medium">{material.description}</p>
                         <p className="text-sm text-gray-500">
-                          {material.totalLength} {material.unit}
+                          {material.quantity} {material.unit}
+                          {material.totalLength ? ` • ${material.totalLength}m` : ''}
                         </p>
                       </div>
-                      {material.nettPrice && (
-                        <span className="font-medium text-green-600">
-                          £{Number(material.nettPrice).toFixed(2)}
-                        </span>
-                      )}
+                      <div className="flex items-center gap-3">
+                        {material.nettPrice ? (
+                          <span className="font-medium text-green-600">
+                            £{Number(material.nettPrice).toFixed(2)}
+                          </span>
+                        ) : material.listPrice ? (
+                          <span className="font-medium text-gray-600">
+                            £{Number(material.listPrice).toFixed(2)}
+                          </span>
+                        ) : null}
+                        {material.manuallyAdded && (
+                          <button
+                            onClick={() => handleDeleteMaterial(material.id)}
+                            className="opacity-0 group-hover:opacity-100 p-1 text-red-500 hover:bg-red-50 rounded transition-opacity"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                        {!material.manuallyAdded && (
+                          <span className="text-xs text-gray-400">auto</span>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -300,6 +347,14 @@ export default function ProjectDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Add Material Modal */}
+      <AddMaterialModal
+        isOpen={showAddMaterial}
+        onClose={() => setShowAddMaterial(false)}
+        projectId={id!}
+        onAdded={handleMaterialAdded}
+      />
     </div>
   );
 }
