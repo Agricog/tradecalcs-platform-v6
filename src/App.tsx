@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import Toast from './components/ui/Toast'
 import Homepage from './pages/Home'
 import ProjectsPage from './pages/ProjectsPage'
+import ProjectDetailPage from './pages/ProjectDetailPage'
 import CableSizingCalculatorPage from './pages/CableSizingCalculatorPage'
 import VoltageDropCalculatorPage from './pages/VoltageDropCalculatorPage'
 import BSPThreadIdentifierPage from './pages/BSPThreadIdentifierPage'
@@ -155,6 +156,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:id" element={<ProjectDetailPage />} />
           
           {/* Cable Sizing - new URL + old redirect */}
           <Route path="/cable-sizing-calculator" element={<CableSizingCalculatorPage />} />
