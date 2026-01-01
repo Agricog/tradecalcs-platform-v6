@@ -4,6 +4,13 @@ import helmet from 'helmet';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Import routes
+import projectRoutes from './routes/projects';
+import calculationRoutes from './routes/calculations';
+import materialRoutes from './routes/materials';
+import wholesalerQuoteRoutes from './routes/wholesalerQuotes';
+import customerQuoteRoutes from './routes/customerQuotes';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -41,12 +48,12 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// API routes will be added here
-// app.use('/api/projects', projectRoutes);
-// app.use('/api/calculations', calculationRoutes);
-// app.use('/api/materials', materialRoutes);
-// app.use('/api/wholesaler-quotes', wholesalerQuoteRoutes);
-// app.use('/api/customer-quotes', customerQuoteRoutes);
+// API routes
+app.use('/api/projects', projectRoutes);
+app.use('/api/calculations', calculationRoutes);
+app.use('/api/materials', materialRoutes);
+app.use('/api/wholesaler-quotes', wholesalerQuoteRoutes);
+app.use('/api/customer-quotes', customerQuoteRoutes);
 
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
