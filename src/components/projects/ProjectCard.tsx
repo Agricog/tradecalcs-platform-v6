@@ -9,7 +9,7 @@ interface ProjectCardProps {
     customerName?: string;
     status: string;
     updatedAt: string;
-    _count: {
+    _count?: {
       calculations: number;
       materialItems: number;
     };
@@ -25,6 +25,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   };
 
   const statusColor = statusColors[project.status as keyof typeof statusColors] || statusColors.draft;
+
+  const calculationCount = project._count?.calculations ?? 0;
+  const materialCount = project._count?.materialItems ?? 0;
 
   return (
     <Link
@@ -55,11 +58,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
         <span className="flex items-center gap-1">
           <Calculator className="w-4 h-4" />
-          {project._count.calculations} calculations
+          {calculationCount} calculations
         </span>
         <span className="flex items-center gap-1">
           <Package className="w-4 h-4" />
-          {project._count.materialItems} materials
+          {materialCount} materials
         </span>
       </div>
 
