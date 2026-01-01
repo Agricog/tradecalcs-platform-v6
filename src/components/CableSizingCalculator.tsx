@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Zap, CheckCircle2, AlertCircle } from 'lucide-react'
 import QuoteGenerator from './QuoteGenerator'
+import SaveToProjectModal from './projects/SaveToProjectModal'
 
 export default function CableCalculator() {
   const [loadType, setLoadType] = useState<'amps' | 'kw'>('amps')
@@ -12,6 +13,7 @@ export default function CableCalculator() {
   const [lighting, setLighting] = useState(false)
   const [result, setResult] = useState<any>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
+  const [showSaveToProject, setShowSaveToProject] = useState(false)
 
   const calculate = () => {
     let amps = parseFloat(current)
@@ -20,7 +22,6 @@ export default function CableCalculator() {
       alert('Please fill all fields')
       return
     }
-
     let size = 1.5
     if (amps <= 13.5) size = 1.5
     else if (amps <= 18) size = 2.5
@@ -30,7 +31,6 @@ export default function CableCalculator() {
     else if (amps <= 57) size = 16
     else if (amps <= 76) size = 25
     else size = 35
-
     setResult({
       amps: amps.toFixed(1),
       size,
@@ -44,7 +44,6 @@ export default function CableCalculator() {
   return (
     <>
       <Helmet>
-        {/* Primary Meta Tags */}
         <title>Cable Sizing Calculator UK | BS 7671 18th Edition | TradeCalcs</title>
         <meta 
           name="description" 
@@ -53,27 +52,19 @@ export default function CableCalculator() {
         <meta name="keywords" content="cable sizing calculator, BS 7671 calculator, 18th edition calculator, UK electrician tools, cable size chart, voltage drop calculator, electrical cable calculator, derating factors, installation methods" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Cable Sizing Calculator UK | BS 7671 18th Edition Compliant" />
         <meta property="og:description" content="Professional cable sizing calculator for UK electricians. BS 7671:2018+A2:2022 compliant with voltage drop analysis and derating factors." />
         <meta property="og:url" content="https://tradecalcs.co.uk/cable-sizing-calculator" />
         <meta property="og:image" content="https://tradecalcs.co.uk/images/cable-calculator-og.jpg" />
         <meta property="og:site_name" content="TradeCalcs" />
-
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Cable Sizing Calculator UK | TradeCalcs" />
         <meta name="twitter:description" content="Free BS 7671 compliant cable sizing calculator. Voltage drop, derating factors, installation methods. For UK electricians." />
         <meta name="twitter:image" content="https://tradecalcs.co.uk/images/cable-calculator-og.jpg" />
-
-        {/* Additional SEO */}
         <link rel="canonical" href="https://tradecalcs.co.uk/cable-sizing-calculator" />
         <meta name="author" content="TradeCalcs" />
         <meta name="theme-color" content="#1e40af" />
-
-        {/* Schema Markup */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -165,14 +156,12 @@ export default function CableCalculator() {
       </Helmet>
 
       <div className="bg-gray-50 min-h-screen">
-        {/* BACK LINK */}
         <div className="max-w-5xl mx-auto px-4 py-4">
           <a href="/" className="text-purple-600 hover:text-purple-800 font-semibold text-sm">
             ← Back to All Calculators
           </a>
         </div>
 
-        {/* BLUE HEADER BANNER */}
         <div className="bg-gradient-to-r from-blue-700 to-blue-600 text-white py-12 px-4">
           <div className="max-w-5xl mx-auto text-center">
             <Zap className="w-12 h-12 mx-auto mb-3" />
@@ -182,7 +171,6 @@ export default function CableCalculator() {
         </div>
 
         <div className="max-w-5xl mx-auto px-4 py-8">
-          {/* MAIN CALCULATOR FORM */}
           <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
             <div className="bg-blue-700 text-white rounded-lg p-4 mb-6">
               <div className="flex items-center gap-2 mb-1">
@@ -192,7 +180,6 @@ export default function CableCalculator() {
               <p className="text-sm opacity-90">BS 7671:2018+A2:2022 compliant cable sizing with voltage drop analysis</p>
             </div>
 
-            {/* LOAD TYPE TOGGLE */}
             <div className="mb-6">
               <div className="flex gap-2 mb-3">
                 <button
@@ -218,7 +205,6 @@ export default function CableCalculator() {
               </div>
             </div>
 
-            {/* STEP 1: LOAD CURRENT */}
             <div className="mb-6">
               <label className="block font-bold text-gray-800 mb-2">1. Load Current (Amps)</label>
               {loadType === 'amps' ? (
@@ -259,7 +245,6 @@ export default function CableCalculator() {
               )}
             </div>
 
-            {/* STEP 2: CABLE LENGTH */}
             <div className="mb-6">
               <label className="block font-bold text-gray-800 mb-2">2. Cable Length (meters)</label>
               <input
@@ -283,7 +268,6 @@ export default function CableCalculator() {
               </div>
             </div>
 
-            {/* STEP 3: INSTALLATION METHOD */}
             <div className="mb-6">
               <label className="block font-bold text-gray-800 mb-2">3. Installation Method</label>
               <select
@@ -299,7 +283,6 @@ export default function CableCalculator() {
               <p className="text-xs text-gray-500 mt-1">Method C = highest capacity. Methods B/E derated for reduced air flow.</p>
             </div>
 
-            {/* STEP 4: LIGHTING CIRCUIT CHECKBOX */}
             <div className="mb-6">
               <label className="inline-flex items-center gap-2 text-gray-800 font-semibold">
                 <input
@@ -313,7 +296,6 @@ export default function CableCalculator() {
               </label>
             </div>
 
-            {/* CALCULATE BUTTON */}
             <button
               onClick={calculate}
               className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-lg text-lg transition"
@@ -322,7 +304,6 @@ export default function CableCalculator() {
               Calculate Cable Size
             </button>
 
-            {/* RESULTS */}
             {result && (
               <>
                 <div className="mt-8 bg-blue-50 border-2 border-blue-300 rounded-lg p-6">
@@ -336,6 +317,19 @@ export default function CableCalculator() {
                       <strong>Standard conditions assumed:</strong> 30°C ambient, no grouping factors. Additional derating may apply for grouped circuits, high ambient temperatures, or special installation conditions. Always verify with current BS 7671 tables.
                     </div>
                   </div>
+                </div>
+
+                {/* SAVE TO PROJECT */}
+                <div className="mt-6 flex gap-3">
+                  <button
+                    onClick={() => setShowSaveToProject(true)}
+                    className="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-bold transition flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"/>
+                    </svg>
+                    Save to Project
+                  </button>
                 </div>
 
                 {/* QUOTE GENERATOR CTA */}
@@ -365,128 +359,128 @@ export default function CableCalculator() {
                   </p>
                 </div>
               </>
-           )}
+            )}
           </div>
 
-{/* USE CASE CARDS */}
-<div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-  <h2 className="text-xl font-bold text-gray-900 mb-2">Calculate Cable Size for Your Specific Project</h2>
-  <p className="text-gray-600 mb-6">Select your project type for tailored calculations, tips, and guidance:</p>
-  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-    <a href="/calculators/cable-sizing/ev-charger-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
-      <h3 className="font-bold text-green-900 mb-1">EV Charger</h3>
-      <p className="text-sm text-green-700">7kW, 22kW home & commercial</p>
-    </a>
-    <a href="/calculators/cable-sizing/electric-shower-cable-sizing" className="block p-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
-      <h3 className="font-bold text-blue-900 mb-1">Electric Shower</h3>
-      <p className="text-sm text-blue-700">8.5kW to 10.8kW installations</p>
-    </a>
-    <a href="/calculators/cable-sizing/cooker-circuit-cable-sizing" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
-      <h3 className="font-bold text-orange-900 mb-1">Cooker Circuit</h3>
-      <p className="text-sm text-orange-700">Ovens, hobs & range cookers</p>
-    </a>
-    <a href="/calculators/cable-sizing/garden-office-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-teal-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
-      <h3 className="font-bold text-green-900 mb-1">Garden Office</h3>
-      <p className="text-sm text-green-700">Sheds, workshops, outbuildings</p>
-    </a>
-    <a href="/calculators/cable-sizing/hot-tub-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
-      <h3 className="font-bold text-cyan-900 mb-1">Hot Tub & Spa</h3>
-      <p className="text-sm text-cyan-700">Spas, swim spas, jacuzzis</p>
-    </a>
-    <a href="/calculators/cable-sizing/immersion-heater-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-red-900 mb-1">Immersion Heater</h3>
-  <p className="text-sm text-red-700">Hot water cylinder circuits</p>
-</a>
-<a href="/calculators/cable-sizing/solar-pv-battery-cable-sizing" className="block p-4 bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-yellow-900 mb-1">Solar PV & Battery</h3>
-  <p className="text-sm text-yellow-700">Inverter & storage systems</p>
-</a>
-<a href="/calculators/cable-sizing/air-source-heat-pump-cable-sizing" className="block p-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-emerald-900 mb-1">Air Source Heat Pump</h3>
-  <p className="text-sm text-emerald-700">£7,500 BUS grant eligible</p>
-</a>
-<a href="/calculators/cable-sizing/underfloor-heating-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-red-900 mb-1">Underfloor Heating</h3>
-  <p className="text-sm text-red-700">Electric UFH supply circuits</p>
-</a>
-    <a href="/calculators/cable-sizing/garage-workshop-cable-sizing" className="block p-4 bg-gradient-to-br from-slate-50 to-zinc-50 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-slate-900 mb-1">Garage & Workshop</h3>
-  <p className="text-sm text-slate-700">Power tools, welders, compressors</p>
-</a>
-<a href="/calculators/cable-sizing/sauna-cable-sizing" className="block p-4 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-amber-900 mb-1">Sauna</h3>
-  <p className="text-sm text-amber-700">Electric sauna heater installations</p>
-</a>
-<a href="/calculators/cable-sizing/air-conditioning-cable-sizing" className="block p-4 bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-sky-900 mb-1">Air Conditioning</h3>
-  <p className="text-sm text-sky-700">Split systems & multi-split AC</p>
-</a>
-<a href="/calculators/cable-sizing/swimming-pool-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-cyan-900 mb-1">Swimming Pool</h3>
-  <p className="text-sm text-cyan-700">Pumps, heaters, lighting circuits</p>
-</a>
-<a href="/calculators/cable-sizing/electric-gates-cable-sizing" className="block p-4 bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-gray-900 mb-1">Electric Gates</h3>
-  <p className="text-sm text-gray-700">Gate motors & access control</p>
-</a>
-<a href="/calculators/cable-sizing/cctv-security-cable-sizing" className="block p-4 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-indigo-900 mb-1">CCTV & Security</h3>
-  <p className="text-sm text-indigo-700">Camera systems & alarm power</p>
-</a>
-    <a href="/calculators/cable-sizing/annex-granny-flat-cable-sizing" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-violet-900 mb-1">Annex & Granny Flat</h3>
-  <p className="text-sm text-violet-700">Submains for self-contained annexes</p>
-</a>
-<a href="/calculators/cable-sizing/shed-summer-house-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-green-900 mb-1">Shed & Summer House</h3>
-  <p className="text-sm text-green-700">Garden building power supplies</p>
-</a>
-<a href="/calculators/cable-sizing/outdoor-lighting-cable-sizing" className="block p-4 bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-yellow-900 mb-1">Outdoor Lighting</h3>
-  <p className="text-sm text-yellow-700">Garden, security & festoon lights</p>
-</a>
-<a href="/calculators/cable-sizing/electric-storage-heater-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-red-900 mb-1">Storage Heaters</h3>
-  <p className="text-sm text-red-700">Economy 7 & panel heater circuits</p>
-</a>
-<a href="/calculators/cable-sizing/ring-main-socket-circuit-cable-sizing" className="block p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-blue-900 mb-1">Ring Main & Sockets</h3>
-  <p className="text-sm text-blue-700">Ring final & radial socket circuits</p>
-</a>
-    <a href="/calculators/cable-sizing/commercial-kitchen-cable-sizing" className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-orange-900 mb-1">Commercial Kitchen</h3>
-  <p className="text-sm text-orange-700">Restaurants, cafés & catering</p>
-</a>
-<a href="/calculators/cable-sizing/server-room-cable-sizing" className="block p-4 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-indigo-900 mb-1">Server Room</h3>
-  <p className="text-sm text-indigo-700">Data centres & IT infrastructure</p>
-</a>
-<a href="/calculators/cable-sizing/caravan-marina-hookup-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-cyan-900 mb-1">Caravan & Marina</h3>
-  <p className="text-sm text-cyan-700">Holiday parks & boat hookups</p>
-</a>
-<a href="/calculators/cable-sizing/farm-agricultural-cable-sizing" className="block p-4 bg-gradient-to-br from-lime-50 to-green-50 border border-lime-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-lime-900 mb-1">Farm & Agricultural</h3>
-  <p className="text-sm text-lime-700">Barns, milking parlours, workshops</p>
-</a>
-<a href="/calculators/cable-sizing/shop-retail-unit-cable-sizing" className="block p-4 bg-gradient-to-br from-pink-50 to-purple-50 border border-pink-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-pink-900 mb-1">Shop & Retail</h3>
-  <p className="text-sm text-pink-700">Commercial fit-outs & small business</p>
-</a>
-    <a href="/calculators/cable-sizing/ground-source-heat-pump-cable-sizing" className="block p-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-emerald-900 mb-1">Ground Source Heat Pump</h3>
-  <p className="text-sm text-emerald-700">GSHP & borehole systems</p>
-</a>
-<a href="/calculators/cable-sizing/battery-storage-cable-sizing" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-violet-900 mb-1">Battery Storage</h3>
-  <p className="text-sm text-violet-700">Home battery & retrofit systems</p>
-</a>
-<a href="/calculators/cable-sizing/commercial-ev-charging-cable-sizing" className="block p-4 bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-200 rounded-lg hover:shadow-md transition-shadow">
-  <h3 className="font-bold text-teal-900 mb-1">Commercial EV Charging</h3>
-  <p className="text-sm text-teal-700">Workplace, car parks & fleet</p>
-</a>
-  </div>
-</div>
+          {/* USE CASE CARDS */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Calculate Cable Size for Your Specific Project</h2>
+            <p className="text-gray-600 mb-6">Select your project type for tailored calculations, tips, and guidance:</p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <a href="/calculators/cable-sizing/ev-charger-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-green-900 mb-1">EV Charger</h3>
+                <p className="text-sm text-green-700">7kW, 22kW home & commercial</p>
+              </a>
+              <a href="/calculators/cable-sizing/electric-shower-cable-sizing" className="block p-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-blue-900 mb-1">Electric Shower</h3>
+                <p className="text-sm text-blue-700">8.5kW to 10.8kW installations</p>
+              </a>
+              <a href="/calculators/cable-sizing/cooker-circuit-cable-sizing" className="block p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-orange-900 mb-1">Cooker Circuit</h3>
+                <p className="text-sm text-orange-700">Ovens, hobs & range cookers</p>
+              </a>
+              <a href="/calculators/cable-sizing/garden-office-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-teal-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-green-900 mb-1">Garden Office</h3>
+                <p className="text-sm text-green-700">Sheds, workshops, outbuildings</p>
+              </a>
+              <a href="/calculators/cable-sizing/hot-tub-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-cyan-900 mb-1">Hot Tub & Spa</h3>
+                <p className="text-sm text-cyan-700">Spas, swim spas, jacuzzis</p>
+              </a>
+              <a href="/calculators/cable-sizing/immersion-heater-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-red-900 mb-1">Immersion Heater</h3>
+                <p className="text-sm text-red-700">Hot water cylinder circuits</p>
+              </a>
+              <a href="/calculators/cable-sizing/solar-pv-battery-cable-sizing" className="block p-4 bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-yellow-900 mb-1">Solar PV & Battery</h3>
+                <p className="text-sm text-yellow-700">Inverter & storage systems</p>
+              </a>
+              <a href="/calculators/cable-sizing/air-source-heat-pump-cable-sizing" className="block p-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-emerald-900 mb-1">Air Source Heat Pump</h3>
+                <p className="text-sm text-emerald-700">£7,500 BUS grant eligible</p>
+              </a>
+              <a href="/calculators/cable-sizing/underfloor-heating-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-red-900 mb-1">Underfloor Heating</h3>
+                <p className="text-sm text-red-700">Electric UFH supply circuits</p>
+              </a>
+              <a href="/calculators/cable-sizing/garage-workshop-cable-sizing" className="block p-4 bg-gradient-to-br from-slate-50 to-zinc-50 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-slate-900 mb-1">Garage & Workshop</h3>
+                <p className="text-sm text-slate-700">Power tools, welders, compressors</p>
+              </a>
+              <a href="/calculators/cable-sizing/sauna-cable-sizing" className="block p-4 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-amber-900 mb-1">Sauna</h3>
+                <p className="text-sm text-amber-700">Electric sauna heater installations</p>
+              </a>
+              <a href="/calculators/cable-sizing/air-conditioning-cable-sizing" className="block p-4 bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-sky-900 mb-1">Air Conditioning</h3>
+                <p className="text-sm text-sky-700">Split systems & multi-split AC</p>
+              </a>
+              <a href="/calculators/cable-sizing/swimming-pool-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-cyan-900 mb-1">Swimming Pool</h3>
+                <p className="text-sm text-cyan-700">Pumps, heaters, lighting circuits</p>
+              </a>
+              <a href="/calculators/cable-sizing/electric-gates-cable-sizing" className="block p-4 bg-gradient-to-br from-gray-50 to-slate-50 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-gray-900 mb-1">Electric Gates</h3>
+                <p className="text-sm text-gray-700">Gate motors & access control</p>
+              </a>
+              <a href="/calculators/cable-sizing/cctv-security-cable-sizing" className="block p-4 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-indigo-900 mb-1">CCTV & Security</h3>
+                <p className="text-sm text-indigo-700">Camera systems & alarm power</p>
+              </a>
+              <a href="/calculators/cable-sizing/annex-granny-flat-cable-sizing" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-violet-900 mb-1">Annex & Granny Flat</h3>
+                <p className="text-sm text-violet-700">Submains for self-contained annexes</p>
+              </a>
+              <a href="/calculators/cable-sizing/shed-summer-house-cable-sizing" className="block p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-green-900 mb-1">Shed & Summer House</h3>
+                <p className="text-sm text-green-700">Garden building power supplies</p>
+              </a>
+              <a href="/calculators/cable-sizing/outdoor-lighting-cable-sizing" className="block p-4 bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-yellow-900 mb-1">Outdoor Lighting</h3>
+                <p className="text-sm text-yellow-700">Garden, security & festoon lights</p>
+              </a>
+              <a href="/calculators/cable-sizing/electric-storage-heater-cable-sizing" className="block p-4 bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-red-900 mb-1">Storage Heaters</h3>
+                <p className="text-sm text-red-700">Economy 7 & panel heater circuits</p>
+              </a>
+              <a href="/calculators/cable-sizing/ring-main-socket-circuit-cable-sizing" className="block p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-blue-900 mb-1">Ring Main & Sockets</h3>
+                <p className="text-sm text-blue-700">Ring final & radial socket circuits</p>
+              </a>
+              <a href="/calculators/cable-sizing/commercial-kitchen-cable-sizing" className="block p-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-orange-900 mb-1">Commercial Kitchen</h3>
+                <p className="text-sm text-orange-700">Restaurants, cafés & catering</p>
+              </a>
+              <a href="/calculators/cable-sizing/server-room-cable-sizing" className="block p-4 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-indigo-900 mb-1">Server Room</h3>
+                <p className="text-sm text-indigo-700">Data centres & IT infrastructure</p>
+              </a>
+              <a href="/calculators/cable-sizing/caravan-marina-hookup-cable-sizing" className="block p-4 bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-cyan-900 mb-1">Caravan & Marina</h3>
+                <p className="text-sm text-cyan-700">Holiday parks & boat hookups</p>
+              </a>
+              <a href="/calculators/cable-sizing/farm-agricultural-cable-sizing" className="block p-4 bg-gradient-to-br from-lime-50 to-green-50 border border-lime-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-lime-900 mb-1">Farm & Agricultural</h3>
+                <p className="text-sm text-lime-700">Barns, milking parlours, workshops</p>
+              </a>
+              <a href="/calculators/cable-sizing/shop-retail-unit-cable-sizing" className="block p-4 bg-gradient-to-br from-pink-50 to-purple-50 border border-pink-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-pink-900 mb-1">Shop & Retail</h3>
+                <p className="text-sm text-pink-700">Commercial fit-outs & small business</p>
+              </a>
+              <a href="/calculators/cable-sizing/ground-source-heat-pump-cable-sizing" className="block p-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-emerald-900 mb-1">Ground Source Heat Pump</h3>
+                <p className="text-sm text-emerald-700">GSHP & borehole systems</p>
+              </a>
+              <a href="/calculators/cable-sizing/battery-storage-cable-sizing" className="block p-4 bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-violet-900 mb-1">Battery Storage</h3>
+                <p className="text-sm text-violet-700">Home battery & retrofit systems</p>
+              </a>
+              <a href="/calculators/cable-sizing/commercial-ev-charging-cable-sizing" className="block p-4 bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-200 rounded-lg hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-teal-900 mb-1">Commercial EV Charging</h3>
+                <p className="text-sm text-teal-700">Workplace, car parks & fleet</p>
+              </a>
+            </div>
+          </div>
 
           {/* IMPORTANT NOTES */}
           <div className="bg-blue-50 border-l-4 border-blue-700 rounded-lg p-6 mb-8">
@@ -798,6 +792,32 @@ export default function CableCalculator() {
             </a>
           </div>
         </div>
+
+        {/* SAVE TO PROJECT MODAL */}
+        {showSaveToProject && result && (
+          <SaveToProjectModal
+            isOpen={showSaveToProject}
+            onClose={() => setShowSaveToProject(false)}
+            calculationData={{
+              circuitName: `Cable sizing - ${result.amps}A circuit`,
+              calcType: 'cable_sizing',
+              inputs: {
+                current: result.amps,
+                length: result.length,
+                method: result.method,
+                lighting: result.lighting,
+              },
+              outputs: {
+                cableSize: result.size,
+                formula: result.formula,
+              },
+              cableType: 'Twin & Earth',
+              cableSize: `${result.size}mm²`,
+              lengthMetres: parseFloat(result.length),
+            }}
+            onSaved={() => setShowSaveToProject(false)}
+          />
+        )}
 
         {/* QUOTE GENERATOR MODAL */}
         {showQuoteGenerator && (
