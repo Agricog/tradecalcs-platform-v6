@@ -1,0 +1,305 @@
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '@clerk/clerk-react';
+import { 
+  ArrowLeft, 
+  Plus, 
+  Trash2, 
+  Send, 
+  FileText,
+  Calculator,
+  Package,
+  Building2,
+  User,
+  Mail,
+  Phone,
+  MapPin
+} from 'lucide-react';
+import toast from 'react-hot-toast';
+import { api } from '../lib/api';
+import Button from '../components/ui/Button';
+
+export default function ProjectDetailPage() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { getToken } = useAuth();
+  const [project, setProject] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (id) {
+      loadProject();
+    }
+  }, [id]);
+
+  const loadProject = async () => {
+    try {
+      const token = await getToken();
+      const response = await api.getProject(id!, token);
+      if (response.success) {
+        setProject(response.data);
+      } else {
+        toast.error('Project not found');
+        navigate('/projects');
+      }
+    } catch (error) {
+      toast.error('Failed to load project');
+      navigate('/projects');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!confirm('Are you sure you want to delete this project? This cannot be undone.')) {
+      return;
+    }
+
+    setDeleting(true);
+    try {
+      const token = await getToken();
+      const response = await api.deleteProject(id!, token);
+      if (response.success) {
+        toast.success('Project deleted');
+        navigate('/projects');
+      } else {
+        toast.error('Failed to delete project');
+      }
+    } catch (error) {
+      toast.error('Failed to delete project');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-1/4 mb-4" />
+            <div className="h-4 bg-gray-200 rounded w-1/2 mb-8" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="md:col-span-2 space-y-6">
+                <div className="bg-white rounded-lg p-6 h-48" />
+                <div className="bg-white rounded-lg p-6 h-48" />
+              </div>
+              <div className="bg-white rounded-lg p-6 h-96" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!project) {
+    return null;
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-6">
+          <Link 
+            to="/projects" 
+            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Projects
+          </Link>
+          
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">{project.name}</h1>
+              <p className="text-gray-600">
+                Created {new Date(project.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="danger" onClick={handleDelete} loading={deleting}>
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Main Content */}
+          <div className="md:col-span-2 space-y-6">
+            {/* Calculations Section */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold flex items-center gap-2">
+                  <Calculator className="w-5 h-5 text-purple-600" />
+                  Calculations
+                </h2>
+                <Link to="/cable-sizing-calculator">
+                  <Button size="sm">
+                    <Plus className="w-4 h-4 mr-1" />
+                    Add Calculation
+                  </Button>
+                </Link>
+              </div>
+              
+              {project.calculations?.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <Calculator className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                  <p>No calculations yet</p>
+                  <p className="text-sm">Use a calculator and save results to this project</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {project.calculations?.map((calc: any) => (
+                    <div 
+                      key={calc.id} 
+                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    >
+                      <div>
+                        <p className="font-medium">{calc.circuitName}</p>
+                        <p className="text-sm text-gray-500">
+                          {calc.cableSize} {calc.cableType} • {calc.lengthMetres}m
+                        </p>
+                      </div>
+                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">
+                        {calc.calcType.replace('_', ' ')}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Materials Section */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold flex items-center gap-2">
+                  <Package className="w-5 h-5 text-purple-600" />
+                  Materials
+                </h2>
+                <Button size="sm" variant="secondary">
+                  <Plus className="w-4 h-4 mr-1" />
+                  Add Material
+                </Button>
+              </div>
+              
+              {project.materialItems?.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <Package className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                  <p>No materials yet</p>
+                  <p className="text-sm">Materials are auto-extracted from calculations</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {project.materialItems?.map((material: any) => (
+                    <div 
+                      key={material.id} 
+                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    >
+                      <div>
+                        <p className="font-medium">{material.description}</p>
+                        <p className="text-sm text-gray-500">
+                          {material.totalLength} {material.unit}
+                        </p>
+                      </div>
+                      {material.nettPrice && (
+                        <span className="font-medium text-green-600">
+                          £{Number(material.nettPrice).toFixed(2)}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Actions Section */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h2 className="text-lg font-semibold mb-4">Quote Actions</h2>
+              <div className="flex flex-wrap gap-3">
+                <Button variant="secondary" disabled={project.materialItems?.length === 0}>
+                  <Send className="w-4 h-4 mr-2" />
+                  Send to Wholesaler
+                </Button>
+                <Button variant="secondary" disabled={project.materialItems?.length === 0}>
+                  <FileText className="w-4 h-4 mr-2" />
+                  Create Customer Quote
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Customer Details */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <User className="w-5 h-5 text-purple-600" />
+                Customer Details
+              </h2>
+              
+              <div className="space-y-3">
+                {project.customerName && (
+                  <div className="flex items-start gap-3">
+                    <User className="w-4 h-4 text-gray-400 mt-1" />
+                    <span>{project.customerName}</span>
+                  </div>
+                )}
+                {project.address && (
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-4 h-4 text-gray-400 mt-1" />
+                    <span>{project.address}</span>
+                  </div>
+                )}
+                {project.customerEmail && (
+                  <div className="flex items-start gap-3">
+                    <Mail className="w-4 h-4 text-gray-400 mt-1" />
+                    <span>{project.customerEmail}</span>
+                  </div>
+                )}
+                {project.customerPhone && (
+                  <div className="flex items-start gap-3">
+                    <Phone className="w-4 h-4 text-gray-400 mt-1" />
+                    <span>{project.customerPhone}</span>
+                  </div>
+                )}
+                {!project.customerName && !project.address && !project.customerEmail && !project.customerPhone && (
+                  <p className="text-gray-500 text-sm">No customer details added</p>
+                )}
+              </div>
+            </div>
+
+            {/* Project Status */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-purple-600" />
+                Project Status
+              </h2>
+              
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Status</span>
+                  <span className="font-medium capitalize">{project.status}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Calculations</span>
+                  <span className="font-medium">{project.calculations?.length || 0}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Materials</span>
+                  <span className="font-medium">{project.materialItems?.length || 0}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Quotes Sent</span>
+                  <span className="font-medium">{project.wholesalerQuotes?.length || 0}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
