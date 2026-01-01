@@ -1,8 +1,11 @@
 import { BrowserRouter as Router, Routes, Navigate, Route, Link } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
+import { UserButton, SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react'
 import { OfflineIndicator } from './components/OfflineIndicator'
 import Footer from './components/Footer'
+import Toast from './components/ui/Toast'
 import Homepage from './pages/Home'
+import ProjectsPage from './pages/ProjectsPage'
 import CableSizingCalculatorPage from './pages/CableSizingCalculatorPage'
 import VoltageDropCalculatorPage from './pages/VoltageDropCalculatorPage'
 import BSPThreadIdentifierPage from './pages/BSPThreadIdentifierPage'
@@ -113,6 +116,7 @@ function App() {
       <Router>
        <ScrollToTop />
        <OfflineIndicator />
+       <Toast />
         
         {/* Header */}
         <header className="bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-lg">
@@ -127,12 +131,22 @@ function App() {
               </div>
             </Link>
             
-            <nav className="hidden md:flex gap-6">
-              <Link to="/" className="hover:underline">Home</Link>
-              <Link to="/leadfortress" className="hover:underline">LeadFortress</Link>
-              <a href="https://app.smartsuite.com/form/sba974gi/Zx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="hover:underline">
-                Custom Development
-              </a>
+            <nav className="flex items-center gap-6">
+              <div className="hidden md:flex gap-6">
+                <Link to="/" className="hover:underline">Home</Link>
+                <Link to="/projects" className="hover:underline">Projects</Link>
+                <Link to="/leadfortress" className="hover:underline">LeadFortress</Link>
+              </div>
+              <SignedIn>
+                <UserButton afterSignOutUrl="/" />
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="bg-white text-purple-600 px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition">
+                    Sign In
+                  </button>
+                </SignInButton>
+              </SignedOut>
             </nav>
           </div>
         </header>
@@ -140,6 +154,7 @@ function App() {
         {/* Routes */}
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
           
           {/* Cable Sizing - new URL + old redirect */}
           <Route path="/cable-sizing-calculator" element={<CableSizingCalculatorPage />} />
@@ -212,7 +227,6 @@ function App() {
           <Route path="/calculators/insulation-calculator/room-in-roof" element={<RoomInRoof />} />
           <Route path="/calculators/insulation-calculator/flat-roof" element={<FlatRoof />} />
           <Route path="/calculators/insulation-calculator/new-build-walls" element={<NewBuildWalls />} />
-          <Route path="/calculators/cable-sizing/ev-charger-cable-sizing" element={<EVChargerCableSizing />} />
           <Route path="/calculators/cable-sizing/ev-charger-cable-sizing" element={<EVChargerCableSizing />} />
           <Route path="/calculators/cable-sizing/electric-shower-cable-sizing" element={<ElectricShowerCableSizing />} />
           <Route path="/calculators/cable-sizing/cooker-circuit-cable-sizing" element={<CookerCircuitCableSizing />} />
@@ -292,7 +306,6 @@ function App() {
 }
 
 export default App
-
 
 
 
