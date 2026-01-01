@@ -20,6 +20,7 @@ import { api } from '../lib/api';
 import Button from '../components/ui/Button';
 import AddMaterialModal from '../components/projects/AddMaterialModal';
 import SendToWholesalerModal from '../components/projects/SendToWholesalerModal';
+import CustomerQuoteModal from '../components/projects/CustomerQuoteModal';
 
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -30,6 +31,7 @@ export default function ProjectDetailPage() {
   const [deleting, setDeleting] = useState(false);
   const [showAddMaterial, setShowAddMaterial] = useState(false);
   const [showSendToWholesaler, setShowSendToWholesaler] = useState(false);
+  const [showCustomerQuote, setShowCustomerQuote] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -280,10 +282,14 @@ export default function ProjectDetailPage() {
       <Send className="w-4 h-4 mr-2" />
       Send to Wholesaler
     </Button>
-    <Button variant="secondary" disabled={project.materialItems?.length === 0}>
-      <FileText className="w-4 h-4 mr-2" />
-      Create Customer Quote
-    </Button>
+    <Button 
+  variant="secondary" 
+  disabled={project.materialItems?.length === 0}
+  onClick={() => setShowCustomerQuote(true)}
+>
+  <FileText className="w-4 h-4 mr-2" />
+  Create Customer Quote
+</Button>
   </div>
   {project.wholesalerQuotes?.length > 0 && (
     <div className="mt-4 pt-4 border-t">
@@ -394,6 +400,20 @@ export default function ProjectDetailPage() {
     setProject((prev: any) => ({
       ...prev,
       wholesalerQuotes: [...(prev.wholesalerQuotes || []), quote],
+    }));
+  }}
+/>
+      {/* Customer Quote Modal */}
+<CustomerQuoteModal
+  isOpen={showCustomerQuote}
+  onClose={() => setShowCustomerQuote(false)}
+  projectId={id!}
+  projectName={project.name}
+  materials={project.materialItems || []}
+  onCreated={(quote) => {
+    setProject((prev: any) => ({
+      ...prev,
+      customerQuotes: [...(prev.customerQuotes || []), quote],
     }));
   }}
 />
