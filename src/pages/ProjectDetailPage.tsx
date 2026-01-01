@@ -244,17 +244,20 @@ export default function ProjectDetailPage() {
                             £{Number(material.listPrice).toFixed(2)}
                           </span>
                         ) : null}
-                        {material.manuallyAdded && (
-                          <button
-                            onClick={() => handleDeleteMaterial(material.id)}
-                            className="opacity-0 group-hover:opacity-100 p-1 text-red-500 hover:bg-red-50 rounded transition-opacity"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        )}
-                        {!material.manuallyAdded && (
-                          <span className="text-xs text-gray-400">auto</span>
-                        )}
+                        {(!material.sourceCalcIds || material.sourceCalcIds.length === 0) ? (
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      handleDeleteMaterial(material.id);
+    }}
+    className="p-1 text-red-500 hover:bg-red-50 rounded"
+    title="Delete material"
+  >
+    <Trash2 className="w-4 h-4" />
+  </button>
+) : (
+  <span className="text-xs text-gray-400">auto</span>
+)}
                       </div>
                     </div>
                   ))}
