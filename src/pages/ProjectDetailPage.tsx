@@ -19,6 +19,7 @@ import toast from 'react-hot-toast';
 import { api } from '../lib/api';
 import Button from '../components/ui/Button';
 import AddMaterialModal from '../components/projects/AddMaterialModal';
+import SendToWholesalerModal from '../components/projects/SendToWholesalerModal';
 
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -28,6 +29,7 @@ export default function ProjectDetailPage() {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [showAddMaterial, setShowAddMaterial] = useState(false);
+  const [showSendToWholesaler, setShowSendToWholesaler] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -266,19 +268,43 @@ export default function ProjectDetailPage() {
             </div>
 
             {/* Actions Section */}
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold mb-4">Quote Actions</h2>
-              <div className="flex flex-wrap gap-3">
-                <Button variant="secondary" disabled={project.materialItems?.length === 0}>
-                  <Send className="w-4 h-4 mr-2" />
-                  Send to Wholesaler
-                </Button>
-                <Button variant="secondary" disabled={project.materialItems?.length === 0}>
-                  <FileText className="w-4 h-4 mr-2" />
-                  Create Customer Quote
-                </Button>
-              </div>
-            </div>
+            {/* Actions Section */}
+<div className="bg-white rounded-lg border border-gray-200 p-6">
+  <h2 className="text-lg font-semibold mb-4">Quote Actions</h2>
+  <div className="flex flex-wrap gap-3">
+    <Button 
+      variant="secondary" 
+      disabled={project.materialItems?.length === 0}
+      onClick={() => setShowSendToWholesaler(true)}
+    >
+      <Send className="w-4 h-4 mr-2" />
+      Send to Wholesaler
+    </Button>
+    <Button variant="secondary" disabled={project.materialItems?.length === 0}>
+      <FileText className="w-4 h-4 mr-2" />
+      Create Customer Quote
+    </Button>
+  </div>
+  {project.wholesalerQuotes?.length > 0 && (
+    <div className="mt-4 pt-4 border-t">
+      <h3 className="text-sm font-medium text-gray-700 mb-2">Sent Quotes</h3>
+      <div className="space-y-2">
+        {project.wholesalerQuotes.map((quote: any) => (
+          <div key={quote.id} className="flex items-center justify-between text-sm bg-gray-50 p-2 rounded">
+            <span>{quote.wholesalerName}</span>
+            <span className={`px-2 py-0.5 rounded text-xs ${
+              quote.status === 'priced' 
+                ? 'bg-green-100 text-green-700' 
+                : 'bg-yellow-100 text-yellow-700'
+            }`}>
+              {quote.status}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
           </div>
 
           {/* Sidebar */}
@@ -358,6 +384,19 @@ export default function ProjectDetailPage() {
         projectId={id!}
         onAdded={handleMaterialAdded}
       />
+      {/* Send to Wholesaler Modal */}
+<SendToWholesalerModal
+  isOpen={showSendToWholesaler}
+  onClose={() => setShowSendToWholesaler(false)}
+  projectId={id!}
+  projectName={project.name}
+  onSent={(quote) => {
+    setProject((prev: any) => ({
+      ...prev,
+      wholesalerQuotes: [...(prev.wholesalerQuotes || []), quote],
+    }));
+  }}
+/>
     </div>
   );
 }
