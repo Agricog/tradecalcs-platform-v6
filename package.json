@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
   "dev": "concurrently \"vite\" \"tsx watch src/api/server.ts\"",
-  "build": "prisma generate && vite build",
+  "build": "prisma generate && prisma db push && vite build",
   "start": "tsx src/api/server.ts",
   "preview": "vite preview",
   "postinstall": "prisma generate"
