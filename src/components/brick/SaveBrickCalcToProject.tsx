@@ -81,8 +81,6 @@ const calcResponse = await api.createCalculation({
   projectId,
   calcType: 'brick_calc',
   circuitName: `${results.materialName} - ${results.length}m × ${results.height}m`,
-  cableSize: results.itemsWithWaste,
-  cableType: results.unitName,
   inputs: {
     materialName: results.materialName,
     length: results.length,
