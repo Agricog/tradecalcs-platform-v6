@@ -239,8 +239,8 @@ export default function ProjectDetailPage() {
                 <div className="space-y-3">
                   {project.materialItems?.map((material: any) => {
   const qty = material.totalLength || material.quantity;
-  const totalPrice = Number(material.nettPrice) || Number(material.listPrice) || 0;
-  const unitPrice = qty > 0 && totalPrice > 0 ? totalPrice / qty : 0;
+  const unitPrice = Number(material.nettPrice) || Number(material.listPrice) || 0;
+  const totalPrice = unitPrice * qty;
   
   return (
     <div 
