@@ -141,16 +141,25 @@ export default function WholesalerQuotePage() {
         }
       }
 
-      // Update quote with discount
-      const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          discountPercent: parseFloat(formData.discountPercent) || 0,
-          notes: formData.notes || null,
-          excludedFromDiscount: Object.keys(excludeDiscount).filter(id => excludeDiscount[id]),
-        }),
-      });
+      // Build notes with excluded items info
+const excludedItems = quote?.materials.filter(m => excludeDiscount[m.id]) || [];
+let finalNotes = formData.notes || '';
+
+if (excludedItems.length > 0) {
+  const excludedList = excludedItems.map(m => m.description).join(', ');
+  const excludedNote = `\n\n⚠️ No discount applied to: ${excludedList}`;
+  finalNotes = finalNotes + excludedNote;
+}
+
+// Update quote with discount
+const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
+  method: 'PATCH',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    discountPercent: parseFloat(formData.discountPercent) || 0,
+    notes: finalNotes.trim() || null,
+  }),
+});
 
       const data = await response.json();
 
