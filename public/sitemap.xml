@@ -3,79 +3,143 @@
   <!-- Home Page -->
   <url>
     <loc>https://tradecalcs.co.uk/</loc>
-    <lastmod>2025-12-27</lastmod>
+    <lastmod>2026-01-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+
+  <!-- Projects / Quoting -->
+  <url>
+    <loc>https://tradecalcs.co.uk/projects</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <!-- Electrical Calculators Hub -->
   <url>
     <loc>https://tradecalcs.co.uk/electrical-calculators</loc>
-    <lastmod>2025-12-27</lastmod>
+    <lastmod>2026-01-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
 
   <!-- Cable Sizing Calculators Hub -->
-<url>
-  <loc>https://tradecalcs.co.uk/cable-sizing-calculators</loc>
-  <lastmod>2025-12-28</lastmod>
-  <changefreq>weekly</changefreq>
-  <priority>0.95</priority>
-</url>
+  <url>
+    <loc>https://tradecalcs.co.uk/cable-sizing-calculators</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
 
-  <!-- Calculators -->
+  <!-- Main Calculators -->
   <url>
-    <loc>https://tradecalcs.co.uk/brick-calculator</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tradecalcs.co.uk/stud-wall-calculator</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tradecalcs.co.uk/paint-calculator</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tradecalcs.co.uk/roofing-calculator</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tradecalcs.co.uk/stgo-calculator</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tradecalcs.co.uk/scaffold-calculator</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tradecalcs.co.uk/tiling-calculator</loc>
-    <lastmod>2025-11-24</lastmod>
+    <loc>https://tradecalcs.co.uk/cable-sizing-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://tradecalcs.co.uk/voltage-drop-calculator</loc>
-    <lastmod>2025-12-27</lastmod>
+    <lastmod>2026-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://tradecalcs.co.uk/plaster-calculator</loc>
-    <lastmod>2025-11-24</lastmod>
+    <loc>https://tradecalcs.co.uk/electrical-load-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/conduit-fill-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/radiator-btu-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/bsp-thread-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/roofing-insurance-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/drainage-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/concrete-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/plasterer-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/joinery-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/brick-block-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/tiling-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/paint-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Calculators in /calculators/ path -->
+  <url>
+    <loc>https://tradecalcs.co.uk/calculators/cis-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/calculators/stgo-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/calculators/scaffold-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tradecalcs.co.uk/calculators/insulation-calculator</loc>
+    <lastmod>2026-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -243,19 +307,21 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- Content Pages -->
   <url>
-  <loc>https://tradecalcs.co.uk/house-rewire-cost-uk</loc>
-  <lastmod>2025-12-28</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.9</priority>
-</url>
+    <loc>https://tradecalcs.co.uk/house-rewire-cost-uk</loc>
+    <lastmod>2025-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 
   <!-- LeadFortress -->
   <url>
     <loc>https://tradecalcs.co.uk/leadfortress</loc>
     <lastmod>2025-11-24</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
+    <priority>0.85</priority>
   </url>
 
   <!-- Other Pages -->
