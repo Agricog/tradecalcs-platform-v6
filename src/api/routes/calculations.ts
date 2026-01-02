@@ -30,8 +30,8 @@ router.post('/', validate(createCalculationSchema), async (req: Request, res: Re
       data: req.body,
     });
 
-    // Auto-extract materials if cable data present
-    if (req.body.cableType && req.body.cableSize && req.body.lengthMetres) {
+    // Auto-extract materials if cable data present (skip for brick calcs - they handle their own materials)
+if (req.body.cableType && req.body.cableSize && req.body.lengthMetres && req.body.calcType !== 'brick_calc') {
       // Check if material with same type/size exists for this project
       const existingMaterial = await prisma.materialItem.findFirst({
         where: {
