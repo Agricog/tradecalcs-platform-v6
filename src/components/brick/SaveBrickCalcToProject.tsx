@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth, SignInButton } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
 import { FolderPlus, Plus, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '../../lib/api';
@@ -22,6 +23,7 @@ interface SaveBrickCalcToProjectProps {
 
 export default function SaveBrickCalcToProject({ results }: SaveBrickCalcToProjectProps) {
   const { isSignedIn, getToken } = useAuth();
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [projects, setProjects] = useState<any[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string>('');
@@ -131,11 +133,12 @@ const materials = [
       }
 
       toast.success('Saved to project!');
-      setSaved(true);
-      setTimeout(() => {
-        setShowModal(false);
-        setSaved(false);
-      }, 1500);
+setSaved(true);
+setTimeout(() => {
+  setShowModal(false);
+  setSaved(false);
+  navigate(`/projects/${projectId}`);
+}, 1500);
 
     } catch (error) {
       toast.error('Failed to save');
