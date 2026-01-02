@@ -419,19 +419,23 @@ export default function ProjectDetailPage() {
       />
 
       {/* Customer Quote Modal */}
-      <CustomerQuoteModal
-        isOpen={showCustomerQuote}
-        onClose={() => setShowCustomerQuote(false)}
-        projectId={id!}
-        projectName={project.name}
-        materials={project.materialItems || []}
-        onCreated={(quote) => {
-          setProject((prev: any) => ({
-            ...prev,
-            customerQuotes: [...(prev.customerQuotes || []), quote],
-          }));
-        }}
-      />
+<CustomerQuoteModal
+  isOpen={showCustomerQuote}
+  onClose={() => setShowCustomerQuote(false)}
+  projectId={id!}
+  projectName={project.name}
+  projectAddress={project.address}
+  customerName={project.customerName}
+  customerEmail={project.customerEmail}
+  customerPhone={project.customerPhone}
+  materials={project.materialItems || []}
+  onCreated={(quote) => {
+    setProject((prev: any) => ({
+      ...prev,
+      customerQuotes: [...(prev.customerQuotes || []), quote],
+    }));
+  }}
+/>
 
       {/* Edit Material Price Modal */}
       {editingMaterial && (
