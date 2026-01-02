@@ -83,7 +83,6 @@ const calcResponse = await api.createCalculation({
   circuitName: `${results.materialName} - ${results.length}m × ${results.height}m`,
   cableSize: results.itemsWithWaste,
   cableType: results.unitName,
-  lengthMetres: parseFloat(results.wallArea),
   inputs: {
     materialName: results.materialName,
     length: results.length,
