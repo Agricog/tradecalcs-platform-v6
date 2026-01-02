@@ -122,37 +122,37 @@ function App() {
        <Toast />
         
         {/* Header */}
-        <header className="bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-lg">
-          <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition">
-              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                <span className="text-purple-600 font-bold text-xl">TC</span>
-              </div>
-              <div>
-                <h1 className="font-bold text-xl">TradeCalcs</h1>
-                <p className="text-xs opacity-75">Professional Trade Calculators</p>
-              </div>
-            </Link>
-            
-            <nav className="flex items-center gap-6">
-              <div className="hidden md:flex gap-6">
-                <Link to="/" className="hover:underline">Home</Link>
-                <Link to="/projects" className="hover:underline">Projects</Link>
-                <Link to="/leadfortress" className="hover:underline">LeadFortress</Link>
-              </div>
-              <SignedIn>
-                <UserButton afterSignOutUrl="/" />
-              </SignedIn>
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button className="bg-white text-purple-600 px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition">
-                    Sign In
-                  </button>
-                </SignInButton>
-              </SignedOut>
-            </nav>
-          </div>
-        </header>
+<header className="bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-lg">
+  <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition">
+      <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+        <span className="text-purple-600 font-bold text-xl">TC</span>
+      </div>
+      <div className="hidden sm:block">
+        <h1 className="font-bold text-xl">TradeCalcs</h1>
+        <p className="text-xs opacity-75">Professional Trade Calculators</p>
+      </div>
+    </Link>
+    
+    <nav className="flex items-center gap-4">
+      {/* Mobile & Desktop nav links */}
+      <Link to="/" className="hover:underline text-sm sm:text-base">Home</Link>
+      <Link to="/projects" className="hover:underline text-sm sm:text-base">Projects</Link>
+      <Link to="/leadfortress" className="hover:underline text-sm sm:text-base hidden sm:inline">LeadFortress</Link>
+      
+      <SignedIn>
+        <UserButton afterSignOutUrl="/" />
+      </SignedIn>
+      <SignedOut>
+        <SignInButton mode="modal">
+          <button className="bg-white text-purple-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium hover:bg-opacity-90 transition text-sm sm:text-base">
+            Sign In
+          </button>
+        </SignInButton>
+      </SignedOut>
+    </nav>
+  </div>
+</header>
 
         {/* Routes */}
         <Routes>
