@@ -218,7 +218,6 @@ export default function Home() {
         .twinkle { animation: twinkle 1.5s infinite; }
       `}</style>
 
-      {/* Quick Find Modal */}
       <QuickFindModal isOpen={showQuickFind} onClose={() => setShowQuickFind(false)} />
 
       <a href="https://app.smartsuite.com/forms/ba974giZx9ZVTVrwE" target="_blank" rel="noopener noreferrer" className="block bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 text-center hover:from-purple-700 hover:to-blue-700 transition">
@@ -275,76 +274,73 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-gradient-to-br from-red-50 to-orange-50 border-y-2 border-red-200">
+      {/* NEW: Quoting Workflow Section */}
+      <section className="py-16 px-4 bg-gradient-to-br from-purple-50 to-blue-50 border-y-2 border-purple-200">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <div className="inline-block bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
-              <section className="py-16 px-4 bg-gradient-to-br from-purple-50 to-blue-50 border-y-2 border-purple-200">
-  <div className="max-w-5xl mx-auto">
-    <div className="text-center mb-12">
-      <div className="inline-block bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
-        NEW FEATURE
-      </div>
-      <h2 className="text-4xl font-bold text-gray-900 mb-4">
-        Turn Calculations Into Professional Quotes
-      </h2>
-      <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-        Calculate materials, get wholesaler pricing, add labour costs, and generate<br />
-        client-ready PDF quotes — all in one workflow.
-      </p>
-    </div>
-
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-      {[
-        { step: '1', title: 'Calculate', desc: 'Run BS 7671 compliant calculations' },
-        { step: '2', title: 'Price Materials', desc: 'Send to wholesaler for live pricing' },
-        { step: '3', title: 'Add Labour', desc: 'Set day rates, markup & VAT' },
-        { step: '4', title: 'Send Quote', desc: 'Download professional PDF instantly' }
-      ].map((item, i) => (
-        <div key={i} className="bg-white rounded-lg p-6 border-2 border-purple-200 text-center">
-          <div className="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold mx-auto mb-3">
-            {item.step}
+            <div className="inline-block bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
+              NEW FEATURE
+            </div>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Turn Calculations Into Professional Quotes
+            </h2>
+            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+              Calculate materials, get wholesaler pricing, add labour costs, and generate<br />
+              client-ready PDF quotes — all in one workflow.
+            </p>
           </div>
-          <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
-          <p className="text-sm text-gray-600">{item.desc}</p>
-        </div>
-      ))}
-    </div>
 
-    <div className="bg-white rounded-xl shadow-xl p-8 border-2 border-purple-200">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Tradespeople Love It</h3>
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             {[
-              { title: 'Quotes backed by real calculations', desc: 'Not blank forms — actual BS 7671 compliant data' },
-              { title: 'Wholesaler pricing built in', desc: 'Send materials list, get prices back automatically' },
-              { title: 'Professional PDFs in seconds', desc: 'Your branding, proper layout, ready to email' },
-              { title: 'Free to start', desc: 'No subscription needed for basic quoting' }
+              { step: '1', title: 'Calculate', desc: 'Run BS 7671 compliant calculations' },
+              { step: '2', title: 'Price Materials', desc: 'Send to wholesaler for live pricing' },
+              { step: '3', title: 'Add Labour', desc: 'Set day rates, markup & VAT' },
+              { step: '4', title: 'Send Quote', desc: 'Download professional PDF instantly' }
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="font-bold text-gray-900">{item.title}</p>
-                  <p className="text-sm text-gray-600">{item.desc}</p>
+              <div key={i} className="bg-white rounded-lg p-6 border-2 border-purple-200 text-center">
+                <div className="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold mx-auto mb-3">
+                  {item.step}
                 </div>
+                <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
+                <p className="text-sm text-gray-600">{item.desc}</p>
               </div>
             ))}
           </div>
+
+          <div className="bg-white rounded-xl shadow-xl p-8 border-2 border-purple-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Tradespeople Love It</h3>
+                <div className="space-y-3">
+                  {[
+                    { title: 'Quotes backed by real calculations', desc: 'Not blank forms — actual BS 7671 compliant data' },
+                    { title: 'Wholesaler pricing built in', desc: 'Send materials list, get prices back automatically' },
+                    { title: 'Professional PDFs in seconds', desc: 'Your branding, proper layout, ready to email' },
+                    { title: 'Free to start', desc: 'No subscription needed for basic quoting' }
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-bold text-gray-900">{item.title}</p>
+                        <p className="text-sm text-gray-600">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="text-center">
+                <Link 
+                  to="/projects" 
+                  className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-bold transition"
+                >
+                  Start Your First Quote
+                </Link>
+                <p className="text-sm text-gray-600 mt-3">Free • No signup required to try</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="text-center">
-          <Link 
-            to="/projects" 
-            className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-bold transition"
-          >
-            Start Your First Quote
-          </Link>
-          <p className="text-sm text-gray-600 mt-3">Free • No signup required to try</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
       <section id="calculators" className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
@@ -443,7 +439,6 @@ export default function Home() {
             ))}
           </div>
           
-          {/* Quick Find CTA */}
           <div className="mt-12 text-center">
             <p className="text-gray-600 mb-4">Can't find what you're looking for? We have 100+ calculators!</p>
             <button 
