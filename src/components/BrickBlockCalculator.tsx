@@ -366,6 +366,9 @@ export function BrickCalculatorCore({
             </div>
             <button onClick={() => setShowQuoteGenerator(true)} className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-lg font-bold transition">Generate Free Quote</button>
           </div>
+
+          {/* Save to Project */}
+          <SaveBrickCalcToProject results={results} />
         </>
       )}
 
