@@ -32,6 +32,10 @@ export default function EditMaterialPriceModal({
   const [listPrice, setListPrice] = useState(material.listPrice?.toString() || '');
   const [nettPrice, setNettPrice] = useState(material.nettPrice?.toString() || '');
 
+  const qty = material.totalLength || material.quantity;
+  const unitLabel = material.unit === 'metres' ? 'per metre' : material.unit === 'each' ? 'each' : `per ${material.unit}`;
+  const totalPrice = (parseFloat(nettPrice) || 0) * qty;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -63,12 +67,12 @@ export default function EditMaterialPriceModal({
         <div className="bg-gray-50 rounded-lg p-3">
           <p className="font-medium text-gray-900">{material.description}</p>
           <p className="text-sm text-gray-500">
-            {material.totalLength || material.quantity} {material.unit}
+            {qty} {material.unit}
           </p>
         </div>
 
         <Input
-          label="List Price (£)"
+          label={`List Price (£) ${unitLabel}`}
           type="number"
           step="0.01"
           min="0"
@@ -78,7 +82,7 @@ export default function EditMaterialPriceModal({
         />
 
         <Input
-          label="Nett Price (£)"
+          label={`Nett Price (£) ${unitLabel}`}
           type="number"
           step="0.01"
           min="0"
@@ -87,8 +91,17 @@ export default function EditMaterialPriceModal({
           placeholder="Your price after discount"
         />
 
+        {nettPrice && parseFloat(nettPrice) > 0 && qty > 1 && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+            <div className="flex justify-between items-center">
+              <span className="text-green-800">Line Total ({qty} × £{parseFloat(nettPrice).toFixed(2)})</span>
+              <span className="font-bold text-green-700">£{totalPrice.toFixed(2)}</span>
+            </div>
+          </div>
+        )}
+
         <p className="text-xs text-gray-500">
-          Nett price is what you pay. This is used in quote calculations. List price is optional reference.
+          Nett price is what you pay {unitLabel}. This is used in quote calculations.
         </p>
 
         <div className="flex justify-end gap-3 pt-4 border-t">
