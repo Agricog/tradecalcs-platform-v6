@@ -122,17 +122,17 @@ export default function WholesalerQuotePage() {
     setSubmitting(true);
     try {
       // Update material prices (store the LINE TOTAL, not unit price)
-      for (const material of quote?.materials || []) {
-        const lineTotal = getLineTotal(material);
-        if (lineTotal > 0) {
-          await fetch(`/api/wholesaler-quotes/public/${token}/materials/${material.id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nettPrice: lineTotal }),
-          });
-        }
-      }
-
+      // Update material prices (store the UNIT PRICE)
+for (const material of quote?.materials || []) {
+  const unitPrice = parseFloat(unitPrices[material.id]) || 0;
+  if (unitPrice > 0) {
+    await fetch(`/api/wholesaler-quotes/public/${token}/materials/${material.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nettPrice: unitPrice }),
+    });
+  }
+}
       // Update quote with discount
       const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
         method: 'PATCH',
