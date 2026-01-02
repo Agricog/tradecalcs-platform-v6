@@ -52,7 +52,6 @@ export default function AddMaterialModal({ isOpen, onClose, projectId, onAdded }
     quantity: '1',
     unit: 'each',
     totalLength: '',
-    listPrice: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,7 +71,6 @@ export default function AddMaterialModal({ isOpen, onClose, projectId, onAdded }
         quantity: parseInt(formData.quantity) || 1,
         unit: formData.unit,
         totalLength: formData.totalLength ? parseFloat(formData.totalLength) : null,
-        listPrice: formData.listPrice ? parseFloat(formData.listPrice) : null,
       }, token);
 
       if (response.success) {
@@ -83,7 +81,6 @@ export default function AddMaterialModal({ isOpen, onClose, projectId, onAdded }
           quantity: '1',
           unit: 'each',
           totalLength: '',
-          listPrice: '',
         });
         onClose();
       } else {
@@ -162,15 +159,6 @@ export default function AddMaterialModal({ isOpen, onClose, projectId, onAdded }
             placeholder="Optional"
           />
         )}
-
-        <Input
-          label="List Price (£) - Optional"
-          type="number"
-          step="0.01"
-          value={formData.listPrice}
-          onChange={(e) => setFormData(prev => ({ ...prev, listPrice: e.target.value }))}
-          placeholder="Leave blank if unknown"
-        />
 
         <div className="flex justify-end gap-3 pt-4 border-t">
           <Button type="button" variant="secondary" onClick={onClose}>
