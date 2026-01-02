@@ -105,29 +105,29 @@ const calcResponse = await api.createCalculation({
       }
 
       // Add materials to project
-      const materials = [
-        {
-          projectId,
-          description: results.materialName,
-          quantity: parseInt(results.itemsWithWaste.replace(/,/g, '')),
-          unit: 'each',
-          sourceCalcIds: [calcResponse.data.id],
-        },
-        {
-          projectId,
-          description: 'Building Sand',
-          quantity: parseFloat(results.sandTonnes),
-          unit: 'tonnes',
-          sourceCalcIds: [calcResponse.data.id],
-        },
-        {
-          projectId,
-          description: 'Cement (25kg bags)',
-          quantity: results.cementBags,
-          unit: 'each',
-          sourceCalcIds: [calcResponse.data.id],
-        },
-      ];
+const materials = [
+  {
+    projectId,
+    description: results.unitName === 'bricks' ? 'Standard UK Bricks' : results.materialName,
+    quantity: parseInt(results.itemsWithWaste.replace(/,/g, '')),
+    unit: 'each',
+    sourceCalcIds: [calcResponse.data.id],
+  },
+  {
+    projectId,
+    description: 'Building Sand',
+    quantity: parseFloat(results.sandTonnes),
+    unit: 'tonnes',
+    sourceCalcIds: [calcResponse.data.id],
+  },
+  {
+    projectId,
+    description: 'Cement (25kg bags)',
+    quantity: results.cementBags,
+    unit: 'each',
+    sourceCalcIds: [calcResponse.data.id],
+  },
+];
 
       for (const material of materials) {
         await api.createMaterial(material, token);
