@@ -11,7 +11,7 @@ interface Material {
   totalLength?: number;
   unit: string;
   quantity: number;
-  price?: string;
+  unitPrice?: string;
 }
 
 interface QuoteData {
@@ -32,7 +32,7 @@ export default function WholesalerQuotePage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [materialPrices, setMaterialPrices] = useState<Record<string, string>>({});
+  const [unitPrices, setUnitPrices] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     discountPercent: '',
     notes: '',
@@ -51,12 +51,12 @@ export default function WholesalerQuotePage() {
       
       if (data.success) {
         setQuote(data.data);
-        // Initialize prices from any existing data
+        // Initialize unit prices
         const prices: Record<string, string> = {};
         data.data.materials.forEach((m: Material) => {
-          prices[m.id] = m.price || '';
+          prices[m.id] = '';
         });
-        setMaterialPrices(prices);
+        setUnitPrices(prices);
         
         if (data.data.discountPercent) {
           setFormData(prev => ({ 
@@ -78,52 +78,62 @@ export default function WholesalerQuotePage() {
     }
   };
 
-  const handlePriceChange = (materialId: string, price: string) => {
-    setMaterialPrices(prev => ({
+  const handleUnitPriceChange = (materialId: string, price: string) => {
+    setUnitPrices(prev => ({
       ...prev,
       [materialId]: price,
     }));
   };
 
-  const calculateTotal = () => {
+  const getQuantity = (material: Material) => {
+    return material.totalLength || material.quantity;
+  };
+
+  const getLineTotal = (material: Material) => {
+    const unitPrice = parseFloat(unitPrices[material.id]) || 0;
+    const qty = getQuantity(material);
+    return unitPrice * qty;
+  };
+
+  const calculateSubtotal = () => {
     let total = 0;
-    Object.values(materialPrices).forEach(price => {
-      total += parseFloat(price) || 0;
+    quote?.materials.forEach(material => {
+      total += getLineTotal(material);
     });
     return total;
   };
 
   const calculateDiscountedTotal = () => {
-    const total = calculateTotal();
+    const subtotal = calculateSubtotal();
     const discount = parseFloat(formData.discountPercent) || 0;
-    return total * (1 - discount / 100);
+    return subtotal * (1 - discount / 100);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Check all materials have prices
-    const unpricedItems = quote?.materials.filter(m => !materialPrices[m.id] || materialPrices[m.id] === '');
+    const unpricedItems = quote?.materials.filter(m => !unitPrices[m.id] || unitPrices[m.id] === '');
     if (unpricedItems && unpricedItems.length > 0) {
-      toast.error(`Please enter prices for all ${unpricedItems.length} items`);
+      toast.error(`Please enter unit prices for all ${unpricedItems.length} items`);
       return;
     }
 
     setSubmitting(true);
     try {
-      // First update material prices
+      // Update material prices (store the LINE TOTAL, not unit price)
       for (const material of quote?.materials || []) {
-        const price = materialPrices[material.id];
-        if (price) {
+        const lineTotal = getLineTotal(material);
+        if (lineTotal > 0) {
           await fetch(`/api/wholesaler-quotes/public/${token}/materials/${material.id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nettPrice: parseFloat(price) }),
+            body: JSON.stringify({ nettPrice: lineTotal }),
           });
         }
       }
 
-      // Then update quote with discount
+      // Update quote with discount
       const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -224,41 +234,62 @@ export default function WholesalerQuotePage() {
               <div className="p-4 border-b">
                 <h2 className="text-lg font-semibold flex items-center gap-2">
                   <Package className="w-5 h-5 text-purple-600" />
-                  Materials - Enter Your Prices
+                  Materials - Enter Unit Prices
                 </h2>
-                <p className="text-sm text-gray-500 mt-1">Enter the price for each item below</p>
+                <p className="text-sm text-gray-500 mt-1">Enter your price per unit - totals calculate automatically</p>
               </div>
+              
+              {/* Table Header */}
+              <div className="grid grid-cols-12 gap-2 px-4 py-2 bg-gray-50 border-b text-sm font-medium text-gray-600">
+                <div className="col-span-5">Item</div>
+                <div className="col-span-2 text-center">Qty</div>
+                <div className="col-span-2 text-center">Unit Price</div>
+                <div className="col-span-3 text-right">Line Total</div>
+              </div>
+
               <div className="divide-y">
-                {quote.materials.map((material, index) => (
-                  <div key={material.id} className="p-4 flex items-center justify-between gap-4">
-                    <div className="flex-1">
-                      <span className="text-gray-400 text-sm mr-3">{index + 1}.</span>
-                      <span className="font-medium">{material.description}</span>
-                      <p className="text-sm text-gray-500 ml-7">
-                        {material.totalLength || material.quantity} {material.unit}
-                      </p>
-                    </div>
-                    <div className="w-32">
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">£</span>
-                        <input
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          placeholder="0.00"
-                          value={materialPrices[material.id] || ''}
-                          onChange={(e) => handlePriceChange(material.id, e.target.value)}
-                          className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-right"
-                        />
+                {quote.materials.map((material, index) => {
+                  const qty = getQuantity(material);
+                  const lineTotal = getLineTotal(material);
+                  
+                  return (
+                    <div key={material.id} className="grid grid-cols-12 gap-2 px-4 py-3 items-center">
+                      <div className="col-span-5">
+                        <span className="text-gray-400 text-sm mr-2">{index + 1}.</span>
+                        <span className="font-medium">{material.description}</span>
+                      </div>
+                      <div className="col-span-2 text-center">
+                        <span className="font-semibold">{qty}</span>
+                        <span className="text-gray-500 text-sm ml-1">{material.unit}</span>
+                      </div>
+                      <div className="col-span-2">
+                        <div className="relative">
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm">£</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            placeholder="0.00"
+                            value={unitPrices[material.id] || ''}
+                            onChange={(e) => handleUnitPriceChange(material.id, e.target.value)}
+                            className="w-full pl-6 pr-2 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 text-right text-sm"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-span-3 text-right">
+                        <span className={`font-semibold ${lineTotal > 0 ? 'text-green-600' : 'text-gray-400'}`}>
+                          £{lineTotal.toFixed(2)}
+                        </span>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
+              
               <div className="p-4 bg-gray-50 border-t">
                 <div className="flex justify-between items-center">
                   <span className="font-medium text-gray-700">Subtotal</span>
-                  <span className="text-lg font-semibold">£{calculateTotal().toFixed(2)}</span>
+                  <span className="text-xl font-bold">£{calculateSubtotal().toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -284,10 +315,18 @@ export default function WholesalerQuotePage() {
                 </div>
 
                 {formData.discountPercent && parseFloat(formData.discountPercent) > 0 && (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-green-800">Total after {formData.discountPercent}% discount</span>
-                      <span className="text-xl font-bold text-green-700">£{calculateDiscountedTotal().toFixed(2)}</span>
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-green-800">Subtotal</span>
+                      <span className="text-green-700">£{calculateSubtotal().toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-green-800">Discount ({formData.discountPercent}%)</span>
+                      <span className="text-green-700">-£{(calculateSubtotal() * (parseFloat(formData.discountPercent) / 100)).toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between items-center pt-2 border-t border-green-200">
+                      <span className="font-semibold text-green-900">Total after discount</span>
+                      <span className="text-2xl font-bold text-green-700">£{calculateDiscountedTotal().toFixed(2)}</span>
                     </div>
                   </div>
                 )}
