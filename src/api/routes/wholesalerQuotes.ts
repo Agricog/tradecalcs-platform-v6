@@ -78,6 +78,61 @@ router.post('/', requireAuth, rateLimit('auth'), validate(createWholesalerQuoteS
   }
 });
 
+// PATCH /api/wholesaler-quotes/public/:token/materials/:materialId - Update material price (no auth)
+router.patch('/public/:token/materials/:materialId', rateLimit('public'), async (req: Request, res: Response) => {
+  try {
+    const quote = await prisma.wholesalerQuote.findFirst({
+      where: { token: req.params.token },
+      include: { project: true },
+    });
+
+    if (!quote) {
+      return res.status(404).json({
+        success: false,
+        error: { code: 'NOT_FOUND', message: 'Quote not found' },
+      });
+    }
+
+    if (quote.expiresAt && new Date() > quote.expiresAt) {
+      return res.status(410).json({
+        success: false,
+        error: { code: 'EXPIRED', message: 'This quote request has expired' },
+      });
+    }
+
+    // Verify material belongs to this project
+    const material = await prisma.materialItem.findFirst({
+      where: { 
+        id: req.params.materialId,
+        projectId: quote.projectId,
+      },
+    });
+
+    if (!material) {
+      return res.status(404).json({
+        success: false,
+        error: { code: 'NOT_FOUND', message: 'Material not found' },
+      });
+    }
+
+    // Update the material price
+    const updated = await prisma.materialItem.update({
+      where: { id: req.params.materialId },
+      data: {
+        nettPrice: req.body.nettPrice,
+      },
+    });
+
+    res.json({ success: true, data: updated });
+  } catch (error) {
+    console.error('Error updating material price:', error);
+    res.status(500).json({
+      success: false,
+      error: { code: 'SERVER_ERROR', message: 'Failed to update price' },
+    });
+  }
+});
+
 // GET /api/wholesaler-quotes/public/:token - Public page for wholesaler (no auth)
 router.get('/public/:token', rateLimit('public'), async (req: Request, res: Response) => {
   try {
