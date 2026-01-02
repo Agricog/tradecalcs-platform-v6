@@ -77,26 +77,26 @@ export default function SaveBrickCalcToProject({ results }: SaveBrickCalcToProje
       }
 
       // Save the calculation
-      const calcResponse = await api.createCalculation({
-        projectId,
-        calcType: 'brick_calc',
-        circuitName: `${results.materialName} - ${results.length}m × ${results.height}m`,
-        cableSize: results.itemsWithWaste,
-        cableType: results.unitName,
-        lengthMetres: parseFloat(results.wallArea),
-        inputParameters: {
-          materialName: results.materialName,
-          length: results.length,
-          height: results.height,
-          wallArea: results.wallArea,
-          wasteFactor: results.wasteFactor,
-        },
-        results: {
-          itemsWithWaste: results.itemsWithWaste,
-          sandTonnes: results.sandTonnes,
-          cementBags: results.cementBags,
-        },
-      }, token);
+const calcResponse = await api.createCalculation({
+  projectId,
+  calcType: 'brick_calc',
+  circuitName: `${results.materialName} - ${results.length}m × ${results.height}m`,
+  cableSize: results.itemsWithWaste,
+  cableType: results.unitName,
+  lengthMetres: parseFloat(results.wallArea),
+  inputs: {
+    materialName: results.materialName,
+    length: results.length,
+    height: results.height,
+    wallArea: results.wallArea,
+    wasteFactor: results.wasteFactor,
+  },
+  outputs: {
+    itemsWithWaste: results.itemsWithWaste,
+    sandTonnes: results.sandTonnes,
+    cementBags: results.cementBags,
+  },
+}, token);
 
       if (!calcResponse.success) {
         toast.error('Failed to save calculation');
