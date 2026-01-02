@@ -5,6 +5,7 @@ import { requireAuth } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import { rateLimit } from '../middleware/rateLimit';
 import { createWholesalerQuoteSchema, updateWholesalerQuoteSchema } from '../../schemas/quote';
+import { sendWholesalerQuoteEmail, sendQuotePricedNotification } from '../services/email';
 
 const router = Router();
 
@@ -39,18 +40,27 @@ router.post('/', requireAuth, rateLimit('auth'), validate(createWholesalerQuoteS
         projectId: req.body.projectId,
         token,
         wholesalerName: req.body.wholesalerName,
-        wholesalerEmail: req.body.wholesalerEmail,
-        accountNumber: req.body.accountNumber,
+        wholesalerEmail: req.body.wholesalerEmail || null,
+        accountNumber: req.body.accountNumber || null,
         status: 'sent',
         sentAt: new Date(),
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       },
     });
 
-    // TODO: Send email to wholesaler via Resend
-    // For now, just return the quote with the URL
-
     const quoteUrl = `${process.env.APP_URL}/quote/${token}`;
+
+    // Send email if wholesaler email provided
+    if (req.body.wholesalerEmail) {
+      await sendWholesalerQuoteEmail({
+        to: req.body.wholesalerEmail,
+        wholesalerName: req.body.wholesalerName,
+        projectName: project.name,
+        accountNumber: req.body.accountNumber || undefined,
+        quoteUrl,
+        materialCount: project.materialItems.length,
+      });
+    }
 
     res.status(201).json({ 
       success: true, 
@@ -130,6 +140,9 @@ router.patch('/public/:token', rateLimit('public'), validate(updateWholesalerQuo
   try {
     const quote = await prisma.wholesalerQuote.findFirst({
       where: { token: req.params.token },
+      include: {
+        project: true,
+      },
     });
 
     if (!quote) {
@@ -157,7 +170,21 @@ router.patch('/public/:token', rateLimit('public'), validate(updateWholesalerQuo
       },
     });
 
-    // TODO: Send email notification to electrician via Resend
+    // Get the electrician's email to notify them
+    // For now we'll use the project's customer email or skip if not available
+    // In future, we'd store the electrician's email from Clerk
+    if (quote.project.customerEmail) {
+      const projectUrl = `${process.env.APP_URL}/projects/${quote.projectId}`;
+      
+      await sendQuotePricedNotification({
+        to: quote.project.customerEmail,
+        electricianName: quote.project.customerName || '',
+        wholesalerName: quote.wholesalerName,
+        projectName: quote.project.name,
+        discountPercent: req.body.discountPercent,
+        projectUrl,
+      });
+    }
 
     res.json({ success: true, data: updated });
   } catch (error) {
