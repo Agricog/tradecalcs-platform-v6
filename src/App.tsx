@@ -8,6 +8,7 @@ import Homepage from './pages/Home'
 import ProjectsPage from './pages/ProjectsPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
 import WholesalerQuotePage from './pages/WholesalerQuotePage'
+import QuotePreviewPage from './pages/QuotePreviewPage'
 import CableSizingCalculatorPage from './pages/CableSizingCalculatorPage'
 import VoltageDropCalculatorPage from './pages/VoltageDropCalculatorPage'
 import BSPThreadIdentifierPage from './pages/BSPThreadIdentifierPage'
@@ -159,6 +160,7 @@ function App() {
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/:id" element={<ProjectDetailPage />} />
           <Route path="/quote/:token" element={<WholesalerQuotePage />} />
+          <Route path="/quote/preview/:quoteId" element={<QuotePreviewPage />} />
           
           {/* Cable Sizing - new URL + old redirect */}
           <Route path="/cable-sizing-calculator" element={<CableSizingCalculatorPage />} />
