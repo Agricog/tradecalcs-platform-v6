@@ -4,8 +4,9 @@ import {
   Phone, Mail, MessageSquare, Droplets, Flame, Circle, Activity, Search
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import QuickFindModal from '../components/QuickFindModal';
+import { SEOHead } from '../components/layout';
 
 const colorMap = {
   blue: '#3b82f6',
@@ -38,178 +39,94 @@ const getCalcColorClasses = (color: string) => {
   return 'text-blue-600';
 };
 
+const faqs = [
+  {
+    q: 'What trade calculators do you offer?',
+    a: 'We offer 100+ professional calculators for electricians, plumbers, builders, painters, plasterers, joiners, bricklayers, tilers, roofers, scaffolders and more. All calculators are free to use and BS 7671 compliant where applicable.'
+  },
+  {
+    q: 'Are TradeCalcs calculators BS 7671 compliant?',
+    a: 'Yes. Our electrical calculators (cable sizing, voltage drop) are fully compliant with BS 7671 British Standards for electrical installation. All calculations include current derating factors and regulations.'
+  },
+  {
+    q: 'Do I need to sign up to use the calculators?',
+    a: 'No signup required. All calculators are completely free and instantly accessible. No registration, no hidden costs, no premium tiers.'
+  },
+  {
+    q: 'Can I use TradeCalcs on my mobile phone?',
+    a: 'Yes. All TradeCalcs calculators are fully responsive and mobile-friendly. Use them on your phone, tablet or desktop - perfect for on-site calculations.'
+  },
+  {
+    q: 'Do you offer custom calculators for my trade?',
+    a: 'Yes. We build custom web applications and calculators for trade businesses. Contact us to discuss your specific needs and requirements.'
+  },
+  {
+    q: 'Can I generate professional quotes from calculations?',
+    a: 'Yes. Our new quoting workflow lets you turn any calculation into a professional PDF quote. Add materials, get wholesaler pricing, set labour rates and markup, then download or email directly to customers.'
+  }
+];
+
 export default function Home() {
   const [showQuickFind, setShowQuickFind] = useState(false);
 
-  useEffect(() => {
-    document.title = 'TradeCalcs - Free Professional Trade Calculators for UK Tradespeople';
-
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Free professional trade calculators for electricians, plumbers, builders, painters & more. BS 7671 compliant, mobile-ready. Cable sizing, voltage drop, concrete, paint & 100+ more calculators.');
-    }
-
-    const metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (metaKeywords) {
-      metaKeywords.setAttribute('content', 'trade calculators, electrician calculator, plumber calculator, builder calculator, cable sizing, voltage drop, BS 7671, professional calculators, UK trades');
-    }
-
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.setAttribute('content', 'TradeCalcs - Professional Trade Calculators for UK Tradespeople');
-
-    const ogDesc = document.querySelector('meta[property="og:description"]');
-    if (ogDesc) ogDesc.setAttribute('content', 'Fast, accurate, BS 7671 compliant calculators for electricians, plumbers, builders, painters and all UK trades. Free to use, no signup required.');
-
-    const ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) ogUrl.setAttribute('content', window.location.href);
-
-    const ogImage = document.querySelector('meta[property="og:image"]');
-    if (ogImage) ogImage.setAttribute('content', 'https://tradecalcs.co.uk/og-image.jpg');
-
-    const ogType = document.querySelector('meta[property="og:type"]');
-    if (ogType) ogType.setAttribute('content', 'website');
-
-    const twitterCard = document.querySelector('meta[name="twitter:card"]');
-    if (twitterCard) twitterCard.setAttribute('content', 'summary_large_image');
-
-    const twitterTitle = document.querySelector('meta[name="twitter:title"]');
-    if (twitterTitle) twitterTitle.setAttribute('content', 'TradeCalcs - Professional Trade Calculators');
-
-    const twitterDesc = document.querySelector('meta[name="twitter:description"]');
-    if (twitterDesc) twitterDesc.setAttribute('content', 'Free calculators for electricians, plumbers, builders, painters & all UK trades. BS 7671 compliant, mobile-ready.');
-
-    const canonicalLink = document.querySelector('link[rel="canonical"]');
-    if (canonicalLink) {
-      canonicalLink.setAttribute('href', 'https://tradecalcs.co.uk');
-    }
-
-    const schemaScript = document.createElement('script');
-    schemaScript.type = 'application/ld+json';
-    schemaScript.innerHTML = JSON.stringify({
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'Organization',
-          name: 'TradeCalcs',
-          url: 'https://tradecalcs.co.uk',
-          logo: 'https://tradecalcs.co.uk/logo.png',
-          description: 'Professional trade calculators for UK tradespeople',
-          sameAs: [
-            'https://twitter.com/tradecalcs',
-            'https://facebook.com/tradecalcs',
-            'https://linkedin.com/company/tradecalcs'
-          ],
-          contactPoint: {
-            '@type': 'ContactPoint',
-            contactType: 'Customer Support',
-            email: 'support@tradecalcs.co.uk'
-          }
-        },
-        {
-          '@type': 'WebSite',
-          url: 'https://tradecalcs.co.uk',
-          name: 'TradeCalcs',
-          description: 'Free professional trade calculators for UK tradespeople',
-          potentialAction: {
-            '@type': 'SearchAction',
-            target: {
-              '@type': 'EntryPoint',
-              urlTemplate: 'https://tradecalcs.co.uk?q={search_term_string}'
-            },
-            'query-input': 'required name=search_term_string'
-          }
-        },
-        {
-          '@type': 'BreadcrumbList',
-          itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://tradecalcs.co.uk' },
-            { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://tradecalcs.co.uk/calculators' }
-          ]
-        },
-        {
-          '@type': 'FAQPage',
-          mainEntity: [
-            {
-              '@type': 'Question',
-              name: 'What trade calculators do you offer?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'We offer 100+ professional calculators for electricians, plumbers, builders, painters, plasterers, joiners, bricklayers, tilers, roofers, scaffolders and more. All calculators are free to use and BS 7671 compliant where applicable.'
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'Are TradeCalcs calculators BS 7671 compliant?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes. Our electrical calculators (cable sizing, voltage drop) are fully compliant with BS 7671 British Standards for electrical installation. All calculations include current derating factors and regulations.'
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'Do I need to sign up to use the calculators?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'No signup required. All calculators are completely free and instantly accessible. No registration, no hidden costs, no premium tiers.'
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'Can I use TradeCalcs on my mobile phone?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes. All TradeCalcs calculators are fully responsive and mobile-friendly. Use them on your phone, tablet or desktop - perfect for on-site calculations.'
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'Do you offer custom calculators for my trade?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes. We build custom web applications and calculators for trade businesses. Contact us to discuss your specific needs and requirements.'
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'What is LeadFortress?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'LeadFortress is our lead capture and CRM system designed for UK trades. It captures all leads (phone, SMS, WhatsApp, email, web forms) automatically and logs them in one place so you never miss another customer.'
-              }
-            }
-          ]
-        },
-        {
-          '@type': 'LocalBusiness',
-          name: 'TradeCalcs',
-          image: 'https://tradecalcs.co.uk/logo.png',
-          description: 'Professional trade calculators for UK tradespeople',
-          url: 'https://tradecalcs.co.uk',
-          telephone: '+44-xxx-xxx-xxxx',
-          email: 'support@tradecalcs.co.uk',
-          areaServed: 'GB',
-          priceRange: 'Free - £15,000'
-        }
-      ]
-    });
-    document.head.appendChild(schemaScript);
-
-    const robotsMeta = document.querySelector('meta[name="robots"]');
-    if (robotsMeta) {
-      robotsMeta.setAttribute('content', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
-    }
-
-    const viewportMeta = document.querySelector('meta[name="viewport"]');
-    if (!viewportMeta) {
-      const newViewport = document.createElement('meta');
-      newViewport.name = 'viewport';
-      newViewport.content = 'width=device-width, initial-scale=1.0';
-      document.head.appendChild(newViewport);
-    }
-  }, []);
-
   return (
     <>
+      <SEOHead
+        title="TradeCalcs - Free Professional Trade Calculators for UK Tradespeople"
+        description="Free professional trade calculators for electricians, plumbers, builders, painters & more. BS 7671 compliant, mobile-ready. Cable sizing, voltage drop, concrete, paint & 100+ more calculators."
+        keywords="trade calculators, electrician calculator, plumber calculator, builder calculator, cable sizing, voltage drop, BS 7671, professional calculators, UK trades, free trade tools"
+        canonicalUrl="/"
+        breadcrumbs={[
+          { name: 'Home', url: '/' }
+        ]}
+        faqs={faqs}
+        additionalSchema={[
+          {
+            '@type': 'Organization',
+            name: 'TradeCalcs',
+            url: 'https://tradecalcs.co.uk',
+            logo: 'https://tradecalcs.co.uk/logo.png',
+            description: 'Professional trade calculators for UK tradespeople',
+            sameAs: [
+              'https://twitter.com/tradecalcs',
+              'https://facebook.com/tradecalcs',
+              'https://linkedin.com/company/tradecalcs'
+            ],
+            contactPoint: {
+              '@type': 'ContactPoint',
+              contactType: 'Customer Support',
+              email: 'support@tradecalcs.co.uk',
+              telephone: '+44-7985-559775'
+            }
+          },
+          {
+            '@type': 'WebSite',
+            url: 'https://tradecalcs.co.uk',
+            name: 'TradeCalcs',
+            description: 'Free professional trade calculators for UK tradespeople',
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: {
+                '@type': 'EntryPoint',
+                urlTemplate: 'https://tradecalcs.co.uk?q={search_term_string}'
+              },
+              'query-input': 'required name=search_term_string'
+            }
+          },
+          {
+            '@type': 'LocalBusiness',
+            name: 'TradeCalcs',
+            image: 'https://tradecalcs.co.uk/logo.png',
+            description: 'Professional trade calculators for UK tradespeople',
+            url: 'https://tradecalcs.co.uk',
+            telephone: '+44-7985-559775',
+            email: 'mick@tradecalcs.co.uk',
+            areaServed: 'GB',
+            priceRange: 'Free - £15,000'
+          }
+        ]}
+      />
+
       <style>{`
         @keyframes twinkle {
           0%, 100% { opacity: 1; }
@@ -274,7 +191,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* NEW: Quoting Workflow Section */}
       <section className="py-16 px-4 bg-gradient-to-br from-purple-50 to-blue-50 border-y-2 border-purple-200">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
@@ -594,7 +510,6 @@ export default function Home() {
     </>
   );
 }
-
 
 
 
