@@ -11,6 +11,13 @@ interface QuoteData {
     customerEmail?: string;
     customerPhone?: string;
   };
+  company?: {
+    name: string;
+    address?: string;
+    phone?: string;
+    email?: string;
+    logo?: string; // base64 image
+  };
   labourItems: Array<{
     description: string;
     total: number;
@@ -36,204 +43,260 @@ export function generateQuotePDF(quote: QuoteData): jsPDF {
   const margin = 20;
   let y = 20;
 
-  // Helper functions
-  const addText = (text: string, x: number, yPos: number, options?: any) => {
-    doc.text(text, x, yPos, options);
-  };
+  // Colors
+  const purple = [107, 33, 168];
+  const darkGray = [50, 50, 50];
+  const mediumGray = [100, 100, 100];
+  const lightGray = [150, 150, 150];
 
-  const drawLine = (yPos: number) => {
-    doc.setDrawColor(200, 200, 200);
-    doc.line(margin, yPos, pageWidth - margin, yPos);
-  };
-
-  // Header
-  doc.setFontSize(24);
+  // Header - QUOTE title
+  doc.setFontSize(32);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(107, 33, 168); // Purple
-  addText('QUOTE', margin, y);
+  doc.setTextColor(purple[0], purple[1], purple[2]);
+  doc.text('QUOTE', margin, y);
   
-  doc.setFontSize(10);
+  // Quote number below title
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100, 100, 100);
-  addText(quote.quoteNumber, margin, y + 8);
+  doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
+  doc.text(quote.quoteNumber, margin, y + 10);
 
-  // Company placeholder (right side)
-  doc.setFontSize(12);
+  // Company details (right side)
+  const companyName = quote.company?.name || 'Your Company Name';
+  const companyAddress = quote.company?.address || 'Your Address';
+  const companyPhone = quote.company?.phone || 'Your Phone';
+  const companyEmail = quote.company?.email || 'your@email.com';
+
+  doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(50, 50, 50);
-  addText('Your Company Name', pageWidth - margin, y, { align: 'right' });
+  doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+  doc.text(companyName, pageWidth - margin, y, { align: 'right' });
+  
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100, 100, 100);
-  addText('your@email.com', pageWidth - margin, y + 6, { align: 'right' });
-  addText('07700 900000', pageWidth - margin, y + 11, { align: 'right' });
-
-  y += 30;
-  drawLine(y);
-  y += 15;
-
-  // Quote details
-  doc.setFontSize(10);
-  doc.setTextColor(100, 100, 100);
-  addText('Date:', margin, y);
-  addText('Valid Until:', margin, y + 6);
+  doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
   
-  doc.setTextColor(50, 50, 50);
-  const createdDate = new Date(quote.createdAt).toLocaleDateString('en-GB');
-  const validDate = new Date(Date.now() + quote.validDays * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB');
-  addText(createdDate, margin + 25, y);
-  addText(validDate, margin + 25, y + 6);
-
-  // Customer details (right side)
-  doc.setTextColor(100, 100, 100);
-  addText('Quote For:', pageWidth - margin - 60, y);
-  doc.setTextColor(50, 50, 50);
-  doc.setFont('helvetica', 'bold');
-  addText(quote.project.customerName || 'Customer', pageWidth - margin, y, { align: 'right' });
-  doc.setFont('helvetica', 'normal');
-  
-  let customerY = y + 6;
-  if (quote.project.address) {
-    const addressLines = doc.splitTextToSize(quote.project.address, 60);
+  let companyY = y + 6;
+  if (companyAddress) {
+    const addressLines = doc.splitTextToSize(companyAddress, 70);
     addressLines.forEach((line: string) => {
-      addText(line, pageWidth - margin, customerY, { align: 'right' });
-      customerY += 5;
+      doc.text(line, pageWidth - margin, companyY, { align: 'right' });
+      companyY += 4;
     });
   }
-  if (quote.project.customerEmail) {
-    addText(quote.project.customerEmail, pageWidth - margin, customerY, { align: 'right' });
-    customerY += 5;
+  doc.text(companyPhone, pageWidth - margin, companyY, { align: 'right' });
+  companyY += 4;
+  doc.text(companyEmail, pageWidth - margin, companyY, { align: 'right' });
+
+  y += 35;
+
+  // Divider line
+  doc.setDrawColor(220, 220, 220);
+  doc.setLineWidth(0.5);
+  doc.line(margin, y, pageWidth - margin, y);
+  y += 15;
+
+  // Two column layout: Quote details (left) and Customer details (right)
+  
+  // Left column - Quote details
+  doc.setFontSize(10);
+  doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
+  doc.text('Date:', margin, y);
+  doc.text('Valid Until:', margin, y + 7);
+  doc.text('Project:', margin, y + 14);
+  
+  doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+  const createdDate = new Date(quote.createdAt).toLocaleDateString('en-GB', { 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric' 
+  });
+  const validDate = new Date(Date.now() + quote.validDays * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long', 
+    year: 'numeric'
+  });
+  doc.text(createdDate, margin + 25, y);
+  doc.text(validDate, margin + 25, y + 7);
+  doc.text(quote.project.name, margin + 25, y + 14);
+
+  // Right column - Customer details box
+  const boxX = pageWidth - margin - 80;
+  const boxWidth = 80;
+  
+  doc.setFillColor(249, 250, 251);
+  doc.setDrawColor(229, 231, 235);
+  doc.roundedRect(boxX, y - 5, boxWidth, 45, 3, 3, 'FD');
+  
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(purple[0], purple[1], purple[2]);
+  doc.text('QUOTE FOR', boxX + 5, y + 2);
+  
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+  doc.text(quote.project.customerName || 'Customer', boxX + 5, y + 10);
+  
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
+  
+  let customerY = y + 16;
+  if (quote.project.address) {
+    const addressLines = doc.splitTextToSize(quote.project.address, boxWidth - 10);
+    addressLines.forEach((line: string) => {
+      doc.text(line, boxX + 5, customerY);
+      customerY += 4;
+    });
   }
   if (quote.project.customerPhone) {
-    addText(quote.project.customerPhone, pageWidth - margin, customerY, { align: 'right' });
+    doc.text(quote.project.customerPhone, boxX + 5, customerY);
+    customerY += 4;
+  }
+  if (quote.project.customerEmail) {
+    doc.text(quote.project.customerEmail, boxX + 5, customerY);
   }
 
-  y += 25;
-  
-  // Project name
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(50, 50, 50);
-  addText('Project: ' + quote.project.name, margin, y);
-  
-  y += 15;
-  drawLine(y);
-  y += 10;
+  y += 55;
 
   // Table header
-  doc.setFillColor(245, 245, 245);
-  doc.rect(margin, y - 5, pageWidth - margin * 2, 10, 'F');
+  doc.setFillColor(107, 33, 168);
+  doc.rect(margin, y, pageWidth - margin * 2, 10, 'F');
   
   doc.setFontSize(10);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(80, 80, 80);
-  addText('Description', margin + 5, y);
-  addText('Amount', pageWidth - margin - 5, y, { align: 'right' });
+  doc.setTextColor(255, 255, 255);
+  doc.text('Description', margin + 5, y + 7);
+  doc.text('Amount', pageWidth - margin - 5, y + 7, { align: 'right' });
   
+  y += 15;
+
+  // Table rows
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+  
+  // Materials row
+  doc.setFillColor(249, 250, 251);
+  doc.rect(margin, y - 5, pageWidth - margin * 2, 10, 'F');
+  doc.text('Materials', margin + 5, y + 2);
+  doc.text('£' + quote.materialsTotal.toFixed(2), pageWidth - margin - 5, y + 2, { align: 'right' });
   y += 12;
 
-  // Materials line
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(50, 50, 50);
-  addText('Materials', margin + 5, y);
-  addText('£' + quote.materialsTotal.toFixed(2), pageWidth - margin - 5, y, { align: 'right' });
-  y += 8;
-
   // Labour items
+  let isAlternate = false;
   quote.labourItems.forEach(item => {
-    addText(item.description, margin + 5, y);
-    addText('£' + Number(item.total).toFixed(2), pageWidth - margin - 5, y, { align: 'right' });
-    y += 8;
+    if (isAlternate) {
+      doc.setFillColor(249, 250, 251);
+      doc.rect(margin, y - 5, pageWidth - margin * 2, 10, 'F');
+    }
+    doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+    doc.text(item.description, margin + 5, y + 2);
+    doc.text('£' + Number(item.total).toFixed(2), pageWidth - margin - 5, y + 2, { align: 'right' });
+    y += 12;
+    isAlternate = !isAlternate;
   });
 
   y += 5;
-  drawLine(y);
-  y += 10;
 
-  // Totals section
-  const totalsX = pageWidth - margin - 80;
+  // Totals section - right aligned
+  const totalsX = pageWidth - margin - 90;
+  const valuesX = pageWidth - margin - 5;
   
-  doc.setTextColor(100, 100, 100);
-  addText('Subtotal', totalsX, y);
-  doc.setTextColor(50, 50, 50);
-  addText('£' + quote.subtotal.toFixed(2), pageWidth - margin - 5, y, { align: 'right' });
+  // Subtotal
+  doc.setDrawColor(220, 220, 220);
+  doc.line(totalsX, y, pageWidth - margin, y);
+  y += 8;
+  
+  doc.setFontSize(10);
+  doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
+  doc.text('Subtotal', totalsX, y);
+  doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+  doc.text('£' + quote.subtotal.toFixed(2), valuesX, y, { align: 'right' });
   y += 7;
 
   if (quote.markupAmount > 0) {
-    doc.setTextColor(100, 100, 100);
-    addText('Professional Services', totalsX, y);
-    doc.setTextColor(50, 50, 50);
-    addText('£' + quote.markupAmount.toFixed(2), pageWidth - margin - 5, y, { align: 'right' });
+    doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
+    doc.text('Professional Services', totalsX, y);
+    doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+    doc.text('£' + quote.markupAmount.toFixed(2), valuesX, y, { align: 'right' });
     y += 7;
   }
 
   if (quote.contingencyAmount > 0) {
-    doc.setTextColor(100, 100, 100);
-    addText('Contingency', totalsX, y);
-    doc.setTextColor(50, 50, 50);
-    addText('£' + quote.contingencyAmount.toFixed(2), pageWidth - margin - 5, y, { align: 'right' });
+    doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
+    doc.text('Contingency', totalsX, y);
+    doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+    doc.text('£' + quote.contingencyAmount.toFixed(2), valuesX, y, { align: 'right' });
     y += 7;
   }
 
-  doc.setTextColor(100, 100, 100);
-  addText('Net Total', totalsX, y);
-  doc.setTextColor(50, 50, 50);
-  addText('£' + quote.netTotal.toFixed(2), pageWidth - margin - 5, y, { align: 'right' });
+  // Net total
+  doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
+  doc.text('Net Total', totalsX, y);
+  doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+  doc.text('£' + quote.netTotal.toFixed(2), valuesX, y, { align: 'right' });
   y += 7;
 
-  doc.setTextColor(100, 100, 100);
-  addText(`VAT (${quote.vatPercent}%)`, totalsX, y);
-  doc.setTextColor(50, 50, 50);
-  addText('£' + quote.vatAmount.toFixed(2), pageWidth - margin - 5, y, { align: 'right' });
-  y += 10;
+  // VAT
+  doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
+  doc.text(`VAT (${quote.vatPercent}%)`, totalsX, y);
+  doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+  doc.text('£' + quote.vatAmount.toFixed(2), valuesX, y, { align: 'right' });
+  y += 12;
 
-  // Grand total
+  // Grand total box
   doc.setFillColor(107, 33, 168);
-  doc.rect(totalsX - 10, y - 5, pageWidth - totalsX - margin + 15, 12, 'F');
+  doc.roundedRect(totalsX - 5, y - 5, pageWidth - margin - totalsX + 10, 14, 2, 2, 'F');
   doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
   doc.setTextColor(255, 255, 255);
-  addText('TOTAL', totalsX, y + 3);
-  addText('£' + quote.grandTotal.toFixed(2), pageWidth - margin - 5, y + 3, { align: 'right' });
+  doc.text('TOTAL', totalsX, y + 5);
+  doc.text('£' + quote.grandTotal.toFixed(2), valuesX, y + 5, { align: 'right' });
 
   y += 25;
 
-  // Notes
+  // Notes section
   if (quote.notes) {
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(80, 80, 80);
-    addText('Notes', margin, y);
+    doc.setFontSize(10);
+    doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+    doc.text('Notes', margin, y);
     y += 6;
+    
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
+    doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
     const noteLines = doc.splitTextToSize(quote.notes, pageWidth - margin * 2);
     noteLines.forEach((line: string) => {
-      addText(line, margin, y);
+      doc.text(line, margin, y);
       y += 5;
     });
     y += 5;
   }
 
-  // Terms
+  // Terms section
   if (quote.terms) {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10);
-    doc.setTextColor(80, 80, 80);
-    addText('Terms & Conditions', margin, y);
+    doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+    doc.text('Terms & Conditions', margin, y);
     y += 6;
+    
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-    doc.setTextColor(100, 100, 100);
+    doc.setFontSize(8);
+    doc.setTextColor(lightGray[0], lightGray[1], lightGray[2]);
     const termLines = doc.splitTextToSize(quote.terms, pageWidth - margin * 2);
     termLines.forEach((line: string) => {
-      addText(line, margin, y);
-      y += 5;
+      doc.text(line, margin, y);
+      y += 4;
     });
   }
 
   // Footer
   doc.setFontSize(8);
-  doc.setTextColor(150, 150, 150);
-  addText('Generated by TradeCalcs.co.uk', pageWidth / 2, 285, { align: 'center' });
+  doc.setTextColor(lightGray[0], lightGray[1], lightGray[2]);
+  doc.text('Generated by TradeCalcs.co.uk', pageWidth / 2, 285, { align: 'center' });
 
   return doc;
 }
