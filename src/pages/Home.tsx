@@ -6,7 +6,7 @@ import {
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import QuickFindModal from '../components/QuickFindModal';
-import { SEOHead } from '../components/layout';
+import SEOHead from '../components/SEOHead';
 
 const colorMap = {
   blue: '#3b82f6',
