@@ -463,6 +463,13 @@ export default function ProjectDetailPage() {
           material={editingMaterial}
           onUpdated={handleMaterialUpdated}
         />
+  {/* Edit Project Modal */}
+<EditProjectModal
+  isOpen={showEditProject}
+  onClose={() => setShowEditProject(false)}
+  project={project}
+  onUpdated={(updatedProject) => setProject(updatedProject)}
+/>
       )}
     </div>
   );
