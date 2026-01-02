@@ -237,48 +237,56 @@ export default function ProjectDetailPage() {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {project.materialItems?.map((material: any) => (
-                    <div 
-                      key={material.id} 
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg group hover:bg-gray-100 cursor-pointer transition-colors"
-                      onClick={() => setEditingMaterial(material)}
-                    >
-                      <div className="flex-1">
-                        <p className="font-medium">{material.description}</p>
-                        <p className="text-sm text-gray-500">
-                          {material.quantity} {material.unit}
-                          {material.totalLength ? ` • ${material.totalLength}m` : ''}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        {material.nettPrice ? (
-                          <span className="font-medium text-green-600">
-                            £{Number(material.nettPrice).toFixed(2)}
-                          </span>
-                        ) : material.listPrice ? (
-                          <span className="font-medium text-gray-600">
-                            £{Number(material.listPrice).toFixed(2)}
-                          </span>
-                        ) : (
-                          <span className="text-sm text-orange-500">Not priced</span>
-                        )}
-                        {(!material.sourceCalcIds || material.sourceCalcIds.length === 0) ? (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteMaterial(material.id);
-                            }}
-                            className="p-1 text-red-500 hover:bg-red-50 rounded"
-                            title="Delete material"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        ) : (
-                          <span className="text-xs text-gray-400">auto</span>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                  {project.materialItems?.map((material: any) => {
+  const qty = material.totalLength || material.quantity;
+  const totalPrice = Number(material.nettPrice) || Number(material.listPrice) || 0;
+  const unitPrice = qty > 0 && totalPrice > 0 ? totalPrice / qty : 0;
+  
+  return (
+    <div 
+      key={material.id} 
+      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg group hover:bg-gray-100 cursor-pointer transition-colors"
+      onClick={() => setEditingMaterial(material)}
+    >
+      <div className="flex-1">
+        <p className="font-medium">{material.description}</p>
+        <p className="text-sm text-gray-500">
+          {qty} {material.unit}
+        </p>
+      </div>
+      <div className="flex items-center gap-3">
+        {totalPrice > 0 ? (
+          <div className="text-right">
+            <p className="font-medium text-green-600">
+              £{totalPrice.toFixed(2)}
+            </p>
+            {qty > 1 && (
+              <p className="text-xs text-gray-500">
+                £{unitPrice.toFixed(2)} each
+              </p>
+            )}
+          </div>
+        ) : (
+          <span className="text-sm text-orange-500">Not priced</span>
+        )}
+        {(!material.sourceCalcIds || material.sourceCalcIds.length === 0) ? (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDeleteMaterial(material.id);
+            }}
+            className="p-1 text-red-500 hover:bg-red-50 rounded"
+            title="Delete material"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        ) : (
+          <span className="text-xs text-gray-400">auto</span>
+        )}
+      </div>
+    </div>
+  );
+})}
                 </div>
               )}
             </div>
