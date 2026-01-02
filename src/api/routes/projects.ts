@@ -138,15 +138,23 @@ router.patch('/:id', rateLimit('auth'), async (req: Request, res: Response) => {
     }
 
     const updated = await prisma.project.update({
-      where: { id: req.params.id },
-      data: {
-        name: req.body.name,
-        address: req.body.address,
-        customerName: req.body.customerName,
-        customerEmail: req.body.customerEmail,
-        customerPhone: req.body.customerPhone,
-      },
-    });
+  where: { id: req.params.id },
+  data: {
+    name: req.body.name,
+    address: req.body.address,
+    customerName: req.body.customerName,
+    customerEmail: req.body.customerEmail,
+    customerPhone: req.body.customerPhone,
+  },
+  include: {
+    calculations: true,
+    materialItems: true,
+    wholesalerQuotes: true,
+    customerQuotes: true,
+  },
+});
+
+res.json({ success: true, data: updated });
 
     res.json({ success: true, data: updated });
   } catch (error) {
