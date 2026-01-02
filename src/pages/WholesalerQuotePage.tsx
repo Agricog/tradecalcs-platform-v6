@@ -33,6 +33,7 @@ export default function WholesalerQuotePage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [unitPrices, setUnitPrices] = useState<Record<string, string>>({});
+  const [excludeDiscount, setExcludeDiscount] = useState<Record<string, boolean>>({});
   const [formData, setFormData] = useState({
     discountPercent: '',
     notes: '',
@@ -89,11 +90,16 @@ export default function WholesalerQuotePage() {
     return material.totalLength || material.quantity;
   };
 
-  const getLineTotal = (material: Material) => {
-    const unitPrice = parseFloat(unitPrices[material.id]) || 0;
-    const qty = getQuantity(material);
-    return unitPrice * qty;
-  };
+  const getLineTotal = (material: any, applyDiscount = false) => {
+  const qty = material.totalLength || material.quantity || 0;
+  const unitPrice = parseFloat(unitPrices[material.id]) || 0;
+  const lineTotal = qty * unitPrice;
+  
+  if (applyDiscount && discount && !excludeDiscount[material.id]) {
+    return lineTotal * (1 - parseFloat(discount) / 100);
+  }
+  return lineTotal;
+};
 
   const calculateSubtotal = () => {
     let total = 0;
