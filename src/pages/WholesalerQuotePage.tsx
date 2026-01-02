@@ -52,7 +52,6 @@ export default function WholesalerQuotePage() {
       
       if (data.success) {
         setQuote(data.data);
-        // Initialize unit prices
         const prices: Record<string, string> = {};
         data.data.materials.forEach((m: Material) => {
           prices[m.id] = '';
@@ -79,27 +78,15 @@ export default function WholesalerQuotePage() {
     }
   };
 
-  const handleUnitPriceChange = (materialId: string, price: string) => {
-    setUnitPrices(prev => ({
-      ...prev,
-      [materialId]: price,
-    }));
-  };
-
   const getQuantity = (material: Material) => {
     return material.totalLength || material.quantity;
   };
 
-  const getLineTotal = (material: any, applyDiscount = false) => {
-  const qty = material.totalLength || material.quantity || 0;
-  const unitPrice = parseFloat(unitPrices[material.id]) || 0;
-  const lineTotal = qty * unitPrice;
-  
-  if (applyDiscount && discount && !excludeDiscount[material.id]) {
-    return lineTotal * (1 - parseFloat(discount) / 100);
-  }
-  return lineTotal;
-};
+  const getLineTotal = (material: Material) => {
+    const qty = material.totalLength || material.quantity || 0;
+    const unitPrice = parseFloat(unitPrices[material.id]) || 0;
+    return qty * unitPrice;
+  };
 
   const calculateSubtotal = () => {
     let total = 0;
@@ -110,15 +97,30 @@ export default function WholesalerQuotePage() {
   };
 
   const calculateDiscountedTotal = () => {
-    const subtotal = calculateSubtotal();
-    const discount = parseFloat(formData.discountPercent) || 0;
-    return subtotal * (1 - discount / 100);
+    const discountPercent = parseFloat(formData.discountPercent) || 0;
+    let total = 0;
+    
+    quote?.materials.forEach(material => {
+      const lineTotal = getLineTotal(material);
+      if (excludeDiscount[material.id]) {
+        // No discount on this item
+        total += lineTotal;
+      } else {
+        // Apply discount
+        total += lineTotal * (1 - discountPercent / 100);
+      }
+    });
+    
+    return total;
+  };
+
+  const calculateTotalDiscount = () => {
+    return calculateSubtotal() - calculateDiscountedTotal();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Check all materials have prices
     const unpricedItems = quote?.materials.filter(m => !unitPrices[m.id] || unitPrices[m.id] === '');
     if (unpricedItems && unpricedItems.length > 0) {
       toast.error(`Please enter unit prices for all ${unpricedItems.length} items`);
@@ -127,18 +129,18 @@ export default function WholesalerQuotePage() {
 
     setSubmitting(true);
     try {
-      // Update material prices (store the LINE TOTAL, not unit price)
       // Update material prices (store the UNIT PRICE)
-for (const material of quote?.materials || []) {
-  const unitPrice = parseFloat(unitPrices[material.id]) || 0;
-  if (unitPrice > 0) {
-    await fetch(`/api/wholesaler-quotes/public/${token}/materials/${material.id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nettPrice: unitPrice }),
-    });
-  }
-}
+      for (const material of quote?.materials || []) {
+        const unitPrice = parseFloat(unitPrices[material.id]) || 0;
+        if (unitPrice > 0) {
+          await fetch(`/api/wholesaler-quotes/public/${token}/materials/${material.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nettPrice: unitPrice }),
+          });
+        }
+      }
+
       // Update quote with discount
       const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
         method: 'PATCH',
@@ -146,6 +148,7 @@ for (const material of quote?.materials || []) {
         body: JSON.stringify({
           discountPercent: parseFloat(formData.discountPercent) || 0,
           notes: formData.notes || null,
+          excludedFromDiscount: Object.keys(excludeDiscount).filter(id => excludeDiscount[id]),
         }),
       });
 
@@ -191,6 +194,8 @@ for (const material of quote?.materials || []) {
 
   if (!quote) return null;
 
+  const discountPercent = parseFloat(formData.discountPercent) || 0;
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -215,7 +220,7 @@ for (const material of quote?.materials || []) {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Quote Submitted</h2>
             <p className="text-gray-600 mb-4">
-              Your pricing has been sent to the electrician. They'll be in touch soon.
+              Your pricing has been sent to the contractor. They'll be in touch soon.
             </p>
             <div className="bg-gray-50 rounded-lg p-4 inline-block">
               <p className="text-sm text-gray-600">Total (after discount)</p>
@@ -257,36 +262,56 @@ for (const material of quote?.materials || []) {
                 {quote.materials.map((material, index) => {
                   const qty = getQuantity(material);
                   const lineTotal = getLineTotal(material);
+                  const isExcluded = excludeDiscount[material.id];
                   
                   return (
-                    <div key={material.id} className="grid grid-cols-12 gap-2 px-4 py-3 items-center">
-                      <div className="col-span-5">
-                        <span className="text-gray-400 text-sm mr-2">{index + 1}.</span>
-                        <span className="font-medium">{material.description}</span>
-                      </div>
-                      <div className="col-span-2 text-center">
-                        <span className="font-semibold">{qty}</span>
-                        <span className="text-gray-500 text-sm ml-1">{material.unit}</span>
-                      </div>
-                      <div className="col-span-2">
-                        <div className="relative">
-                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm">£</span>
-                          <input
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            placeholder="0.00"
-                            value={unitPrices[material.id] || ''}
-                            onChange={(e) => handleUnitPriceChange(material.id, e.target.value)}
-                            className="w-full pl-6 pr-2 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 text-right text-sm"
-                          />
+                    <div key={material.id} className="px-4 py-3">
+                      <div className="grid grid-cols-12 gap-2 items-center">
+                        <div className="col-span-5">
+                          <span className="text-gray-400 text-sm mr-2">{index + 1}.</span>
+                          <span className="font-medium">{material.description}</span>
+                        </div>
+                        <div className="col-span-2 text-center">
+                          <span className="font-semibold">{qty}</span>
+                          <span className="text-gray-500 text-sm ml-1">{material.unit}</span>
+                        </div>
+                        <div className="col-span-2">
+                          <div className="relative">
+                            <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm">£</span>
+                            <input
+                              type="number"
+                              step="0.01"
+                              min="0"
+                              placeholder="0.00"
+                              value={unitPrices[material.id] || ''}
+                              onChange={(e) => setUnitPrices(prev => ({ ...prev, [material.id]: e.target.value }))}
+                              className="w-full pl-6 pr-2 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 text-right text-sm"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-span-3 text-right">
+                          <span className={`font-semibold ${lineTotal > 0 ? 'text-green-600' : 'text-gray-400'}`}>
+                            £{lineTotal.toFixed(2)}
+                          </span>
                         </div>
                       </div>
-                      <div className="col-span-3 text-right">
-                        <span className={`font-semibold ${lineTotal > 0 ? 'text-green-600' : 'text-gray-400'}`}>
-                          £{lineTotal.toFixed(2)}
-                        </span>
-                      </div>
+                      
+                      {/* Exclude from discount checkbox - only show when discount is entered */}
+                      {discountPercent > 0 && lineTotal > 0 && (
+                        <div className="mt-2 ml-6">
+                          <label className="flex items-center gap-2 text-sm cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={isExcluded}
+                              onChange={(e) => setExcludeDiscount(prev => ({ ...prev, [material.id]: e.target.checked }))}
+                              className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                            />
+                            <span className={isExcluded ? 'text-orange-600 font-medium' : 'text-gray-500'}>
+                              {isExcluded ? 'No discount on this item' : 'Exclude from discount'}
+                            </span>
+                          </label>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
@@ -320,7 +345,7 @@ for (const material of quote?.materials || []) {
                   </p>
                 </div>
 
-                {formData.discountPercent && parseFloat(formData.discountPercent) > 0 && (
+                {discountPercent > 0 && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-green-800">Subtotal</span>
@@ -328,8 +353,13 @@ for (const material of quote?.materials || []) {
                     </div>
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-green-800">Discount ({formData.discountPercent}%)</span>
-                      <span className="text-green-700">-£{(calculateSubtotal() * (parseFloat(formData.discountPercent) / 100)).toFixed(2)}</span>
+                      <span className="text-green-700">-£{calculateTotalDiscount().toFixed(2)}</span>
                     </div>
+                    {Object.values(excludeDiscount).some(v => v) && (
+                      <p className="text-xs text-orange-600 mb-2">
+                        * Some items excluded from discount
+                      </p>
+                    )}
                     <div className="flex justify-between items-center pt-2 border-t border-green-200">
                       <span className="font-semibold text-green-900">Total after discount</span>
                       <span className="text-2xl font-bold text-green-700">£{calculateDiscountedTotal().toFixed(2)}</span>
