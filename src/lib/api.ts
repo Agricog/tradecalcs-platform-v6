@@ -29,7 +29,6 @@ async function fetchWithAuth<T>(
       ...options,
       headers,
     });
-
     const data = await response.json();
     return data;
   } catch (error) {
@@ -63,18 +62,6 @@ export const api = {
       method: 'PATCH',
       body: JSON.stringify(data),
     }, token),
-
-  updateProject: async (id: string, data: any, token: string | null) => {
-  const response = await fetch(`${API_BASE}/projects/${id}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    body: JSON.stringify(data),
-  });
-  return response.json();
-},
   
   deleteProject: (id: string, token: string | null) => 
     fetchWithAuth<any>(`/projects/${id}`, {
