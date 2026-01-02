@@ -302,7 +302,17 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
-        </Routes>
+          {/* Redirects for old/duplicate URLs */}
+          <Route path="/tools" element={<Navigate to="/" replace />} />
+          <Route path="/calculators" element={<Navigate to="/" replace />} />
+          <Route path="/painter-calculator" element={<Navigate to="/paint-calculator" replace />} />
+          <Route path="/brick-calculator" element={<Navigate to="/brick-block-calculator" replace />} />
+          <Route path="/cable-calculator" element={<Navigate to="/cable-sizing-calculator" replace />} />
+          <Route path="/plaster-calculator" element={<Navigate to="/plasterer-calculator" replace />} />
+          <Route path="/stud-wall-calculator" element={<Navigate to="/joinery-calculator" replace />} />
+          <Route path="/contact" element={<Navigate to="/" replace />} />
+          <Route path="/privacy" element={<Navigate to="/privacy-policy" replace />} />
+           </Routes>
 
         {/* Footer */}
         <Footer />
