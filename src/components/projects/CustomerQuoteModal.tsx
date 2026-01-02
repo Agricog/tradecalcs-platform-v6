@@ -1,18 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import { Plus, Trash2, FileText, Download } from 'lucide-react';
-import { generateQuotePDF } from '../../lib/generateQuotePDF';
 import toast from 'react-hot-toast';
 import Modal from '../ui/Modal';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
 import { api } from '../../lib/api';
+import { generateQuotePDF } from '../../lib/generateQuotePDF';
 
 interface CustomerQuoteModalProps {
   isOpen: boolean;
   onClose: () => void;
   projectId: string;
   projectName: string;
+  projectAddress?: string;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
   materials: any[];
   onCreated: (quote: any) => void;
 }
@@ -30,6 +34,10 @@ export default function CustomerQuoteModal({
   onClose,
   projectId,
   projectName,
+  projectAddress,
+  customerName,
+  customerEmail,
+  customerPhone,
   materials,
   onCreated,
 }: CustomerQuoteModalProps) {
@@ -159,6 +167,7 @@ export default function CustomerQuoteModal({
         <div className="space-y-6">
           <p className="text-sm text-gray-600">
             Building quote for <strong>{projectName}</strong>
+            {customerName && <> • {customerName}</>}
           </p>
 
           {/* Materials Summary */}
@@ -372,83 +381,62 @@ export default function CustomerQuoteModal({
       )}
 
       {step === 3 && (
-  <div className="text-center py-8">
-    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-      <FileText className="w-8 h-8 text-green-600" />
-    </div>
-    <h3 className="text-xl font-bold text-gray-900 mb-2">Quote Created!</h3>
-    <p className="text-gray-600 mb-6">
-      Your quote is ready to download.
-    </p>
-    <div className="bg-gray-50 rounded-lg p-4 inline-block mb-6">
-      <p className="text-3xl font-bold text-purple-600">£{grandTotal.toFixed(2)}</p>
-      <p className="text-sm text-gray-500">inc. VAT</p>
-    </div>
-    <div className="flex justify-center gap-3">
-      <Button 
-        variant="primary"
-        onClick={() => {
-  const pdf = generateQuotePDF({
-    quoteNumber: `TC-${new Date().getFullYear()}-0001`,
-    createdAt: new Date().toISOString(),
-    validDays: parseInt(settings.validDays) || 30,
-    project: {
-      name: projectName,
-      address: (window as any).__projectAddress || '',
-      customerName: (window as any).__customerName || '',
-      customerEmail: (window as any).__customerEmail || '',
-      customerPhone: (window as any).__customerPhone || '',
-    },
-    labourItems: labourItems.filter(l => l.description && l.total).map(l => ({
-      description: l.description,
-      total: parseFloat(l.total) || 0,
-    })),
-    materialsTotal,
-    labourTotal,
-    subtotal,
-    markupPercent: parseFloat(settings.markupPercent) || 0,
-    markupAmount,
-    contingencyPercent: parseFloat(settings.contingencyPercent) || 0,
-    contingencyAmount,
-    netTotal,
-    vatPercent: parseFloat(settings.vatPercent) || 0,
-    vatAmount,
-    grandTotal,
-    notes: settings.notes || undefined,
-    terms: settings.terms || undefined,
-  });
-  pdf.save(`Quote-${projectName.replace(/\s+/g, '-')}.pdf`);
-  toast.success('PDF downloaded');
-}}
-            labourItems: labourItems.filter(l => l.description && l.total).map(l => ({
-              description: l.description,
-              total: parseFloat(l.total) || 0,
-            })),
-            materialsTotal,
-            labourTotal,
-            subtotal,
-            markupPercent: parseFloat(settings.markupPercent) || 0,
-            markupAmount,
-            contingencyPercent: parseFloat(settings.contingencyPercent) || 0,
-            contingencyAmount,
-            netTotal,
-            vatPercent: parseFloat(settings.vatPercent) || 0,
-            vatAmount,
-            grandTotal,
-            notes: settings.notes || undefined,
-            terms: settings.terms || undefined,
-          });
-          pdf.save(`Quote-${projectName.replace(/\s+/g, '-')}.pdf`);
-          toast.success('PDF downloaded');
-        }}
-      >
-        <Download className="w-4 h-4 mr-2" />
-        Download PDF
-      </Button>
-      <Button variant="secondary" onClick={handleClose}>Done</Button>
-    </div>
-  </div>
-)}
+        <div className="text-center py-8">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <FileText className="w-8 h-8 text-green-600" />
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Quote Created!</h3>
+          <p className="text-gray-600 mb-6">
+            Your quote is ready to download.
+          </p>
+          <div className="bg-gray-50 rounded-lg p-4 inline-block mb-6">
+            <p className="text-3xl font-bold text-purple-600">£{grandTotal.toFixed(2)}</p>
+            <p className="text-sm text-gray-500">inc. VAT</p>
+          </div>
+          <div className="flex justify-center gap-3">
+            <Button 
+              variant="primary"
+              onClick={() => {
+                const pdf = generateQuotePDF({
+                  quoteNumber: `TC-${new Date().getFullYear()}-0001`,
+                  createdAt: new Date().toISOString(),
+                  validDays: parseInt(settings.validDays) || 30,
+                  project: {
+                    name: projectName,
+                    address: projectAddress,
+                    customerName: customerName,
+                    customerEmail: customerEmail,
+                    customerPhone: customerPhone,
+                  },
+                  labourItems: labourItems.filter(l => l.description && l.total).map(l => ({
+                    description: l.description,
+                    total: parseFloat(l.total) || 0,
+                  })),
+                  materialsTotal,
+                  labourTotal,
+                  subtotal,
+                  markupPercent: parseFloat(settings.markupPercent) || 0,
+                  markupAmount,
+                  contingencyPercent: parseFloat(settings.contingencyPercent) || 0,
+                  contingencyAmount,
+                  netTotal,
+                  vatPercent: parseFloat(settings.vatPercent) || 0,
+                  vatAmount,
+                  grandTotal,
+                  notes: settings.notes || undefined,
+                  terms: settings.terms || undefined,
+                });
+                pdf.save(`Quote-${projectName.replace(/\s+/g, '-')}.pdf`);
+                toast.success('PDF downloaded');
+              }}
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Download PDF
+            </Button>
+            <Button variant="secondary" onClick={handleClose}>Done</Button>
+          </div>
+        </div>
+      )}
     </Modal>
   );
 }
