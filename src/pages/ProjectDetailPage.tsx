@@ -22,6 +22,7 @@ import AddMaterialModal from '../components/projects/AddMaterialModal';
 import SendToWholesalerModal from '../components/projects/SendToWholesalerModal';
 import CustomerQuoteModal from '../components/projects/CustomerQuoteModal';
 import EditMaterialPriceModal from '../components/projects/EditMaterialPriceModal';
+import EditProjectModal from '../components/projects/EditProjectModal';
 
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -34,6 +35,7 @@ export default function ProjectDetailPage() {
   const [showSendToWholesaler, setShowSendToWholesaler] = useState(false);
   const [showCustomerQuote, setShowCustomerQuote] = useState(false);
   const [editingMaterial, setEditingMaterial] = useState<any>(null);
+  const [showEditProject, setShowEditProject] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -338,10 +340,18 @@ export default function ProjectDetailPage() {
           <div className="space-y-6">
             {/* Customer Details */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <User className="w-5 h-5 text-purple-600" />
-                Customer Details
-              </h2>
+              <div className="flex items-center justify-between mb-4">
+  <h2 className="text-lg font-semibold flex items-center gap-2">
+    <User className="w-5 h-5 text-purple-600" />
+    Customer Details
+  </h2>
+  <button
+    onClick={() => setShowEditProject(true)}
+    className="text-sm text-purple-600 hover:text-purple-700"
+  >
+    Edit
+  </button>
+</div>
               
               <div className="space-y-3">
                 {project.customerName && (
