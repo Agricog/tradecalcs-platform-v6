@@ -315,24 +315,42 @@ export default function ProjectDetailPage() {
                 </Button>
               </div>
               {project.wholesalerQuotes?.length > 0 && (
-                <div className="mt-4 pt-4 border-t">
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Sent Quotes</h3>
-                  <div className="space-y-2">
-                    {project.wholesalerQuotes.map((quote: any) => (
-                      <div key={quote.id} className="flex items-center justify-between text-sm bg-gray-50 p-2 rounded">
-                        <span>{quote.wholesalerName}</span>
-                        <span className={`px-2 py-0.5 rounded text-xs ${
-                          quote.status === 'priced' 
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-yellow-100 text-yellow-700'
-                        }`}>
-                          {quote.status}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+  <div className="mt-4 pt-4 border-t">
+    <h3 className="text-sm font-medium text-gray-700 mb-2">Sent Quotes</h3>
+    <div className="space-y-3">
+      {project.wholesalerQuotes.map((quote: any) => (
+        <div key={quote.id} className="bg-gray-50 p-3 rounded-lg">
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-medium">{quote.wholesalerName}</span>
+            <span className={`px-2 py-0.5 rounded text-xs ${
+              quote.status === 'priced' 
+                ? 'bg-green-100 text-green-700' 
+                : 'bg-yellow-100 text-yellow-700'
+            }`}>
+              {quote.status}
+            </span>
+          </div>
+          {quote.status === 'priced' && (
+            <div className="text-sm space-y-1">
+              {quote.discountPercent > 0 && (
+                <div className="flex justify-between text-green-700">
+                  <span>Account Discount</span>
+                  <span className="font-medium">{quote.discountPercent}%</span>
                 </div>
               )}
+              {quote.notes && (
+                <div className="mt-2 p-2 bg-white rounded border text-gray-600 text-xs">
+                  <span className="font-medium text-gray-700">Notes: </span>
+                  {quote.notes}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+)}
             </div>
           </div>
 
