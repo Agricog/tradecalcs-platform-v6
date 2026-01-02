@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Info, CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import jsPDF from 'jspdf'
+import SaveBrickCalcToProject from './brick/SaveBrickCalcToProject'
 
 // ============================================
 // TYPES
