@@ -123,6 +123,41 @@ router.patch('/:id', validate(updateProjectSchema), async (req: Request, res: Re
   }
 });
 
+// PATCH /api/projects/:id - Update project
+router.patch('/:id', rateLimit('auth'), async (req: Request, res: Response) => {
+  try {
+    const project = await prisma.project.findFirst({
+      where: { id: req.params.id, clerkUserId: req.userId },
+    });
+
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        error: { code: 'NOT_FOUND', message: 'Project not found' },
+      });
+    }
+
+    const updated = await prisma.project.update({
+      where: { id: req.params.id },
+      data: {
+        name: req.body.name,
+        address: req.body.address,
+        customerName: req.body.customerName,
+        customerEmail: req.body.customerEmail,
+        customerPhone: req.body.customerPhone,
+      },
+    });
+
+    res.json({ success: true, data: updated });
+  } catch (error) {
+    console.error('Error updating project:', error);
+    res.status(500).json({
+      success: false,
+      error: { code: 'SERVER_ERROR', message: 'Failed to update project' },
+    });
+  }
+});
+
 // DELETE /api/projects/:id - Delete project
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
