@@ -466,12 +466,15 @@ export default function ProjectDetailPage() {
       )}
 
       {/* Edit Project Modal */}
-      <EditProjectModal
-        isOpen={showEditProject}
-        onClose={() => setShowEditProject(false)}
-        project={project}
-        onUpdated={(updatedProject) => setProject(updatedProject)}
-      />
+<EditProjectModal
+  isOpen={showEditProject}
+  onClose={() => setShowEditProject(false)}
+  project={project}
+  onUpdated={(updatedProject) => setProject((prev: any) => ({
+    ...prev,
+    ...updatedProject,
+  }))}
+/>
     </div>
   );
 }
