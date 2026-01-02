@@ -5,18 +5,21 @@ import toast from 'react-hot-toast';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 
+interface Material {
+  id: string;
+  description: string;
+  totalLength?: number;
+  unit: string;
+  quantity: number;
+  price?: string;
+}
+
 interface QuoteData {
   id: string;
   projectName: string;
   projectAddress?: string;
   accountNumber?: string;
-  materials: Array<{
-    id: string;
-    description: string;
-    totalLength?: number;
-    unit: string;
-    quantity: number;
-  }>;
+  materials: Material[];
   status: string;
   discountPercent?: number;
   notes?: string;
@@ -29,6 +32,7 @@ export default function WholesalerQuotePage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [materialPrices, setMaterialPrices] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     discountPercent: '',
     notes: '',
@@ -47,6 +51,13 @@ export default function WholesalerQuotePage() {
       
       if (data.success) {
         setQuote(data.data);
+        // Initialize prices from any existing data
+        const prices: Record<string, string> = {};
+        data.data.materials.forEach((m: Material) => {
+          prices[m.id] = m.price || '';
+        });
+        setMaterialPrices(prices);
+        
         if (data.data.discountPercent) {
           setFormData(prev => ({ 
             ...prev, 
@@ -67,21 +78,57 @@ export default function WholesalerQuotePage() {
     }
   };
 
+  const handlePriceChange = (materialId: string, price: string) => {
+    setMaterialPrices(prev => ({
+      ...prev,
+      [materialId]: price,
+    }));
+  };
+
+  const calculateTotal = () => {
+    let total = 0;
+    Object.values(materialPrices).forEach(price => {
+      total += parseFloat(price) || 0;
+    });
+    return total;
+  };
+
+  const calculateDiscountedTotal = () => {
+    const total = calculateTotal();
+    const discount = parseFloat(formData.discountPercent) || 0;
+    return total * (1 - discount / 100);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.discountPercent) {
-      toast.error('Enter a discount percentage');
+    // Check all materials have prices
+    const unpricedItems = quote?.materials.filter(m => !materialPrices[m.id] || materialPrices[m.id] === '');
+    if (unpricedItems && unpricedItems.length > 0) {
+      toast.error(`Please enter prices for all ${unpricedItems.length} items`);
       return;
     }
 
     setSubmitting(true);
     try {
+      // First update material prices
+      for (const material of quote?.materials || []) {
+        const price = materialPrices[material.id];
+        if (price) {
+          await fetch(`/api/wholesaler-quotes/public/${token}/materials/${material.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nettPrice: parseFloat(price) }),
+          });
+        }
+      }
+
+      // Then update quote with discount
       const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          discountPercent: parseFloat(formData.discountPercent),
+          discountPercent: parseFloat(formData.discountPercent) || 0,
           notes: formData.notes || null,
         }),
       });
@@ -155,8 +202,8 @@ export default function WholesalerQuotePage() {
               Your pricing has been sent to the electrician. They'll be in touch soon.
             </p>
             <div className="bg-gray-50 rounded-lg p-4 inline-block">
-              <p className="text-sm text-gray-600">Discount Applied</p>
-              <p className="text-3xl font-bold text-purple-600">{formData.discountPercent}%</p>
+              <p className="text-sm text-gray-600">Total (after discount)</p>
+              <p className="text-3xl font-bold text-purple-600">£{calculateDiscountedTotal().toFixed(2)}</p>
             </div>
           </div>
         ) : (
@@ -172,44 +219,57 @@ export default function WholesalerQuotePage() {
               </div>
             )}
 
-            {/* Materials List */}
+            {/* Materials List with Pricing */}
             <div className="bg-white rounded-lg shadow-lg mb-6">
               <div className="p-4 border-b">
                 <h2 className="text-lg font-semibold flex items-center gap-2">
                   <Package className="w-5 h-5 text-purple-600" />
-                  Materials Required
+                  Materials - Enter Your Prices
                 </h2>
+                <p className="text-sm text-gray-500 mt-1">Enter the price for each item below</p>
               </div>
               <div className="divide-y">
                 {quote.materials.map((material, index) => (
-                  <div key={material.id} className="p-4 flex items-center justify-between">
-                    <div>
+                  <div key={material.id} className="p-4 flex items-center justify-between gap-4">
+                    <div className="flex-1">
                       <span className="text-gray-400 text-sm mr-3">{index + 1}.</span>
                       <span className="font-medium">{material.description}</span>
+                      <p className="text-sm text-gray-500 ml-7">
+                        {material.totalLength || material.quantity} {material.unit}
+                      </p>
                     </div>
-                    <div className="text-right">
-                      <span className="font-semibold">
-                        {material.totalLength || material.quantity}
-                      </span>
-                      <span className="text-gray-500 ml-1">{material.unit}</span>
+                    <div className="w-32">
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">£</span>
+                        <input
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          placeholder="0.00"
+                          value={materialPrices[material.id] || ''}
+                          onChange={(e) => handlePriceChange(material.id, e.target.value)}
+                          className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-right"
+                        />
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
               <div className="p-4 bg-gray-50 border-t">
-                <p className="text-sm text-gray-600 text-center">
-                  {quote.materials.length} items total
-                </p>
+                <div className="flex justify-between items-center">
+                  <span className="font-medium text-gray-700">Subtotal</span>
+                  <span className="text-lg font-semibold">£{calculateTotal().toFixed(2)}</span>
+                </div>
               </div>
             </div>
 
-            {/* Pricing Form */}
+            {/* Discount & Notes Form */}
             <div className="bg-white rounded-lg shadow-lg p-6">
-              <h2 className="text-lg font-semibold mb-4">Apply Account Discount</h2>
+              <h2 className="text-lg font-semibold mb-4">Account Discount & Notes</h2>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <Input
-                    label="Discount Percentage *"
+                    label="Account Discount (%)"
                     type="number"
                     min="0"
                     max="100"
@@ -217,12 +277,20 @@ export default function WholesalerQuotePage() {
                     value={formData.discountPercent}
                     onChange={(e) => setFormData(prev => ({ ...prev, discountPercent: e.target.value }))}
                     placeholder="e.g. 25"
-                    required
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Enter the discount percentage for this customer's account
+                    Optional: Apply customer's account discount to all items
                   </p>
                 </div>
+
+                {formData.discountPercent && parseFloat(formData.discountPercent) > 0 && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-green-800">Total after {formData.discountPercent}% discount</span>
+                      <span className="text-xl font-bold text-green-700">£{calculateDiscountedTotal().toFixed(2)}</span>
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -239,7 +307,7 @@ export default function WholesalerQuotePage() {
 
                 <Button type="submit" loading={submitting} className="w-full">
                   <Send className="w-4 h-4 mr-2" />
-                  Submit Quote
+                  Submit Pricing
                 </Button>
               </form>
             </div>
