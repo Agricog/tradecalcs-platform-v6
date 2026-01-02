@@ -388,13 +388,38 @@ export default function CustomerQuoteModal({
       <Button 
         variant="primary"
         onClick={() => {
-          const pdf = generateQuotePDF({
-            quoteNumber: `TC-${new Date().getFullYear()}-0001`,
-            createdAt: new Date().toISOString(),
-            validDays: parseInt(settings.validDays) || 30,
-            project: {
-              name: projectName,
-            },
+  const pdf = generateQuotePDF({
+    quoteNumber: `TC-${new Date().getFullYear()}-0001`,
+    createdAt: new Date().toISOString(),
+    validDays: parseInt(settings.validDays) || 30,
+    project: {
+      name: projectName,
+      address: (window as any).__projectAddress || '',
+      customerName: (window as any).__customerName || '',
+      customerEmail: (window as any).__customerEmail || '',
+      customerPhone: (window as any).__customerPhone || '',
+    },
+    labourItems: labourItems.filter(l => l.description && l.total).map(l => ({
+      description: l.description,
+      total: parseFloat(l.total) || 0,
+    })),
+    materialsTotal,
+    labourTotal,
+    subtotal,
+    markupPercent: parseFloat(settings.markupPercent) || 0,
+    markupAmount,
+    contingencyPercent: parseFloat(settings.contingencyPercent) || 0,
+    contingencyAmount,
+    netTotal,
+    vatPercent: parseFloat(settings.vatPercent) || 0,
+    vatAmount,
+    grandTotal,
+    notes: settings.notes || undefined,
+    terms: settings.terms || undefined,
+  });
+  pdf.save(`Quote-${projectName.replace(/\s+/g, '-')}.pdf`);
+  toast.success('PDF downloaded');
+}}
             labourItems: labourItems.filter(l => l.description && l.total).map(l => ({
               description: l.description,
               total: parseFloat(l.total) || 0,
