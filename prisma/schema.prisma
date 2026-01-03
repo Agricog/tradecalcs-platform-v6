@@ -136,3 +136,19 @@ model LabourItem {
   @@index([customerQuoteId])
   @@map("labour_items")
 }
+model ContractorProfile {
+  id                  String   @id @default(cuid())
+  clerkUserId         String   @unique @map("clerk_user_id")
+  companyName         String?  @map("company_name")
+  companyAddress      String?  @map("company_address")
+  companyPhone        String?  @map("company_phone")
+  companyEmail        String?  @map("company_email")
+  certificationNumber String?  @map("certification_number")
+  certificationBody   String?  @map("certification_body")
+  vatNumber           String?  @map("vat_number")
+  logoUrl             String?  @map("logo_url")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@map("contractor_profiles")
+}
