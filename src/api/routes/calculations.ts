@@ -27,11 +27,23 @@ router.post('/', validate(createCalculationSchema), async (req: Request, res: Re
 
     // Create the calculation
     const calculation = await prisma.calculation.create({
-      data: req.body,
+      data: {
+        projectId: req.body.projectId,
+        circuitName: req.body.circuitName,
+        calcType: req.body.calcType,
+        inputs: req.body.inputs,
+        outputs: req.body.outputs,
+        inputParameters: req.body.inputParameters,
+        results: req.body.results,
+        cableType: req.body.cableType,
+        cableSize: req.body.cableSize,
+        lengthMetres: req.body.lengthMetres,
+        quantity: req.body.quantity,
+      },
     });
 
     // Auto-extract materials if cable data present (skip for brick calcs - they handle their own materials)
-if (req.body.cableType && req.body.cableSize && req.body.lengthMetres && req.body.calcType !== 'brick_calc') {
+    if (req.body.cableType && req.body.cableSize && req.body.lengthMetres && req.body.calcType !== 'brick_calc') {
       // Check if material with same type/size exists for this project
       const existingMaterial = await prisma.materialItem.findFirst({
         where: {
@@ -72,7 +84,7 @@ if (req.body.cableType && req.body.cableSize && req.body.lengthMetres && req.bod
       }
     }
 
-    // Auto-extract materials from materials array (for builder calcs)
+    // Auto-extract materials from materials array (for builder calcs like drainage, concrete, brick)
     if (req.body.materials && Array.isArray(req.body.materials) && req.body.materials.length > 0) {
       for (const material of req.body.materials) {
         await prisma.materialItem.create({
