@@ -5,10 +5,13 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import App from './App'
 import './index.css'
 import { registerServiceWorker, setupConnectionListener } from './sw-register'
+import { initializeSentry } from './utils/errorTracking'
+
+// Initialize error tracking
+initializeSentry()
 
 // Get Clerk publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
-
 if (!PUBLISHABLE_KEY) {
   console.warn('Missing VITE_CLERK_PUBLISHABLE_KEY - auth will not work')
 }
