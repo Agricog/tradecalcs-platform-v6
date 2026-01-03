@@ -10,6 +10,7 @@ import calculationRoutes from './routes/calculations';
 import materialRoutes from './routes/materials';
 import wholesalerQuoteRoutes from './routes/wholesalerQuotes';
 import customerQuoteRoutes from './routes/customerQuotes';
+import contractorProfileRoutes from './routes/contractorProfile';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,6 +55,7 @@ app.use('/api/calculations', calculationRoutes);
 app.use('/api/materials', materialRoutes);
 app.use('/api/wholesaler-quotes', wholesalerQuoteRoutes);
 app.use('/api/customer-quotes', customerQuoteRoutes);
+app.use('/api/contractor-profile', contractorProfileRoutes);
 
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
