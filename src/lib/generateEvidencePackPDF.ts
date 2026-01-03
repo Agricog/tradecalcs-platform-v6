@@ -30,6 +30,72 @@ interface EvidencePackData {
   generatedAt: string;
 }
 
+// Check if calc is a builder/construction type
+function isBuilderCalc(calcType: string): boolean {
+  return ['brick_calc', 'drainage_bedding', 'drainage_spoil', 'concrete_to_bags'].includes(calcType);
+}
+
+// Format output values nicely
+function formatValue(key: string, value: unknown): string {
+  if (value === null || value === undefined) return '';
+  
+  // Currency fields
+  const currencyKeys = ['estimatedCost', 'totalCost', 'cost', 'price', 'nettPrice'];
+  if (currencyKeys.some(k => key.toLowerCase().includes(k.toLowerCase()))) {
+    const num = typeof value === 'number' ? value : parseFloat(String(value));
+    if (!isNaN(num)) {
+      return `£${num.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+  }
+  
+  // Round numbers to 2 decimal places
+  if (typeof value === 'number') {
+    // Integers stay as integers
+    if (Number.isInteger(value)) {
+      return value.toString();
+    }
+    return value.toFixed(2);
+  }
+  
+  return String(value);
+}
+
+// Format label from camelCase to readable text
+function formatLabel(key: string): string {
+  // Special case mappings
+  const labelMap: Record<string, string> = {
+    'pipeDiameterMm': 'Pipe Diameter (mm)',
+    'beddingVolume': 'Bedding Volume (m³)',
+    'stoneRequired': 'Stone Required (tonnes)',
+    'pipesNeeded': 'Pipes Needed',
+    'connectorsNeeded': 'Connectors Needed',
+    'totalSpoil': 'Total Spoil (m³)',
+    'backfillUsed': 'Backfill Used (m³)',
+    'beddingStone': 'Bedding Stone (tonnes)',
+    'spoilLeftOver': 'Spoil Left Over (m³)',
+    'cementBags': 'Cement Bags (25kg)',
+    'dumpyBags': 'Ballast Dumpy Bags (800kg)',
+    'baseVolume': 'Base Volume (m³)',
+    'volumeWithWaste': 'Volume with Waste (m³)',
+    'wastePercentage': 'Waste Allowance (%)',
+    'estimatedCost': 'Estimated Cost',
+    'strengthLabel': 'Concrete Strength',
+    'mixRatio': 'Mix Ratio',
+    'voltageDrop': 'Voltage Drop (V)',
+    'voltageDropPercent': 'Voltage Drop (%)',
+    'currentCarryingCapacity': 'Current Carrying Capacity (A)',
+    'impedance': 'Impedance (Ω)',
+  };
+  
+  if (labelMap[key]) return labelMap[key];
+  
+  // Default: convert camelCase to Title Case
+  return key
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase())
+    .trim();
+}
+
 export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -42,6 +108,10 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
   const mediumGray = [100, 100, 100];
   const lightGray = [150, 150, 150];
 
+  // Check if we have any builder calcs
+  const hasBuilderCalcs = data.calculations.some(c => isBuilderCalc(c.calcType));
+  const hasElectricalCalcs = data.calculations.some(c => !isBuilderCalc(c.calcType));
+
   // Header
   doc.setFontSize(24);
   doc.setFont('helvetica', 'bold');
@@ -52,7 +122,15 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
-  doc.text('BS 7671:2018+A2:2022 Design Record', margin, y);
+  
+  // Show appropriate subtitle based on calc types
+  if (hasElectricalCalcs && !hasBuilderCalcs) {
+    doc.text('BS 7671:2018+A2:2022 Design Record', margin, y);
+  } else if (hasBuilderCalcs && !hasElectricalCalcs) {
+    doc.text('Construction Design Record', margin, y);
+  } else {
+    doc.text('Design Record', margin, y);
+  }
 
   // Contractor details (top right)
   if (data.contractor?.companyName) {
@@ -139,7 +217,13 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
   doc.setFontSize(10);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(255, 255, 255);
-  doc.text('CIRCUIT DESIGN CALCULATIONS', margin + 5, y + 7);
+  
+  const sectionTitle = hasElectricalCalcs && !hasBuilderCalcs 
+    ? 'CIRCUIT DESIGN CALCULATIONS' 
+    : hasBuilderCalcs && !hasElectricalCalcs
+    ? 'CONSTRUCTION CALCULATIONS'
+    : 'DESIGN CALCULATIONS';
+  doc.text(sectionTitle, margin + 5, y + 7);
 
   y += 15;
 
@@ -167,7 +251,7 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
 
     y += 12;
 
-    // Cable details if available
+    // Cable details if available (for electrical calcs)
     if (calc.cableType || calc.cableSize) {
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
       doc.setFontSize(9);
@@ -209,11 +293,9 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
       // Show other output values (excluding formula and cableSize which is shown above)
       Object.entries(outputs).forEach(([key, value]) => {
         if (key !== 'formula' && key !== 'cableSize' && value !== null && value !== undefined) {
-          const label = key
-            .replace(/([A-Z])/g, ' $1')
-            .replace(/^./, str => str.toUpperCase())
-            .trim();
-          doc.text(`${label}: ${value}`, margin + 10, y);
+          const label = formatLabel(key);
+          const formattedValue = formatValue(key, value);
+          doc.text(`${label}: ${formattedValue}`, margin + 10, y);
           y += 5;
         }
       });
@@ -235,7 +317,10 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
 
   doc.setFillColor(240, 253, 244);
   doc.setDrawColor(187, 247, 208);
-  doc.roundedRect(margin, y - 3, pageWidth - margin * 2, 25, 3, 3, 'FD');
+  
+  // Calculate box height based on content
+  const boxHeight = hasElectricalCalcs && hasBuilderCalcs ? 35 : 25;
+  doc.roundedRect(margin, y - 3, pageWidth - margin * 2, boxHeight, 3, 3, 'FD');
 
   doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
@@ -244,10 +329,21 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
-  doc.text('All calculations performed in accordance with BS 7671:2018+A2:2022', margin + 5, y + 10);
-  doc.text('Requirements for Electrical Installations (IET Wiring Regulations 18th Edition)', margin + 5, y + 15);
+  
+  let basisY = y + 10;
+  
+  if (hasElectricalCalcs) {
+    doc.text('Electrical calculations performed in accordance with BS 7671:2018+A2:2022', margin + 5, basisY);
+    doc.text('Requirements for Electrical Installations (IET Wiring Regulations 18th Edition)', margin + 5, basisY + 5);
+    basisY += 12;
+  }
+  
+  if (hasBuilderCalcs) {
+    doc.text('Construction calculations performed in accordance with UK Building Regulations', margin + 5, basisY);
+    doc.text('Part H (Drainage), BS 8500 (Concrete) and industry best practice', margin + 5, basisY + 5);
+  }
 
-  y += 30;
+  y += boxHeight + 10;
 
   // Footer
   doc.setFontSize(8);
@@ -266,7 +362,12 @@ function formatCalcType(calcType: string): string {
     'earth_fault_loop': 'Earth Fault Loop',
     'adiabatic': 'Adiabatic Equation',
     'max_demand': 'Maximum Demand',
-    'brick_calc': 'Brick Calculator',
+    'disconnection': 'Disconnection Time',
+    'conduit_fill': 'Conduit Fill',
+    'brick_calc': 'Brick & Block',
+    'drainage_bedding': 'Drainage Bedding',
+    'drainage_spoil': 'Drainage Spoil & Backfill',
+    'concrete_to_bags': 'Concrete Mix',
   };
   return types[calcType] || calcType;
 }
