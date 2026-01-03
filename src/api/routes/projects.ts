@@ -123,49 +123,6 @@ router.patch('/:id', validate(updateProjectSchema), async (req: Request, res: Re
   }
 });
 
-// PATCH /api/projects/:id - Update project
-router.patch('/:id', rateLimit('auth'), async (req: Request, res: Response) => {
-  try {
-    const project = await prisma.project.findFirst({
-      where: { id: req.params.id, clerkUserId: req.userId },
-    });
-
-    if (!project) {
-      return res.status(404).json({
-        success: false,
-        error: { code: 'NOT_FOUND', message: 'Project not found' },
-      });
-    }
-
-    const updated = await prisma.project.update({
-  where: { id: req.params.id },
-  data: {
-    name: req.body.name,
-    address: req.body.address,
-    customerName: req.body.customerName,
-    customerEmail: req.body.customerEmail,
-    customerPhone: req.body.customerPhone,
-  },
-  include: {
-    calculations: true,
-    materialItems: true,
-    wholesalerQuotes: true,
-    customerQuotes: true,
-  },
-});
-
-res.json({ success: true, data: updated });
-
-    res.json({ success: true, data: updated });
-  } catch (error) {
-    console.error('Error updating project:', error);
-    res.status(500).json({
-      success: false,
-      error: { code: 'SERVER_ERROR', message: 'Failed to update project' },
-    });
-  }
-});
-
 // DELETE /api/projects/:id - Delete project
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
@@ -191,6 +148,53 @@ router.delete('/:id', async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: { code: 'SERVER_ERROR', message: 'Failed to delete project' },
+    });
+  }
+});
+
+// POST /api/projects/:id/mark-installed - Mark project as installed
+router.post('/:id/mark-installed', async (req: Request, res: Response) => {
+  try {
+    // Verify ownership
+    const existing = await prisma.project.findFirst({
+      where: { id: req.params.id, clerkUserId: req.userId },
+    });
+
+    if (!existing) {
+      return res.status(404).json({
+        success: false,
+        error: { code: 'NOT_FOUND', message: 'Project not found' },
+      });
+    }
+
+    // Validate installation date if provided, otherwise use now
+    let installationDate: Date;
+    if (req.body.installationDate) {
+      installationDate = new Date(req.body.installationDate);
+      if (isNaN(installationDate.getTime())) {
+        return res.status(400).json({
+          success: false,
+          error: { code: 'INVALID_DATE', message: 'Invalid installation date' },
+        });
+      }
+    } else {
+      installationDate = new Date();
+    }
+
+    const project = await prisma.project.update({
+      where: { id: req.params.id },
+      data: {
+        installationDate,
+        status: 'installed',
+      },
+    });
+
+    res.json({ success: true, data: project });
+  } catch (error) {
+    console.error('Error marking project as installed:', error);
+    res.status(500).json({
+      success: false,
+      error: { code: 'SERVER_ERROR', message: 'Failed to mark project as installed' },
     });
   }
 });
