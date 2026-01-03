@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Droplets, Calculator, AlertCircle, ShoppingCart, ArrowLeft, Download } from 'lucide-react'
+import { Droplets, Calculator, AlertCircle, ShoppingCart, ArrowLeft, Download, Save } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@clerk/clerk-react'
 import jsPDF from 'jspdf'
+import toast from 'react-hot-toast'
+import SaveToProjectModal from '../components/projects/SaveToProjectModal'
 
 interface BeddingResult {
   diameter: number
@@ -24,6 +27,7 @@ interface SpoilResult {
 
 export default function DrainageCalculator() {
   const navigate = useNavigate()
+  const { isSignedIn } = useAuth()
   
   // Pipe Bedding State
   const [pipeDiameter, setPipeDiameter] = useState('4')
@@ -39,6 +43,10 @@ export default function DrainageCalculator() {
   const [pipeLength2, setPipeLength2] = useState('50')
   const [spoilResults, setSpoilResults] = useState<SpoilResult | null>(null)
   const [showSpoilResults, setShowSpoilResults] = useState(false)
+
+  // Save to Project State
+  const [showSaveModal, setShowSaveModal] = useState(false)
+  const [saveData, setSaveData] = useState<any>(null)
 
   const calculateBedding = () => {
     const diameter = parseFloat(pipeDiameter)
@@ -67,6 +75,77 @@ export default function DrainageCalculator() {
     })
     setShowBeddingResults(true)
     window.scrollTo({ top: 1000, behavior: 'smooth' })
+  }
+
+  const handleSaveBedding = () => {
+    if (!beddingResults) return
+    
+    setSaveData({
+      calcType: 'drainage_bedding',
+      circuitName: `${beddingResults.diameter}" Drainage - ${pipeLength}m`,
+      resultData: {
+        pipeDiameter: beddingResults.diameter,
+        pipeDiameterMm: beddingResults.diameterMm,
+        pipeLength: parseFloat(pipeLength),
+        beddingVolume: beddingResults.beddingVolume,
+        stoneRequired: beddingResults.stoneRequired,
+        pipesNeeded: beddingResults.pipesNeeded,
+        connectorsNeeded: beddingResults.connectorsNeeded,
+      },
+      materials: [
+        {
+          description: `10mm Bedding Stone`,
+          quantity: beddingResults.stoneRequired,
+          unit: 'tonnes',
+        },
+        {
+          description: `${beddingResults.diameter}" Drainage Pipe (3m)`,
+          quantity: beddingResults.pipesNeeded,
+          unit: 'lengths',
+        },
+        {
+          description: `${beddingResults.diameter}" Straight Connector`,
+          quantity: beddingResults.connectorsNeeded,
+          unit: 'units',
+        },
+      ].filter(m => m.quantity > 0),
+    })
+    setShowSaveModal(true)
+  }
+
+  const handleSaveSpoil = () => {
+    if (!spoilResults) return
+    
+    setSaveData({
+      calcType: 'drainage_spoil',
+      circuitName: `Drainage Trench - ${trenchLength}m`,
+      resultData: {
+        trenchWidth: parseFloat(trenchWidth),
+        trenchDepth: parseFloat(trenchDepth),
+        trenchLength: parseFloat(trenchLength),
+        pipeDiameter: parseFloat(pipeDiameter2),
+        pipeLength: parseFloat(pipeLength2),
+        totalSpoil: spoilResults.totalSpoil,
+        beddingVolume: spoilResults.beddingVolume,
+        backfillUsed: spoilResults.backfillUsed,
+        spoilLeftOver: spoilResults.spoilLeftOver,
+        pipesNeeded: spoilResults.pipesNeeded,
+        beddingStone: spoilResults.beddingStone,
+      },
+      materials: [
+        {
+          description: `10mm Bedding Stone`,
+          quantity: spoilResults.beddingStone,
+          unit: 'tonnes',
+        },
+        {
+          description: `${pipeDiameter2}" Drainage Pipe (3m)`,
+          quantity: spoilResults.pipesNeeded,
+          unit: 'lengths',
+        },
+      ],
+    })
+    setShowSaveModal(true)
   }
 
   const downloadBeddingResults = () => {
@@ -316,7 +395,7 @@ export default function DrainageCalculator() {
     
     const pipeVolume = pipeArea * pipeLen
     const backfillUsed = totalSpoil - pipeVolume - beddingVolume
-const spoilLeftOver = Math.max(0, totalSpoil - backfillUsed)
+    const spoilLeftOver = Math.max(0, totalSpoil - backfillUsed)
     const pipesNeeded = Math.ceil(pipeLen / 3)
     
     setSpoilResults({
@@ -486,13 +565,24 @@ const spoilLeftOver = Math.max(0, totalSpoil - backfillUsed)
                     <p className="text-gray-600">100mm clearance all around</p>
                   </div>
                 </div>
-                <button
-                  onClick={downloadBeddingResults}
-                  className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition"
-                >
-                  <Download className="w-5 h-5" />
-                  Download PDF
-                </button>
+                <div className="flex gap-2">
+                  {isSignedIn && (
+                    <button
+                      onClick={handleSaveBedding}
+                      className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-3 rounded-lg font-bold hover:from-purple-700 hover:to-purple-800 transition"
+                    >
+                      <Save className="w-5 h-5" />
+                      Save to Project
+                    </button>
+                  )}
+                  <button
+                    onClick={downloadBeddingResults}
+                    className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition"
+                  >
+                    <Download className="w-5 h-5" />
+                    Download PDF
+                  </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
@@ -580,13 +670,24 @@ const spoilLeftOver = Math.max(0, totalSpoil - backfillUsed)
                     <p className="text-gray-600">Complete excavation analysis</p>
                   </div>
                 </div>
-                <button
-                  onClick={downloadSpoilResults}
-                  className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition"
-                >
-                  <Download className="w-5 h-5" />
-                  Download PDF
-                </button>
+                <div className="flex gap-2">
+                  {isSignedIn && (
+                    <button
+                      onClick={handleSaveSpoil}
+                      className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-3 rounded-lg font-bold hover:from-purple-700 hover:to-purple-800 transition"
+                    >
+                      <Save className="w-5 h-5" />
+                      Save to Project
+                    </button>
+                  )}
+                  <button
+                    onClick={downloadSpoilResults}
+                    className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition"
+                  >
+                    <Download className="w-5 h-5" />
+                    Download PDF
+                  </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -796,6 +897,23 @@ const spoilLeftOver = Math.max(0, totalSpoil - backfillUsed)
           </div>
         </div>
       </div>
+
+      {/* Save to Project Modal */}
+      {showSaveModal && saveData && (
+        <SaveToProjectModal
+          isOpen={showSaveModal}
+          onClose={() => {
+            setShowSaveModal(false)
+            setSaveData(null)
+          }}
+          calculationData={saveData}
+          onSaved={() => {
+            toast.success('Calculation saved to project')
+            setShowSaveModal(false)
+            setSaveData(null)
+          }}
+        />
+      )}
     </>
   )
 }
