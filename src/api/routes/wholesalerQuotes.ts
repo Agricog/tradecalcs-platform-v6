@@ -133,6 +133,58 @@ router.patch('/public/:token/materials/:materialId', rateLimit('public'), async 
   }
 });
 
+// DELETE /api/wholesaler-quotes/public/:token/materials/:materialId - Remove material from quote (no auth)
+router.delete('/public/:token/materials/:materialId', rateLimit('public'), async (req: Request, res: Response) => {
+  try {
+    const quote = await prisma.wholesalerQuote.findFirst({
+      where: { token: req.params.token },
+      include: { project: true },
+    });
+
+    if (!quote) {
+      return res.status(404).json({
+        success: false,
+        error: { code: 'NOT_FOUND', message: 'Quote not found' },
+      });
+    }
+
+    if (quote.expiresAt && new Date() > quote.expiresAt) {
+      return res.status(410).json({
+        success: false,
+        error: { code: 'EXPIRED', message: 'This quote request has expired' },
+      });
+    }
+
+    // Verify material belongs to this project
+    const material = await prisma.materialItem.findFirst({
+      where: { 
+        id: req.params.materialId,
+        projectId: quote.projectId,
+      },
+    });
+
+    if (!material) {
+      return res.status(404).json({
+        success: false,
+        error: { code: 'NOT_FOUND', message: 'Material not found' },
+      });
+    }
+
+    // Delete the material
+    await prisma.materialItem.delete({
+      where: { id: req.params.materialId },
+    });
+
+    res.json({ success: true, data: { deleted: true } });
+  } catch (error) {
+    console.error('Error deleting material:', error);
+    res.status(500).json({
+      success: false,
+      error: { code: 'SERVER_ERROR', message: 'Failed to remove material' },
+    });
+  }
+});
+
 // GET /api/wholesaler-quotes/public/:token - Public page for wholesaler (no auth)
 router.get('/public/:token', rateLimit('public'), async (req: Request, res: Response) => {
   try {
@@ -226,8 +278,6 @@ router.patch('/public/:token', rateLimit('public'), validate(updateWholesalerQuo
     });
 
     // Get the electrician's email to notify them
-    // For now we'll use the project's customer email or skip if not available
-    // In future, we'd store the electrician's email from Clerk
     if (quote.project.customerEmail) {
       const projectUrl = `${process.env.APP_URL}/projects/${quote.projectId}`;
       
