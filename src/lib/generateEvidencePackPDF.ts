@@ -19,11 +19,12 @@ interface EvidencePackData {
     installationDate: string;
   };
   contractor?: {
-    name: string;
-    address?: string;
-    phone?: string;
-    email?: string;
+    companyName?: string;
+    companyAddress?: string;
+    companyPhone?: string;
+    companyEmail?: string;
     certificationNumber?: string;
+    certificationBody?: string;
   };
   calculations: Calculation[];
   generatedAt: string;
@@ -52,6 +53,42 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
   doc.text('BS 7671:2018+A2:2022 Design Record', margin, y);
+
+  // Contractor details (top right)
+  if (data.contractor?.companyName) {
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+    doc.text(data.contractor.companyName, pageWidth - margin, 20, { align: 'right' });
+
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
+
+    let contractorY = 26;
+    if (data.contractor.companyAddress) {
+      const addressLines = doc.splitTextToSize(data.contractor.companyAddress, 70);
+      addressLines.forEach((line: string) => {
+        doc.text(line, pageWidth - margin, contractorY, { align: 'right' });
+        contractorY += 4;
+      });
+    }
+    if (data.contractor.companyPhone) {
+      doc.text(data.contractor.companyPhone, pageWidth - margin, contractorY, { align: 'right' });
+      contractorY += 4;
+    }
+    if (data.contractor.companyEmail) {
+      doc.text(data.contractor.companyEmail, pageWidth - margin, contractorY, { align: 'right' });
+      contractorY += 4;
+    }
+    if (data.contractor.certificationNumber) {
+      contractorY += 2;
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(purple[0], purple[1], purple[2]);
+      const certText = `${data.contractor.certificationBody || 'Reg'}: ${data.contractor.certificationNumber}`;
+      doc.text(certText, pageWidth - margin, contractorY, { align: 'right' });
+    }
+  }
 
   y += 15;
 
@@ -117,12 +154,12 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
     // Circuit header
     doc.setFillColor(249, 250, 251);
     doc.rect(margin, y - 3, pageWidth - margin * 2, 8, 'F');
-    
+
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     doc.text(`${index + 1}. ${calc.circuitName}`, margin + 3, y + 2);
-    
+
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
     doc.setTextColor(mediumGray[0], mediumGray[1], mediumGray[2]);
@@ -134,7 +171,7 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
     if (calc.cableType || calc.cableSize) {
       doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
       doc.setFontSize(9);
-      
+
       if (calc.cableType) {
         doc.text(`Cable Type: ${calc.cableType}`, margin + 5, y);
         y += 5;
@@ -149,38 +186,38 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
       }
     }
 
-   // Key outputs
-      const outputs = calc.outputs as Record<string, unknown>;
-      if (outputs && Object.keys(outputs).length > 0) {
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(purple[0], purple[1], purple[2]);
-        doc.text('Design Values:', margin + 5, y);
-        y += 5;
+    // Key outputs
+    const outputs = calc.outputs as Record<string, unknown>;
+    if (outputs && Object.keys(outputs).length > 0) {
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(purple[0], purple[1], purple[2]);
+      doc.text('Design Values:', margin + 5, y);
+      y += 5;
 
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
 
-        // Show formula if present (cable sizing calcs)
-        if (outputs.formula) {
-          const formulaLines = doc.splitTextToSize(String(outputs.formula), pageWidth - margin * 2 - 15);
-          formulaLines.forEach((line: string) => {
-            doc.text(line, margin + 10, y);
-            y += 5;
-          });
-        }
-
-        // Show other output values (excluding formula and cableSize which is shown above)
-        Object.entries(outputs).forEach(([key, value]) => {
-          if (key !== 'formula' && key !== 'cableSize' && value !== null && value !== undefined) {
-            const label = key
-              .replace(/([A-Z])/g, ' $1')
-              .replace(/^./, str => str.toUpperCase())
-              .trim();
-            doc.text(`${label}: ${value}`, margin + 10, y);
-            y += 5;
-          }
+      // Show formula if present (cable sizing calcs)
+      if (outputs.formula) {
+        const formulaLines = doc.splitTextToSize(String(outputs.formula), pageWidth - margin * 2 - 15);
+        formulaLines.forEach((line: string) => {
+          doc.text(line, margin + 10, y);
+          y += 5;
         });
       }
+
+      // Show other output values (excluding formula and cableSize which is shown above)
+      Object.entries(outputs).forEach(([key, value]) => {
+        if (key !== 'formula' && key !== 'cableSize' && value !== null && value !== undefined) {
+          const label = key
+            .replace(/([A-Z])/g, ' $1')
+            .replace(/^./, str => str.toUpperCase())
+            .trim();
+          doc.text(`${label}: ${value}`, margin + 10, y);
+          y += 5;
+        }
+      });
+    }
 
     y += 8;
   });
