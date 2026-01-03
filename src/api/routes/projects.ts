@@ -233,6 +233,11 @@ router.post('/:id/generate-evidence-pack', async (req: Request, res: Response) =
       });
     }
 
+    // Fetch contractor profile
+    const contractorProfile = await prisma.contractorProfile.findUnique({
+      where: { clerkUserId: req.userId },
+    });
+
     // Generate PDF
     const pdf = generateEvidencePackPDF({
       project: {
@@ -241,6 +246,14 @@ router.post('/:id/generate-evidence-pack', async (req: Request, res: Response) =
         customerName: project.customerName || undefined,
         installationDate: project.installationDate.toISOString(),
       },
+      contractor: contractorProfile ? {
+        companyName: contractorProfile.companyName || undefined,
+        companyAddress: contractorProfile.companyAddress || undefined,
+        companyPhone: contractorProfile.companyPhone || undefined,
+        companyEmail: contractorProfile.companyEmail || undefined,
+        certificationNumber: contractorProfile.certificationNumber || undefined,
+        certificationBody: contractorProfile.certificationBody || undefined,
+      } : undefined,
       calculations: project.calculations.map(calc => ({
         circuitName: calc.circuitName,
         calcType: calc.calcType,
