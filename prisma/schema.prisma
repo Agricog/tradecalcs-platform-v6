@@ -26,6 +26,7 @@ model Project {
   materialItems    MaterialItem[]
   wholesalerQuotes WholesalerQuote[]
   customerQuotes   CustomerQuote[]
+  invoices         Invoice[]
 
   @@index([clerkUserId])
   @@map("projects")
@@ -117,6 +118,7 @@ model CustomerQuote {
 
   project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
   labourItems LabourItem[]
+  invoices         Invoice[]
 
   @@index([projectId])
   @@map("customer_quotes")
@@ -151,4 +153,61 @@ model ContractorProfile {
   updatedAt           DateTime @updatedAt @map("updated_at")
 
   @@map("contractor_profiles")
+}
+model Invoice {
+  id                 String    @id @default(cuid())
+  projectId          String    @map("project_id")
+  customerQuoteId    String?   @map("customer_quote_id")
+  invoiceNumber      String    @unique @map("invoice_number")
+  status             String    @default("draft")
+  
+  // Customer details (copied from quote/project)
+  customerName       String?   @map("customer_name")
+  customerEmail      String?   @map("customer_email")
+  customerPhone      String?   @map("customer_phone")
+  customerAddress    String?   @map("customer_address")
+  
+  // Amounts (copied from quote)
+  materialsTotal     Decimal   @default(0) @map("materials_total") @db.Decimal(10, 2)
+  labourTotal        Decimal   @default(0) @map("labour_total") @db.Decimal(10, 2)
+  subtotal           Decimal   @default(0) @db.Decimal(10, 2)
+  markupAmount       Decimal   @default(0) @map("markup_amount") @db.Decimal(10, 2)
+  contingencyAmount  Decimal   @default(0) @map("contingency_amount") @db.Decimal(10, 2)
+  netTotal           Decimal   @default(0) @map("net_total") @db.Decimal(10, 2)
+  vatPercent         Decimal   @default(20) @map("vat_percent") @db.Decimal(5, 2)
+  vatAmount          Decimal   @default(0) @map("vat_amount") @db.Decimal(10, 2)
+  grandTotal         Decimal   @default(0) @map("grand_total") @db.Decimal(10, 2)
+  
+  // Payment details
+  dueDate            DateTime? @map("due_date")
+  paymentTerms       Int       @default(30) @map("payment_terms")
+  paidAt             DateTime? @map("paid_at")
+  paidAmount         Decimal?  @map("paid_amount") @db.Decimal(10, 2)
+  
+  notes              String?
+  createdAt          DateTime  @default(now()) @map("created_at")
+  sentAt             DateTime? @map("sent_at")
+
+  project        Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  customerQuote  CustomerQuote? @relation(fields: [customerQuoteId], references: [id], onDelete: SetNull)
+  invoiceItems   InvoiceItem[]
+
+  @@index([projectId])
+  @@index([customerQuoteId])
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id          String   @id @default(cuid())
+  invoiceId   String   @map("invoice_id")
+  description String
+  quantity    Decimal  @default(1) @db.Decimal(10, 2)
+  unitPrice   Decimal  @map("unit_price") @db.Decimal(10, 2)
+  total       Decimal  @default(0) @db.Decimal(10, 2)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@map("invoice_items")
 }
