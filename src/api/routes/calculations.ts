@@ -72,6 +72,22 @@ if (req.body.cableType && req.body.cableSize && req.body.lengthMetres && req.bod
       }
     }
 
+    // Auto-extract materials from materials array (for builder calcs)
+    if (req.body.materials && Array.isArray(req.body.materials) && req.body.materials.length > 0) {
+      for (const material of req.body.materials) {
+        await prisma.materialItem.create({
+          data: {
+            projectId: req.body.projectId,
+            description: material.description,
+            unit: material.unit,
+            quantity: material.quantity,
+            sourceCalcIds: [calculation.id],
+            manuallyAdded: false,
+          },
+        });
+      }
+    }
+
     res.status(201).json({ success: true, data: calculation });
   } catch (error) {
     console.error('Error creating calculation:', error);
