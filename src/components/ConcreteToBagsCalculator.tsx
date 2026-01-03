@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Package, Calculator, AlertCircle, CheckCircle2, ShoppingCart, ArrowLeft } from 'lucide-react'
+import { Package, Calculator, AlertCircle, CheckCircle2, ShoppingCart, ArrowLeft, Save } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@clerk/clerk-react'
 import jsPDF from 'jspdf'
+import toast from 'react-hot-toast'
+import SaveToProjectModal from '../components/projects/SaveToProjectModal'
 
 // QUOTE GENERATOR COMPONENT
 type MaterialItem = {
@@ -199,6 +202,7 @@ function QuoteGenerator({ calculationResults, onClose }: { calculationResults: C
 // MAIN CALCULATOR COMPONENT
 export default function ConcreteToBagsCalculator() {
   const navigate = useNavigate()
+  const { isSignedIn } = useAuth()
   const [length, setLength] = useState('')
   const [width, setWidth] = useState('')
   const [depth, setDepth] = useState('')
@@ -207,6 +211,10 @@ export default function ConcreteToBagsCalculator() {
   const [showResults, setShowResults] = useState(false)
   const [emailSubmitted, setEmailSubmitted] = useState(false)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
+  
+  // Save to Project State
+  const [showSaveModal, setShowSaveModal] = useState(false)
+  const [saveData, setSaveData] = useState<any>(null)
 
   const strengthOptions: Record<string, { label: string; ratio: string; cementBagsPerM3: number; cementParts: number; sandParts: number; gravelParts: number }> = {
     c20: { label: 'C20 (20 MPa)', ratio: '1:2:4', cementBagsPerM3: 12, cementParts: 1, sandParts: 2, gravelParts: 4 },
@@ -254,6 +262,42 @@ export default function ConcreteToBagsCalculator() {
       setShowResults(true)
       window.scrollTo({ top: 800, behavior: 'smooth' })
     }
+  }
+
+  const handleSaveToProject = () => {
+    if (!results) return
+    
+    setSaveData({
+      calcType: 'concrete_to_bags',
+      circuitName: `Concrete ${results.strength.label} - ${results.volumeM3}m³`,
+      resultData: {
+        length: parseFloat(length),
+        width: parseFloat(width),
+        depth: parseFloat(depth),
+        concreteStrength,
+        strengthLabel: results.strength.label,
+        mixRatio: results.strength.ratio,
+        baseVolume: parseFloat(results.baseVolume),
+        volumeWithWaste: parseFloat(results.volumeM3),
+        wastePercentage: 10,
+        cementBags: results.cementBags,
+        dumpyBags: results.dumpyBags,
+        estimatedCost: parseFloat(results.totalCost),
+      },
+      materials: [
+        {
+          description: `Portland Cement (25kg bag)`,
+          quantity: results.cementBags,
+          unit: 'bags',
+        },
+        {
+          description: `All-in Ballast Dumpy Bag (800kg, 20mm stone)`,
+          quantity: results.dumpyBags,
+          unit: 'bags',
+        },
+      ],
+    })
+    setShowSaveModal(true)
   }
 
   const handleEmailSubmit = (e: React.FormEvent) => {
@@ -496,14 +540,25 @@ export default function ConcreteToBagsCalculator() {
           {showResults && results && (
             <>
               <div className="mt-8 bg-white rounded-xl shadow-xl border-2 border-green-200 p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                    <ShoppingCart className="w-6 h-6 text-green-600" />
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                      <ShoppingCart className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900">Your Shopping List</h3>
+                      <p className="text-gray-600">{results.strength.label} concrete (20mm ballast)</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900">Your Shopping List</h3>
-                    <p className="text-gray-600">{results.strength.label} concrete (20mm ballast)</p>
-                  </div>
+                  {isSignedIn && (
+                    <button
+                      onClick={handleSaveToProject}
+                      className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition"
+                    >
+                      <Save className="w-5 h-5" />
+                      Save to Project
+                    </button>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -841,6 +896,23 @@ export default function ConcreteToBagsCalculator() {
               summary: `${results.volumeM3}m³ concrete ${results.strength.label} (${results.strength.ratio} mix ratio with 20mm stone ballast) - includes 10% waste factor`
             }}
             onClose={() => setShowQuoteGenerator(false)}
+          />
+        )}
+
+        {/* Save to Project Modal */}
+        {showSaveModal && saveData && (
+          <SaveToProjectModal
+            isOpen={showSaveModal}
+            onClose={() => {
+              setShowSaveModal(false)
+              setSaveData(null)
+            }}
+            calculationData={saveData}
+            onSaved={() => {
+              toast.success('Calculation saved to project')
+              setShowSaveModal(false)
+              setSaveData(null)
+            }}
           />
         )}
       </div>
