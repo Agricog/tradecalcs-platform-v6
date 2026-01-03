@@ -25,22 +25,20 @@ router.post('/', validate(createCalculationSchema), async (req: Request, res: Re
       });
     }
 
-// Create the calculation
-const calculation = await prisma.calculation.create({
-  data: {
-    projectId: req.body.projectId,
-    circuitName: req.body.circuitName,
-    calcType: req.body.calcType,
-    inputs: req.body.inputs || {},
-    outputs: req.body.outputs || {},
-    inputParameters: req.body.inputParameters || {},
-    results: req.body.results || {},
-    cableType: req.body.cableType,
-    cableSize: req.body.cableSize,
-    lengthMetres: req.body.lengthMetres,
-    quantity: req.body.quantity || 1,
-  },
-});
+    // Create the calculation
+    const calculation = await prisma.calculation.create({
+      data: {
+        projectId: req.body.projectId,
+        circuitName: req.body.circuitName,
+        calcType: req.body.calcType,
+        inputs: req.body.inputs || {},
+        outputs: req.body.outputs || {},
+        cableType: req.body.cableType,
+        cableSize: req.body.cableSize,
+        lengthMetres: req.body.lengthMetres,
+        quantity: req.body.quantity || 1,
+      },
+    });
 
     // Auto-extract materials if cable data present (skip for brick calcs - they handle their own materials)
     if (req.body.cableType && req.body.cableSize && req.body.lengthMetres && req.body.calcType !== 'brick_calc') {
@@ -198,7 +196,6 @@ router.delete('/:id', async (req: Request, res: Response) => {
           await prisma.materialItem.delete({ where: { id: material.id } });
         } else {
           // Update source IDs and recalculate total length
-          // Note: This is simplified - in production you'd recalculate from linked calcs
           await prisma.materialItem.update({
             where: { id: material.id },
             data: { sourceCalcIds: newSourceIds },
