@@ -149,43 +149,38 @@ export function generateEvidencePackPDF(data: EvidencePackData): jsPDF {
       }
     }
 
-    // Key outputs
-    const outputs = calc.outputs as Record<string, unknown>;
-    if (outputs) {
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(purple[0], purple[1], purple[2]);
-      doc.text('Design Values:', margin + 5, y);
-      y += 5;
+   // Key outputs
+      const outputs = calc.outputs as Record<string, unknown>;
+      if (outputs && Object.keys(outputs).length > 0) {
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(purple[0], purple[1], purple[2]);
+        doc.text('Design Values:', margin + 5, y);
+        y += 5;
 
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
 
-      // Common BS 7671 outputs
-      if (outputs.voltDrop !== undefined) {
-        doc.text(`Voltage Drop: ${outputs.voltDrop}V (${outputs.voltDropPercent || ''}%)`, margin + 10, y);
-        y += 5;
+        // Show formula if present (cable sizing calcs)
+        if (outputs.formula) {
+          const formulaLines = doc.splitTextToSize(String(outputs.formula), pageWidth - margin * 2 - 15);
+          formulaLines.forEach((line: string) => {
+            doc.text(line, margin + 10, y);
+            y += 5;
+          });
+        }
+
+        // Show other output values (excluding formula and cableSize which is shown above)
+        Object.entries(outputs).forEach(([key, value]) => {
+          if (key !== 'formula' && key !== 'cableSize' && value !== null && value !== undefined) {
+            const label = key
+              .replace(/([A-Z])/g, ' $1')
+              .replace(/^./, str => str.toUpperCase())
+              .trim();
+            doc.text(`${label}: ${value}`, margin + 10, y);
+            y += 5;
+          }
+        });
       }
-      if (outputs.zsTotal !== undefined) {
-        doc.text(`Zs (Total): ${outputs.zsTotal}Ω`, margin + 10, y);
-        y += 5;
-      }
-      if (outputs.zsMax !== undefined) {
-        doc.text(`Zs (Max Permitted): ${outputs.zsMax}Ω`, margin + 10, y);
-        y += 5;
-      }
-      if (outputs.currentCarryingCapacity !== undefined) {
-        doc.text(`Current Carrying Capacity (Iz): ${outputs.currentCarryingCapacity}A`, margin + 10, y);
-        y += 5;
-      }
-      if (outputs.designCurrent !== undefined) {
-        doc.text(`Design Current (Ib): ${outputs.designCurrent}A`, margin + 10, y);
-        y += 5;
-      }
-      if (outputs.protectiveDevice !== undefined) {
-        doc.text(`Protective Device: ${outputs.protectiveDevice}`, margin + 10, y);
-        y += 5;
-      }
-    }
 
     y += 8;
   });
