@@ -1,4 +1,4 @@
-import jsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
 
 interface QuoteData {
   quoteNumber: string;
@@ -11,12 +11,11 @@ interface QuoteData {
     customerEmail?: string;
     customerPhone?: string;
   };
-  company?: {
-    name: string;
-    address?: string;
-    phone?: string;
-    email?: string;
-    logo?: string; // base64 image
+  contractor?: {
+    companyName?: string;
+    companyAddress?: string;
+    companyPhone?: string;
+    companyEmail?: string;
   };
   labourItems: Array<{
     description: string;
@@ -62,10 +61,10 @@ export function generateQuotePDF(quote: QuoteData): jsPDF {
   doc.text(quote.quoteNumber, margin, y + 10);
 
   // Company details (right side)
-  const companyName = quote.company?.name || 'Your Company Name';
-  const companyAddress = quote.company?.address || 'Your Address';
-  const companyPhone = quote.company?.phone || 'Your Phone';
-  const companyEmail = quote.company?.email || 'your@email.com';
+  const companyName = quote.contractor?.companyName || 'Your Company Name';
+  const companyAddress = quote.contractor?.companyAddress || '';
+  const companyPhone = quote.contractor?.companyPhone || '';
+  const companyEmail = quote.contractor?.companyEmail || 'your@email.com';
 
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
@@ -84,9 +83,13 @@ export function generateQuotePDF(quote: QuoteData): jsPDF {
       companyY += 4;
     });
   }
-  doc.text(companyPhone, pageWidth - margin, companyY, { align: 'right' });
-  companyY += 4;
-  doc.text(companyEmail, pageWidth - margin, companyY, { align: 'right' });
+  if (companyPhone) {
+    doc.text(companyPhone, pageWidth - margin, companyY, { align: 'right' });
+    companyY += 4;
+  }
+  if (companyEmail) {
+    doc.text(companyEmail, pageWidth - margin, companyY, { align: 'right' });
+  }
 
   y += 35;
 
