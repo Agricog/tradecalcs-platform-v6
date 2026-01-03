@@ -17,7 +17,9 @@ import {
   CheckCircle,
   Download,
   FileCheck,
-  Loader2
+  Loader2,
+  Calendar,
+  X
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '../lib/api';
@@ -43,6 +45,8 @@ export default function ProjectDetailPage() {
   const [markingInstalled, setMarkingInstalled] = useState(false);
   const [generatingEvidence, setGeneratingEvidence] = useState(false);
   const [downloadingEvidence, setDownloadingEvidence] = useState(false);
+  const [showInstallDatePicker, setShowInstallDatePicker] = useState(false);
+  const [installDate, setInstallDate] = useState(new Date().toISOString().split('T')[0]);
 
   useEffect(() => {
     if (id) {
@@ -91,10 +95,6 @@ export default function ProjectDetailPage() {
   };
 
   const handleMarkInstalled = async () => {
-    if (!confirm('Mark this project as installed? This will set the installation date to today.')) {
-      return;
-    }
-
     setMarkingInstalled(true);
     try {
       const token = await getToken();
@@ -104,6 +104,7 @@ export default function ProjectDetailPage() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
+        body: JSON.stringify({ installationDate: installDate }),
       });
       const data = await response.json();
       
@@ -112,6 +113,7 @@ export default function ProjectDetailPage() {
           ...prev,
           ...data.data,
         }));
+        setShowInstallDatePicker(false);
         toast.success('Project marked as installed');
       } else {
         toast.error(data.error?.message || 'Failed to mark as installed');
@@ -543,25 +545,64 @@ export default function ProjectDetailPage() {
 
               {project.status !== 'installed' ? (
                 <div className="space-y-3">
-                  <p className="text-sm text-gray-600">
-                    Mark this project as installed to generate a BS 7671 compliance evidence pack.
-                  </p>
-                  <Button 
-                    onClick={handleMarkInstalled}
-                    disabled={markingInstalled || project.calculations?.length === 0}
-                    className="w-full"
-                  >
-                    {markingInstalled ? (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    ) : (
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                    )}
-                    Mark as Installed
-                  </Button>
-                  {project.calculations?.length === 0 && (
-                    <p className="text-xs text-orange-500">
-                      Add calculations first to enable compliance features
-                    </p>
+                  {!showInstallDatePicker ? (
+                    <>
+                      <p className="text-sm text-gray-600">
+                        Mark this project as installed to generate a BS 7671 compliance evidence pack.
+                      </p>
+                      <Button 
+                        onClick={() => setShowInstallDatePicker(true)}
+                        disabled={project.calculations?.length === 0}
+                        className="w-full"
+                      >
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Mark as Installed
+                      </Button>
+                      {project.calculations?.length === 0 && (
+                        <p className="text-xs text-orange-500">
+                          Add calculations first to enable compliance features
+                        </p>
+                      )}
+                    </>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm font-medium text-gray-700">
+                          Installation Date
+                        </label>
+                        <button
+                          onClick={() => setShowInstallDatePicker(false)}
+                          className="text-gray-400 hover:text-gray-600"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <input
+                          type="date"
+                          value={installDate}
+                          onChange={(e) => setInstallDate(e.target.value)}
+                          max={new Date().toISOString().split('T')[0]}
+                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        Select the date the installation was completed.
+                      </p>
+                      <Button 
+                        onClick={handleMarkInstalled}
+                        disabled={markingInstalled}
+                        className="w-full"
+                      >
+                        {markingInstalled ? (
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        ) : (
+                          <CheckCircle className="w-4 h-4 mr-2" />
+                        )}
+                        Confirm Installation
+                      </Button>
+                    </div>
                   )}
                 </div>
               ) : (
