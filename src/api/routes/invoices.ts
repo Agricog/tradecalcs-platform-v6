@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import prisma from '../../lib/prisma';
 import { requireAuth } from '../middleware/auth';
 import { rateLimit } from '../middleware/rateLimit';
+import { generateInvoicePDF } from '../../lib/generateInvoicePDF';
 
 const router = Router();
 
@@ -301,6 +302,83 @@ router.delete('/:id', async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: { code: 'SERVER_ERROR', message: 'Failed to delete invoice' },
+    });
+  }
+});
+
+// GET /api/invoices/:id/pdf - Generate invoice PDF
+router.get('/:id/pdf', async (req: Request, res: Response) => {
+  try {
+    const invoice = await prisma.invoice.findFirst({
+      where: {
+        id: req.params.id,
+        project: { clerkUserId: req.userId },
+      },
+      include: {
+        project: { select: { name: true, address: true } },
+        invoiceItems: { orderBy: { createdAt: 'asc' } },
+      },
+    });
+
+    if (!invoice) {
+      return res.status(404).json({
+        success: false,
+        error: { code: 'NOT_FOUND', message: 'Invoice not found' },
+      });
+    }
+
+    // Fetch contractor profile
+    const contractorProfile = await prisma.contractorProfile.findUnique({
+      where: { clerkUserId: req.userId },
+    });
+
+    const pdf = generateInvoicePDF({
+      invoiceNumber: invoice.invoiceNumber,
+      status: invoice.status,
+      createdAt: invoice.createdAt.toISOString(),
+      dueDate: invoice.dueDate?.toISOString(),
+      paymentTerms: invoice.paymentTerms,
+      customerName: invoice.customerName || undefined,
+      customerEmail: invoice.customerEmail || undefined,
+      customerPhone: invoice.customerPhone || undefined,
+      customerAddress: invoice.customerAddress || undefined,
+      projectName: invoice.project.name,
+      projectAddress: invoice.project.address || undefined,
+      contractor: contractorProfile ? {
+        companyName: contractorProfile.companyName || undefined,
+        companyAddress: contractorProfile.companyAddress || undefined,
+        companyPhone: contractorProfile.companyPhone || undefined,
+        companyEmail: contractorProfile.companyEmail || undefined,
+        vatNumber: contractorProfile.vatNumber || undefined,
+      } : undefined,
+      materialsTotal: Number(invoice.materialsTotal),
+      labourTotal: Number(invoice.labourTotal),
+      subtotal: Number(invoice.subtotal),
+      markupAmount: Number(invoice.markupAmount),
+      contingencyAmount: Number(invoice.contingencyAmount),
+      netTotal: Number(invoice.netTotal),
+      vatPercent: Number(invoice.vatPercent),
+      vatAmount: Number(invoice.vatAmount),
+      grandTotal: Number(invoice.grandTotal),
+      items: invoice.invoiceItems.map(item => ({
+        description: item.description,
+        quantity: Number(item.quantity),
+        unitPrice: Number(item.unitPrice),
+        total: Number(item.total),
+      })),
+      notes: invoice.notes || undefined,
+    });
+
+    const pdfBuffer = Buffer.from(pdf.output('arraybuffer'));
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="${invoice.invoiceNumber}.pdf"`);
+    res.send(pdfBuffer);
+  } catch (error) {
+    console.error('Error generating invoice PDF:', error);
+    res.status(500).json({
+      success: false,
+      error: { code: 'SERVER_ERROR', message: 'Failed to generate PDF' },
     });
   }
 });
