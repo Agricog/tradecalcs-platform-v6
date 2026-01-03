@@ -15,6 +15,16 @@ interface LabourItem {
   total: number;
 }
 
+interface ContractorProfile {
+  companyName?: string;
+  companyAddress?: string;
+  companyPhone?: string;
+  companyEmail?: string;
+  certificationNumber?: string;
+  certificationBody?: string;
+  vatNumber?: string;
+}
+
 export default function QuotePreviewPage() {
   const { quoteId } = useParams<{ quoteId: string }>();
   const navigate = useNavigate();
@@ -23,6 +33,7 @@ export default function QuotePreviewPage() {
   const [saving, setSaving] = useState(false);
   const [quote, setQuote] = useState<any>(null);
   const [project, setProject] = useState<any>(null);
+  const [contractor, setContractor] = useState<ContractorProfile | null>(null);
   const [editing, setEditing] = useState<string | null>(null);
   
   // Editable state
@@ -39,6 +50,7 @@ export default function QuotePreviewPage() {
   useEffect(() => {
     if (quoteId) {
       loadQuote();
+      loadContractorProfile();
     }
   }, [quoteId]);
 
@@ -78,6 +90,21 @@ export default function QuotePreviewPage() {
       navigate('/projects');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadContractorProfile = async () => {
+    try {
+      const token = await getToken();
+      const response = await fetch('/api/contractor-profile', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (data.success) {
+        setContractor(data.data);
+      }
+    } catch (error) {
+      console.error('Failed to load contractor profile:', error);
     }
   };
 
@@ -157,6 +184,12 @@ export default function QuotePreviewPage() {
         customerEmail: project.customerEmail,
         customerPhone: project.customerPhone,
       },
+      contractor: contractor ? {
+        companyName: contractor.companyName,
+        companyAddress: contractor.companyAddress,
+        companyPhone: contractor.companyPhone,
+        companyEmail: contractor.companyEmail,
+      } : undefined,
       labourItems: labourItems.filter(l => l.description && l.total > 0),
       materialsTotal,
       labourTotal,
@@ -229,8 +262,14 @@ export default function QuotePreviewPage() {
                 <p className="opacity-90">{quote.quoteNumber}</p>
               </div>
               <div className="text-right">
-                <p className="font-semibold">Your Company Name</p>
-                <p className="text-sm opacity-90">your@email.com</p>
+                <p className="font-semibold">{contractor?.companyName || 'Your Company Name'}</p>
+                {contractor?.companyAddress && (
+                  <p className="text-sm opacity-90 whitespace-pre-line">{contractor.companyAddress}</p>
+                )}
+                {contractor?.companyPhone && (
+                  <p className="text-sm opacity-90">{contractor.companyPhone}</p>
+                )}
+                <p className="text-sm opacity-90">{contractor?.companyEmail || 'your@email.com'}</p>
               </div>
             </div>
           </div>
