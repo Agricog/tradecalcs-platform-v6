@@ -110,6 +110,7 @@ import RadiatorBTUCalculatorPage from './pages/RadiatorBTUCalculatorPage'
 import HouseRewireCostUK from './pages/house-rewire-cost-uk'
 import ElectricalCalculators from './pages/ElectricalCalculators'
 import CableSizingCalculators from './pages/cable-sizing-calculators'
+import SettingsPage from './pages/SettingsPage'
 
 import ScrollToTop from './components/ScrollToTop'
 
@@ -141,8 +142,9 @@ function App() {
       <Link to="/leadfortress" className="hover:underline text-sm sm:text-base hidden sm:inline">LeadFortress</Link>
       
       <SignedIn>
-        <UserButton afterSignOutUrl="/" />
-      </SignedIn>
+  <Link to="/settings" className="hover:underline text-sm sm:text-base">Settings</Link>
+  <UserButton afterSignOutUrl="/" />
+</SignedIn>
       <SignedOut>
         <SignInButton mode="modal">
           <button className="bg-white text-purple-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium hover:bg-opacity-90 transition text-sm sm:text-base">
@@ -302,6 +304,7 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
+          <Route path="/settings" element={<SettingsPage />} />
           {/* Redirects for old/duplicate URLs */}
           <Route path="/tools" element={<Navigate to="/" replace />} />
           <Route path="/calculators" element={<Navigate to="/" replace />} />
