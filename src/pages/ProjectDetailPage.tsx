@@ -19,7 +19,9 @@ import {
   FileCheck,
   Loader2,
   Calendar,
-  X
+  X,
+  Receipt,
+  CreditCard
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '../lib/api';
@@ -29,6 +31,7 @@ import SendToWholesalerModal from '../components/projects/SendToWholesalerModal'
 import CustomerQuoteModal from '../components/projects/CustomerQuoteModal';
 import EditMaterialPriceModal from '../components/projects/EditMaterialPriceModal';
 import EditProjectModal from '../components/projects/EditProjectModal';
+import ConvertToInvoiceModal from '../components/projects/ConvertToInvoiceModal';
 
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -47,10 +50,14 @@ export default function ProjectDetailPage() {
   const [downloadingEvidence, setDownloadingEvidence] = useState(false);
   const [showInstallDatePicker, setShowInstallDatePicker] = useState(false);
   const [installDate, setInstallDate] = useState(new Date().toISOString().split('T')[0]);
+  const [convertingQuote, setConvertingQuote] = useState<any>(null);
+  const [invoices, setInvoices] = useState<any[]>([]);
+  const [markingPaid, setMarkingPaid] = useState<string | null>(null);
 
   useEffect(() => {
     if (id) {
       loadProject();
+      loadInvoices();
     }
   }, [id]);
 
@@ -69,6 +76,22 @@ export default function ProjectDetailPage() {
       navigate('/projects');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadInvoices = async () => {
+    try {
+      const token = await getToken();
+      const response = await fetch('/api/invoices', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (data.success) {
+        // Filter to only this project's invoices
+        setInvoices(data.data.filter((inv: any) => inv.projectId === id));
+      }
+    } catch (error) {
+      console.error('Failed to load invoices:', error);
     }
   };
 
@@ -177,6 +200,42 @@ export default function ProjectDetailPage() {
     }
   };
 
+  const handleDownloadInvoicePDF = async (invoiceId: string) => {
+    try {
+      const token = await getToken();
+      window.open(`/api/invoices/${invoiceId}/pdf?token=${token}`, '_blank');
+    } catch (error) {
+      toast.error('Failed to download invoice');
+    }
+  };
+
+  const handleMarkInvoicePaid = async (invoiceId: string) => {
+    setMarkingPaid(invoiceId);
+    try {
+      const token = await getToken();
+      const response = await fetch(`/api/invoices/${invoiceId}/mark-paid`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        setInvoices((prev) => prev.map((inv) => 
+          inv.id === invoiceId ? data.data : inv
+        ));
+        toast.success('Invoice marked as paid');
+      } else {
+        toast.error(data.error?.message || 'Failed to mark as paid');
+      }
+    } catch (error) {
+      toast.error('Failed to mark as paid');
+    } finally {
+      setMarkingPaid(null);
+    }
+  };
+
   const handleMaterialAdded = (material: any) => {
     setProject((prev: any) => ({
       ...prev,
@@ -211,6 +270,10 @@ export default function ProjectDetailPage() {
     } catch (error) {
       toast.error('Failed to delete material');
     }
+  };
+
+  const handleInvoiceCreated = (invoice: any) => {
+    setInvoices((prev) => [invoice, ...prev]);
   };
 
   if (loading) {
@@ -387,7 +450,7 @@ export default function ProjectDetailPage() {
               )}
             </div>
 
-            {/* Actions Section */}
+            {/* Quote Actions Section */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h2 className="text-lg font-semibold mb-4">Quote Actions</h2>
               <div className="flex flex-wrap gap-3">
@@ -409,9 +472,10 @@ export default function ProjectDetailPage() {
                 </Button>
               </div>
 
+              {/* Wholesaler Quotes */}
               {project.wholesalerQuotes?.length > 0 && (
                 <div className="mt-4 pt-4 border-t">
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Sent Quotes</h3>
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">Wholesaler Quotes</h3>
                   <div className="space-y-3">
                     {project.wholesalerQuotes.map((quote: any) => (
                       <div key={quote.id} className="bg-gray-50 p-3 rounded-lg">
@@ -441,6 +505,128 @@ export default function ProjectDetailPage() {
                             )}
                           </div>
                         )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Customer Quotes */}
+              {project.customerQuotes?.length > 0 && (
+                <div className="mt-4 pt-4 border-t">
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">Customer Quotes</h3>
+                  <div className="space-y-3">
+                    {project.customerQuotes.map((quote: any) => {
+                      const hasInvoice = invoices.some((inv) => inv.customerQuoteId === quote.id);
+                      return (
+                        <div key={quote.id} className="bg-gray-50 p-3 rounded-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <div>
+                              <span className="font-medium">Quote #{quote.quoteNumber}</span>
+                              <p className="text-sm text-gray-500">
+                                {new Date(quote.createdAt).toLocaleDateString('en-GB')}
+                              </p>
+                            </div>
+                            <span className="text-lg font-bold text-green-600">
+                              £{Number(quote.grandTotal).toFixed(2)}
+                            </span>
+                          </div>
+                          <div className="flex gap-2 mt-2">
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                              onClick={() => window.open(`/quote/preview/${quote.id}`, '_blank')}
+                            >
+                              <FileText className="w-3 h-3 mr-1" />
+                              View
+                            </Button>
+                            {!hasInvoice && (
+                              <Button
+                                size="sm"
+                                onClick={() => setConvertingQuote(quote)}
+                              >
+                                <Receipt className="w-3 h-3 mr-1" />
+                                Convert to Invoice
+                              </Button>
+                            )}
+                            {hasInvoice && (
+                              <span className="text-xs text-green-600 flex items-center">
+                                <CheckCircle className="w-3 h-3 mr-1" />
+                                Invoiced
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Invoices */}
+              {invoices.length > 0 && (
+                <div className="mt-4 pt-4 border-t">
+                  <h3 className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                    <Receipt className="w-4 h-4" />
+                    Invoices
+                  </h3>
+                  <div className="space-y-3">
+                    {invoices.map((invoice) => (
+                      <div key={invoice.id} className="bg-gray-50 p-3 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <div>
+                            <span className="font-medium">{invoice.invoiceNumber}</span>
+                            <p className="text-sm text-gray-500">
+                              Due: {invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString('en-GB') : 'N/A'}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-lg font-bold text-green-600">
+                              £{Number(invoice.grandTotal).toFixed(2)}
+                            </span>
+                            <p>
+                              <span className={`px-2 py-0.5 rounded text-xs ${
+                                invoice.status === 'paid' 
+                                  ? 'bg-green-100 text-green-700' 
+                                  : invoice.status === 'sent'
+                                  ? 'bg-blue-100 text-blue-700'
+                                  : 'bg-gray-100 text-gray-700'
+                              }`}>
+                                {invoice.status}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 mt-2">
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => handleDownloadInvoicePDF(invoice.id)}
+                          >
+                            <Download className="w-3 h-3 mr-1" />
+                            PDF
+                          </Button>
+                          {invoice.status !== 'paid' && (
+                            <Button
+                              size="sm"
+                              onClick={() => handleMarkInvoicePaid(invoice.id)}
+                              disabled={markingPaid === invoice.id}
+                            >
+                              {markingPaid === invoice.id ? (
+                                <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                              ) : (
+                                <CreditCard className="w-3 h-3 mr-1" />
+                              )}
+                              Mark Paid
+                            </Button>
+                          )}
+                          {invoice.status === 'paid' && invoice.paidAt && (
+                            <span className="text-xs text-green-600 flex items-center">
+                              <CheckCircle className="w-3 h-3 mr-1" />
+                              Paid {new Date(invoice.paidAt).toLocaleDateString('en-GB')}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -530,8 +716,12 @@ export default function ProjectDetailPage() {
                   <span className="font-medium">{project.materialItems?.length || 0}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Quotes Sent</span>
-                  <span className="font-medium">{project.wholesalerQuotes?.length || 0}</span>
+                  <span className="text-gray-600">Quotes</span>
+                  <span className="font-medium">{project.customerQuotes?.length || 0}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Invoices</span>
+                  <span className="font-medium">{invoices.length}</span>
                 </div>
               </div>
             </div>
@@ -712,6 +902,18 @@ export default function ProjectDetailPage() {
           ...updatedProject,
         }))}
       />
+
+      {/* Convert to Invoice Modal */}
+      {convertingQuote && (
+        <ConvertToInvoiceModal
+          isOpen={!!convertingQuote}
+          onClose={() => setConvertingQuote(null)}
+          quoteId={convertingQuote.id}
+          quoteName={`Quote #${convertingQuote.quoteNumber}`}
+          quoteTotal={Number(convertingQuote.grandTotal)}
+          onConverted={handleInvoiceCreated}
+        />
+      )}
     </div>
   );
 }
