@@ -270,11 +270,13 @@ export default function ConcreteToBagsCalculator() {
     setSaveData({
       calcType: 'concrete_to_bags',
       circuitName: `Concrete ${results.strength.label} - ${results.volumeM3}m³`,
-      resultData: {
+      inputs: {
         length: parseFloat(length),
         width: parseFloat(width),
         depth: parseFloat(depth),
         concreteStrength,
+      },
+      outputs: {
         strengthLabel: results.strength.label,
         mixRatio: results.strength.ratio,
         baseVolume: parseFloat(results.baseVolume),
@@ -284,18 +286,6 @@ export default function ConcreteToBagsCalculator() {
         dumpyBags: results.dumpyBags,
         estimatedCost: parseFloat(results.totalCost),
       },
-      materials: [
-        {
-          description: `Portland Cement (25kg bag)`,
-          quantity: results.cementBags,
-          unit: 'bags',
-        },
-        {
-          description: `All-in Ballast Dumpy Bag (800kg, 20mm stone)`,
-          quantity: results.dumpyBags,
-          unit: 'bags',
-        },
-      ],
     })
     setShowSaveModal(true)
   }
