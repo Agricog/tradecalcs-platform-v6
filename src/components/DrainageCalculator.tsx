@@ -94,6 +94,11 @@ export default function DrainageCalculator() {
         pipesNeeded: beddingResults.pipesNeeded,
         connectorsNeeded: beddingResults.connectorsNeeded,
       },
+      materials: [
+        { description: '10mm Bedding Stone', quantity: beddingResults.stoneRequired, unit: 'tonnes' },
+        { description: `${beddingResults.diameter}" Drainage Pipe (3m)`, quantity: beddingResults.pipesNeeded, unit: 'lengths' },
+        { description: `${beddingResults.diameter}" Straight Connector`, quantity: beddingResults.connectorsNeeded, unit: 'units' },
+      ].filter(m => m.quantity > 0),
     })
     setShowSaveModal(true)
   }
@@ -119,6 +124,10 @@ export default function DrainageCalculator() {
         pipesNeeded: spoilResults.pipesNeeded,
         beddingStone: spoilResults.beddingStone,
       },
+      materials: [
+        { description: '10mm Bedding Stone', quantity: spoilResults.beddingStone, unit: 'tonnes' },
+        { description: `${pipeDiameter2}" Drainage Pipe (3m)`, quantity: spoilResults.pipesNeeded, unit: 'lengths' },
+      ],
     })
     setShowSaveModal(true)
   }
@@ -131,7 +140,6 @@ export default function DrainageCalculator() {
     const dateStr = now.toLocaleDateString('en-GB')
     const timeStr = now.toLocaleTimeString('en-GB')
 
-    // Header
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(20)
     doc.text('Pipe Bedding Calculation Results', 20, 20)
@@ -141,11 +149,9 @@ export default function DrainageCalculator() {
     doc.text(`Generated: ${dateStr} at ${timeStr}`, 20, 30)
     doc.text('TradeCalcs - Underground Drainage Pipe Calculator', 20, 37)
 
-    // Divider
     doc.setDrawColor(150, 80, 220)
     doc.line(20, 42, 190, 42)
 
-    // Pipe Details Section
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(14)
     doc.text('Pipe Specifications', 20, 55)
@@ -159,7 +165,6 @@ export default function DrainageCalculator() {
     yPos += 8
     doc.text(`Bedding Depth: 100mm (all around pipe)`, 20, yPos)
 
-    // Materials Section
     yPos += 15
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(14)
@@ -169,12 +174,10 @@ export default function DrainageCalculator() {
     doc.setFont('helvetica', 'normal')
     doc.setFontSize(10)
 
-    // Better table layout with proper spacing
     const col1 = 20
     const col2 = 110
     const col3 = 160
 
-    // Header row
     doc.setFillColor(150, 80, 220)
     doc.setTextColor(255, 255, 255)
     doc.rect(col1, yPos - 5, 170, 7, 'F')
@@ -185,7 +188,6 @@ export default function DrainageCalculator() {
     yPos += 10
     doc.setTextColor(0, 0, 0)
 
-    // Data rows
     const materials = [
       ['10mm Stone Bedding', beddingResults.stoneRequired.toFixed(2), 'tonnes'],
       ['Drainage Pipes (3m)', beddingResults.pipesNeeded.toString(), 'pipes'],
@@ -204,7 +206,6 @@ export default function DrainageCalculator() {
       yPos += 7
     }
 
-    // Calculations Section
     yPos += 10
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(12)
@@ -223,7 +224,6 @@ export default function DrainageCalculator() {
     yPos += 5
     doc.text(`Connectors Needed: ${beddingResults.connectorsNeeded}`, 20, yPos)
 
-    // Compliance Section
     yPos += 12
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(12)
@@ -238,13 +238,11 @@ export default function DrainageCalculator() {
     )
     doc.text(complianceText, 20, yPos)
 
-    // Footer
     yPos = 280
     doc.setFontSize(8)
     doc.setTextColor(150, 150, 150)
     doc.text('© 2025 TradeCalcs. Verify calculations with your engineer before ordering.', 20, yPos)
 
-    // Save PDF
     doc.save(`drainage-bedding-calculation-${dateStr.replace(/\//g, '-')}.pdf`)
   }
 
@@ -256,7 +254,6 @@ export default function DrainageCalculator() {
     const dateStr = now.toLocaleDateString('en-GB')
     const timeStr = now.toLocaleTimeString('en-GB')
 
-    // Header
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(20)
     doc.text('Spoil & Backfill Calculation Results', 20, 20)
@@ -266,11 +263,9 @@ export default function DrainageCalculator() {
     doc.text(`Generated: ${dateStr} at ${timeStr}`, 20, 30)
     doc.text('TradeCalcs - Underground Drainage Pipe Calculator', 20, 37)
 
-    // Divider
     doc.setDrawColor(150, 80, 220)
     doc.line(20, 42, 190, 42)
 
-    // Trench Details Section
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(14)
     doc.text('Trench Specifications', 20, 55)
@@ -282,7 +277,6 @@ export default function DrainageCalculator() {
     yPos += 8
     doc.text(`Pipe Diameter: ${pipeDiameter2}" × Length: ${pipeLength2}m`, 20, yPos)
 
-    // Results Section
     yPos += 15
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(14)
@@ -296,7 +290,6 @@ export default function DrainageCalculator() {
     const col2 = 110
     const col3 = 160
 
-    // Header
     doc.setFillColor(150, 80, 220)
     doc.setTextColor(255, 255, 255)
     doc.rect(col1, yPos - 5, 170, 7, 'F')
@@ -307,7 +300,6 @@ export default function DrainageCalculator() {
     yPos += 10
     doc.setTextColor(0, 0, 0)
 
-    // Data rows
     const results = [
       ['Total Spoil Excavated', spoilResults.totalSpoil.toFixed(2), 'm³'],
       ['Bedding Stone Volume', spoilResults.beddingVolume.toFixed(3), 'm³'],
@@ -327,7 +319,6 @@ export default function DrainageCalculator() {
       yPos += 7
     }
 
-    // Materials Section
     yPos += 10
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(12)
@@ -340,13 +331,11 @@ export default function DrainageCalculator() {
     yPos += 6
     doc.text(`10mm Bedding Stone: ${spoilResults.beddingStone.toFixed(2)} tonnes`, 20, yPos)
 
-    // Footer
     yPos = 280
     doc.setFontSize(8)
     doc.setTextColor(150, 150, 150)
     doc.text('© 2025 TradeCalcs. Verify calculations with your engineer before ordering.', 20, yPos)
 
-    // Save PDF
     doc.save(`drainage-spoil-calculation-${dateStr.replace(/\//g, '-')}.pdf`)
   }
 
@@ -402,7 +391,6 @@ export default function DrainageCalculator() {
       </Helmet>
 
       <div className="min-h-screen bg-gray-50">
-        {/* BACK BUTTON */}
         <div className="bg-white border-b border-gray-200 px-4 py-3">
           <div className="max-w-4xl mx-auto">
             <button
@@ -415,7 +403,6 @@ export default function DrainageCalculator() {
           </div>
         </div>
 
-        {/* HERO SECTION */}
         <div className="bg-gradient-to-br from-purple-600 to-purple-700 text-white py-16 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-xl mb-6">
@@ -427,10 +414,8 @@ export default function DrainageCalculator() {
           </div>
         </div>
 
-        {/* CALCULATOR GRID */}
         <div className="max-w-4xl mx-auto px-4 -mt-8 mb-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* PIPE BEDDING CALCULATOR */}
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-200 overflow-hidden">
               <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-6">
                 <div className="flex items-center gap-3">
@@ -476,7 +461,6 @@ export default function DrainageCalculator() {
               </div>
             </div>
 
-            {/* SPOIL & BACKFILL CALCULATOR */}
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-200 overflow-hidden">
               <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-6">
                 <div className="flex items-center gap-3">
@@ -527,7 +511,6 @@ export default function DrainageCalculator() {
             </div>
           </div>
 
-          {/* BEDDING RESULTS WITH DOWNLOAD BUTTON */}
           {showBeddingResults && beddingResults && (
             <div className="mt-8 bg-white rounded-xl shadow-xl border-2 border-purple-200 p-8">
               <div className="flex items-center justify-between mb-6">
@@ -632,7 +615,6 @@ export default function DrainageCalculator() {
             </div>
           )}
 
-          {/* SPOIL RESULTS */}
           {showSpoilResults && spoilResults && (
             <div className="mt-8 bg-white rounded-xl shadow-xl border-2 border-purple-200 p-8">
               <div className="flex items-center justify-between mb-6">
@@ -718,7 +700,6 @@ export default function DrainageCalculator() {
           )}
         </div>
 
-        {/* HOW TO USE SECTION */}
         <div className="bg-white py-16 px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">How to Use This Calculator</h2>
@@ -737,7 +718,6 @@ export default function DrainageCalculator() {
           </div>
         </div>
 
-        {/* UNDERSTANDING DRAINAGE SECTION */}
         <div className="bg-gray-50 py-16 px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">Understanding Drainage Design & Installation</h2>
@@ -800,7 +780,6 @@ export default function DrainageCalculator() {
           </div>
         </div>
 
-        {/* RELATED CALCULATORS */}
         <div className="bg-white py-16 px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">Related TradeCalcs Tools</h2>
@@ -839,7 +818,6 @@ export default function DrainageCalculator() {
           </div>
         </div>
 
-        {/* NEWSLETTER SECTION */}
         <div className="bg-white py-16 px-4">
           <div className="max-w-4xl mx-auto">
             <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl overflow-hidden">
@@ -861,7 +839,6 @@ export default function DrainageCalculator() {
           </div>
         </div>
 
-        {/* FOOTER */}
         <div className="bg-gray-50 py-16 px-4">
           <div className="max-w-4xl mx-auto">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">About TradeCalcs</h3>
@@ -873,7 +850,6 @@ export default function DrainageCalculator() {
         </div>
       </div>
 
-      {/* Save to Project Modal */}
       {showSaveModal && saveData && (
         <SaveToProjectModal
           isOpen={showSaveModal}
