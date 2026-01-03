@@ -286,6 +286,10 @@ export default function ConcreteToBagsCalculator() {
         dumpyBags: results.dumpyBags,
         estimatedCost: parseFloat(results.totalCost),
       },
+      materials: [
+        { description: 'Portland Cement (25kg bag)', quantity: results.cementBags, unit: 'bags' },
+        { description: 'All-in Ballast Dumpy Bag (800kg, 20mm stone)', quantity: results.dumpyBags, unit: 'bags' },
+      ],
     })
     setShowSaveModal(true)
   }
@@ -299,7 +303,6 @@ export default function ConcreteToBagsCalculator() {
   return (
     <>
       <Helmet>
-        {/* Primary Meta Tags */}
         <title>Concrete Calculator UK | Cement & Ballast Bags Calculator | TradeCalcs</title>
         <meta 
           name="description" 
@@ -308,27 +311,19 @@ export default function ConcreteToBagsCalculator() {
         <meta name="keywords" content="concrete calculator, cement calculator, ballast calculator, UK concrete mix, building materials calculator, foundation calculator, concrete bags calculator, mix ratio calculator, c20 c25 c30" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Concrete Calculator UK | Cement & Ballast Bags Calculator" />
         <meta property="og:description" content="Calculate exact cement and ballast bags needed. Free instant results for UK builders and contractors." />
         <meta property="og:url" content="https://tradecalcs.co.uk/concrete-calculator" />
         <meta property="og:image" content="https://tradecalcs.co.uk/images/concrete-calculator-og.jpg" />
         <meta property="og:site_name" content="TradeCalcs" />
-
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Concrete Calculator UK | TradeCalcs" />
         <meta name="twitter:description" content="Free concrete calculator. Calculate exact cement and ballast bags instantly." />
         <meta name="twitter:image" content="https://tradecalcs.co.uk/images/concrete-calculator-og.jpg" />
-
-        {/* Additional SEO */}
         <link rel="canonical" href="https://tradecalcs.co.uk/concrete-calculator" />
         <meta name="author" content="TradeCalcs" />
         <meta name="theme-color" content="#16a34a" />
-
-        {/* Schema Markup */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -420,7 +415,6 @@ export default function ConcreteToBagsCalculator() {
       </Helmet>
 
       <div className="min-h-screen bg-gray-50">
-        {/* BACK BUTTON */}
         <div className="bg-white border-b border-gray-200 px-4 py-3">
           <div className="max-w-4xl mx-auto">
             <button
@@ -433,7 +427,6 @@ export default function ConcreteToBagsCalculator() {
           </div>
         </div>
 
-        {/* HERO SECTION */}
         <div className="bg-gradient-to-br from-green-600 to-green-700 text-white py-16 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-xl mb-6">
@@ -445,7 +438,6 @@ export default function ConcreteToBagsCalculator() {
           </div>
         </div>
 
-        {/* CALCULATOR SECTION */}
         <div className="max-w-4xl mx-auto px-4 -mt-8">
           <div className="bg-white rounded-xl shadow-xl border-2 border-gray-200 overflow-hidden">
             <div className="bg-gradient-to-r from-green-600 to-green-700 text-white p-6">
@@ -526,7 +518,6 @@ export default function ConcreteToBagsCalculator() {
             </div>
           </div>
 
-          {/* RESULTS */}
           {showResults && results && (
             <>
               <div className="mt-8 bg-white rounded-xl shadow-xl border-2 border-green-200 p-8">
@@ -603,7 +594,6 @@ export default function ConcreteToBagsCalculator() {
                 </div>
               </div>
 
-              {/* QUOTE GENERATOR CTA */}
               <div className="mt-6 p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
@@ -632,7 +622,6 @@ export default function ConcreteToBagsCalculator() {
             </>
           )}
 
-          {/* EMAIL CAPTURE CTA */}
           <div className="mt-12 mb-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl p-8 text-white text-center">
             <h3 className="text-2xl font-bold mb-3">Want the Job Profitability Calculator?</h3>
             <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
@@ -664,9 +653,7 @@ export default function ConcreteToBagsCalculator() {
             )}
           </div>
 
-          {/* SEO CONTENT SECTIONS */}
           <div className="space-y-12 mb-16">
-            {/* Important Notes */}
             <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded">
               <div className="flex items-start gap-3 mb-4">
                 <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
@@ -683,7 +670,6 @@ export default function ConcreteToBagsCalculator() {
               </ul>
             </div>
 
-            {/* How to Use */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">How to Use the Concrete-to-Bags Calculator</h2>
               <p className="text-gray-700 mb-4">
@@ -697,7 +683,6 @@ export default function ConcreteToBagsCalculator() {
               </div>
             </div>
 
-            {/* Why Confusing */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Concrete Calculations Are Confusing</h2>
               <p className="text-gray-700 mb-4">
@@ -720,7 +705,6 @@ export default function ConcreteToBagsCalculator() {
               </div>
             </div>
 
-            {/* Concrete Mix Ratios */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">UK Concrete Mix Ratios Explained (20mm Stone)</h2>
               <p className="text-gray-700 mb-4">
@@ -762,7 +746,6 @@ export default function ConcreteToBagsCalculator() {
               </div>
             </div>
 
-            {/* Current Pricing */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Current UK Concrete Material Costs (Q4 2025)</h2>
               <p className="text-gray-700 mb-4">These are current UK market rates. Prices updated regularly. Insurance adjusters and clients often use outdated pricing—this calculator reflects current 2025 costs.</p>
@@ -788,7 +771,6 @@ export default function ConcreteToBagsCalculator() {
               </div>
             </div>
 
-            {/* FAQ */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
               
@@ -831,7 +813,6 @@ export default function ConcreteToBagsCalculator() {
             </div>
           </div>
 
-          {/* CONTACT FORM SECTION */}
           <div className="bg-white rounded-lg shadow-lg p-8 mb-16">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Need Help or Have Questions?</h3>
@@ -857,7 +838,6 @@ export default function ConcreteToBagsCalculator() {
           </div>
         </div>
 
-        {/* FINAL CTA */}
         <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-12 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h3 className="text-3xl font-bold mb-4">Professional Tools for UK Builders & Contractors</h3>
@@ -873,7 +853,6 @@ export default function ConcreteToBagsCalculator() {
           </div>
         </div>
 
-        {/* QUOTE GENERATOR MODAL */}
         {showQuoteGenerator && results && (
           <QuoteGenerator
             calculationResults={{
@@ -889,7 +868,6 @@ export default function ConcreteToBagsCalculator() {
           />
         )}
 
-        {/* Save to Project Modal */}
         {showSaveModal && saveData && (
           <SaveToProjectModal
             isOpen={showSaveModal}
