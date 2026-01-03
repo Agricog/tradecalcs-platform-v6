@@ -13,7 +13,11 @@ import {
   User,
   Mail,
   Phone,
-  MapPin
+  MapPin,
+  CheckCircle,
+  Download,
+  FileCheck,
+  Loader2
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '../lib/api';
@@ -36,6 +40,9 @@ export default function ProjectDetailPage() {
   const [showCustomerQuote, setShowCustomerQuote] = useState(false);
   const [editingMaterial, setEditingMaterial] = useState<any>(null);
   const [showEditProject, setShowEditProject] = useState(false);
+  const [markingInstalled, setMarkingInstalled] = useState(false);
+  const [generatingEvidence, setGeneratingEvidence] = useState(false);
+  const [downloadingEvidence, setDownloadingEvidence] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -80,6 +87,91 @@ export default function ProjectDetailPage() {
       toast.error('Failed to delete project');
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const handleMarkInstalled = async () => {
+    if (!confirm('Mark this project as installed? This will set the installation date to today.')) {
+      return;
+    }
+
+    setMarkingInstalled(true);
+    try {
+      const token = await getToken();
+      const response = await fetch(`/api/projects/${id}/mark-installed`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        setProject((prev: any) => ({
+          ...prev,
+          ...data.data,
+        }));
+        toast.success('Project marked as installed');
+      } else {
+        toast.error(data.error?.message || 'Failed to mark as installed');
+      }
+    } catch (error) {
+      toast.error('Failed to mark as installed');
+    } finally {
+      setMarkingInstalled(false);
+    }
+  };
+
+  const handleGenerateEvidencePack = async () => {
+    setGeneratingEvidence(true);
+    try {
+      const token = await getToken();
+      const response = await fetch(`/api/projects/${id}/generate-evidence-pack`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        setProject((prev: any) => ({
+          ...prev,
+          ...data.data,
+        }));
+        toast.success('Evidence pack generated');
+      } else {
+        toast.error(data.error?.message || 'Failed to generate evidence pack');
+      }
+    } catch (error) {
+      toast.error('Failed to generate evidence pack');
+    } finally {
+      setGeneratingEvidence(false);
+    }
+  };
+
+  const handleDownloadEvidencePack = async () => {
+    setDownloadingEvidence(true);
+    try {
+      const token = await getToken();
+      const response = await fetch(`/api/projects/${id}/evidence-pack-url`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      
+      if (data.success && data.data.url) {
+        window.open(data.data.url, '_blank');
+      } else {
+        toast.error(data.error?.message || 'Failed to get download link');
+      }
+    } catch (error) {
+      toast.error('Failed to download evidence pack');
+    } finally {
+      setDownloadingEvidence(false);
     }
   };
 
@@ -240,55 +332,55 @@ export default function ProjectDetailPage() {
               ) : (
                 <div className="space-y-3">
                   {project.materialItems?.map((material: any) => {
-  const qty = material.totalLength || material.quantity;
-  const unitPrice = Number(material.nettPrice) || Number(material.listPrice) || 0;
-  const totalPrice = unitPrice * qty;
-  
-  return (
-    <div 
-      key={material.id} 
-      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg group hover:bg-gray-100 cursor-pointer transition-colors"
-      onClick={() => setEditingMaterial(material)}
-    >
-      <div className="flex-1">
-        <p className="font-medium">{material.description}</p>
-        <p className="text-sm text-gray-500">
-          {qty} {material.unit}
-        </p>
-      </div>
-      <div className="flex items-center gap-3">
-        {totalPrice > 0 ? (
-          <div className="text-right">
-            <p className="font-medium text-green-600">
-              £{totalPrice.toFixed(2)}
-            </p>
-            {qty > 1 && (
-              <p className="text-xs text-gray-500">
-                £{unitPrice.toFixed(2)} each
-              </p>
-            )}
-          </div>
-        ) : (
-          <span className="text-sm text-orange-500">Not priced</span>
-        )}
-        {(!material.sourceCalcIds || material.sourceCalcIds.length === 0) ? (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDeleteMaterial(material.id);
-            }}
-            className="p-1 text-red-500 hover:bg-red-50 rounded"
-            title="Delete material"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
-        ) : (
-          <span className="text-xs text-gray-400">auto</span>
-        )}
-      </div>
-    </div>
-  );
-})}
+                    const qty = material.totalLength || material.quantity;
+                    const unitPrice = Number(material.nettPrice) || Number(material.listPrice) || 0;
+                    const totalPrice = unitPrice * qty;
+                    
+                    return (
+                      <div 
+                        key={material.id} 
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg group hover:bg-gray-100 cursor-pointer transition-colors"
+                        onClick={() => setEditingMaterial(material)}
+                      >
+                        <div className="flex-1">
+                          <p className="font-medium">{material.description}</p>
+                          <p className="text-sm text-gray-500">
+                            {qty} {material.unit}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          {totalPrice > 0 ? (
+                            <div className="text-right">
+                              <p className="font-medium text-green-600">
+                                £{totalPrice.toFixed(2)}
+                              </p>
+                              {qty > 1 && (
+                                <p className="text-xs text-gray-500">
+                                  £{unitPrice.toFixed(2)} each
+                                </p>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-sm text-orange-500">Not priced</span>
+                          )}
+                          {(!material.sourceCalcIds || material.sourceCalcIds.length === 0) ? (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteMaterial(material.id);
+                              }}
+                              className="p-1 text-red-500 hover:bg-red-50 rounded"
+                              title="Delete material"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          ) : (
+                            <span className="text-xs text-gray-400">auto</span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -314,43 +406,44 @@ export default function ProjectDetailPage() {
                   Create Customer Quote
                 </Button>
               </div>
+
               {project.wholesalerQuotes?.length > 0 && (
-  <div className="mt-4 pt-4 border-t">
-    <h3 className="text-sm font-medium text-gray-700 mb-2">Sent Quotes</h3>
-    <div className="space-y-3">
-      {project.wholesalerQuotes.map((quote: any) => (
-        <div key={quote.id} className="bg-gray-50 p-3 rounded-lg">
-          <div className="flex items-center justify-between mb-2">
-            <span className="font-medium">{quote.wholesalerName}</span>
-            <span className={`px-2 py-0.5 rounded text-xs ${
-              quote.status === 'priced' 
-                ? 'bg-green-100 text-green-700' 
-                : 'bg-yellow-100 text-yellow-700'
-            }`}>
-              {quote.status}
-            </span>
-          </div>
-          {quote.status === 'priced' && (
-            <div className="text-sm space-y-1">
-              {quote.discountPercent > 0 && (
-                <div className="flex justify-between text-green-700">
-                  <span>Account Discount</span>
-                  <span className="font-medium">{quote.discountPercent}%</span>
+                <div className="mt-4 pt-4 border-t">
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">Sent Quotes</h3>
+                  <div className="space-y-3">
+                    {project.wholesalerQuotes.map((quote: any) => (
+                      <div key={quote.id} className="bg-gray-50 p-3 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-medium">{quote.wholesalerName}</span>
+                          <span className={`px-2 py-0.5 rounded text-xs ${
+                            quote.status === 'priced' 
+                              ? 'bg-green-100 text-green-700' 
+                              : 'bg-yellow-100 text-yellow-700'
+                          }`}>
+                            {quote.status}
+                          </span>
+                        </div>
+                        {quote.status === 'priced' && (
+                          <div className="text-sm space-y-1">
+                            {quote.discountPercent > 0 && (
+                              <div className="flex justify-between text-green-700">
+                                <span>Account Discount</span>
+                                <span className="font-medium">{quote.discountPercent}%</span>
+                              </div>
+                            )}
+                            {quote.notes && (
+                              <div className="mt-2 p-2 bg-white rounded border text-gray-600 text-xs">
+                                <span className="font-medium text-gray-700">Notes: </span>
+                                {quote.notes}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
-              {quote.notes && (
-                <div className="mt-2 p-2 bg-white rounded border text-gray-600 text-xs">
-                  <span className="font-medium text-gray-700">Notes: </span>
-                  {quote.notes}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  </div>
-)}
             </div>
           </div>
 
@@ -359,17 +452,17 @@ export default function ProjectDetailPage() {
             {/* Customer Details */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <div className="flex items-center justify-between mb-4">
-  <h2 className="text-lg font-semibold flex items-center gap-2">
-    <User className="w-5 h-5 text-purple-600" />
-    Customer Details
-  </h2>
-  <button
-    onClick={() => setShowEditProject(true)}
-    className="text-sm text-purple-600 hover:text-purple-700"
-  >
-    Edit
-  </button>
-</div>
+                <h2 className="text-lg font-semibold flex items-center gap-2">
+                  <User className="w-5 h-5 text-purple-600" />
+                  Customer Details
+                </h2>
+                <button
+                  onClick={() => setShowEditProject(true)}
+                  className="text-sm text-purple-600 hover:text-purple-700"
+                >
+                  Edit
+                </button>
+              </div>
               
               <div className="space-y-3">
                 {project.customerName && (
@@ -412,8 +505,20 @@ export default function ProjectDetailPage() {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Status</span>
-                  <span className="font-medium capitalize">{project.status}</span>
+                  <span className={`font-medium capitalize ${
+                    project.status === 'installed' ? 'text-green-600' : ''
+                  }`}>
+                    {project.status}
+                  </span>
                 </div>
+                {project.installationDate && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Installed</span>
+                    <span className="font-medium">
+                      {new Date(project.installationDate).toLocaleDateString('en-GB')}
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span className="text-gray-600">Calculations</span>
                   <span className="font-medium">{project.calculations?.length || 0}</span>
@@ -427,6 +532,79 @@ export default function ProjectDetailPage() {
                   <span className="font-medium">{project.wholesalerQuotes?.length || 0}</span>
                 </div>
               </div>
+            </div>
+
+            {/* Compliance Section */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <FileCheck className="w-5 h-5 text-purple-600" />
+                Compliance
+              </h2>
+
+              {project.status !== 'installed' ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-600">
+                    Mark this project as installed to generate a BS 7671 compliance evidence pack.
+                  </p>
+                  <Button 
+                    onClick={handleMarkInstalled}
+                    disabled={markingInstalled || project.calculations?.length === 0}
+                    className="w-full"
+                  >
+                    {markingInstalled ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                    )}
+                    Mark as Installed
+                  </Button>
+                  {project.calculations?.length === 0 && (
+                    <p className="text-xs text-orange-500">
+                      Add calculations first to enable compliance features
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-green-600 text-sm">
+                    <CheckCircle className="w-4 h-4" />
+                    <span>Project installed</span>
+                  </div>
+
+                  {project.evidencePackUrl ? (
+                    <Button 
+                      onClick={handleDownloadEvidencePack}
+                      disabled={downloadingEvidence}
+                      variant="secondary"
+                      className="w-full"
+                    >
+                      {downloadingEvidence ? (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      ) : (
+                        <Download className="w-4 h-4 mr-2" />
+                      )}
+                      Download Evidence Pack
+                    </Button>
+                  ) : (
+                    <Button 
+                      onClick={handleGenerateEvidencePack}
+                      disabled={generatingEvidence}
+                      className="w-full"
+                    >
+                      {generatingEvidence ? (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      ) : (
+                        <FileCheck className="w-4 h-4 mr-2" />
+                      )}
+                      Generate Evidence Pack
+                    </Button>
+                  )}
+
+                  <p className="text-xs text-gray-500">
+                    Evidence pack includes all BS 7671 design calculations for NICEIC/EIC compliance.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -455,23 +633,23 @@ export default function ProjectDetailPage() {
       />
 
       {/* Customer Quote Modal */}
-<CustomerQuoteModal
-  isOpen={showCustomerQuote}
-  onClose={() => setShowCustomerQuote(false)}
-  projectId={id!}
-  projectName={project.name}
-  projectAddress={project.address}
-  customerName={project.customerName}
-  customerEmail={project.customerEmail}
-  customerPhone={project.customerPhone}
-  materials={project.materialItems || []}
-  onCreated={(quote) => {
-    setProject((prev: any) => ({
-      ...prev,
-      customerQuotes: [...(prev.customerQuotes || []), quote],
-    }));
-  }}
-/>
+      <CustomerQuoteModal
+        isOpen={showCustomerQuote}
+        onClose={() => setShowCustomerQuote(false)}
+        projectId={id!}
+        projectName={project.name}
+        projectAddress={project.address}
+        customerName={project.customerName}
+        customerEmail={project.customerEmail}
+        customerPhone={project.customerPhone}
+        materials={project.materialItems || []}
+        onCreated={(quote) => {
+          setProject((prev: any) => ({
+            ...prev,
+            customerQuotes: [...(prev.customerQuotes || []), quote],
+          }));
+        }}
+      />
 
       {/* Edit Material Price Modal */}
       {editingMaterial && (
@@ -484,15 +662,15 @@ export default function ProjectDetailPage() {
       )}
 
       {/* Edit Project Modal */}
-<EditProjectModal
-  isOpen={showEditProject}
-  onClose={() => setShowEditProject(false)}
-  project={project}
-  onUpdated={(updatedProject) => setProject((prev: any) => ({
-    ...prev,
-    ...updatedProject,
-  }))}
-/>
+      <EditProjectModal
+        isOpen={showEditProject}
+        onClose={() => setShowEditProject(false)}
+        project={project}
+        onUpdated={(updatedProject) => setProject((prev: any) => ({
+          ...prev,
+          ...updatedProject,
+        }))}
+      />
     </div>
   );
 }
