@@ -3,7 +3,17 @@ import { z } from 'zod';
 export const createCalculationSchema = z.object({
   projectId: z.string().min(1, 'Project ID is required'),
   circuitName: z.string().min(1, 'Circuit name is required').max(200),
-  calcType: z.enum(['cable_sizing', 'voltage_drop', 'disconnection', 'max_demand', 'conduit_fill', 'brick_calc']),
+  calcType: z.enum([
+    'cable_sizing',
+    'voltage_drop',
+    'disconnection',
+    'max_demand',
+    'conduit_fill',
+    'brick_calc',
+    'drainage_bedding',
+    'drainage_spoil',
+    'concrete_to_bags'
+  ]),
   inputs: z.record(z.any()).optional(),
   outputs: z.record(z.any()).optional(),
   inputParameters: z.record(z.any()).optional(),
