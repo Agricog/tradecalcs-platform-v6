@@ -201,13 +201,31 @@ export default function ProjectDetailPage() {
   };
 
   const handleDownloadInvoicePDF = async (invoiceId: string) => {
-    try {
-      const token = await getToken();
-      window.open(`/api/invoices/${invoiceId}/pdf?token=${token}`, '_blank');
-    } catch (error) {
-      toast.error('Failed to download invoice');
+  try {
+    const token = await getToken();
+    const response = await fetch(`/api/invoices/${invoiceId}/pdf`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to generate PDF');
     }
-  };
+    
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `invoice-${invoiceId}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    toast.error('Failed to download invoice');
+  }
+};
 
   const handleMarkInvoicePaid = async (invoiceId: string) => {
     setMarkingPaid(invoiceId);
