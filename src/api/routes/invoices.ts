@@ -150,12 +150,12 @@ router.post('/from-quote/:quoteId', async (req: Request, res: Response) => {
               total: (Number(item.nettPrice || item.listPrice || 0)) * Number(item.totalLength || item.quantity || 1),
             })),
             // Labour items
-            ...quote.labourItems.map((item) => ({
-              description: item.description,
-              quantity: item.hours || 1,
-              unitPrice: item.rate,
-              total: item.total,
-            })),
+...quote.labourItems.map((item) => ({
+  description: item.description,
+  quantity: item.hours || 1,
+  unitPrice: item.rate || item.total || 0,
+  total: item.total,
+})),
           ],
         },
       },
