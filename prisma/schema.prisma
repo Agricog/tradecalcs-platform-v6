@@ -19,6 +19,8 @@ model Project {
   status        String   @default("draft")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
+  installationDate DateTime? @map("installation_date")
+  evidencePackUrl  String?   @map("evidence_pack_url")
 
   calculations     Calculation[]
   materialItems    MaterialItem[]
