@@ -83,32 +83,17 @@ export default function DrainageCalculator() {
     setSaveData({
       calcType: 'drainage_bedding',
       circuitName: `${beddingResults.diameter}" Drainage - ${pipeLength}m`,
-      resultData: {
+      inputs: {
         pipeDiameter: beddingResults.diameter,
-        pipeDiameterMm: beddingResults.diameterMm,
         pipeLength: parseFloat(pipeLength),
+      },
+      outputs: {
+        pipeDiameterMm: beddingResults.diameterMm,
         beddingVolume: beddingResults.beddingVolume,
         stoneRequired: beddingResults.stoneRequired,
         pipesNeeded: beddingResults.pipesNeeded,
         connectorsNeeded: beddingResults.connectorsNeeded,
       },
-      materials: [
-        {
-          description: `10mm Bedding Stone`,
-          quantity: beddingResults.stoneRequired,
-          unit: 'tonnes',
-        },
-        {
-          description: `${beddingResults.diameter}" Drainage Pipe (3m)`,
-          quantity: beddingResults.pipesNeeded,
-          unit: 'lengths',
-        },
-        {
-          description: `${beddingResults.diameter}" Straight Connector`,
-          quantity: beddingResults.connectorsNeeded,
-          unit: 'units',
-        },
-      ].filter(m => m.quantity > 0),
     })
     setShowSaveModal(true)
   }
@@ -119,12 +104,14 @@ export default function DrainageCalculator() {
     setSaveData({
       calcType: 'drainage_spoil',
       circuitName: `Drainage Trench - ${trenchLength}m`,
-      resultData: {
+      inputs: {
         trenchWidth: parseFloat(trenchWidth),
         trenchDepth: parseFloat(trenchDepth),
         trenchLength: parseFloat(trenchLength),
         pipeDiameter: parseFloat(pipeDiameter2),
         pipeLength: parseFloat(pipeLength2),
+      },
+      outputs: {
         totalSpoil: spoilResults.totalSpoil,
         beddingVolume: spoilResults.beddingVolume,
         backfillUsed: spoilResults.backfillUsed,
@@ -132,18 +119,6 @@ export default function DrainageCalculator() {
         pipesNeeded: spoilResults.pipesNeeded,
         beddingStone: spoilResults.beddingStone,
       },
-      materials: [
-        {
-          description: `10mm Bedding Stone`,
-          quantity: spoilResults.beddingStone,
-          unit: 'tonnes',
-        },
-        {
-          description: `${pipeDiameter2}" Drainage Pipe (3m)`,
-          quantity: spoilResults.pipesNeeded,
-          unit: 'lengths',
-        },
-      ],
     })
     setShowSaveModal(true)
   }
@@ -917,7 +892,6 @@ export default function DrainageCalculator() {
     </>
   )
 }
-
 
 
 
