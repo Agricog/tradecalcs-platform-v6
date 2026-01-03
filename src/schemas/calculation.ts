@@ -22,6 +22,11 @@ export const createCalculationSchema = z.object({
   cableSize: z.string().max(50).optional(),
   lengthMetres: z.number().positive().optional(),
   quantity: z.number().int().positive().default(1),
+  materials: z.array(z.object({
+    description: z.string(),
+    quantity: z.number(),
+    unit: z.string(),
+  })).optional(),
 });
 
 export const updateCalculationSchema = z.object({
