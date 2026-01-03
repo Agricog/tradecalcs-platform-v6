@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Package, Building2, CheckCircle, AlertCircle, Send } from 'lucide-react';
+import { Package, Building2, CheckCircle, AlertCircle, Send, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
@@ -78,6 +78,44 @@ export default function WholesalerQuotePage() {
     }
   };
 
+  const handleDeleteMaterial = async (materialId: string) => {
+    if (!confirm('Remove this item from the quote?')) return;
+    
+    try {
+      const response = await fetch(`/api/wholesaler-quotes/public/${token}/materials/${materialId}`, {
+        method: 'DELETE',
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Remove from local state
+        setQuote(prev => prev ? {
+          ...prev,
+          materials: prev.materials.filter(m => m.id !== materialId)
+        } : null);
+        
+        // Clean up pricing state
+        setUnitPrices(prev => {
+          const updated = { ...prev };
+          delete updated[materialId];
+          return updated;
+        });
+        setExcludeDiscount(prev => {
+          const updated = { ...prev };
+          delete updated[materialId];
+          return updated;
+        });
+        
+        toast.success('Item removed');
+      } else {
+        toast.error(data.error?.message || 'Failed to remove item');
+      }
+    } catch (err) {
+      toast.error('Failed to remove item');
+    }
+  };
+
   const getQuantity = (material: Material) => {
     return material.totalLength || material.quantity;
   };
@@ -103,10 +141,8 @@ export default function WholesalerQuotePage() {
     quote?.materials.forEach(material => {
       const lineTotal = getLineTotal(material);
       if (excludeDiscount[material.id]) {
-        // No discount on this item
         total += lineTotal;
       } else {
-        // Apply discount
         total += lineTotal * (1 - discountPercent / 100);
       }
     });
@@ -129,7 +165,6 @@ export default function WholesalerQuotePage() {
 
     setSubmitting(true);
     try {
-      // Update material prices (store the UNIT PRICE)
       for (const material of quote?.materials || []) {
         const unitPrice = parseFloat(unitPrices[material.id]) || 0;
         if (unitPrice > 0) {
@@ -141,25 +176,23 @@ export default function WholesalerQuotePage() {
         }
       }
 
-      // Build notes with excluded items info
-const excludedItems = quote?.materials.filter(m => excludeDiscount[m.id]) || [];
-let finalNotes = formData.notes || '';
+      const excludedItems = quote?.materials.filter(m => excludeDiscount[m.id]) || [];
+      let finalNotes = formData.notes || '';
 
-if (excludedItems.length > 0) {
-  const excludedList = excludedItems.map(m => m.description).join(', ');
-  const excludedNote = `\n\n⚠️ No discount applied to: ${excludedList}`;
-  finalNotes = finalNotes + excludedNote;
-}
+      if (excludedItems.length > 0) {
+        const excludedList = excludedItems.map(m => m.description).join(', ');
+        const excludedNote = `\n\n⚠️ No discount applied to: ${excludedList}`;
+        finalNotes = finalNotes + excludedNote;
+      }
 
-// Update quote with discount
-const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
-  method: 'PATCH',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    discountPercent: parseFloat(formData.discountPercent) || 0,
-    notes: finalNotes.trim() || null,
-  }),
-});
+      const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          discountPercent: parseFloat(formData.discountPercent) || 0,
+          notes: finalNotes.trim() || null,
+        }),
+      });
 
       const data = await response.json();
 
@@ -207,7 +240,6 @@ const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-blue-500 text-white py-8 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-2 mb-2 opacity-90">
@@ -238,7 +270,6 @@ const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
           </div>
         ) : (
           <>
-            {/* Account Info */}
             {quote.accountNumber && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 flex items-center gap-3">
                 <Building2 className="w-5 h-5 text-blue-600" />
@@ -249,7 +280,6 @@ const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
               </div>
             )}
 
-            {/* Materials List with Pricing */}
             <div className="bg-white rounded-lg shadow-lg mb-6">
               <div className="p-4 border-b">
                 <h2 className="text-lg font-semibold flex items-center gap-2">
@@ -259,12 +289,12 @@ const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
                 <p className="text-sm text-gray-500 mt-1">Enter your price per unit - totals calculate automatically</p>
               </div>
               
-              {/* Table Header */}
               <div className="grid grid-cols-12 gap-2 px-4 py-2 bg-gray-50 border-b text-sm font-medium text-gray-600">
                 <div className="col-span-5">Item</div>
                 <div className="col-span-2 text-center">Qty</div>
                 <div className="col-span-2 text-center">Unit Price</div>
-                <div className="col-span-3 text-right">Line Total</div>
+                <div className="col-span-2 text-right">Line Total</div>
+                <div className="col-span-1"></div>
               </div>
 
               <div className="divide-y">
@@ -298,14 +328,23 @@ const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
                             />
                           </div>
                         </div>
-                        <div className="col-span-3 text-right">
+                        <div className="col-span-2 text-right">
                           <span className={`font-semibold ${lineTotal > 0 ? 'text-green-600' : 'text-gray-400'}`}>
                             £{lineTotal.toFixed(2)}
                           </span>
                         </div>
+                        <div className="col-span-1 text-right">
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteMaterial(material.id)}
+                            className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition"
+                            title="Remove item"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
                       
-                      {/* Exclude from discount checkbox - only show when discount is entered */}
                       {discountPercent > 0 && lineTotal > 0 && (
                         <div className="mt-2 ml-6">
                           <label className="flex items-center gap-2 text-sm cursor-pointer">
@@ -334,7 +373,6 @@ const response = await fetch(`/api/wholesaler-quotes/public/${token}`, {
               </div>
             </div>
 
-            {/* Discount & Notes Form */}
             <div className="bg-white rounded-lg shadow-lg p-6">
               <h2 className="text-lg font-semibold mb-4">Account Discount & Notes</h2>
               <form onSubmit={handleSubmit} className="space-y-4">
