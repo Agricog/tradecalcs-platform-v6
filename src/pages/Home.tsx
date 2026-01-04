@@ -198,41 +198,42 @@ export default function Home() {
               NEW FEATURE
             </div>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Turn Calculations Into Professional Quotes
+              From Calculation to Compliance — All in One Place
             </h2>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Calculate materials, get wholesaler pricing, add labour costs, and generate<br />
-              client-ready PDF quotes — all in one workflow.
+              Save calculations to projects, auto-extract materials, get wholesaler pricing,<br />
+              generate quotes & invoices, and download compliance evidence packs.
             </p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
             {[
-              { step: '1', title: 'Calculate', desc: 'Run BS 7671 compliant calculations' },
-              { step: '2', title: 'Price Materials', desc: 'Send to wholesaler for live pricing' },
-              { step: '3', title: 'Add Labour', desc: 'Set day rates, markup & VAT' },
-              { step: '4', title: 'Send Quote', desc: 'Download professional PDF instantly' }
+              { step: '1', title: 'Calculate', desc: 'BS 7671 compliant' },
+              { step: '2', title: 'Save to Project', desc: 'Materials auto-extracted' },
+              { step: '3', title: 'Get Pricing', desc: 'Send to wholesaler' },
+              { step: '4', title: 'Quote Customer', desc: 'Professional PDF' },
+              { step: '5', title: 'Invoice', desc: 'Track payments' },
+              { step: '6', title: 'Evidence Pack', desc: 'Compliance records' }
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-lg p-6 border-2 border-purple-200 text-center">
-                <div className="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold mx-auto mb-3">
+              <div key={i} className="bg-white rounded-lg p-4 border-2 border-purple-200 text-center">
+                <div className="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2 text-sm">
                   {item.step}
                 </div>
-                <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.desc}</p>
+                <h3 className="font-bold text-gray-900 text-sm mb-1">{item.title}</h3>
+                <p className="text-xs text-gray-600">{item.desc}</p>
               </div>
             ))}
           </div>
-
           <div className="bg-white rounded-xl shadow-xl p-8 border-2 border-purple-200">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Tradespeople Love It</h3>
                 <div className="space-y-3">
                   {[
-                    { title: 'Quotes backed by real calculations', desc: 'Not blank forms — actual BS 7671 compliant data' },
-                    { title: 'Wholesaler pricing built in', desc: 'Send materials list, get prices back automatically' },
-                    { title: 'Professional PDFs in seconds', desc: 'Your branding, proper layout, ready to email' },
-                    { title: 'Free to start', desc: 'No subscription needed for basic quoting' }
+                    { title: 'Calculations backed by real data', desc: 'Not blank forms — actual BS 7671 & Building Regs compliant records' },
+                    { title: 'Wholesaler pricing built in', desc: 'Send materials list, get trade prices back automatically' },
+                    { title: 'Professional quotes & invoices', desc: 'Your branding, proper layout, payment tracking included' },
+                    { title: 'Compliance evidence packs', desc: 'Download PDF proof of all design calculations for any project' },
+                    { title: 'Free to start', desc: 'No subscription needed for basic projects' }
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
@@ -245,11 +246,25 @@ export default function Home() {
                 </div>
               </div>
               <div className="text-center">
+                <div className="bg-gradient-to-br from-green-50 to-emerald-100 border-2 border-green-200 rounded-lg p-6 mb-6">
+                  <Shield className="w-12 h-12 text-green-600 mx-auto mb-3" />
+                  <h4 className="font-bold text-gray-900 mb-2">Compliance Evidence Packs</h4>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Download professional PDF records of all calculations for any project. 
+                    Perfect for building control, insurance claims, and client records.
+                  </p>
+                  <div className="flex flex-wrap gap-2 justify-center text-xs">
+                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded">BS 7671</span>
+                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded">Building Regs</span>
+                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded">Part H</span>
+                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded">BS 8500</span>
+                  </div>
+                </div>
                 <Link 
                   to="/projects" 
                   className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-bold transition"
                 >
-                  Start Your First Quote
+                  Start Your First Project
                 </Link>
                 <p className="text-sm text-gray-600 mt-3">Free • No signup required to try</p>
               </div>
