@@ -313,6 +313,7 @@ function App() {
           <Route path="/cable-calculator" element={<Navigate to="/cable-sizing-calculator" replace />} />
           <Route path="/plaster-calculator" element={<Navigate to="/plasterer-calculator" replace />} />
           <Route path="/stud-wall-calculator" element={<Navigate to="/joinery-calculator" replace />} />
+          <Route path="/plasterer-calculators" element={<Navigate to="/plaster-calculator" replace />} />
           <Route path="/contact" element={<Navigate to="/" replace />} />
           <Route path="/privacy" element={<Navigate to="/privacy-policy" replace />} />
            </Routes>
