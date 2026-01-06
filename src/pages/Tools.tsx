@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Calculator, Zap, Wrench, Home, ArrowRight } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 
 export default function Tools() {
   const tools = [
@@ -10,31 +11,40 @@ export default function Tools() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">All Calculators</h1>
-          <p className="text-xl text-gray-600">Free professional tools for UK tradespeople</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {tools.map((tool) => {
-            const IconComponent = tool.icon
-            return (
-              <Link key={tool.id} to={tool.link} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
-                <div className={`bg-gradient-to-br ${tool.color} w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                  <IconComponent className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{tool.name}</h3>
-                <p className="text-gray-600 mb-4">{tool.description}</p>
-                <span className="text-purple-600 font-semibold flex items-center group-hover:translate-x-2 transition-transform">
-                  Open Tool <ArrowRight className="ml-2 w-4 h-4" />
-                </span>
-              </Link>
-            )
-          })}
+    <>
+      <Helmet>
+        <title>Free Trade Calculators UK | Electrical, Plumbing & Building Tools | TradeCalcs</title>
+        <meta name="description" content="Free professional calculators for UK tradespeople. Cable sizing, voltage drop, BSP threads, roofing and more. BS 7671 compliant tools." />
+        <link rel="canonical" href="https://tradecalcs.co.uk/tools" />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">All Calculators</h1>
+            <p className="text-xl text-gray-600">Free professional tools for UK tradespeople</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {tools.map((tool) => {
+              const IconComponent = tool.icon
+              return (
+                <Link key={tool.id} to={tool.link} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
+                  <div className={`bg-gradient-to-br ${tool.color} w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                    <IconComponent className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{tool.name}</h3>
+                  <p className="text-gray-600 mb-4">{tool.description}</p>
+                  <span className="text-purple-600 font-semibold flex items-center group-hover:translate-x-2 transition-transform">
+                    Open Tool <ArrowRight className="ml-2 w-4 h-4" />
+                  </span>
+                </Link>
+              )
+            })}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
