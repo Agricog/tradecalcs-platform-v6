@@ -24,12 +24,13 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://clerk.com", "https://*.clerk.accounts.dev"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://clerk.com", "https://*.clerk.accounts.dev", "https://www.googletagmanager.com", "https://www.google-analytics.com"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:", "blob:"],
-      connectSrc: ["'self'", "https://clerk.com", "https://*.clerk.accounts.dev", "https://*.neon.tech"],
-      frameSrc: ["'self'", "https://clerk.com", "https://*.clerk.accounts.dev"],
+      connectSrc: ["'self'", "https://clerk.com", "https://*.clerk.accounts.dev", "https://*.neon.tech", "https://clerk-telemetry.com", "https://www.google-analytics.com", "https://region1.google-analytics.com"],
+      frameSrc: ["'self'", "https://clerk.com", "https://*.clerk.accounts.dev", "https://app.smartsuite.com"],
+      workerSrc: ["'self'", "blob:"],
     },
   },
 }));
