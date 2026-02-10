@@ -5,22 +5,64 @@ import QuoteGenerator from './QuoteGenerator'
 
 export default function RoofingCalculator() {
   const [roofType, setRoofType] = useState('gable')
-  const [length, setLength] = useState('')
-  const [width, setWidth] = useState('')
+  const [unit, setUnit] = useState<'metric' | 'imperial'>('metric')
+  
+  // Metric inputs
+  const [lengthM, setLengthM] = useState('')
+  const [widthM, setWidthM] = useState('')
+  
+  // Imperial inputs
+  const [lengthFt, setLengthFt] = useState('')
+  const [lengthIn, setLengthIn] = useState('')
+  const [widthFt, setWidthFt] = useState('')
+  const [widthIn, setWidthIn] = useState('')
+  
   const [pitch, setPitch] = useState('30')
   const [tileType, setTileType] = useState('concrete')
   const [adjusterQuote, setAdjusterQuote] = useState('')
   const [result, setResult] = useState<any>(null)
   const [showQuoteGenerator, setShowQuoteGenerator] = useState(false)
 
+  // Conversion helpers
+  const feetInchesToMeters = (feet: string, inches: string): number => {
+    const ft = parseFloat(feet) || 0
+    const inc = parseFloat(inches) || 0
+    return (ft * 0.3048) + (inc * 0.0254)
+  }
+
+  const metersToFeetInches = (meters: number): { feet: number; inches: number } => {
+    const totalInches = meters / 0.0254
+    const feet = Math.floor(totalInches / 12)
+    const inches = Math.round(totalInches % 12)
+    return { feet, inches }
+  }
+
+  const sqMetersToSqFeet = (sqm: number): number => sqm * 10.764
+
+  // Get length and width in meters regardless of input unit
+  const getLengthMeters = (): number => {
+    if (unit === 'metric') {
+      return parseFloat(lengthM) || 0
+    }
+    return feetInchesToMeters(lengthFt, lengthIn)
+  }
+
+  const getWidthMeters = (): number => {
+    if (unit === 'metric') {
+      return parseFloat(widthM) || 0
+    }
+    return feetInchesToMeters(widthFt, widthIn)
+  }
+
   const calculate = () => {
-    if (!length || !width) {
-      alert('Please enter length and width')
+    const L = getLengthMeters()
+    const W = getWidthMeters()
+
+    if (L <= 0 || W <= 0) {
+      alert('Please enter valid length and width')
       return
     }
 
-    const L = parseFloat(length)
-    const W = parseFloat(width)
     const P = parseFloat(pitch)
     const baseArea = L * W
     const pitchRad = (P * Math.PI) / 180
@@ -53,11 +95,22 @@ export default function RoofingCalculator() {
     const materialCost = tiles * tileCost
     const labourCost = totalArea * 45
 
+    // Store dimensions for display
+    const lengthDisplay = unit === 'metric' 
+      ? `${L.toFixed(2)}m` 
+      : `${lengthFt}'${lengthIn}"`
+    const widthDisplay = unit === 'metric' 
+      ? `${W.toFixed(2)}m` 
+      : `${widthFt}'${widthIn}"`
+
     setResult({
       roofType: roofName,
       baseArea: baseArea.toFixed(2),
+      baseAreaSqFt: sqMetersToSqFeet(baseArea).toFixed(0),
       area: area.toFixed(2),
+      areaSqFt: sqMetersToSqFeet(area).toFixed(0),
       totalArea: totalArea.toFixed(2),
+      totalAreaSqFt: sqMetersToSqFeet(totalArea).toFixed(0),
       waste: ((wasteMultiplier - 1) * 100).toFixed(0),
       tileName,
       tiles,
@@ -65,7 +118,10 @@ export default function RoofingCalculator() {
       labourCost: labourCost.toFixed(2),
       totalCost: (materialCost + labourCost).toFixed(2),
       adjusterQuote: adjusterQuote ? parseFloat(adjusterQuote).toFixed(2) : null,
-      gap: adjusterQuote ? (Math.abs(materialCost + labourCost - parseFloat(adjusterQuote)).toFixed(2)) : null
+      gap: adjusterQuote ? (Math.abs(materialCost + labourCost - parseFloat(adjusterQuote)).toFixed(2)) : null,
+      lengthDisplay,
+      widthDisplay,
+      unit
     })
   }
 
@@ -230,6 +286,35 @@ export default function RoofingCalculator() {
               </div>
             </div>
 
+            {/* UNIT TOGGLE */}
+            <div className="mb-6">
+              <label className="block font-bold text-gray-800 mb-3">Measurement Units</label>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setUnit('metric')}
+                  className={`flex-1 py-3 px-4 rounded-lg border-2 font-semibold transition ${
+                    unit === 'metric'
+                      ? 'bg-green-100 border-green-700 text-green-900'
+                      : 'border-gray-300 text-gray-700 hover:border-green-600'
+                  }`}
+                >
+                  <span className="block text-lg">Metric</span>
+                  <span className="text-xs font-normal text-gray-600">Meters (m)</span>
+                </button>
+                <button
+                  onClick={() => setUnit('imperial')}
+                  className={`flex-1 py-3 px-4 rounded-lg border-2 font-semibold transition ${
+                    unit === 'imperial'
+                      ? 'bg-green-100 border-green-700 text-green-900'
+                      : 'border-gray-300 text-gray-700 hover:border-green-600'
+                  }`}
+                >
+                  <span className="block text-lg">Imperial</span>
+                  <span className="text-xs font-normal text-gray-600">Feet &amp; Inches (ft/in)</span>
+                </button>
+              </div>
+            </div>
+
             {/* STEP 1: ROOF TYPE */}
             <div className="mb-8">
               <label className="block font-bold text-gray-800 mb-3">1. Roof Type</label>
@@ -270,45 +355,127 @@ export default function RoofingCalculator() {
               </div>
             </div>
 
-            {/* STEP 2, 3, 4 */}
-            <div className="grid grid-cols-3 gap-4 mb-8">
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">2. Length (meters)</label>
-                <input
-                  type="number"
-                  value={length}
-                  onChange={e => setLength(e.target.value)}
-                  placeholder="e.g., 10"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
-                  aria-label="Roof length in meters"
-                />
+            {/* STEP 2 & 3: LENGTH & WIDTH - CONDITIONAL ON UNIT */}
+            {unit === 'metric' ? (
+              <div className="grid grid-cols-3 gap-4 mb-8">
+                <div>
+                  <label className="block font-semibold text-gray-800 mb-2">2. Length (meters)</label>
+                  <input
+                    type="number"
+                    value={lengthM}
+                    onChange={e => setLengthM(e.target.value)}
+                    placeholder="e.g., 10"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
+                    aria-label="Roof length in meters"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-gray-800 mb-2">3. Width (meters)</label>
+                  <input
+                    type="number"
+                    value={widthM}
+                    onChange={e => setWidthM(e.target.value)}
+                    placeholder="e.g., 8"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
+                    aria-label="Roof width in meters"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-gray-800 mb-2">4. Roof Pitch (degrees)</label>
+                  <select
+                    value={pitch}
+                    onChange={e => setPitch(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
+                    aria-label="Roof pitch in degrees"
+                  >
+                    <option value="15">15° (shallow)</option>
+                    <option value="30">30° (standard)</option>
+                    <option value="45">45° (steep)</option>
+                    <option value="60">60° (very steep)</option>
+                  </select>
+                </div>
               </div>
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">3. Width (meters)</label>
-                <input
-                  type="number"
-                  value={width}
-                  onChange={e => setWidth(e.target.value)}
-                  placeholder="e.g., 8"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
-                  aria-label="Roof width in meters"
-                />
+            ) : (
+              <div className="mb-8">
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  {/* Length in feet/inches */}
+                  <div>
+                    <label className="block font-semibold text-gray-800 mb-2">2. Length</label>
+                    <div className="flex gap-2">
+                      <div className="flex-1">
+                        <input
+                          type="number"
+                          value={lengthFt}
+                          onChange={e => setLengthFt(e.target.value)}
+                          placeholder="Feet"
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
+                          aria-label="Roof length feet"
+                        />
+                        <span className="text-xs text-gray-500 mt-1 block text-center">ft</span>
+                      </div>
+                      <div className="flex-1">
+                        <input
+                          type="number"
+                          value={lengthIn}
+                          onChange={e => setLengthIn(e.target.value)}
+                          placeholder="Inches"
+                          min="0"
+                          max="11"
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
+                          aria-label="Roof length inches"
+                        />
+                        <span className="text-xs text-gray-500 mt-1 block text-center">in</span>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Width in feet/inches */}
+                  <div>
+                    <label className="block font-semibold text-gray-800 mb-2">3. Width</label>
+                    <div className="flex gap-2">
+                      <div className="flex-1">
+                        <input
+                          type="number"
+                          value={widthFt}
+                          onChange={e => setWidthFt(e.target.value)}
+                          placeholder="Feet"
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
+                          aria-label="Roof width feet"
+                        />
+                        <span className="text-xs text-gray-500 mt-1 block text-center">ft</span>
+                      </div>
+                      <div className="flex-1">
+                        <input
+                          type="number"
+                          value={widthIn}
+                          onChange={e => setWidthIn(e.target.value)}
+                          placeholder="Inches"
+                          min="0"
+                          max="11"
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
+                          aria-label="Roof width inches"
+                        />
+                        <span className="text-xs text-gray-500 mt-1 block text-center">in</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Pitch */}
+                <div>
+                  <label className="block font-semibold text-gray-800 mb-2">4. Roof Pitch (degrees)</label>
+                  <select
+                    value={pitch}
+                    onChange={e => setPitch(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
+                    aria-label="Roof pitch in degrees"
+                  >
+                    <option value="15">15° (shallow)</option>
+                    <option value="30">30° (standard)</option>
+                    <option value="45">45° (steep)</option>
+                    <option value="60">60° (very steep)</option>
+                  </select>
+                </div>
               </div>
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">4. Roof Pitch (degrees)</label>
-                <select
-                  value={pitch}
-                  onChange={e => setPitch(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
-                  aria-label="Roof pitch in degrees"
-                >
-                  <option value="15">15° (shallow)</option>
-                  <option value="30">30° (standard)</option>
-                  <option value="45">45° (steep)</option>
-                  <option value="60">60° (very steep)</option>
-                </select>
-              </div>
-            </div>
+            )}
 
             {/* STEP 5: TILE TYPE */}
             <div className="mb-8">
@@ -388,7 +555,13 @@ export default function RoofingCalculator() {
                     </div>
                     <div className="bg-white p-3 rounded border border-green-300">
                       <p className="text-xs text-gray-600">Total Area (with waste)</p>
-                      <p className="font-bold text-green-800">{result.totalArea}m²</p>
+                      <p className="font-bold text-green-800">
+                        {result.unit === 'metric' ? (
+                          <>{result.totalArea}m² <span className="text-xs font-normal text-gray-500">({result.totalAreaSqFt} ft²)</span></>
+                        ) : (
+                          <>{result.totalAreaSqFt} ft² <span className="text-xs font-normal text-gray-500">({result.totalArea}m²)</span></>
+                        )}
+                      </p>
                     </div>
                     <div className="bg-white p-3 rounded border border-green-300">
                       <p className="text-xs text-gray-600">Tiles Needed</p>
@@ -406,10 +579,19 @@ export default function RoofingCalculator() {
                       <p className="font-semibold">£{result.materialCost}</p>
                     </div>
                     <div className="flex justify-between mb-2">
-                      <p className="text-sm text-gray-600">Base area: {result.baseArea}m² + {result.waste}% waste = {result.totalArea}m²</p>
+                      <p className="text-sm text-gray-600">
+                        {result.unit === 'metric' ? (
+                          <>Base area: {result.baseArea}m² + {result.waste}% waste = {result.totalArea}m²</>
+                        ) : (
+                          <>Base area: {result.baseAreaSqFt} ft² + {result.waste}% waste = {result.totalAreaSqFt} ft²</>
+                        )}
+                      </p>
                     </div>
                     <div className="flex justify-between mb-4 border-t border-gray-300 pt-3">
-                      <p className="font-semibold">Professional Labour (£45/m²)</p>
+                      <p className="font-semibold">
+                        Professional Labour 
+                        {result.unit === 'metric' ? ' (£45/m²)' : ' (£4.18/ft²)'}
+                      </p>
                       <p className="font-semibold">£{result.labourCost}</p>
                     </div>
                     <div className="flex justify-between bg-green-200 p-4 rounded font-bold text-lg border-2 border-green-700">
