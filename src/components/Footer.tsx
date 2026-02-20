@@ -32,7 +32,7 @@ export default function Footer() {
         </div>
         <div className="border-t border-purple-700 mt-8 pt-8 text-center">
           <p className="text-purple-300 text-sm">© 2025 TradeCalcs. All rights reserved.</p>
-          <p className="text-purple-400 text-xs mt-2">Built by <a href="https://autaimate.co.uk" target="_blank" rel="noopener noreferrer" className="text-purple-300 hover:text-white underline transition">Autaimate</a></p>
+          <p className="text-purple-400 text-xs mt-2">Built by <a href="https://autaimate.com" target="_blank" rel="noopener noreferrer" className="text-purple-300 hover:text-white underline transition">Autaimate</a></p>
         </div>
       </div>
     </footer>
