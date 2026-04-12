@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
-import { vitePrerender } from 'vite-plugin-prerender'
+import prerender from 'vite-plugin-prerender'
 
 const prerenderRoutes = [
   '/',
@@ -112,7 +112,7 @@ const prerenderRoutes = [
 export default defineConfig({
   plugins: [
     react(),
-    vitePrerender({ routes: prerenderRoutes }),
+    prerender({ routes: prerenderRoutes }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
