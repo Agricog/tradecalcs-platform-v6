@@ -136,7 +136,6 @@ function App() {
     </Link>
     
     <nav className="flex items-center gap-4">
-      {/* Mobile & Desktop nav links */}
       <Link to="/" className="hover:underline text-sm sm:text-base">Home</Link>
       <Link to="/projects" className="hover:underline text-sm sm:text-base">Projects</Link>
       <Link to="/leadfortress" className="hover:underline text-sm sm:text-base hidden sm:inline">LeadFortress</Link>
@@ -164,57 +163,40 @@ function App() {
           <Route path="/quote/:token" element={<WholesalerQuotePage />} />
           <Route path="/quote/preview/:quoteId" element={<QuotePreviewPage />} />
           
-          {/* Cable Sizing - new URL + old redirect */}
+          {/* ─── CANONICAL URLS (one component per page) ─────────────────────── */}
+
           <Route path="/cable-sizing-calculator" element={<CableSizingCalculatorPage />} />
-          <Route path="/cable-sizing" element={<CableSizingCalculatorPage />} />
-          
-          {/* Voltage Drop - new URL + old redirect */}
           <Route path="/voltage-drop-calculator" element={<VoltageDropCalculatorPage />} />
-          <Route path="/voltage-drop" element={<VoltageDropCalculatorPage />} />
-          
-          {/* BSP Thread - new URL + old redirect */}
           <Route path="/bsp-thread-calculator" element={<BSPThreadIdentifierPage />} />
-          <Route path="/bsp-thread" element={<BSPThreadIdentifierPage />} />
-          
-          {/* Roofing Insurance - new URL + old redirect */}
           <Route path="/roofing-insurance-calculator" element={<RoofingCalculatorPage />} />
-          <Route path="/roofing" element={<RoofingCalculatorPage />} />
-          
-          {/* Concrete - new URL + old redirect */}
           <Route path="/concrete-calculator" element={<ConcreteToBagsPage />} />
-          <Route path="/concrete" element={<ConcreteToBagsPage />} />
-          
-          {/* Plasterer - new URL + old redirect */}
           <Route path="/plasterer-calculator" element={<PlastererCalculatorsPage />} />
-          <Route path="/plasterer" element={<PlastererCalculatorsPage />} />
-          
-          {/* Joinery - new URL + old redirect */}
           <Route path="/joinery-calculator" element={<JoineryCalculatorPage />} />
-          <Route path="/joinery" element={<JoineryCalculatorPage />} />
-          
-          {/* Brick Block - new URL + old redirect */}
           <Route path="/brick-block-calculator" element={<BrickBlockCalculatorPage />} />
-          <Route path="/brick-block" element={<BrickBlockCalculatorPage />} />
-          
-          {/* Tiling - new URL + old redirect */}
           <Route path="/tiling-calculator" element={<TilerCalculatorPage />} />
-          <Route path="/tiling" element={<TilerCalculatorPage />} />
-          
-          {/* Paint - new URL + old redirect */}
           <Route path="/paint-calculator" element={<PainterCalculatorPage />} />
-          <Route path="/paint" element={<PainterCalculatorPage />} />
-          
-          {/* Drainage - new URL + old redirect */}
           <Route path="/drainage-calculator" element={<DrainageCalculatorPage />} />
-          <Route path="/drainage" element={<DrainageCalculatorPage />} />
-          
+          <Route path="/boiler-sizing-calculator" element={<BoilerSizingCalculatorPage />} />
+          <Route path="/electrical-load-calculator" element={<ElectricalLoadCalculatorPage />} />
+          <Route path="/conduit-fill-calculator" element={<ConduitFillCalculatorPage />} />
+          <Route path="/radiator-btu-calculator" element={<RadiatorBTUCalculatorPage />} />
+          <Route path="/electrical-calculators" element={<ElectricalCalculators />} />
+          <Route path="/cable-sizing-calculators" element={<CableSizingCalculators />} />
+          <Route path="/house-rewire-cost-uk" element={<HouseRewireCostUK />} />
+          <Route path="/leadfortress" element={<LeadFortressPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
+          <Route path="/settings" element={<SettingsPage />} />
+
+          {/* ─── /calculators/ CANONICAL URLS ────────────────────────────────── */}
+
           <Route path="/calculators/cis-calculator" element={<CISCalculatorPage />} />
           <Route path="/calculators/stgo-calculator" element={<STGOCalculatorPage />} />
-          <Route path="/stgo-calculator" element={<STGOCalculatorPage />} />
           <Route path="/calculators/scaffold-calculator" element={<ScaffoldCalculatorPage />} />
-          <Route path="/scaffold-calculator" element={<ScaffoldCalculatorPage />} />
           <Route path="/calculators/insulation-calculator" element={<InsulationCalculatorPage />} />
-          <Route path="/insulation-calculator" element={<InsulationCalculatorPage />} />
+
+          {/* Brick calculator use-cases */}
           <Route path="/calculators/brick-calculator/garden-wall" element={<BrickCalculatorGardenWall />} />
           <Route path="/calculators/brick-calculator/house-extension" element={<BrickCalculatorHouseExtension />} />
           <Route path="/calculators/brick-calculator/boundary-wall" element={<BrickCalculatorBoundaryWall />} />
@@ -227,6 +209,8 @@ function App() {
           <Route path="/calculators/brick-calculator/single-skin" element={<BrickCalculatorSingleSkin />} />
           <Route path="/calculators/brick-calculator/cavity-wall" element={<BrickCalculatorCavity />} />
           <Route path="/calculators/brick-calculator/decorative-feature" element={<BrickCalculatorDecorative />} />
+
+          {/* Insulation use-cases */}
           <Route path="/calculators/insulation-calculator/loft-insulation" element={<LoftInsulation />} />
           <Route path="/calculators/insulation-calculator/cavity-wall-insulation" element={<CavityWallInsulation />} />
           <Route path="/calculators/insulation-calculator/solid-wall-internal" element={<SolidWallInternal />} />
@@ -235,6 +219,8 @@ function App() {
           <Route path="/calculators/insulation-calculator/room-in-roof" element={<RoomInRoof />} />
           <Route path="/calculators/insulation-calculator/flat-roof" element={<FlatRoof />} />
           <Route path="/calculators/insulation-calculator/new-build-walls" element={<NewBuildWalls />} />
+
+          {/* Cable sizing use-cases */}
           <Route path="/calculators/cable-sizing/ev-charger-cable-sizing" element={<EVChargerCableSizing />} />
           <Route path="/calculators/cable-sizing/electric-shower-cable-sizing" element={<ElectricShowerCableSizing />} />
           <Route path="/calculators/cable-sizing/cooker-circuit-cable-sizing" element={<CookerCircuitCableSizing />} />
@@ -263,6 +249,8 @@ function App() {
           <Route path="/calculators/cable-sizing/ground-source-heat-pump-cable-sizing" element={<GroundSourceHeatPumpCableSizing />} />
           <Route path="/calculators/cable-sizing/battery-storage-cable-sizing" element={<BatteryStorageCableSizing />} />
           <Route path="/calculators/cable-sizing/commercial-ev-charging-cable-sizing" element={<CommercialEVChargingCableSizing />} />
+
+          {/* Voltage drop use-cases */}
           <Route path="/calculators/voltage-drop/submain-outbuilding" element={<SubmainOutbuildingVoltageDrop />} />
           <Route path="/calculators/voltage-drop/ev-charger" element={<EVChargerVoltageDrop />} />
           <Route path="/calculators/voltage-drop/garden-lighting" element={<GardenLightingVoltageDrop />} />
@@ -290,33 +278,44 @@ function App() {
           <Route path="/calculators/voltage-drop/12v-dc-systems" element={<TwelveVoltDCSystemsVoltageDrop />} />
           <Route path="/calculators/voltage-drop/swa-armoured-cable" element={<SWAArmouredCableVoltageDrop />} />
           <Route path="/calculators/voltage-drop/underfloor-heating" element={<UnderfloorHeatingVoltageDrop />} />
-          <Route path="/boiler-sizing-calculator" element={<BoilerSizingCalculatorPage />} />
-          <Route path="/boiler-calculator" element={<BoilerSizingCalculatorPage />} />
-          <Route path="/electrical-load-calculator" element={<ElectricalLoadCalculatorPage />} />
-          <Route path="/conduit-fill-calculator" element={<ConduitFillCalculatorPage />} />
-          <Route path="/cable-sizing-calculators" element={<CableSizingCalculators />} />
-          <Route path="/electrical-calculators" element={<ElectricalCalculators />} />
-          <Route path="/house-rewire-cost-uk" element={<HouseRewireCostUK />} />
+
+          {/* ─── REDIRECTS (old/short/duplicate URLs → canonical) ────────────── */}
+
+          {/* Short URL aliases → canonical calculator URLs */}
+          <Route path="/cable-sizing" element={<Navigate to="/cable-sizing-calculator" replace />} />
+          <Route path="/voltage-drop" element={<Navigate to="/voltage-drop-calculator" replace />} />
+          <Route path="/bsp-thread" element={<Navigate to="/bsp-thread-calculator" replace />} />
+          <Route path="/roofing" element={<Navigate to="/roofing-insurance-calculator" replace />} />
+          <Route path="/concrete" element={<Navigate to="/concrete-calculator" replace />} />
+          <Route path="/plasterer" element={<Navigate to="/plasterer-calculator" replace />} />
+          <Route path="/joinery" element={<Navigate to="/joinery-calculator" replace />} />
+          <Route path="/brick-block" element={<Navigate to="/brick-block-calculator" replace />} />
+          <Route path="/tiling" element={<Navigate to="/tiling-calculator" replace />} />
+          <Route path="/paint" element={<Navigate to="/paint-calculator" replace />} />
+          <Route path="/drainage" element={<Navigate to="/drainage-calculator" replace />} />
+          <Route path="/boiler-calculator" element={<Navigate to="/boiler-sizing-calculator" replace />} />
+          <Route path="/radiator-calculator" element={<Navigate to="/radiator-btu-calculator" replace />} />
+
+          {/* Old /stgo-calculator, /scaffold-calculator, /insulation-calculator → /calculators/ canonical */}
+          <Route path="/stgo-calculator" element={<Navigate to="/calculators/stgo-calculator" replace />} />
+          <Route path="/scaffold-calculator" element={<Navigate to="/calculators/scaffold-calculator" replace />} />
+          <Route path="/insulation-calculator" element={<Navigate to="/calculators/insulation-calculator" replace />} />
+
+          {/* Misc typo / old name redirects */}
           <Route path="/wire-size-calculator" element={<Navigate to="/cable-sizing-calculator" replace />} />
-          <Route path="/radiator-btu-calculator" element={<RadiatorBTUCalculatorPage />} />
-          <Route path="/radiator-calculator" element={<RadiatorBTUCalculatorPage />} />
-          <Route path="/leadfortress" element={<LeadFortressPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-of-service" element={<TermsOfService />} />
-          <Route path="/cookie-policy" element={<CookiePolicy />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          {/* Redirects for old/duplicate URLs */}
-          <Route path="/tools" element={<Navigate to="/" replace />} />
-          <Route path="/calculators" element={<Navigate to="/" replace />} />
+          <Route path="/cable-calculator" element={<Navigate to="/cable-sizing-calculator" replace />} />
           <Route path="/painter-calculator" element={<Navigate to="/paint-calculator" replace />} />
           <Route path="/brick-calculator" element={<Navigate to="/brick-block-calculator" replace />} />
-          <Route path="/cable-calculator" element={<Navigate to="/cable-sizing-calculator" replace />} />
           <Route path="/plaster-calculator" element={<Navigate to="/plasterer-calculator" replace />} />
+          <Route path="/plasterer-calculators" element={<Navigate to="/plasterer-calculator" replace />} />
           <Route path="/stud-wall-calculator" element={<Navigate to="/joinery-calculator" replace />} />
-          <Route path="/plasterer-calculators" element={<Navigate to="/plaster-calculator" replace />} />
-          <Route path="/contact" element={<Navigate to="/" replace />} />
+
+          {/* Old legal/page URLs */}
           <Route path="/privacy" element={<Navigate to="/privacy-policy" replace />} />
-           </Routes>
+          <Route path="/contact" element={<Navigate to="/" replace />} />
+          <Route path="/tools" element={<Navigate to="/" replace />} />
+          <Route path="/calculators" element={<Navigate to="/" replace />} />
+        </Routes>
 
         {/* Footer */}
         <Footer />
