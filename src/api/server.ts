@@ -63,8 +63,21 @@ app.use('/api/invoices', invoiceRoutes);
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../../dist');
+
+  // Explicit handlers for SEO files (must come before static middleware
+  // and catch-all to guarantee correct content-type and 200 status)
+  app.get('/robots.txt', (req, res) => {
+    res.type('text/plain');
+    res.sendFile(path.join(distPath, 'robots.txt'));
+  });
+
+  app.get('/sitemap.xml', (req, res) => {
+    res.type('application/xml');
+    res.sendFile(path.join(distPath, 'sitemap.xml'));
+  });
+
   app.use(express.static(distPath));
-  
+
   // Handle client-side routing - serve index.html for all non-API routes
   app.get('*', (req, res) => {
     if (!req.path.startsWith('/api')) {
