@@ -35,6 +35,15 @@ app.use(helmet({
   },
 }));
 
+// Permissions-Policy header (controls browser features the site can use)
+app.use((req, res, next) => {
+  res.setHeader(
+    'Permissions-Policy',
+    'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()'
+  );
+  next();
+});
+
 // CORS configuration
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
