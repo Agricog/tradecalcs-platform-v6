@@ -319,6 +319,29 @@ async function main() {
     server.close()
   }
 
+  // Write full diagnostic report to dist/ so we can read it via HTTP
+  // after deploy (Railway's log UI truncates long output).
+  const report = {
+    timestamp: new Date().toISOString(),
+    total: ROUTES.length,
+    succeeded: successCount,
+    emptyCount: emptyRoutes.length,
+    failedCount: failures.length,
+    emptyRoutes: emptyRoutes.map(r => ({
+      route: r.route,
+      helmetFired: r.helmetFired,
+      rootHasContent: r.rootHasContent,
+      errors: r.errors
+    })),
+    failures
+  }
+  await fs.writeFile(
+    path.join(DIST_DIR, '__prerender-report.json'),
+    JSON.stringify(report, null, 2),
+    'utf-8'
+  )
+  console.log(`📄 Report written to dist/__prerender-report.json`)
+
   console.log(`\n📊 Prerendered ${successCount}/${ROUTES.length} routes`)
 
   if (emptyRoutes.length > 0) {
