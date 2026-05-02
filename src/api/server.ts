@@ -113,8 +113,6 @@ if (process.env.NODE_ENV === 'production') {
     const safe = candidate.startsWith(distPath);
     const exists = safe && existsSync(candidate);
 
-    console.log(`[req] path="${req.path}" candidate="${candidate}" safe=${safe} exists=${exists}`);
-
     if (exists) {
       return res.sendFile(candidate);
     }
