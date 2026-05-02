@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
+import { existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 
 // Import routes
@@ -85,13 +86,32 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(distPath, 'sitemap.xml'));
   });
 
-  app.use(express.static(distPath));
+  // Serve static assets (JS, CSS, images, manifest, etc).
+  // `index: false` disables automatic index.html serving so directory
+  // requests fall through to our catch-all, which decides whether to
+  // serve a prerendered file or the SPA shell.
+  app.use(express.static(distPath, { index: false }));
 
-  // Handle client-side routing - serve index.html for all non-API routes
+  // Catch-all route for client-side routing.
+  // For each request:
+  //   1. If a prerendered HTML exists at <distPath>/<req.path>/index.html,
+  //      serve that. This is what makes Google see real <title>, meta
+  //      description and JSON-LD on first crawl pass.
+  //   2. Otherwise fall back to dist/index.html so React Router can
+  //      handle the route client-side (covers anything not in the
+  //      prerender route list).
   app.get('*', (req, res) => {
-    if (!req.path.startsWith('/api')) {
-      res.sendFile(path.join(distPath, 'index.html'));
+    if (req.path.startsWith('/api')) return;
+
+    // Resolve and validate the candidate prerendered path stays inside
+    // distPath (defence-in-depth against any path-traversal trickery,
+    // even though Express normalises req.path already).
+    const candidate = path.resolve(distPath, '.' + req.path, 'index.html');
+    if (candidate.startsWith(distPath) && existsSync(candidate)) {
+      return res.sendFile(candidate);
     }
+
+    res.sendFile(path.join(distPath, 'index.html'));
   });
 }
 
