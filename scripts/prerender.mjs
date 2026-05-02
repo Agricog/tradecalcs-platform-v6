@@ -2,15 +2,13 @@
 /**
  * TradeCalcs prerender script.
  *
- * Run after `vite build`. Visits every public route in headless Chromium,
- * waits for React + react-helmet-async to populate the document head,
- * then writes a real per-route HTML file under dist/ so Google's first
- * crawl pass sees the proper title, meta description and JSON-LD without
- * needing to render JavaScript.
+ * Visits every public route in headless Chromium, waits for React +
+ * react-helmet-async to populate the document head, then writes a real
+ * per-route HTML file under dist/ so Google's first crawl pass sees the
+ * proper title, meta description and JSON-LD without needing JavaScript.
  *
  * Browser: @sparticuz/chromium ships a self-contained Chromium binary
- * built for serverless/container environments. No system apt packages
- * required — works on Railway/Railpack/Vercel/Lambda out of the box.
+ * built for serverless/container environments.
  */
 
 import chromium from '@sparticuz/chromium'
@@ -24,9 +22,7 @@ import { createReadStream, statSync } from 'node:fs'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const DIST_DIR = path.resolve(__dirname, '..', 'dist')
 
-// ─── Routes to prerender ──────────────────────────────────────────────────
 const ROUTES = [
-  // Top-level pages
   '/',
   '/electrical-calculators',
   '/cable-sizing-calculators',
@@ -35,8 +31,6 @@ const ROUTES = [
   '/privacy-policy',
   '/terms-of-service',
   '/cookie-policy',
-
-  // Main calculators
   '/cable-sizing-calculator',
   '/voltage-drop-calculator',
   '/electrical-load-calculator',
@@ -52,14 +46,10 @@ const ROUTES = [
   '/brick-block-calculator',
   '/tiling-calculator',
   '/paint-calculator',
-
-  // /calculators/* main pages
   '/calculators/cis-calculator',
   '/calculators/stgo-calculator',
   '/calculators/scaffold-calculator',
   '/calculators/insulation-calculator',
-
-  // Brick calculator use-cases
   '/calculators/brick-calculator/garden-wall',
   '/calculators/brick-calculator/house-extension',
   '/calculators/brick-calculator/boundary-wall',
@@ -72,8 +62,6 @@ const ROUTES = [
   '/calculators/brick-calculator/single-skin',
   '/calculators/brick-calculator/cavity-wall',
   '/calculators/brick-calculator/decorative-feature',
-
-  // Insulation use-cases
   '/calculators/insulation-calculator/loft-insulation',
   '/calculators/insulation-calculator/cavity-wall-insulation',
   '/calculators/insulation-calculator/solid-wall-internal',
@@ -82,8 +70,6 @@ const ROUTES = [
   '/calculators/insulation-calculator/room-in-roof',
   '/calculators/insulation-calculator/flat-roof',
   '/calculators/insulation-calculator/new-build-walls',
-
-  // Cable sizing use-cases
   '/calculators/cable-sizing/ev-charger-cable-sizing',
   '/calculators/cable-sizing/electric-shower-cable-sizing',
   '/calculators/cable-sizing/cooker-circuit-cable-sizing',
@@ -112,8 +98,6 @@ const ROUTES = [
   '/calculators/cable-sizing/ground-source-heat-pump-cable-sizing',
   '/calculators/cable-sizing/battery-storage-cable-sizing',
   '/calculators/cable-sizing/commercial-ev-charging-cable-sizing',
-
-  // Voltage drop use-cases
   '/calculators/voltage-drop/submain-outbuilding',
   '/calculators/voltage-drop/ev-charger',
   '/calculators/voltage-drop/garden-lighting',
@@ -143,8 +127,6 @@ const ROUTES = [
   '/calculators/voltage-drop/underfloor-heating'
 ]
 
-// ─── Tiny static server ───────────────────────────────────────────────────
-
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'application/javascript; charset=utf-8',
@@ -171,18 +153,11 @@ function startServer(rootDir) {
       try {
         const urlPath = decodeURIComponent(new URL(req.url, 'http://localhost').pathname)
         let filePath = path.join(rootDir, urlPath)
-
         let stat
-        try {
-          stat = statSync(filePath)
-        } catch {
-          stat = null
-        }
-
+        try { stat = statSync(filePath) } catch { stat = null }
         if (!stat || stat.isDirectory()) {
           filePath = path.join(rootDir, 'index.html')
         }
-
         const ext = path.extname(filePath).toLowerCase()
         res.writeHead(200, { 'Content-Type': MIME[ext] ?? 'application/octet-stream' })
         createReadStream(filePath).pipe(res)
@@ -191,15 +166,12 @@ function startServer(rootDir) {
         res.end(String(err))
       }
     })
-
     server.listen(0, '127.0.0.1', () => {
       const { port } = server.address()
       resolve({ server, port })
     })
   })
 }
-
-// ─── Main ────────────────────────────────────────────────────────────────
 
 async function main() {
   console.log(`\n🔧 Prerendering ${ROUTES.length} routes from ${DIST_DIR}\n`)
@@ -216,6 +188,7 @@ async function main() {
 
   let browser
   const failures = []
+  const emptyRoutes = []
   let successCount = 0
 
   try {
@@ -234,7 +207,6 @@ async function main() {
     })
 
     const page = await browser.newPage()
-
     await page.setUserAgent(
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
     )
@@ -254,33 +226,72 @@ async function main() {
       req.continue()
     })
 
+    // Capture page console errors and uncaught exceptions for diagnosis
+    const pageErrors = []
+    page.on('pageerror', (err) => {
+      pageErrors.push(`PAGEERROR: ${err.message}`)
+    })
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        pageErrors.push(`CONSOLE: ${msg.text()}`)
+      }
+    })
+
     for (const route of ROUTES) {
       const url = `${baseUrl}${route}`
       const label = route.padEnd(60, ' ')
 
+      pageErrors.length = 0
+
       try {
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 30_000 })
 
-        await page
-          .waitForFunction(
+        // Wait for React Helmet to populate document head with a
+        // page-specific title (anything that's not the index.html default).
+        let helmetFired = true
+        try {
+          await page.waitForFunction(
             () => {
               const t = document.title || ''
               return t.length > 0 && t !== 'TradeCalcs - Free Trade Calculators'
             },
-            { timeout: 10_000 }
+            { timeout: 15_000 }
           )
-          .catch(() => {
-            // Homepage and a couple of routes legitimately keep the
-            // default title. Don't fail on this.
+        } catch {
+          helmetFired = false
+        }
+
+        // Also check that <div id="root"> is non-empty (React mounted).
+        const rootHasContent = await page.evaluate(() => {
+          const root = document.getElementById('root')
+          return !!(root && root.innerHTML.trim().length > 0)
+        })
+
+        // Homepage legitimately uses the default title — accept it as long
+        // as React mounted content into #root.
+        const isHomepage = route === '/'
+        const ok = isHomepage ? rootHasContent : (helmetFired && rootHasContent)
+
+        if (!ok) {
+          emptyRoutes.push({
+            route,
+            helmetFired,
+            rootHasContent,
+            errors: [...pageErrors]
           })
+          process.stdout.write(`✗  ${label}  (helmet=${helmetFired} root=${rootHasContent} errs=${pageErrors.length})\n`)
+          if (pageErrors.length > 0) {
+            for (const e of pageErrors.slice(0, 3)) {
+              process.stdout.write(`     ${e}\n`)
+            }
+          }
+          continue
+        }
 
         const html = await page.content()
 
         const cleanHtml = html
-          .replace(
-            /<script id="vite-plugin-pwa:register-sw"[^>]*><\/script>/g,
-            ''
-          )
+          .replace(/<script id="vite-plugin-pwa:register-sw"[^>]*><\/script>/g, '')
           .replace(
             /<\/head>/,
             `<meta name="x-prerendered-at" content="${new Date().toISOString()}" /></head>`
@@ -310,8 +321,21 @@ async function main() {
 
   console.log(`\n📊 Prerendered ${successCount}/${ROUTES.length} routes`)
 
+  if (emptyRoutes.length > 0) {
+    console.error(`\n⚠️  ${emptyRoutes.length} route(s) rendered empty (skipped, will fall back to SPA shell):`)
+    for (const r of emptyRoutes.slice(0, 5)) {
+      console.error(`   ${r.route}  helmet=${r.helmetFired} root=${r.rootHasContent}`)
+      for (const e of r.errors.slice(0, 2)) {
+        console.error(`     ${e}`)
+      }
+    }
+    if (emptyRoutes.length > 5) {
+      console.error(`   … and ${emptyRoutes.length - 5} more`)
+    }
+  }
+
   if (failures.length > 0) {
-    console.error(`\n❌ ${failures.length} route(s) failed:`)
+    console.error(`\n❌ ${failures.length} route(s) hard-failed:`)
     for (const f of failures) {
       console.error(`   ${f.route}: ${f.error}`)
     }
