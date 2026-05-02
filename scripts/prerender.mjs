@@ -2,26 +2,19 @@
 /**
  * TradeCalcs prerender script.
  *
- * Run after `vite build`. Visits every public route in headless Chrome,
+ * Run after `vite build`. Visits every public route in headless Chromium,
  * waits for React + react-helmet-async to populate the document head,
  * then writes a real per-route HTML file under dist/ so Google's first
  * crawl pass sees the proper title, meta description and JSON-LD without
  * needing to render JavaScript.
  *
- * Architecture:
- *   1. Spin up a tiny static server against ./dist on a free port.
- *   2. Launch headless Chrome (Playwright's bundled Chromium).
- *   3. For each route, navigate, wait for hydration, snapshot the DOM,
- *      strip the runtime <script id="vite-plugin-pwa:register-sw"> hooks
- *      that are not needed for crawl, and save as <route>/index.html.
- *   4. Tear down browser + server. Exit non-zero on any failure.
- *
- * Why a script and not a plugin: zero supply-chain risk from abandoned
- * Vite plugins; full control over wait conditions and HTML scrubbing;
- * trivially debuggable.
+ * Browser: @sparticuz/chromium ships a self-contained Chromium binary
+ * built for serverless/container environments. No system apt packages
+ * required — works on Railway/Railpack/Vercel/Lambda out of the box.
  */
 
-import { chromium } from 'playwright-chromium'
+import chromium from '@sparticuz/chromium'
+import puppeteer from 'puppeteer-core'
 import http from 'node:http'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
@@ -32,10 +25,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const DIST_DIR = path.resolve(__dirname, '..', 'dist')
 
 // ─── Routes to prerender ──────────────────────────────────────────────────
-// Public, indexable routes only. Auth-gated routes (Projects, Settings,
-// quote/preview, etc.) are intentionally excluded — they should not be
-// indexed and prerendering them would either crash the build or capture
-// a misleading signed-out state.
 const ROUTES = [
   // Top-level pages
   '/',
@@ -124,14 +113,12 @@ const ROUTES = [
   '/calculators/cable-sizing/battery-storage-cable-sizing',
   '/calculators/cable-sizing/commercial-ev-charging-cable-sizing',
 
-  // Voltage drop use-cases — parent URL pattern
-  '/calculators/submain-outbuilding-voltage-drop',
-  '/calculators/ev-charger-voltage-drop',
-  '/calculators/garden-lighting-voltage-drop',
-  '/calculators/shower-circuit-voltage-drop',
-  '/calculators/cooker-circuit-voltage-drop',
-
-  // Voltage drop use-cases — subdirectory pattern
+  // Voltage drop use-cases
+  '/calculators/voltage-drop/submain-outbuilding',
+  '/calculators/voltage-drop/ev-charger',
+  '/calculators/voltage-drop/garden-lighting',
+  '/calculators/voltage-drop/shower-circuit',
+  '/calculators/voltage-drop/cooker-circuit',
   '/calculators/voltage-drop/three-phase-motor',
   '/calculators/voltage-drop/solar-pv',
   '/calculators/voltage-drop/heat-pump',
@@ -157,8 +144,6 @@ const ROUTES = [
 ]
 
 // ─── Tiny static server ───────────────────────────────────────────────────
-// Serves dist/, falling back to index.html for any unknown path so the
-// React Router routes resolve client-side as they would in production.
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -194,7 +179,6 @@ function startServer(rootDir) {
           stat = null
         }
 
-        // Fall back to index.html for SPA routes
         if (!stat || stat.isDirectory()) {
           filePath = path.join(rootDir, 'index.html')
         }
@@ -220,7 +204,6 @@ function startServer(rootDir) {
 async function main() {
   console.log(`\n🔧 Prerendering ${ROUTES.length} routes from ${DIST_DIR}\n`)
 
-  // Sanity check
   try {
     await fs.access(path.join(DIST_DIR, 'index.html'))
   } catch {
@@ -232,79 +215,77 @@ async function main() {
   const baseUrl = `http://127.0.0.1:${port}`
 
   let browser
-  let failures = []
+  const failures = []
   let successCount = 0
 
   try {
-    browser = await chromium.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    })
-    const context = await browser.newContext({
-      // A real-looking UA. Some build environments behave oddly under the
-      // default headless UA string.
-      userAgent:
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-      viewport: { width: 1280, height: 800 },
-      bypassCSP: true
+    const executablePath = await chromium.executablePath()
+
+    browser = await puppeteer.launch({
+      args: [
+        ...chromium.args,
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage'
+      ],
+      defaultViewport: { width: 1280, height: 800 },
+      executablePath,
+      headless: chromium.headless
     })
 
-    // Block third-party noise during prerender so it can't slow the build.
-    // We don't need analytics, fonts CDN pixels, or smartsuite during a
-    // build-time render of our own pages.
-    await context.route('**/*', (route) => {
-      const url = route.request().url()
+    const page = await browser.newPage()
+
+    await page.setUserAgent(
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+    )
+    await page.setBypassCSP(true)
+
+    await page.setRequestInterception(true)
+    page.on('request', (req) => {
+      const url = req.url()
       if (
         url.includes('googletagmanager.com') ||
         url.includes('google-analytics.com') ||
         url.includes('app.smartsuite.com') ||
         url.includes('clerk.accounts.dev')
       ) {
-        return route.abort()
+        return req.abort()
       }
-      return route.continue()
+      req.continue()
     })
-
-    const page = await context.newPage()
 
     for (const route of ROUTES) {
       const url = `${baseUrl}${route}`
       const label = route.padEnd(60, ' ')
 
       try {
-        await page.goto(url, { waitUntil: 'networkidle', timeout: 30_000 })
+        await page.goto(url, { waitUntil: 'networkidle0', timeout: 30_000 })
 
-        // Wait for React Helmet to actually populate the document head.
-        // We poll for a non-default <title> with a generous timeout.
-        await page.waitForFunction(
-          () => {
-            const t = document.title || ''
-            return t.length > 0 && t !== 'TradeCalcs - Free Trade Calculators'
-          },
-          { timeout: 10_000 }
-        ).catch(() => {
-          // Homepage and a couple of other routes legitimately keep the
-          // default title. Don't fail on this — just note it.
-        })
+        await page
+          .waitForFunction(
+            () => {
+              const t = document.title || ''
+              return t.length > 0 && t !== 'TradeCalcs - Free Trade Calculators'
+            },
+            { timeout: 10_000 }
+          )
+          .catch(() => {
+            // Homepage and a couple of routes legitimately keep the
+            // default title. Don't fail on this.
+          })
 
         const html = await page.content()
 
-        // Strip the PWA service-worker registration script from the
-        // prerendered HTML. Service workers will still be installed by the
-        // main bundle on the client; we don't want to register them at
-        // crawl time.
         const cleanHtml = html
           .replace(
             /<script id="vite-plugin-pwa:register-sw"[^>]*><\/script>/g,
             ''
           )
-          // Add a generated-at marker for debugging
           .replace(
             /<\/head>/,
             `<meta name="x-prerendered-at" content="${new Date().toISOString()}" /></head>`
           )
 
-        // Resolve target path: /foo/bar  ->  dist/foo/bar/index.html
-        // Root /              ->  dist/index.html
         let outPath
         if (route === '/') {
           outPath = path.join(DIST_DIR, 'index.html')
