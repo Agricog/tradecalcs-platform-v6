@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /__prerender-report.json
 
 Sitemap: https://tradecalcs.co.uk/sitemap.xml
