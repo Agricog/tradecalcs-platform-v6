@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
-import { existsSync, readdirSync } from 'fs';
+import { existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 
 // Import routes
@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
+  origin: process.env.NODE_ENV === 'production'
     ? ['https://tradecalcs.co.uk', 'https://www.tradecalcs.co.uk']
     : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true,
@@ -74,24 +74,8 @@ app.use('/api/invoices', invoiceRoutes);
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../../dist');
 
-  // ─── DEBUG: log dist state on startup ─────────────────────────────────
-  console.log(`[debug] __dirname = ${__dirname}`);
-  console.log(`[debug] distPath = ${distPath}`);
-  console.log(`[debug] dist exists: ${existsSync(distPath)}`);
-  const calcDir = path.join(distPath, 'calculators');
-  console.log(`[debug] dist/calculators exists: ${existsSync(calcDir)}`);
-  if (existsSync(calcDir)) {
-    console.log(`[debug] dist/calculators contains:`, readdirSync(calcDir).slice(0, 10));
-    const cableDir = path.join(calcDir, 'cable-sizing');
-    if (existsSync(cableDir)) {
-      console.log(`[debug] dist/calculators/cable-sizing contains:`, readdirSync(cableDir).slice(0, 10));
-    }
-  }
-  const sampleFile = path.join(distPath, 'calculators', 'cable-sizing', 'cooker-circuit-cable-sizing', 'index.html');
-  console.log(`[debug] sample prerendered file exists: ${existsSync(sampleFile)}`);
-  console.log(`[debug] sample path: ${sampleFile}`);
-  // ──────────────────────────────────────────────────────────────────────
-
+  // Explicit handlers for SEO files (must come before static middleware
+  // and catch-all to guarantee correct content-type and 200 status)
   app.get('/robots.txt', (req, res) => {
     res.type('text/plain');
     res.sendFile(path.join(distPath, 'robots.txt'));
@@ -102,12 +86,26 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(distPath, 'sitemap.xml'));
   });
 
+  // Serve static assets (JS, CSS, images, manifest, etc).
+  // `index: false` disables automatic index.html serving so directory
+  // requests fall through to our catch-all, which decides whether to
+  // serve a prerendered file or the SPA shell.
+  // `redirect: false` stops express.static adding trailing-slash 301s.
   app.use(express.static(distPath, { index: false, redirect: false }));
 
+  // Catch-all route for client-side routing.
+  // For each request:
+  //   1. If a prerendered HTML exists at <distPath>/<req.path>/index.html,
+  //      serve that. This is what makes Google see real <title>, meta
+  //      description and JSON-LD on first crawl pass.
+  //   2. Otherwise fall back to dist/index.html so React Router can
+  //      handle the route client-side (covers anything not in the
+  //      prerender route list).
   app.get('*', (req, res) => {
     if (req.path.startsWith('/api')) return;
 
-    // Strip trailing slash for path resolution
+    // Strip trailing slash for path resolution so /foo and /foo/ both
+    // resolve to dist/foo/index.html.
     const cleanPath = req.path.replace(/\/$/, '') || '/';
     const candidate = path.resolve(distPath, '.' + cleanPath, 'index.html');
     const safe = candidate.startsWith(distPath);
@@ -117,7 +115,6 @@ if (process.env.NODE_ENV === 'production') {
       return res.sendFile(candidate);
     }
 
-    console.log(`[req] FALLBACK to dist/index.html for ${req.path}`);
     res.sendFile(path.join(distPath, 'index.html'));
   });
 }
