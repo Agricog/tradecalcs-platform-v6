@@ -317,32 +317,35 @@ async function main() {
   } finally {
     if (browser) await browser.close()
     server.close()
+
+    // Always write the diagnostic report, even if the script crashed.
+    try {
+      const report = {
+        timestamp: new Date().toISOString(),
+        total: ROUTES.length,
+        succeeded: successCount,
+        emptyCount: emptyRoutes.length,
+        failedCount: failures.length,
+        emptyRoutes: emptyRoutes.map(r => ({
+          route: r.route,
+          helmetFired: r.helmetFired,
+          rootHasContent: r.rootHasContent,
+          errors: r.errors
+        })),
+        failures
+      }
+      await fs.writeFile(
+        path.join(DIST_DIR, '__prerender-report.json'),
+        JSON.stringify(report, null, 2),
+        'utf-8'
+      )
+      console.log(`Report written to dist/__prerender-report.json`)
+    } catch (e) {
+      console.error(`Failed to write report: ${e.message}`)
+    }
   }
 
-  // Write full diagnostic report to dist/ so we can read it via HTTP
-  // after deploy (Railway's log UI truncates long output).
-  const report = {
-    timestamp: new Date().toISOString(),
-    total: ROUTES.length,
-    succeeded: successCount,
-    emptyCount: emptyRoutes.length,
-    failedCount: failures.length,
-    emptyRoutes: emptyRoutes.map(r => ({
-      route: r.route,
-      helmetFired: r.helmetFired,
-      rootHasContent: r.rootHasContent,
-      errors: r.errors
-    })),
-    failures
-  }
-  await fs.writeFile(
-    path.join(DIST_DIR, '__prerender-report.json'),
-    JSON.stringify(report, null, 2),
-    'utf-8'
-  )
-  console.log(`📄 Report written to dist/__prerender-report.json`)
-
-  console.log(`\n📊 Prerendered ${successCount}/${ROUTES.length} routes`)
+  console.log(`\nPrerendered ${successCount}/${ROUTES.length} routes`)
 
   if (emptyRoutes.length > 0) {
     console.error(`\n⚠️  ${emptyRoutes.length} route(s) rendered empty (skipped, will fall back to SPA shell):`)
