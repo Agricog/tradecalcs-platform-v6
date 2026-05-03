@@ -297,6 +297,26 @@ async function main() {
 
         const html = await page.content()
 
+        // Re-validate against the captured HTML, not just the live page.
+        // Catches race conditions where Helmet briefly set the right title
+        // but React re-rendered the homepage before the snapshot.
+        if (requiredKeyword) {
+          const lowerHtml = html.toLowerCase()
+          if (!lowerHtml.includes(requiredKeyword.toLowerCase())) {
+            emptyRoutes.push({
+              route,
+              requiredKeyword,
+              observedTitle,
+              titleMatched: true,
+              rootHasContent,
+              htmlContainedKeyword: false,
+              errors: [...pageErrors]
+            })
+            process.stdout.write(`x  ${label}  (HTML missing keyword "${requiredKeyword}" — homepage captured)\n`)
+            continue
+          }
+        }
+
         const cleanHtml = html
           .replace(/<script id="vite-plugin-pwa:register-sw"[^>]*><\/script>/g, '')
           .replace(
