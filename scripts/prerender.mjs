@@ -1,14 +1,6 @@
 #!/usr/bin/env node
 /**
  * TradeCalcs prerender script.
- *
- * Visits every public route in headless Chromium, waits for React +
- * react-helmet-async to populate the document head, then writes a real
- * per-route HTML file under dist/ so Google's first crawl pass sees the
- * proper title, meta description and JSON-LD without needing JavaScript.
- *
- * Browser: @sparticuz/chromium ships a self-contained Chromium binary
- * built for serverless/container environments.
  */
 
 import chromium from '@sparticuz/chromium'
@@ -22,109 +14,121 @@ import { createReadStream, statSync } from 'node:fs'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const DIST_DIR = path.resolve(__dirname, '..', 'dist')
 
+const BLOCKED_DOMAINS = [
+  'googletagmanager',
+  'google-analytics',
+  'smartsuite',
+  'clerk.accounts'
+]
+
+// Routes mapped to keywords that MUST appear in document.title for the
+// prerender to be considered successful. Keyword is case-insensitive
+// and chosen to be distinctive to that page (so the homepage's title
+// won't satisfy it). Empty string means "accept any title" (used for
+// the homepage and pages that legitimately use the default).
 const ROUTES = [
-  '/',
-  '/electrical-calculators',
-  '/cable-sizing-calculators',
-  '/house-rewire-cost-uk',
-  '/leadfortress',
-  '/privacy-policy',
-  '/terms-of-service',
-  '/cookie-policy',
-  '/cable-sizing-calculator',
-  '/voltage-drop-calculator',
-  '/electrical-load-calculator',
-  '/conduit-fill-calculator',
-  '/radiator-btu-calculator',
-  '/boiler-sizing-calculator',
-  '/bsp-thread-calculator',
-  '/roofing-insurance-calculator',
-  '/drainage-calculator',
-  '/concrete-calculator',
-  '/plasterer-calculator',
-  '/joinery-calculator',
-  '/brick-block-calculator',
-  '/tiling-calculator',
-  '/paint-calculator',
-  '/calculators/cis-calculator',
-  '/calculators/stgo-calculator',
-  '/calculators/scaffold-calculator',
-  '/calculators/insulation-calculator',
-  '/calculators/brick-calculator/garden-wall',
-  '/calculators/brick-calculator/house-extension',
-  '/calculators/brick-calculator/boundary-wall',
-  '/calculators/brick-calculator/retaining-wall',
-  '/calculators/brick-calculator/garage',
-  '/calculators/brick-calculator/raised-bed',
-  '/calculators/brick-calculator/bbq-outdoor-kitchen',
-  '/calculators/brick-calculator/chimney',
-  '/calculators/brick-calculator/pier-pillar',
-  '/calculators/brick-calculator/single-skin',
-  '/calculators/brick-calculator/cavity-wall',
-  '/calculators/brick-calculator/decorative-feature',
-  '/calculators/insulation-calculator/loft-insulation',
-  '/calculators/insulation-calculator/cavity-wall-insulation',
-  '/calculators/insulation-calculator/solid-wall-internal',
-  '/calculators/insulation-calculator/solid-wall-external',
-  '/calculators/insulation-calculator/floor-insulation',
-  '/calculators/insulation-calculator/room-in-roof',
-  '/calculators/insulation-calculator/flat-roof',
-  '/calculators/insulation-calculator/new-build-walls',
-  '/calculators/cable-sizing/ev-charger-cable-sizing',
-  '/calculators/cable-sizing/electric-shower-cable-sizing',
-  '/calculators/cable-sizing/cooker-circuit-cable-sizing',
-  '/calculators/cable-sizing/garden-office-cable-sizing',
-  '/calculators/cable-sizing/hot-tub-cable-sizing',
-  '/calculators/cable-sizing/immersion-heater-cable-sizing',
-  '/calculators/cable-sizing/solar-pv-battery-cable-sizing',
-  '/calculators/cable-sizing/air-source-heat-pump-cable-sizing',
-  '/calculators/cable-sizing/underfloor-heating-cable-sizing',
-  '/calculators/cable-sizing/garage-workshop-cable-sizing',
-  '/calculators/cable-sizing/sauna-cable-sizing',
-  '/calculators/cable-sizing/air-conditioning-cable-sizing',
-  '/calculators/cable-sizing/swimming-pool-cable-sizing',
-  '/calculators/cable-sizing/electric-gates-cable-sizing',
-  '/calculators/cable-sizing/cctv-security-cable-sizing',
-  '/calculators/cable-sizing/annex-granny-flat-cable-sizing',
-  '/calculators/cable-sizing/shed-summer-house-cable-sizing',
-  '/calculators/cable-sizing/outdoor-lighting-cable-sizing',
-  '/calculators/cable-sizing/electric-storage-heater-cable-sizing',
-  '/calculators/cable-sizing/ring-main-socket-circuit-cable-sizing',
-  '/calculators/cable-sizing/commercial-kitchen-cable-sizing',
-  '/calculators/cable-sizing/server-room-cable-sizing',
-  '/calculators/cable-sizing/caravan-marina-hookup-cable-sizing',
-  '/calculators/cable-sizing/farm-agricultural-cable-sizing',
-  '/calculators/cable-sizing/shop-retail-unit-cable-sizing',
-  '/calculators/cable-sizing/ground-source-heat-pump-cable-sizing',
-  '/calculators/cable-sizing/battery-storage-cable-sizing',
-  '/calculators/cable-sizing/commercial-ev-charging-cable-sizing',
-  '/calculators/voltage-drop/submain-outbuilding',
-  '/calculators/voltage-drop/ev-charger',
-  '/calculators/voltage-drop/garden-lighting',
-  '/calculators/voltage-drop/shower-circuit',
-  '/calculators/voltage-drop/cooker-circuit',
-  '/calculators/voltage-drop/three-phase-motor',
-  '/calculators/voltage-drop/solar-pv',
-  '/calculators/voltage-drop/heat-pump',
-  '/calculators/voltage-drop/marina',
-  '/calculators/voltage-drop/caravan-site',
-  '/calculators/voltage-drop/commercial-lighting',
-  '/calculators/voltage-drop/warehouse',
-  '/calculators/voltage-drop/server-room',
-  '/calculators/voltage-drop/agricultural',
-  '/calculators/voltage-drop/swimming-pool',
-  '/calculators/voltage-drop/hot-tub',
-  '/calculators/voltage-drop/battery-storage',
-  '/calculators/voltage-drop/workshop',
-  '/calculators/voltage-drop/annex',
-  '/calculators/voltage-drop/construction-site',
-  '/calculators/voltage-drop/ring-circuit',
-  '/calculators/voltage-drop/radial-circuit',
-  '/calculators/voltage-drop/domestic-lighting',
-  '/calculators/voltage-drop/immersion-heater',
-  '/calculators/voltage-drop/12v-dc-systems',
-  '/calculators/voltage-drop/swa-armoured-cable',
-  '/calculators/voltage-drop/underfloor-heating'
+  ['/', ''],
+  ['/electrical-calculators', 'electrical calculator'],
+  ['/cable-sizing-calculators', 'cable sizing'],
+  ['/house-rewire-cost-uk', 'rewire'],
+  ['/leadfortress', 'leadfortress'],
+  ['/privacy-policy', 'privacy'],
+  ['/terms-of-service', 'terms'],
+  ['/cookie-policy', 'cookie'],
+  ['/cable-sizing-calculator', 'cable sizing'],
+  ['/voltage-drop-calculator', 'voltage drop'],
+  ['/electrical-load-calculator', 'electrical load'],
+  ['/conduit-fill-calculator', 'conduit'],
+  ['/radiator-btu-calculator', 'radiator'],
+  ['/boiler-sizing-calculator', 'boiler'],
+  ['/bsp-thread-calculator', 'bsp'],
+  ['/roofing-insurance-calculator', 'roofing'],
+  ['/drainage-calculator', 'drainage'],
+  ['/concrete-calculator', 'concrete'],
+  ['/plasterer-calculator', 'plaster'],
+  ['/joinery-calculator', 'joinery'],
+  ['/brick-block-calculator', 'brick'],
+  ['/tiling-calculator', 'tiling'],
+  ['/paint-calculator', 'paint'],
+  ['/calculators/cis-calculator', 'cis'],
+  ['/calculators/stgo-calculator', 'stgo'],
+  ['/calculators/scaffold-calculator', 'scaffold'],
+  ['/calculators/insulation-calculator', 'insulation'],
+  ['/calculators/brick-calculator/garden-wall', 'garden wall'],
+  ['/calculators/brick-calculator/house-extension', 'extension'],
+  ['/calculators/brick-calculator/boundary-wall', 'boundary'],
+  ['/calculators/brick-calculator/retaining-wall', 'retaining'],
+  ['/calculators/brick-calculator/garage', 'garage'],
+  ['/calculators/brick-calculator/raised-bed', 'raised bed'],
+  ['/calculators/brick-calculator/bbq-outdoor-kitchen', 'bbq'],
+  ['/calculators/brick-calculator/chimney', 'chimney'],
+  ['/calculators/brick-calculator/pier-pillar', 'pier'],
+  ['/calculators/brick-calculator/single-skin', 'single skin'],
+  ['/calculators/brick-calculator/cavity-wall', 'cavity'],
+  ['/calculators/brick-calculator/decorative-feature', 'decorative'],
+  ['/calculators/insulation-calculator/loft-insulation', 'loft'],
+  ['/calculators/insulation-calculator/cavity-wall-insulation', 'cavity wall'],
+  ['/calculators/insulation-calculator/solid-wall-internal', 'solid wall'],
+  ['/calculators/insulation-calculator/solid-wall-external', 'solid wall'],
+  ['/calculators/insulation-calculator/floor-insulation', 'floor'],
+  ['/calculators/insulation-calculator/room-in-roof', 'room in roof'],
+  ['/calculators/insulation-calculator/flat-roof', 'flat roof'],
+  ['/calculators/insulation-calculator/new-build-walls', 'new build'],
+  ['/calculators/cable-sizing/ev-charger-cable-sizing', 'ev charger'],
+  ['/calculators/cable-sizing/electric-shower-cable-sizing', 'shower'],
+  ['/calculators/cable-sizing/cooker-circuit-cable-sizing', 'cooker'],
+  ['/calculators/cable-sizing/garden-office-cable-sizing', 'garden office'],
+  ['/calculators/cable-sizing/hot-tub-cable-sizing', 'hot tub'],
+  ['/calculators/cable-sizing/immersion-heater-cable-sizing', 'immersion'],
+  ['/calculators/cable-sizing/solar-pv-battery-cable-sizing', 'solar'],
+  ['/calculators/cable-sizing/air-source-heat-pump-cable-sizing', 'air source'],
+  ['/calculators/cable-sizing/underfloor-heating-cable-sizing', 'underfloor'],
+  ['/calculators/cable-sizing/garage-workshop-cable-sizing', 'garage'],
+  ['/calculators/cable-sizing/sauna-cable-sizing', 'sauna'],
+  ['/calculators/cable-sizing/air-conditioning-cable-sizing', 'air conditioning'],
+  ['/calculators/cable-sizing/swimming-pool-cable-sizing', 'swimming pool'],
+  ['/calculators/cable-sizing/electric-gates-cable-sizing', 'gate'],
+  ['/calculators/cable-sizing/cctv-security-cable-sizing', 'cctv'],
+  ['/calculators/cable-sizing/annex-granny-flat-cable-sizing', 'annex'],
+  ['/calculators/cable-sizing/shed-summer-house-cable-sizing', 'shed'],
+  ['/calculators/cable-sizing/outdoor-lighting-cable-sizing', 'outdoor lighting'],
+  ['/calculators/cable-sizing/electric-storage-heater-cable-sizing', 'storage heater'],
+  ['/calculators/cable-sizing/ring-main-socket-circuit-cable-sizing', 'ring main'],
+  ['/calculators/cable-sizing/commercial-kitchen-cable-sizing', 'commercial kitchen'],
+  ['/calculators/cable-sizing/server-room-cable-sizing', 'server'],
+  ['/calculators/cable-sizing/caravan-marina-hookup-cable-sizing', 'caravan'],
+  ['/calculators/cable-sizing/farm-agricultural-cable-sizing', 'farm'],
+  ['/calculators/cable-sizing/shop-retail-unit-cable-sizing', 'retail'],
+  ['/calculators/cable-sizing/ground-source-heat-pump-cable-sizing', 'ground source'],
+  ['/calculators/cable-sizing/battery-storage-cable-sizing', 'battery'],
+  ['/calculators/cable-sizing/commercial-ev-charging-cable-sizing', 'commercial ev'],
+  ['/calculators/voltage-drop/submain-outbuilding', 'submain'],
+  ['/calculators/voltage-drop/ev-charger', 'ev charger'],
+  ['/calculators/voltage-drop/garden-lighting', 'garden lighting'],
+  ['/calculators/voltage-drop/shower-circuit', 'shower'],
+  ['/calculators/voltage-drop/cooker-circuit', 'cooker'],
+  ['/calculators/voltage-drop/three-phase-motor', 'three phase'],
+  ['/calculators/voltage-drop/solar-pv', 'solar'],
+  ['/calculators/voltage-drop/heat-pump', 'heat pump'],
+  ['/calculators/voltage-drop/marina', 'marina'],
+  ['/calculators/voltage-drop/caravan-site', 'caravan'],
+  ['/calculators/voltage-drop/commercial-lighting', 'commercial lighting'],
+  ['/calculators/voltage-drop/warehouse', 'warehouse'],
+  ['/calculators/voltage-drop/server-room', 'server'],
+  ['/calculators/voltage-drop/agricultural', 'agricultural'],
+  ['/calculators/voltage-drop/swimming-pool', 'swimming pool'],
+  ['/calculators/voltage-drop/hot-tub', 'hot tub'],
+  ['/calculators/voltage-drop/battery-storage', 'battery'],
+  ['/calculators/voltage-drop/workshop', 'workshop'],
+  ['/calculators/voltage-drop/annex', 'annex'],
+  ['/calculators/voltage-drop/construction-site', 'construction'],
+  ['/calculators/voltage-drop/ring-circuit', 'ring circuit'],
+  ['/calculators/voltage-drop/radial-circuit', 'radial'],
+  ['/calculators/voltage-drop/domestic-lighting', 'domestic lighting'],
+  ['/calculators/voltage-drop/immersion-heater', 'immersion'],
+  ['/calculators/voltage-drop/12v-dc-systems', '12v'],
+  ['/calculators/voltage-drop/swa-armoured-cable', 'swa'],
+  ['/calculators/voltage-drop/underfloor-heating', 'underfloor']
 ]
 
 const MIME = {
@@ -215,18 +219,12 @@ async function main() {
     await page.setRequestInterception(true)
     page.on('request', (req) => {
       const url = req.url()
-      if (
-        url.includes('googletagmanager.com') ||
-        url.includes('google-analytics.com') ||
-        url.includes('app.smartsuite.com') ||
-        url.includes('clerk.accounts.dev')
-      ) {
+      if (BLOCKED_DOMAINS.some((d) => url.includes(d))) {
         return req.abort()
       }
       req.continue()
     })
 
-    // Capture page console errors and uncaught exceptions for diagnosis
     const pageErrors = []
     page.on('pageerror', (err) => {
       pageErrors.push(`PAGEERROR: ${err.message}`)
@@ -237,7 +235,7 @@ async function main() {
       }
     })
 
-    for (const route of ROUTES) {
+    for (const [route, requiredKeyword] of ROUTES) {
       const url = `${baseUrl}${route}`
       const label = route.padEnd(60, ' ')
 
@@ -246,40 +244,49 @@ async function main() {
       try {
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 30_000 })
 
-        // Wait for React Helmet to populate document head with a
-        // page-specific title (anything that's not the index.html default).
-        let helmetFired = true
+        // Wait for the page-specific title to appear. We require the
+        // title to contain the route-specific keyword — this prevents
+        // capturing the homepage's Helmet title when the sub-page's
+        // own Helmet hasn't run yet.
+        let titleMatched = true
+        let observedTitle = ''
         try {
           await page.waitForFunction(
-            () => {
-              const t = document.title || ''
-              return t.length > 0 && t !== 'TradeCalcs - Free Trade Calculators'
+            (kw) => {
+              const t = (document.title || '').toLowerCase()
+              if (!kw) {
+                // No keyword required — just wait for ANY non-empty
+                // title that isn't the raw shell default.
+                return t.length > 0 && t !== 'tradecalcs - free trade calculators'
+              }
+              return t.includes(kw.toLowerCase())
             },
-            { timeout: 15_000 }
+            { timeout: 15_000 },
+            requiredKeyword
           )
         } catch {
-          helmetFired = false
+          titleMatched = false
         }
 
-        // Also check that <div id="root"> is non-empty (React mounted).
+        observedTitle = await page.evaluate(() => document.title || '')
+
         const rootHasContent = await page.evaluate(() => {
           const root = document.getElementById('root')
           return !!(root && root.innerHTML.trim().length > 0)
         })
 
-        // Homepage legitimately uses the default title — accept it as long
-        // as React mounted content into #root.
-        const isHomepage = route === '/'
-        const ok = isHomepage ? rootHasContent : (helmetFired && rootHasContent)
+        const ok = titleMatched && rootHasContent
 
         if (!ok) {
           emptyRoutes.push({
             route,
-            helmetFired,
+            requiredKeyword,
+            observedTitle,
+            titleMatched,
             rootHasContent,
             errors: [...pageErrors]
           })
-          process.stdout.write(`✗  ${label}  (helmet=${helmetFired} root=${rootHasContent} errs=${pageErrors.length})\n`)
+          process.stdout.write(`x  ${label}  (titleMatched=${titleMatched} root=${rootHasContent} title="${observedTitle.slice(0, 50)}")\n`)
           if (pageErrors.length > 0) {
             for (const e of pageErrors.slice(0, 3)) {
               process.stdout.write(`     ${e}\n`)
@@ -308,17 +315,16 @@ async function main() {
         await fs.writeFile(outPath, cleanHtml, 'utf-8')
 
         successCount++
-        process.stdout.write(`✓  ${label}\n`)
+        process.stdout.write(`ok ${label}\n`)
       } catch (err) {
         failures.push({ route, error: err.message })
-        process.stdout.write(`✗  ${label}  (${err.message})\n`)
+        process.stdout.write(`x  ${label}  (${err.message})\n`)
       }
     }
   } finally {
     if (browser) await browser.close()
     server.close()
 
-    // Always write the diagnostic report, even if the script crashed.
     try {
       const report = {
         timestamp: new Date().toISOString(),
@@ -326,12 +332,7 @@ async function main() {
         succeeded: successCount,
         emptyCount: emptyRoutes.length,
         failedCount: failures.length,
-        emptyRoutes: emptyRoutes.map(r => ({
-          route: r.route,
-          helmetFired: r.helmetFired,
-          rootHasContent: r.rootHasContent,
-          errors: r.errors
-        })),
+        emptyRoutes,
         failures
       }
       await fs.writeFile(
@@ -348,15 +349,12 @@ async function main() {
   console.log(`\nPrerendered ${successCount}/${ROUTES.length} routes`)
 
   if (emptyRoutes.length > 0) {
-    console.error(`\n⚠️  ${emptyRoutes.length} route(s) rendered empty (skipped, will fall back to SPA shell):`)
-    for (const r of emptyRoutes.slice(0, 5)) {
-      console.error(`   ${r.route}  helmet=${r.helmetFired} root=${r.rootHasContent}`)
-      for (const e of r.errors.slice(0, 2)) {
-        console.error(`     ${e}`)
-      }
+    console.error(`\n${emptyRoutes.length} route(s) rendered empty (skipped, will fall back to SPA shell):`)
+    for (const r of emptyRoutes.slice(0, 10)) {
+      console.error(`   ${r.route}  expected="${r.requiredKeyword}" observed="${r.observedTitle.slice(0, 60)}"`)
     }
-    if (emptyRoutes.length > 5) {
-      console.error(`   … and ${emptyRoutes.length - 5} more`)
+    if (emptyRoutes.length > 10) {
+      console.error(`   ... and ${emptyRoutes.length - 10} more`)
     }
   }
 
@@ -365,15 +363,13 @@ async function main() {
     for (const f of failures) {
       console.error(`   ${f.route}: ${f.error}`)
     }
-    // Don't exit — we want the build to succeed so the report file
-    // gets included in the deployed image. We can read it via HTTP.
     console.error(`(Continuing build despite failures so report is accessible)`)
   }
 
-  console.log('\n✅ Prerender complete.\n')
+  console.log('\nPrerender complete.\n')
 }
 
 main().catch((err) => {
-  console.error('\n❌ Prerender script crashed:', err)
+  console.error('\nPrerender script crashed:', err)
   process.exit(1)
 })
